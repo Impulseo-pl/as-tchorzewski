@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B — Scena</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --noc:#0F0F12; --noc-2:#17171B; --dzien:#F3F1ED;
+  --biel:#F5F5F7; --przyg:#9A9AA2; --akcent:#C85C13;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--noc);color:var(--biel);font:400 17px/1.65 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:Jost,Inter,sans-serif;font-weight:300;line-height:1.08;letter-spacing:-.015em}
+.wrap{max-width:1240px;margin:0 auto;padding:0 32px}
+
+nav{position:relative;z-index:10;background:rgba(15,15,18,.8);backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid rgba(255,255,255,.07)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;height:78px}
+.nav-in img{height:32px}
+.menu{display:flex;gap:32px;font-size:14.5px;color:var(--przyg)}
+.menu a{color:inherit;text-decoration:none}
+.menu a.akt{color:var(--biel)}
+.pill{display:inline-flex;align-items:center;gap:9px;background:var(--akcent);color:#fff;font:500 15px/1 Inter;padding:12px 22px;border-radius:980px;text-decoration:none}
+
+/* scena */
+.scena{position:relative;padding:82px 0 96px;overflow:hidden}
+.scena::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 80% at 50% 30%,rgba(200,92,19,.10),transparent 62%);pointer-events:none}
+.scena-in{position:relative;z-index:2;display:grid;grid-template-columns:1fr auto;gap:70px;align-items:center}
+.tag{font:500 12px/1 Inter;letter-spacing:.2em;text-transform:uppercase;color:var(--akcent);margin-bottom:26px}
+h1{font-size:clamp(3rem,5.4vw,4.6rem);margin-bottom:26px;max-width:16ch}
+.lead{color:var(--przyg);font-size:19px;max-width:46ch;margin-bottom:36px}
+.obietnica{display:inline-flex;align-items:baseline;gap:14px;border:1px solid rgba(255,255,255,.16);border-radius:980px;padding:13px 24px;margin-bottom:34px}
+.obietnica b{font-family:Jost;font-weight:500;font-size:19px;color:var(--biel)}
+.obietnica span{font-size:14px;color:var(--przyg)}
+.kontakt{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.duchy{border:1.5px solid rgba(255,255,255,.22);color:var(--biel);background:transparent;padding:12px 22px;border-radius:980px;font:500 15px/1 Inter;text-decoration:none}
+.godz{font-size:14px;color:var(--przyg);margin-left:6px}
+.kadr{position:relative;width:430px;flex:none}
+.kadr img{display:block;width:100%;border-radius:8px}
+.kadr::before{content:"";position:absolute;inset:-26px;border:1px solid rgba(255,255,255,.08);border-radius:14px}
+.kadr figcaption{margin-top:20px;font-size:13.5px;color:var(--przyg);text-align:right}
+
+/* przed i po — sekcja jasna */
+.para{background:var(--dzien);color:#1B1B1E;padding:88px 0}
+.para h2{font-size:2.5rem;margin-bottom:12px;color:#1B1B1E}
+.para .pod{color:#63636B;font-size:16.5px;margin-bottom:44px;max-width:56ch}
+.dwa{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+.klatka{position:relative}
+.klatka img{display:block;width:100%;border-radius:8px;box-shadow:0 2px 12px rgba(0,0,0,.08)}
+.etykieta{position:absolute;top:18px;left:18px;background:rgba(15,15,18,.86);color:#fff;font:500 12px/1 Inter;letter-spacing:.16em;text-transform:uppercase;padding:9px 14px;border-radius:980px}
+.etykieta.po{background:var(--akcent)}
+.klatka p{margin-top:16px;font-size:15px;color:#63636B}
+
+/* ——— telefon ——— */
+@media (max-width:900px){
+  .wrap{padding:0 20px}
+  .menu,.pasek{display:none}
+  .przycisk-menu{display:inline-flex}
+  body{padding-bottom:74px}
+  .pasek-dolny{display:flex}
+}
+.przycisk-menu{display:none;align-items:center;gap:9px;border:1.5px solid currentColor;border-radius:8px;
+  padding:10px 16px;font:600 15px/1 Inter;text-decoration:none;color:inherit;background:transparent}
+.pasek-dolny{display:none;position:fixed;left:0;right:0;bottom:0;z-index:200;gap:1px;
+  box-shadow:0 -2px 12px rgba(0,0,0,.14)}
+.pasek-dolny a{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;
+  padding:19px 8px;font:600 16px/1 Inter;text-decoration:none;color:#fff}
+.pasek-dolny .a-tel{background:#16181C}
+.pasek-dolny .a-wa{background:#25A63F}
+
+@media (max-width:900px){
+  .scena-in{grid-template-columns:1fr;gap:38px;padding:0}
+  .scena{padding:46px 0 58px}
+  .kadr{width:100%}
+  .kadr::before{inset:-14px}
+  .kadr figcaption{text-align:left}
+  h1{font-size:2.6rem;max-width:none}
+  .dwa{grid-template-columns:1fr;gap:20px}
+  .para{padding:56px 0}
+  .para h2{font-size:1.9rem}
+  .nav-in{height:66px}
+}
+</style>
+</head>
+<body>
+
+<nav><div class="wrap nav-in">
+  <img src="img/logo-jasne.png" alt="A.S Tchórzewski">
+  <div class="menu"><a class="akt" href="#">Start</a><a href="#">Realizacje</a><a href="#">Co robimy</a><a href="#">O nas</a><a href="#">Kontakt</a></div>
+  <a class="pill" href="#">667 434 222</a>
+<a class="przycisk-menu" href="#">Menu</a></div></nav>
+
+<header class="scena"><div class="wrap scena-in">
+  <div>
+    <div class="tag">Wykończenia wnętrz od 2005 roku</div>
+    <h1>Zostawiamy wnętrze gotowe do wprowadzenia.</h1>
+    <p class="lead">Szpachlowanie, malowanie, łazienki i sucha zabudowa —
+      w Wielkopolsce i lubuskiem. Ta sama ekipa od pierwszego dnia do odbioru.</p>
+    <div class="obietnica"><b>Wycena do 5 dni roboczych</b><span>od oględzin na miejscu</span></div>
+    <div class="kontakt">
+      <a class="duchy" href="#">Napisz na WhatsAppie</a>
+      <a class="duchy" href="#">Zobacz realizacje</a>
+      <span class="godz">Odbieramy 8:00–20:00</span>
+    </div>
+  </div>
+  <figure class="kadr">
+    <img src="img/poddasze.jpg" alt="Wykończone poddasze">
+    <figcaption>Poddasze pod klucz — gładzie, malowanie, płytki wielkoformatowe</figcaption>
+  </figure>
+</div></header>
+
+<section class="para"><div class="wrap">
+  <h2>Ta sama bryła, sześć tygodni różnicy.</h2>
+  <p class="pod">Jedno miejsce, dwa zdjęcia. Nikt w okolicy nie pokazuje swojej roboty w trakcie —
+    bo takiego zdjęcia nie da się pobrać z internetu.</p>
+  <div class="dwa">
+    <figure class="klatka"><span class="etykieta">Przed</span>
+      <img src="img/przed.jpg" alt="Stan surowy rozbudowy">
+      <p>Stan surowy: mury, stemple, otwarty otwór okienny.</p></figure>
+    <figure class="klatka"><span class="etykieta po">Po</span>
+      <img src="img/po.jpg" alt="Rozbudowa po wykończeniu">
+      <p>Po naszej robocie: elewacja, stolarka, opaska, oświetlenie.</p></figure>
+  </div>
+</div></section>
+
+
+<div class="pasek-dolny">
+  <a class="a-tel" href="tel:667434222">Zadzwoń 667 434 222</a>
+  <a class="a-wa" href="#">WhatsApp</a>
+</div>
+</body>
+</html>

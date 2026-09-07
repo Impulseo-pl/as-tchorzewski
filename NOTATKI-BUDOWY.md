@@ -3,44 +3,165 @@
 Klient: **Firma Ogólnobudowlana Artur Tchórzewski (A.S TCHÓRZEWSKI)** · opiekun **Adam**
 Zamówienie IMP/2026/09/005, opłacone w całości 04.09.2026. Karta CRM `de55d1aa-3deb-44f1-88b7-ca3a19ad8b7c`.
 
-## STAN PO BLOKU A (07.09.2026, 12:20)
+---
 
-**Zrobione**
+## STAN PO BLOKU B (07.09.2026, 14:0x) ⬅️ CZYTAJ TO
+
+**Zrobione w bloku B (etapy 2–4):**
+- ✅ **Pytania przycięte 97 → 10** blokujących + 5 bonusowych → `PYTANIA-DO-KLIENTA.md` (do ręki Adamowi).
+  Pełna lista leży w `PYTANIA-pelna-lista-97.md` — nie wysyłać.
+- ✅ **Materiały ściągnięte** — `materialy/` (38 zdjęć, 2 filmy, 3 pliki logo). Szczegóły niżej.
+- ✅ **Decyzje projektowe** — sekcja „ETAP 2" niżej.
+- ✅ **Trzy kierunki zbudowane i wyrenderowane** — `design/kandydat-{A,B,C}-*.md` + makiety
+  `design/kierunki/kierunek-*.html`.
+  Porównanie: `design/kierunki/_kierunki-podglad/POROWNANIE.png` (komputer) i `.../telefon/`.
+
+**⏳ NASTĘPNY KROK: wybór K.** — jeden z trzech kierunków (wolno mieszankę: „B, ale nagłówek z C").
+Po wyborze: `DESIGN.md` w korzeniu repo → dopiero wtedy blok C (kod).
+
+**Blokery, które nie zniknęły:**
+- ⏳ Odpowiedzi klienta na 10 pytań (obiecane wieczorem 07.09: gwarancja, logo, zdjęcia).
+- ⚠️ Sprawdzić w OVH, czy **abonentem domeny jest klient**, nie Krzysztof prywatnie.
+
+---
+
+## ETAP 2 — decyzje projektowe
+
+### Kto tu trafi i czego chce w pierwsze 10 sekund
+Najważniejsza grupa: **ktoś dostał nazwisko z polecenia i sprawdza w Google, czy firma jest prawdziwa.**
+Przychodzi ze strachem, nie z ciekawością (76,1% Polaków miało problemy z fachowcami; najczęściej
+jakość wymagająca poprawek i opóźnienia). Szuka czterech rzeczy naraz: **co robicie · gdzie · dowód ·
+jak się odezwać.** Ocena wyglądu powstaje w ~50 ms i już się nie zmienia — pierwszy ekran na telefonie
+musi rozstrzygnąć jednym zdjęciem prawdziwej roboty.
+
+### Czym ta firma różni się od konkurencji — jedno zdanie
+**Oddają wycenę w terminie: do 5 dni roboczych — żadna z sześciu sprawdzonych firm z regionu
+(ROLICZ, REMPERFEKT, PK FLIZ, LUX-DOM, ART-BART, Kundzik) nie podaje NA STRONIE żadnego terminu wyceny.**
+Drugi wyróżnik, na osobną sekcję: przy usłudze, której nie robią, polecają sprawdzone osoby.
+
+### Pomysł prowadzący
+**Prowadzi ICH WŁASNE nowe logo, nie nasz gust.** Odczytane z pikseli ich banera:
+- tło `#0F0F12` (prawie czarne, lekko chłodne),
+- znak: **cienka biała kreska** (monogram A+S) + **jedna pomarańczowa esica `#C85C13`**,
+- wordmark: wersaliki, bardzo szeroka rozstrzelina, lekka waga.
+
+Z tego wynikają trzy rzeczy dla całej strony: **cienkie linie zamiast grubych ramek · jeden ciepły
+akcent i nic więcej · szeroko rozstrzelone małe etykiety zamiast krzykliwych nagłówków.**
+🔴 Konsekwencja praktyczna: **nowe logo jest białe i świeci tylko na ciemnym tle.** Kierunek ciemny (B)
+używa go bez zmian; kierunki jasne (A, C) wymagają przemalowania znaku — a to wymaga zgody klienta.
+
+### Czego świadomie NIE robimy
+- ⛔ **Zero cen i widełek** — „w kwestii ceny trzeba się skontaktować" (polecenie klienta).
+- ⛔ **Zero sekcji „certyfikaty"** — nie znaleziono żadnych papierów ani autoryzacji producenckich.
+  U konkurencji widzieliśmy sekcję „Opinie napawają nas dumą!" bez ani jednej opinii — tak wygląda
+  pusta sekcja i wygląda gorzej niż jej brak.
+- ⛔ **Zero animowanych liczników** — REMPERFEKT ma na żywej stronie liczniki pokazujące „0 +".
+  Liczby stawiamy statycznie.
+- ⛔ **Zero „20 lat doświadczenia" jako hasła głównego** — zajęte (ROLICZ ma 30 lat i dwa dyplomy
+  mistrzowskie, LUX-DOM ma dokładnie 20 i tak samo gra kartą zagranicy).
+- ⛔ **Zero wielkich jaskrawych płaszczyzn, wersalikowych nagłówków i grubych czarnych ramek**
+  (nasza reguła po demie HG Group). Mocny kolor = akcent, nigdy tło sekcji.
+- ⛔ **Zero tekstów zastępczych** — LUX-DOM ma na żywej stronie opinie „Jane Anderson" i „James Head"
+  o firmie „Earthly Elegance". To jest bramka, nie anegdota.
+
+### Rzeczy zamówione wprost przez klienta (nie do dyskusji)
+- 🔴 **Teksty w LICZBIE MNOGIEJ** — łamie domyślną regułę silnika, tu wygrywa klient.
+- Kolejność usług: **szpachlowanie, malowanie, łazienki, sucha zabudowa NA GÓRZE**;
+  montaż drzwi i okien niżej (mniejszy zarobek).
+- **WhatsApp 882 832 244 z ikoną WA przy numerze.**
+- „ponad 20 lat" — nie zaokrąglać w górę, nie pisać „od 20 lat".
+- Godziny **8–20**, obszar **wielkopolskie i lubuskie**.
+
+### Menu i kontakt
+Menu na 4–5 pozycji. Na telefonie: **przycisk „Menu"**, nie pasek pozycji (reguła z SPECBUD, 02.09)
++ **przyklejony na dole pasek z dwoma przyciskami**: „Zadzwoń 667 434 222" i „WhatsApp".
+Wpięte we wszystkie trzy makiety.
+
+---
+
+## ETAP 3 — materiały
+
+Wszystko leży w `materialy/`. Źródło: Instagram `@a.s_tchorzewski` (8 postów po jednym adresie,
+`gallery-dl` z ciasteczkami Chrome) + Facebook `61589974670830`.
+
+| co | ile | gdzie |
+|---|---|---|
+| zdjęcia realizacji | **38** | `materialy/realizacje/` |
+| filmy | **2** | `materialy/wideo/` |
+| logo — pliki źródłowe i odzyskane | 5 | `materialy/logo/` |
+
+### 🔴 Cztery ustalenia, które PROSTUJĄ dossier z bloku A
+
+1. **Nie wszystko jest w 1080 px.** Realizacja „elewacja i podbitka" (9 kadrów) przyszła
+   w **3072×4096** — pełne oryginały z telefonu. Bloker „potrzebne oryginały" dotyczy więc już tylko
+   łazienki, poddasza i schodów (te są w 924–1440 px) — i akurat to są najładniejsze zdjęcia.
+2. **✅ „Malowanie agregatem" NIE jest naszym wymysłem.** Dossier trzymał to na liście
+   `[NIEPOTWIERDZONE]` („klient nie wymienił agregatu ani razu"). Mamy **film**, na którym pracownik
+   w kombinezonie i masce maluje ścianę agregatem natryskowym, a na ich własnej wizytówce i banerze
+   figuruje „Malowanie agregatem" i „Szpachlowanie i gładzie maszynowe". Zdejmuję to z listy zmyśleń.
+3. **✅ Mamy „ludzi przy pracy" — czego dossier szukał i nie znalazł.** Drugi film (elewacja) pokazuje
+   **co najmniej trzy–cztery osoby** na drabinach i przy ścianie. To jednocześnie jedyny twardy ślad
+   wielkości ekipy. Twarzy nie widać — zdjęcie ekipy nadal jest do zamówienia u klienta.
+4. **Logo — bloker częściowo zdjęty.** Znaleźliśmy:
+   - **stare logo w czystej formie**, 1290×1278 na białym tle → wycięte do `logo-stare-przezroczyste.png`
+     (znacznie lepsze niż 720 px JPG, którego użyło demo),
+   - **nowe logo** w banerze 1942 px → odzyskane jako `logo-nowe-przezroczyste.png` (na ciemne tło)
+     i `logo-nowe-na-jasne-tlo.png` (znak przemalowany na `#111114`).
+   ⚠️ To są pliki **odzyskane z JPG**, nie oryginały od grafika — w nagłówku będą minimalnie miękkie.
+   Plik wektorowy nadal zamawiamy (pytanie 2).
+
+### Co mamy — realizacje
+| realizacja | kadrów | rozdzielczość | uwaga |
+|---|---|---|---|
+| **Przed i po** (rozbudowa) | 2 | 1254×1254 | ⭐ najmocniejszy dowód w całym materiale · znak wodny klienta na obu |
+| Poddasze pod klucz | 12 | 1200×1600 | najbogatszy jednolity zestaw, ładne światło |
+| Elewacja i podbitka | 9 + film | **3072×4096** | jedyne pełne oryginały · dokumentacyjne, nie efektowne |
+| Łazienka (wanna wolnostojąca) | 6 | 924–1440 px | ⭐ najładniejsze wnętrze · 2 kadry „w trakcie" |
+| Poddasze II (belki, wnęka na wannę) | 5 | 1200×1600 | pokoje jeszcze nieukończone (puszki elektryczne) |
+| Beton architektoniczny | 4 | 1440×1080 | ⭐ jedyne **poziome** kadry · bałagan budowlany u dołu, do skadrowania |
+| Film: malowanie agregatem | 37 s | 720×1280 | ⭐ człowiek przy pracy |
+| Film: elewacja, ekipa | 39 s | 720×960 | ⭐ 3–4 osoby przy robocie |
+
+### 🔴 Ograniczenie, które ukształtowało wszystkie trzy kierunki
+**Nie mamy ani jednego ładnego, poziomego zdjęcia w wysokiej rozdzielczości.** Wszystko dobre jest
+pionowe albo kwadratowe. Dlatego żaden z trzech kierunków nie stoi na klasycznym szerokim pasie
+nagłówka z jednym rozciągniętym zdjęciem — każdy rozwiązuje to inaczej (A: kadr pionowy obok tekstu ·
+B: kadr pionowy jako obiekt na ciemnej scenie · C: małe zdjęcia w indeksie realizacji).
+
+### ⛔ Czego NIE wolno użyć
+- **16 plików `img/` z dema** (hero, about, g1–g14) — stock z Pexels. Na płatnej stronie znikają co do jednego.
+- **Tła banerów reklamowych** — ciemne wnętrze z pufą (okładka FB) i dom z kamienną elewacją.
+  To grafiki/rendery, nie ich realizacje.
+- **`RECON.md` z biblioteki dema** — zawiera CUDZE profile (recon pomylił firmę z inną spod Nekli).
+- **Ikona TikToka w stopce** — konta nie ma.
+- Zdjęcia i film **do czasu pisemnej zgody klienta** (pytanie 3) — na demo przechodziło, na płatną stronę nie.
+
+---
+
+## ETAP 4 — trzy kierunki ⏳ CZEKA NA WYBÓR K.
+
+Fundamenty wzięte z biblioteki `DESIGN.md` (designmd.app), **trzy różne szablony**, nie trzy odcienie
+jednego gustu. Każdy plik kandydata ma sekcję „⚠️ Odstępstwa" — co z oryginału odrzucamy i dlaczego.
+
+| | kierunek | fundament | logika układu | mocna strona | ryzyko |
+|---|---|---|---|---|---|
+| **A** | **Obietnica** | [Trust & Authority](https://designmd.app/library/trust-authority) | jasna, split hero + cztery kafle obietnic | **nie zależy od tego, ile zdjęć przyśle klient** | traci serce, jeśli klient nie zgodzi się na publiczną obietnicę „5 dni" |
+| **B** | **Scena** | [Apple Premium Cinematic](https://designmd.app/library/apple-premium-cinematic) | ciemna, jedna rzecz na ekran, kadr pionowy bez kadrowania | **jedyny, w którym jego białe logo działa bez przemalowania**; wygląda drożej | ciemne tło nie wybacza zdjęć w 1200 px |
+| **C** | **Redakcja** | [Editorial Contemporâneo](https://designmd.app/library/editorial-contemporaneo) | papier, szeryf, asymetria, indeks realizacji z numerami | **najbezpieczniejszy przy słabych zdjęciach** (małe kadry) + miejsce na historię 2005→2015 | historii jeszcze nie mamy potwierdzonej |
+
+**Pytanie do K. brzmi: który sprzedaje TĘ firmę TEMU klientowi** — nie który ładniejszy.
+
+Wybór zapisać TUTAJ (z uzasadnieniem), a wybranego kandydata przepisać na **`DESIGN.md` w korzeniu repo**.
+
+---
+
+## STAN PO BLOKU A (07.09.2026, 12:20) — archiwalnie
+
 - Domena `as-tchorzewski.pl` kupiona (OVH, 1 rok, 20,53 zł brutto, DNSSEC + Zimbra Starter w cenie).
 - Brief z checklisty Adama → `BRIEF-KLIENTA.md`.
 - Research wieloagentowy (7 torów, 15 agentów, ~32 min): **126 faktów przyjętych, 9 obalonych**.
-  - `dossier.md` — dokument roboczy (33 kB): kim są, czym się różnią, kto trafia na stronę,
-    teksty nietykalne klienta, rozjazdy demo↔klient.
+  - `dossier.md` — dokument roboczy (33 kB). ⚠️ Cztery jego ustalenia poprawione w bloku B, patrz ETAP 3.
   - `research-tory.md` — pełny materiał źródłowy (132 kB), do zaglądania, nie do czytania w całości.
-  - `research-odrzucone.md` — 9 rzeczy obalonych/zweryfikowanych przez weryfikatora.
-  - `PYTANIA-DO-KLIENTA.md` — 97 pytań. ⚠️ **Do przycięcia do ~10 realnie blokujących**
-    przed oddaniem Adamowi. Bez tego nikt na to nie odpowie.
-
-**Trzy rzeczy z researchu, które zmieniają budowę**
-1. **Wyróżnik: „wycena do 5 dni roboczych"** — żadna z 6 sprawdzonych firm z regionu nie podaje
-   ŻADNEGO terminu wyceny. To jest hero, nie „20 lat doświadczenia" (zajęte: ROLICZ ma 30 lat,
-   LUX-DOM ma 20 i tak samo gra kartą zagranicy).
-2. **Demo mówi w 5 miejscach co innego niż klient** (m.in. „Wolsztyn i okolice" vs „wielkopolskie
-   i lubuskie") — a on kupił NA PODSTAWIE DEMA. Zmiany przegadać, nie podmieniać po cichu.
-3. 🎁 **Wizytówka Google ma źle ustawiony obszar** — pinezka wypada w Barczyźnie k. Nekli,
-   ~130 km od Błońska, i nie ma podpiętej strony. Darmowy zysk do zgłoszenia przy oddaniu.
-
-**Blokery**
-- ⏳ Zdjęcia realizacji, logo (plik) i długość gwarancji — klient obiecał 07.09 wieczorem.
-  Bez zdjęć budowa staje na etapie 3 (materiały). W demie galeria to STOCK.
-- ⚠️ Sprawdzić w OVH, czy **abonentem domeny jest klient**, nie Krzysztof prywatnie
-  (w chwili zakupu domena nie była jeszcze widoczna w API).
-
-**Następny krok: BLOK B (etapy 2–4)**
-- przycięcie listy pytań do ~10 → Adam dzwoni/pisze do klienta
-- decyzje projektowe w tym pliku
-- materiały (zdjęcia z FB/IG — skill `social-foto`, w demie już zgłoszone do kolejki)
-- **trzy kierunki** na fundamentach z biblioteki DESIGN.md → wybór K. → `DESIGN.md` w korzeniu repo
-
-## Twarde ustalenia, których nie wolno złamać
-- 🔴 **Teksty w LICZBIE MNOGIEJ** (polecenie klienta, łamie domyślną regułę silnika).
-- 🔴 **Zero cen i widełek na stronie** — „w kwestii ceny trzeba się skontaktować".
-- Kolejność usług: szpachlowanie, malowanie, łazienki, sucha zabudowa NA GÓRZE;
-  montaż drzwi i okien niżej (mniejszy zarobek).
-- WhatsApp **882 832 244** z ikoną WA przy numerze — zamówione wprost.
-- „ponad 20 lat" — nie zaokrąglać w górę, nie pisać „od 20 lat".
+  - `research-odrzucone.md` — 9 rzeczy obalonych przez weryfikatora.
+- 🎁 **Wizytówka Google ma źle ustawiony obszar** — pinezka wypada w Barczyźnie k. Nekli, ~130 km
+  od Błońska, i nie ma podpiętej strony. Darmowy zysk do zgłoszenia przy oddaniu (pytanie 10).

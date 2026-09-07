@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A — Obietnica</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --tlo:#F6F5F2; --tlo-2:#EDEBE6; --karta:#FCFBF9;
+  --ink:#16181C; --ink-2:#5A5D63; --linia:#DCD8D1;
+  --akcent:#C25A14; --akcent-ciemny:#A24A0F;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--tlo);color:var(--ink);font:400 17px/1.6 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:Archivo,Inter,sans-serif;font-weight:600;letter-spacing:-.02em;line-height:1.1}
+.wrap{max-width:1240px;margin:0 auto;padding:0 32px}
+
+/* nawigacja */
+nav{border-bottom:1px solid var(--linia);background:rgba(246,245,242,.9);backdrop-filter:blur(10px)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;height:82px}
+.nav-in img{height:34px;width:auto}
+.menu{display:flex;gap:30px;font-size:15px;color:var(--ink-2)}
+.menu a{color:inherit;text-decoration:none}
+.menu a.akt{color:var(--ink);font-weight:500}
+.tel{font-family:Archivo;font-weight:600;font-size:17px;color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:9px}
+.tel .kropka{width:8px;height:8px;border-radius:50%;background:#1E9E5A;box-shadow:0 0 0 4px rgba(30,158,90,.15)}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:64px;align-items:center;padding:76px 0 84px}
+.eyebrow{font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--akcent);font-weight:600;margin-bottom:22px}
+h1{font-size:clamp(2.7rem,4.5vw,4rem);margin-bottom:24px}
+h1 em{font-style:normal;color:var(--akcent)}
+.lead{font-size:19px;color:var(--ink-2);max-width:54ch;margin-bottom:34px}
+.cta{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:30px}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 26px;border-radius:8px;font:600 16px/1 Inter;text-decoration:none;border:1.5px solid transparent}
+.btn-1{background:var(--akcent);color:#fff}
+.btn-2{border-color:var(--linia);color:var(--ink);background:var(--karta)}
+.pod-cta{font-size:14.5px;color:var(--ink-2);display:flex;gap:20px;flex-wrap:wrap}
+.pod-cta b{color:var(--ink);font-weight:600}
+.foto{position:relative;border-radius:10px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.06);border:1px solid var(--linia)}
+.foto img{display:block;width:100%;height:560px;object-fit:cover}
+.podpis{position:absolute;left:0;right:0;bottom:0;padding:22px;background:linear-gradient(transparent,rgba(0,0,0,.62));color:#fff;font-size:14px}
+.podpis b{display:block;font-family:Archivo;font-weight:600;font-size:16px;margin-bottom:2px}
+
+/* obietnice */
+.obietnice{background:var(--tlo-2);border-top:1px solid var(--linia);border-bottom:1px solid var(--linia);padding:64px 0}
+.tytul-sekcji{display:flex;align-items:baseline;justify-content:space-between;gap:24px;margin-bottom:38px}
+h2{font-size:2rem}
+.tytul-sekcji p{color:var(--ink-2);font-size:15.5px;max-width:44ch}
+.kafle{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.kafel{background:var(--karta);border:1px solid var(--linia);border-radius:8px;padding:26px 24px 28px;box-shadow:0 2px 12px rgba(0,0,0,.05)}
+.kafel .nr{font:600 12px/1 Inter;letter-spacing:.14em;color:var(--akcent);margin-bottom:18px}
+.kafel h3{font-size:1.28rem;margin-bottom:9px;letter-spacing:-.015em}
+.kafel p{font-size:14.5px;color:var(--ink-2);line-height:1.55}
+.kafel.pusty h3{color:var(--ink-2)}
+.brak{display:inline-block;background:#F2E3D8;color:#8A3D0C;font:600 11.5px/1 Inter;letter-spacing:.06em;padding:6px 9px;border-radius:5px;margin-top:10px}
+
+/* ——— telefon ——— */
+@media (max-width:900px){
+  .wrap{padding:0 20px}
+  .menu,.pasek{display:none}
+  .przycisk-menu{display:inline-flex}
+  body{padding-bottom:74px}
+  .pasek-dolny{display:flex}
+}
+.przycisk-menu{display:none;align-items:center;gap:9px;border:1.5px solid currentColor;border-radius:8px;
+  padding:10px 16px;font:600 15px/1 Inter;text-decoration:none;color:inherit;background:transparent}
+.pasek-dolny{display:none;position:fixed;left:0;right:0;bottom:0;z-index:200;gap:1px;
+  box-shadow:0 -2px 12px rgba(0,0,0,.14)}
+.pasek-dolny a{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;
+  padding:19px 8px;font:600 16px/1 Inter;text-decoration:none;color:#fff}
+.pasek-dolny .a-tel{background:#16181C}
+.pasek-dolny .a-wa{background:#25A63F}
+
+@media (max-width:900px){
+  .hero{grid-template-columns:1fr;gap:34px;padding:44px 0 52px}
+  .foto img{height:420px}
+  h1{font-size:2.5rem}
+  .tytul-sekcji{flex-direction:column;gap:12px}
+  .kafle{grid-template-columns:1fr;gap:12px}
+  .nav-in{height:68px}
+  .tel{font-size:15px}
+}
+</style>
+</head>
+<body>
+
+<nav><div class="wrap nav-in">
+  <img src="img/logo-ciemne.png" alt="A.S Tchórzewski">
+  <div class="menu">
+    <a class="akt" href="#">Start</a><a href="#">Co robimy</a><a href="#">Realizacje</a><a href="#">Wycena</a><a href="#">Kontakt</a>
+  </div>
+  <a class="tel" href="#"><span class="kropka"></span>667 434 222</a>
+<a class="przycisk-menu" href="#">Menu</a></div></nav>
+
+<header class="wrap hero">
+  <div>
+    <div class="eyebrow">Wykończenia wnętrz · wielkopolskie i lubuskie</div>
+    <h1>Wycenę oddajemy<br><em>w pięć dni roboczych.</em></h1>
+    <p class="lead">Szpachlowanie, malowanie, łazienki i sucha zabudowa. W Polsce pracujemy
+      od 2015 roku, w Niemczech od 2005 — ponad dwadzieścia lat na budowach.</p>
+    <div class="cta">
+      <a class="btn btn-1" href="#">Zadzwoń: 667 434 222</a>
+      <a class="btn btn-2" href="#">Napisz na WhatsAppie</a>
+    </div>
+    <div class="pod-cta">
+      <span>Odbieramy <b>8:00–20:00</b></span>
+      <span>Dojazd: <b>wielkopolskie i lubuskie</b></span>
+    </div>
+  </div>
+  <figure class="foto">
+    <img src="img/lazienka.jpg" alt="Łazienka z wolnostojącą wanną">
+    <figcaption class="podpis"><b>Łazienka pod klucz</b>Płytki, sucha zabudowa, biały montaż, malowanie</figcaption>
+  </figure>
+</header>
+
+<section class="obietnice"><div class="wrap">
+  <div class="tytul-sekcji">
+    <h2>Cztery rzeczy, które obiecujemy na wejściu</h2>
+    <p>Nie „kompleksowo i solidnie". Konkret, z którego można nas rozliczyć.</p>
+  </div>
+  <div class="kafle">
+    <div class="kafel"><div class="nr">01</div><h3>Wycena do 5 dni roboczych</h3>
+      <p>Oglądamy, liczymy i oddajemy kosztorys w terminie. Żadna firma w okolicy nie podaje terminu wyceny.</p></div>
+    <div class="kafel pusty"><div class="nr">02</div><h3>Gwarancja na robociznę</h3>
+      <p>Zapisana w umowie, nie w obietnicy.</p><span class="brak">czeka na liczbę od klienta</span></div>
+    <div class="kafel"><div class="nr">03</div><h3>Jedna ekipa od szpachli po malowanie</h3>
+      <p>Nie zwozimy podwykonawców na każdy etap. To ci sami ludzie od pierwszego dnia do odbioru.</p></div>
+    <div class="kafel"><div class="nr">04</div><h3>Odbieramy telefon 8:00–20:00</h3>
+      <p>A czego nie robimy — powiemy wprost i polecimy kogoś sprawdzonego.</p></div>
+  </div>
+</div></section>
+
+
+<div class="pasek-dolny">
+  <a class="a-tel" href="tel:667434222">Zadzwoń 667 434 222</a>
+  <a class="a-wa" href="#">WhatsApp</a>
+</div>
+</body>
+</html>

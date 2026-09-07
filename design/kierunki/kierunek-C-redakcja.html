@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C — Redakcja</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --papier:#F3F0E9; --papier-2:#E9E5DA; --ink:#23211D; --ink-2:#605C54;
+  --linia:#D6D0C2; --akcent:#A8451A;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--papier);color:var(--ink);font:400 17px/1.65 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:Fraunces,Georgia,serif;font-weight:600;line-height:1.06;letter-spacing:-.01em}
+.wrap{max-width:1240px;margin:0 auto;padding:0 32px}
+
+/* gazetowa główka */
+.glowka{border-bottom:2px solid var(--ink)}
+.glowka-in{display:flex;align-items:center;justify-content:space-between;height:76px}
+.glowka img{height:31px}
+.glowka .meta{display:flex;gap:26px;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
+.glowka .meta b{color:var(--ink);font-weight:600}
+
+.pasek{border-bottom:1px solid var(--linia);font-size:13px;color:var(--ink-2)}
+.pasek-in{display:flex;gap:34px;height:46px;align-items:center}
+.pasek a{color:inherit;text-decoration:none}
+.pasek a.akt{color:var(--akcent);font-weight:600}
+
+/* hero redakcyjne — asymetryczne */
+.otwarcie{display:grid;grid-template-columns:1.35fr .65fr;gap:56px;padding:60px 0 20px;align-items:start}
+.rubryka{font:600 12px/1 Inter;letter-spacing:.18em;text-transform:uppercase;color:var(--akcent);margin-bottom:22px}
+h1{font-size:clamp(3rem,5.6vw,4.7rem);margin-bottom:26px}
+.wstep{font-size:20px;line-height:1.55;color:var(--ink-2);max-width:40ch;
+  border-left:3px solid var(--akcent);padding-left:22px}
+.boczek img{width:100%;display:block;border-radius:2px;filter:saturate(.94)}
+.boczek figcaption{font-size:13px;color:var(--ink-2);margin-top:12px;padding-top:12px;border-top:1px solid var(--linia)}
+
+/* pasek faktów pod otwarciem */
+.fakty{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--linia);
+  border-bottom:1px solid var(--linia);margin-top:52px}
+.fakt{padding:26px 26px 26px 0;border-right:1px solid var(--linia)}
+.fakt:last-child{border-right:0;padding-right:0}
+.fakt b{display:block;font-family:Fraunces;font-weight:600;font-size:1.55rem;margin-bottom:6px}
+.fakt span{font-size:14px;color:var(--ink-2)}
+.fakt.czeka b{color:var(--ink-2)}
+.fakt .flaga{display:inline-block;font:600 11px/1 Inter;letter-spacing:.06em;color:#8A3D0C;background:#EBDCCE;padding:5px 8px;border-radius:3px;margin-top:8px}
+
+/* indeks realizacji */
+.indeks{padding:76px 0 90px}
+.naglowek-sekcji{display:flex;align-items:baseline;justify-content:space-between;border-bottom:2px solid var(--ink);padding-bottom:16px;margin-bottom:8px}
+h2{font-size:2.2rem}
+.naglowek-sekcji span{font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2)}
+.poz{display:grid;grid-template-columns:64px 1.15fr .85fr 210px;gap:28px;align-items:center;
+  padding:22px 0;border-bottom:1px solid var(--linia)}
+.poz .nr{font-family:Fraunces;font-weight:600;font-size:1.5rem;color:var(--akcent)}
+.poz h3{font-size:1.35rem;margin-bottom:5px}
+.poz .gdzie{font-size:14px;color:var(--ink-2)}
+.poz .zakres{font-size:14.5px;color:var(--ink-2)}
+.poz img{width:210px;height:132px;object-fit:cover;display:block;border-radius:2px}
+
+/* ——— telefon ——— */
+@media (max-width:900px){
+  .wrap{padding:0 20px}
+  .menu,.pasek{display:none}
+  .przycisk-menu{display:inline-flex}
+  body{padding-bottom:74px}
+  .pasek-dolny{display:flex}
+}
+.przycisk-menu{display:none;align-items:center;gap:9px;border:1.5px solid currentColor;border-radius:8px;
+  padding:10px 16px;font:600 15px/1 Inter;text-decoration:none;color:inherit;background:transparent}
+.pasek-dolny{display:none;position:fixed;left:0;right:0;bottom:0;z-index:200;gap:1px;
+  box-shadow:0 -2px 12px rgba(0,0,0,.14)}
+.pasek-dolny a{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;
+  padding:19px 8px;font:600 16px/1 Inter;text-decoration:none;color:#fff}
+.pasek-dolny .a-tel{background:#16181C}
+.pasek-dolny .a-wa{background:#25A63F}
+
+@media (max-width:900px){
+  .otwarcie{grid-template-columns:1fr;gap:30px;padding:40px 0 14px}
+  h1{font-size:2.5rem}
+  .boczek img{max-height:320px;object-fit:cover}
+  .fakty{grid-template-columns:1fr 1fr;margin-top:34px}
+  .fakt{padding:20px 18px 20px 0}
+  .fakt:nth-child(2n){border-right:0;padding-right:0}
+  .fakt:nth-child(-n+2){border-bottom:1px solid var(--linia)}
+  .poz{grid-template-columns:44px 1fr;gap:14px 16px}
+  .poz .zakres{grid-column:2}
+  .poz img{grid-column:2;width:100%;height:170px}
+  .glowka .meta{display:none}
+  .glowka-in{height:64px}
+  .indeks{padding:48px 0 60px}
+}
+</style>
+</head>
+<body>
+
+<header class="glowka"><div class="wrap glowka-in">
+  <img src="img/logo-ciemne.png" alt="A.S Tchórzewski">
+  <div class="meta"><span>Błońsko · <b>wielkopolskie i lubuskie</b></span><span>Telefon <b>667 434 222</b></span><span><b>8:00–20:00</b></span></div>
+<a class="przycisk-menu" href="#">Menu</a></div></header>
+<div class="pasek"><div class="wrap pasek-in">
+  <a class="akt" href="#">Start</a><a href="#">Szpachlowanie i malowanie</a><a href="#">Łazienki</a>
+  <a href="#">Sucha zabudowa</a><a href="#">Realizacje</a><a href="#">Kontakt</a>
+</div></div>
+
+<section class="wrap otwarcie">
+  <div>
+    <div class="rubryka">Firma rodzinna · w Niemczech od 2005, w Polsce od 2015</div>
+    <h1>Wykańczamy wnętrza i oddajemy wycenę w pięć dni.</h1>
+    <p class="wstep">Szpachlowanie, malowanie, łazienki i sucha zabudowa.
+      Ponad dwadzieścia lat na budowach — i jedna ekipa, która zostaje z Wami do końca roboty.</p>
+  </div>
+  <figure class="boczek">
+    <img src="img/schody.jpg" alt="Schody po wykończeniu">
+    <figcaption>Schody i hol — gładzie, malowanie, okładzina stopnic. Realizacja z tego roku.</figcaption>
+  </figure>
+</section>
+
+<div class="wrap"><div class="fakty">
+  <div class="fakt"><b>5 dni roboczych</b><span>tyle zajmuje nam przygotowanie wyceny</span></div>
+  <div class="fakt czeka"><b>Gwarancja</b><span>zapisana w umowie</span><span class="flaga">czeka na liczbę od klienta</span></div>
+  <div class="fakt"><b>2005 → 2015</b><span>najpierw Niemcy, potem własna firma w Polsce</span></div>
+  <div class="fakt"><b>8:00–20:00</b><span>godziny, w których odbieramy telefon</span></div>
+</div></div>
+
+<section class="indeks"><div class="wrap">
+  <div class="naglowek-sekcji"><h2>Roboty, które skończyliśmy</h2><span>Wybrane realizacje</span></div>
+
+  <article class="poz"><div class="nr">01</div>
+    <div><h3>Poddasze pod klucz</h3><div class="gdzie">Dom jednorodzinny · powiat grodziski</div></div>
+    <div class="zakres">Gładzie na sufitach i skosach, malowanie, płytki wielkoformatowe, sucha zabudowa.</div>
+    <img src="img/poddasze-belki.jpg" alt="Poddasze"></article>
+
+  <article class="poz"><div class="nr">02</div>
+    <div><h3>Łazienka z wolnostojącą wanną</h3><div class="gdzie">Dom jednorodzinny</div></div>
+    <div class="zakres">Płytki, sucha zabudowa, biały montaż, malowanie. Od skuwania do gotowej.</div>
+    <img src="img/lazienka.jpg" alt="Łazienka"></article>
+
+  <article class="poz"><div class="nr">03</div>
+    <div><h3>Beton architektoniczny na ścianie</h3><div class="gdzie">Salon, dom jednorodzinny</div></div>
+    <div class="zakres">Przygotowanie podłoża, beton dekoracyjny, wykończenie krawędzi.</div>
+    <img src="img/beton.jpg" alt="Beton architektoniczny"></article>
+
+  <article class="poz"><div class="nr">04</div>
+    <div><h3>Elewacja i podbitka</h3><div class="gdzie">Dom jednorodzinny</div></div>
+    <div class="zakres">Przygotowanie, malowanie natryskowe, podbitka dachowa, obróbki.</div>
+    <img src="img/ekipa.jpg" alt="Ekipa przy elewacji"></article>
+</div></section>
+
+
+<div class="pasek-dolny">
+  <a class="a-tel" href="tel:667434222">Zadzwoń 667 434 222</a>
+  <a class="a-wa" href="#">WhatsApp</a>
+</div>
+</body>
+</html>
