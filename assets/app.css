@@ -276,7 +276,9 @@ a{text-decoration:none}
 .lb-n{right:clamp(.5rem,2vw,1.5rem);top:50%;transform:translateY(-50%)}
 
 /* ── PAS ZDJĘCIA NA CAŁĄ SZEROKOŚĆ ──────────────────────────────────────────── */
-.pas{position:relative;line-height:0}
+/* Pas na pełną szerokość dostaje własne powietrze - bez tego sąsiaduje z sekcją
+   krawędź w krawędź i czyta się jak ściana zdjęć (uwaga K. 07.09.2026). */
+.pas{position:relative;line-height:0;margin:clamp(2rem,4vw,4rem) 0}
 .pas img{width:100%;height:clamp(240px,34vw,420px);object-fit:cover;border-radius:0}
 /* ⚠️ Wyższy pas TYLKO dla kadru z pełnego oryginału (2400 px). Pas z betonu ma
    źródło 1440 px i przy tej wysokości by zmiękł - dlatego to osobna klasa, a nie
@@ -448,7 +450,20 @@ footer{background:var(--noc);border-top:1px solid var(--linia-slaba);padding:70p
   transition:background .2s ease,border-color .2s ease,transform .2s ease}
 .social-dymki a:hover{background:var(--akcent-btn);border-color:var(--akcent);
   transform:translateY(-2px)}
-.social-dymki svg{width:20px;height:20px;display:block}
+.social-dymki svg{width:21px;height:21px;display:block}
+
+/* 🔴 KOLORY MAREK - świadome odstępstwo od „jednego akcentu”, bo kolor jest tu
+   ZNACZENIOWY, nie dekoracyjny (ten sam wyjątek co zieleń WhatsAppa).
+   W spoczynku kolor siedzi w samej ikonie; kafelek wypełnia się dopiero na najechanie,
+   żeby dwa kolorowe kwadraty nie przeciągały uwagi z hero przez cały czas. */
+.social-dymki .s-fb svg path{fill:#1877F2}
+.social-dymki .s-ig svg path{fill:url(#ig-grad)}
+.social-dymki .s-fb:hover{background:#1877F2;border-color:#1877F2}
+.social-dymki .s-ig:hover{background:linear-gradient(45deg,#FFD521,#F50000 25%,#B900B4 60%,#4C68D7);
+  border-color:#B900B4}
+.social-dymki .s-fb:hover svg path,
+.social-dymki .s-ig:hover svg path{fill:#fff}
+/* ⛔ NIE ruszamy tu `transform` - unoszenie o 2 px jest już w regule wspólnej wyżej. */
 /* 🔴 NA TELEFONIE DYMKÓW NIE MA. Dolny róg należy do „Zadzwoń” i „WhatsApp” - one
    przynoszą telefony, social nie. Przy `bottom:84px` dymki zasłaniały H1 o 37 px
    (złapane przez bramkę 07.09.2026), a niżej wchodziły na przyklejony pasek.
@@ -462,6 +477,11 @@ footer{background:var(--noc);border-top:1px solid var(--linia-slaba);padding:70p
 .stopka-social{display:flex;gap:10px;margin-top:18px}
 .stopka-social a{display:grid;place-items:center;width:40px;height:40px;color:var(--przyg);
   border:1px solid var(--linia-slaba);transition:color .2s ease,border-color .2s ease}
-.stopka-social a:hover{color:var(--akcent-jasny);border-color:var(--linia)}
+.stopka-social .s-fb svg path{fill:#1877F2}
+.stopka-social .s-ig svg path{fill:url(#ig-grad-stopka)}
+.stopka-social a:hover{border-color:var(--linia)}
+.stopka-social .s-fb:hover{background:#1877F2}
+.stopka-social .s-ig:hover{background:linear-gradient(45deg,#FFD521,#F50000 25%,#B900B4 60%,#4C68D7)}
+.stopka-social a:hover svg path{fill:#fff}
 .stopka-social svg{width:18px;height:18px;display:block}
 @media print{.social-dymki{display:none}}

@@ -54,26 +54,44 @@ FB_LINK = "https://www.facebook.com/profile.php?id=61589974670830"
 IG_LINK = "https://www.instagram.com/a.s_tchorzewski/"
 
 
-def dymki_social():
+def dymki_social(sufiks=""):
     """Dwa dymki w prawym dolnym rogu: Facebook i Instagram.
 
-    Zamówione przez K. 07.09.2026. Ostra krawędź, bo `border-radius: 0` obowiązuje
-    wszędzie; kolor tylko na najechanie i tylko NASZ akcent - fiolet Instagrama
-    i granat Facebooka obok jednego pomarańczu robią z tego zestaw z szablonu.
+    🔴 KOLORY MAREK SĄ TU ŚWIADOME, mimo zasady „jeden akcent" z `DESIGN.md`.
+    Ta zasada dotyczy koloru DEKORACYJNEGO; tutaj kolor niesie znaczenie - dokładnie
+    tak samo jak zieleń `#25A63F` na przycisku WhatsAppa, opisana w `DESIGN.md`
+    jako „znaczeniowa, nie dekoracyjna". Człowiek skanuje wzrokiem za niebieskim „f",
+    nie za pomarańczowym kwadratem. (Decyzja K. 07.09.2026.)
+
+    ⚠️ W SPOCZYNKU kolor siedzi w samej ikonie, nie w całym kafelku - dwa duże
+    kolorowe kwadraty przeciągałyby uwagę z hero. Kafelek wypełnia się kolorem
+    dopiero na najechanie, a ikona wtedy bieleje.
     """
     return f'''<div class="social-dymki">
-  <a href="{FB_LINK}" rel="noopener" target="_blank" aria-label="A.S Tchórzewski na Facebooku">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.49-3.91 3.77-3.91 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.78-1.63 1.57v1.89h2.78l-.45 2.91h-2.33V22c4.78-.76 8.44-4.92 8.44-9.94"/></svg>
+  <a class="s-fb" href="{FB_LINK}" rel="noopener" target="_blank" aria-label="A.S Tchórzewski na Facebooku">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12.06C22 6.5 17.52 2 12 2S2 6.5 2 12.06c0 5.02 3.66 9.18 8.44 9.94v-7.03H7.9v-2.91h2.54V9.85c0-2.52 1.49-3.91 3.77-3.91 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.78-1.63 1.57v1.89h2.78l-.45 2.91h-2.33V22c4.78-.76 8.44-4.92 8.44-9.94"/></svg>
   </a>
-  <a href="{IG_LINK}" rel="noopener" target="_blank" aria-label="A.S Tchórzewski na Instagramie">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41-.56-.22-.96-.48-1.38-.9-.42-.42-.68-.82-.9-1.38-.16-.42-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16M12 0C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.14.63c-.79.3-1.46.72-2.13 1.38S.93 3.35.63 4.14C.33 4.9.13 5.78.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.26 2.15.56 2.91.3.79.72 1.46 1.38 2.13.67.66 1.34 1.08 2.13 1.38.76.3 1.64.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.27-.06 2.15-.26 2.91-.56.79-.3 1.46-.72 2.13-1.38.66-.67 1.08-1.34 1.38-2.13.3-.76.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.27-.26-2.15-.56-2.91-.3-.79-.72-1.46-1.38-2.13C21.32 1.35 20.65.93 19.86.63c-.76-.3-1.64-.5-2.91-.56C15.67.01 15.26 0 12 0m0 5.84a6.16 6.16 0 1 0 0 12.32 6.16 6.16 0 0 0 0-12.32M12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8m7.85-10.4a1.44 1.44 0 1 1-2.88 0 1.44 1.44 0 0 1 2.88 0"/></svg>
+  <a class="s-ig" href="{IG_LINK}" rel="noopener" target="_blank" aria-label="A.S Tchórzewski na Instagramie">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <defs><linearGradient id="ig-grad{sufiks}" x1="0%" y1="100%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#FFD521"/><stop offset="25%" stop-color="#F50000"/>
+        <stop offset="60%" stop-color="#B900B4"/><stop offset="100%" stop-color="#4C68D7"/>
+      </linearGradient></defs>
+      <path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41-.56-.22-.96-.48-1.38-.9-.42-.42-.68-.82-.9-1.38-.16-.42-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16M12 0C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.14.63c-.79.3-1.46.72-2.13 1.38S.93 3.35.63 4.14C.33 4.9.13 5.78.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.26 2.15.56 2.91.3.79.72 1.46 1.38 2.13.67.66 1.34 1.08 2.13 1.38.76.3 1.64.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.27-.06 2.15-.26 2.91-.56.79-.3 1.46-.72 2.13-1.38.66-.67 1.08-1.34 1.38-2.13.3-.76.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.27-.26-2.15-.56-2.91-.3-.79-.72-1.46-1.38-2.13C21.32 1.35 20.65.93 19.86.63c-.76-.3-1.64-.5-2.91-.56C15.67.01 15.26 0 12 0m0 5.84a6.16 6.16 0 1 0 0 12.32 6.16 6.16 0 0 0 0-12.32M12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8m7.85-10.4a1.44 1.44 0 1 1-2.88 0 1.44 1.44 0 0 1 2.88 0"/>
+    </svg>
   </a>
 </div>'''
 
 
 def ikony_social_stopka():
-    """Te same dwa znaki, ale w stopce - zamyka ostrzeżenie `brak [ikony-social]`."""
-    d = dymki_social()
+    """Te same dwa znaki, ale w stopce - zamyka ostrzeżenie `brak [ikony-social]`.
+
+    🔴 Własny sufiks gradientu jest KONIECZNY: dwa elementy o tym samym `id` to błędny
+    HTML, a na telefonie dymki mają `display:none` - przeglądarka potrafi wtedy nie
+    udostępnić gradientu z ukrytego poddrzewa i ikona Instagrama w stopce zrobiłaby się
+    czarna. Sprawdzone przy wdrożeniu 07.09.2026.
+    """
+    d = dymki_social(sufiks="-stopka")
     return d.replace('class="social-dymki"', 'class="stopka-social"')
 
 
@@ -342,12 +360,6 @@ def index(naglowek):
   <figcaption>Elewacja z podbitką - po naszej robocie.</figcaption>
 </figure>
 
-<figure class="pas">
-  <img src="img/pas-beton.jpg" width="1440" height="617" loading="lazy" decoding="async"
-    alt="Ciemna ściana z betonu architektonicznego z cienkimi liniami podziału">
-  <figcaption>Ściana w betonie architektonicznym - z naszych realizacji.</figcaption>
-</figure>
-
 <section class="sekcja jasna">
   <div class="wrap film-obok rv">
     {film("agregat.mp4", "plakat-agregat.jpg", "Zobacz film (37 s)",
@@ -362,6 +374,12 @@ def index(naglowek):
     </div>
   </div>
 </section>
+
+<figure class="pas">
+  <img src="img/pas-beton.jpg" width="1440" height="617" loading="lazy" decoding="async"
+    alt="Ciemna ściana z betonu architektonicznego z cienkimi liniami podziału">
+  <figcaption>Ściana w betonie architektonicznym - z naszych realizacji.</figcaption>
+</figure>
 
 <section class="sekcja">
   <div class="wrap">
