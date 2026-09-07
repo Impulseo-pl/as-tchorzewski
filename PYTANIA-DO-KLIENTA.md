@@ -23,17 +23,22 @@ Zamówienie IMP/2026/09/005 (opłacone) · strona: `as-tchorzewski.pl`
 gwarancjami producenckimi). Bez liczby nie stawiamy tej sekcji w ogóle — pusty przymiotnik
 „z gwarancją" nic nie robi.
 
-### 2. Plik logo — i **które** logo jest aktualne?
-> „Używacie dziś dwóch znaków naraz: starego rysunkowego z domkami i narzędziami (macie go jako
-> zdjęcie profilowe) i nowego — samo `AS` z podpisem `A.S_TCHORZEWSKI`, tego z okładki i ze znaku
-> wodnego na zdjęciach. **Który ma iść na stronę?** I przyślijcie plik od grafika (SVG, AI, PDF
-> albo PNG bez tła) — nie zrzut z Facebooka."
+### 2. ✅ Które logo — ODPOWIEDZIANE. ⏳ Zostaje sam plik w wektorze
+**Klient potwierdził Adamowi 07.09.2026: idzie STARE logo** (domki, młotek, klucz, pędzel, kielnia,
+czarny napis „TCHÓRZEWSKI"). ⛔ Nie monogram A+S z okładki FB — mimo że to nim znakuje zdjęcia.
+Strona już na nim stoi; **plik mamy u siebie, klient nic nie musi dosyłać.**
 
-**Po co:** ⭐ **Rekomendujemy nowe.** Jest znacznie lepsze i to nim znakujecie własne prace.
-Wyciągnęliśmy je już z Waszego banera i da się na nim pracować, ale to obraz odzyskany z JPG —
-w nagłówku strony będzie odrobinę miękkie. Plik od grafika załatwia sprawę w 5 minut.
-⚠️ Nowe logo jest **białe** — świeci tylko na ciemnym tle. To realnie wpływa na wygląd całej strony,
-dlatego pytamy o to teraz, a nie na końcu.
+⏳ **Zostaje do zapytania tylko to:**
+> „Macie gdzieś logo od grafika — plik SVG, AI albo PDF? Ten, którego używamy, jest obrazkiem
+> i do druku albo na baner będzie za mały. Na stronę wystarcza."
+
+**Po co:** wyłącznie na przyszłość (druk, baner, duże formaty). ⛔ **Nie blokuje strony** —
+w nagłówku znak stoi w 60 px i wygląda dobrze.
+
+⚠️ **Jedna rzecz warta powiedzenia klientowi przy okazji:** strona ma STARE logo, a jego własne
+zdjęcia z FB i IG są opatrzone znakiem wodnym z NOWYM. Widać to na sekcji „przed i po".
+To jego znak i jego decyzja — my niczego nie zamazujemy — ale warto, żeby wiedział, że dwa znaki
+spotykają się na jednej stronie.
 
 ### 3. Zdjęcia — zgoda i oryginały
 > „Ściągnęliśmy z Waszego Instagrama i Facebooka **38 zdjęć i 2 filmy**: łazienkę z wolnostojącą

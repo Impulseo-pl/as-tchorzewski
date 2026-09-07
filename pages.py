@@ -128,8 +128,14 @@ def domkniecie(naglowek_txt, zdanie):
 
 
 def otwarcie(etykieta, tytul, lead):
-    """Otwarcie podstrony - ciemne, jedna rzecz na ekran (fundament „Scena")."""
-    return f"""<section class="sekcja otwarcie" id="tresc">
+    """Otwarcie podstrony - CIEMNE, jedna rzecz na ekran (fundament „Scena").
+
+    🔴 Po przejściu strony na jasną (droga A, 07.09.2026) to otwarcie jest na
+    podstronach tym, czym scena na stronie głównej: jedynym ciemnym blokiem u góry.
+    Bez niego podstrona robiła się płaskim papierem od paska do stopki. Znaku
+    firmowego tu nie ma - zasada „logo tylko na jasnym" zostaje nienaruszona.
+    """
+    return f"""<section class="sekcja otwarcie ciemna" id="tresc">
   <div class="wrap">
     <span class="etykieta">{etykieta}</span>
     <h1>{tytul}</h1>
@@ -265,7 +271,8 @@ def film(plik, plakat, tytul, podpis, alt, lazy=True):
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-#  STRONA GŁÓWNA - SCENA. Jedna rzecz na ekran, sekcje naprzemiennie ciemna/jasna.
+#  STRONA GŁÓWNA - SCENA. Jedna rzecz na ekran. Strona jest JASNA (droga A,
+#  07.09.2026); ciemne zostały: nagłówek sceny, ramka wezwania i pasy zdjęć.
 #  Główna zapowiada, podstrony niosą treść.
 # ══════════════════════════════════════════════════════════════════════════════
 def index(naglowek):
@@ -289,7 +296,7 @@ def index(naglowek):
   </div>
 </header>
 
-<section class="sekcja jasna">
+<section class="sekcja">
   <div class="wrap wrap--szeroki">
     <div class="naglowek-sekcji rv">
       <span class="etykieta">Przed i po</span>
@@ -360,7 +367,7 @@ def index(naglowek):
   <figcaption>Elewacja z podbitką - po naszej robocie.</figcaption>
 </figure>
 
-<section class="sekcja jasna">
+<section class="sekcja">
   <div class="wrap film-obok rv">
     {film("agregat.mp4", "plakat-agregat.jpg", "Zobacz film (37 s)",
           "Malowanie agregatem natryskowym. Film bez dźwięku.",
@@ -428,7 +435,7 @@ def co_robimy(naglowek):
 {otwarcie("Zakres robót", "Wykończenia wnętrz od gładzi po drzwi",
           "Pięć robót, które bierzemy najczęściej - i to, co przy każdej z nich decyduje o efekcie. Ceny nie podajemy z góry - zależy od zakresu i od tego, co zastaniemy na ścianie.")}
 
-<section class="sekcja jasna">
+<section class="sekcja">
   <div class="wrap">
 {blok_uslugi("u-01", "01", "Szpachlowanie i gładzie", [
     "Gładź decyduje o tym, jak ściana wygląda po pomalowaniu. Każde zafalowanie widać "
@@ -503,7 +510,7 @@ def realizacje(naglowek):
 {otwarcie("Realizacje", "Nasze budowy, nasze zdjęcia",
           "Wszystkie z naszych budów - żadnego kupionego w banku zdjęć. Na gotowej łazience nie widać już, jak wyprowadzono podejścia wodne ani co siedzi pod płytką, więc obok skończonych wnętrz pokazujemy kadry z samej roboty, podpisane „w trakcie”.")}
 
-<section class="sekcja jasna">
+<section class="sekcja">
   <div class="wrap">
 {grupa("Rozbudowa - przed i po", "01", ["przed", "po"], lazy=False)}
 
@@ -549,6 +556,28 @@ def realizacje(naglowek):
 # ══════════════════════════════════════════════════════════════════════════════
 #  O NAS - układ LIST: oś lat i narracja, na końcu film z ekipą i dane firmy.
 # ══════════════════════════════════════════════════════════════════════════════
+def kadr_o_nas():
+    """Kadr między osią lat a narracją na podstronie „O nas".
+
+    🔴 DECYZJA K. z 07.09.2026. Powód: na telefonie kolumny `oś lat | narracja`
+    zwijają się w jedną i człowiek dostaje 104 słowa bez ani jednego obrazu -
+    bramka zgłaszała to jako `sciana_tekstu`. Kadr wchodzi MIĘDZY oś a narrację,
+    więc na telefonie przerywa ścianę tekstu w połowie, a na laptopie wypełnia
+    pustkę pod krótką osią (trzy pozycje kontra pięć akapitów obok).
+
+    ⛔ Nie przenosić go do prawej kolumny ani na koniec sekcji - wtedy na telefonie
+    ląduje POD całym tekstem i nie przerywa niczego. Kolejność w HTML jest tu treścią.
+    Podpis mówi, co widać w kadrze (reguła 8), nie dopowiada faktów o firmie.
+    """
+    plik, w, h, alt, podpis = KADRY["schody-01"]
+    return (f'<figure class="kadr-o-nas rv">'
+            # ⛔ BEZ `loading="lazy"`: kadr stoi 1023 px od góry, czyli tuż nad drugim
+            # ekranem, i przy przewijaniu zostawiał pustą dziurę (bramka 07.09.2026).
+            f'<img src="img/{plik}" width="{w}" height="{h}" alt="{alt}" '
+            f'decoding="async">'
+            f'<figcaption>{podpis}</figcaption></figure>')
+
+
 def o_nas(naglowek):
     return f"""{naglowek("o-nas.html")}
 
@@ -556,14 +585,17 @@ def o_nas(naglowek):
           "Na budowach jesteśmy od ponad 20 lat - najpierw w Niemczech, od 2015 roku "
           "pod własnym szyldem w Polsce. Pracujemy w wielkopolskiem i lubuskiem.")}
 
-<section class="sekcja jasna">
+<section class="sekcja">
   <div class="wrap dwie-kolumny">
-    <ol class="lata rv">
-      <li><b>2005</b><p>Zaczynamy pracę na budowach w Niemczech.</p></li>
-      <li><b>2015</b><p>Rejestrujemy własną firmę w Polsce, w Błońsku pod Rakoniewicami.</p></li>
-      <li><b>Dziś</b><p>Wykończenia wnętrz pod klucz - od gładzi i malowania
-        po łazienki, poddasza i montaż drzwi.</p></li>
-    </ol>
+    <div>
+      <ol class="lata rv">
+        <li><b>2005</b><p>Zaczynamy pracę na budowach w Niemczech.</p></li>
+        <li><b>2015</b><p>Rejestrujemy własną firmę w Polsce, w Błońsku pod Rakoniewicami.</p></li>
+        <li><b>Dziś</b><p>Wykończenia wnętrz pod klucz - od gładzi i malowania
+          po łazienki, poddasza i montaż drzwi.</p></li>
+      </ol>
+      {kadr_o_nas()}
+    </div>
     <div class="tekst-dlugi rv">
       <h3>Co znaczy „rodzinna”</h3>
       <p>Tyle, że nazwisko na fakturze i ludzie na budowie to ta sama historia - i że nie znikamy po odbiorze.</p>
@@ -636,7 +668,7 @@ def kontakt(naglowek):
   </div>
 </section>
 
-<section class="sekcja jasna">
+<section class="sekcja">
   <div class="wrap">
     <div class="naglowek-sekcji rv">
       <span class="etykieta">Gdzie nas znaleźć</span>
@@ -667,7 +699,7 @@ def polityka(naglowek):
           "Krótko, bo i strona jest prosta: nie zbieramy danych, nie mierzymy ruchu "
           "i nie zapisujemy ciasteczek.")}
 
-<section class="sekcja jasna">
+<section class="sekcja">
   <div class="wrap tekst-dlugi">
     <p><strong>Administrator danych:</strong> Firma Ogólnobudowlana Artur Tchórzewski,
       Błońsko 46, 64-308 Jabłonna, NIP 995 004 44 65.</p>

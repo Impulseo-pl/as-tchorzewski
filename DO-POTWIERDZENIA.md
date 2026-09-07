@@ -12,7 +12,7 @@
 | 3 | **38 zdjęć i 2 filmy z ich IG/FB** — cała strona | pisemnej zgody klienta (czy to ich realizacje, czy właściciele wnętrz się zgadzają) | brak zgody na część kadrów → wyrzucić klucze z `KADRY` w `pages.py` i wpisy z `PLAN` w `przygotuj-media.py` |
 | 4 | **„Wycena do 5 dni roboczych od oględzin"** — nagłówek strony głównej, zamknięcie każdej podstrony, `kontakt.html` | czy to ma być publiczna obietnica i od czego liczymy 5 dni | „nie" → wyciąć blok `.obietnica` i zmienić teksty domknięć na „wracamy z wyceną po oględzinach" |
 | 4 | ⛔ **nigdzie nie piszemy „bezpłatna wycena"** (demo pisało w 5 miejscach) | czy oględziny są bezpłatne i do ilu km | „bezpłatne" → dopisać jedno zdanie w `kontakt.html`, sekcja „Trzy kroki do ceny" |
-| 2 | **logo odzyskane z JPG** (`img/logo.png`, 704×154) | pliku od grafika (SVG/AI/PDF) | podmienić plik, przeliczyć `width`/`height` w `build.py` (nagłówek i stopka) |
+| 2 | **logo jest rastrem** (`img/logo.png`, 240×177 - STARE logo, potwierdzone przez klienta) | pliku od grafika (SVG/AI/PDF) - **tylko na przyszłość, nie blokuje strony** | podmienić plik, przeliczyć `width`/`height` w `build.py` (nagłówek i stopka), podbić `V_CSS` jeśli zmieni się rozmiar |
 
 ## 🟡 Trzeba poprawić, ale nie blokuje
 
@@ -32,7 +32,8 @@
 
 | co | stan |
 |---|---|
-| **logo** | ✅ **ROZSTRZYGNIĘTE 07.09 21:05 - klient potwierdził Adamowi, że aktualne jest STARE logo** (domki, młotek, kielnia), a nie monogram A+S z banera FB. ⛔ To NIE jest podmiana pliku: stare logo ma CZARNY napis i czarne wieżowce, więc na tle `#0F0F12` znika. Cały ciemny kierunek „Scena" wybraliśmy dlatego, że biały monogram żył na czerni. **Rozwidlenie do decyzji K. - opisane w `DESIGN.md`.** Plik mamy u siebie, czysty i przezroczysty: `materialy/logo/logo-stare-przezroczyste.png` (1018×753) - lepszy niż ten z WhatsAppa, Adam nic nie musi dosyłać |
+| **logo** | ✅ **ZAMKNIĘTE 07.09 21:15.** Klient potwierdził STARE logo (domki, młotek, kielnia). Ponieważ ma czarny napis i na `#0F0F12` znikało, **K. wybrał drogę A: strona przeszła na JASNĄ** - wykonane, `DESIGN.md` i `NOTATKI-BUDOWY.md` opisują co i dlaczego. Znak stoi w pasku i w stopce, obie jasne. 🔒 Reguła na przyszłość: **logo wyłącznie na jasnym tle** |
+| **dwa znaki na jednej stronie** | ⚠️ **DO POWIEDZENIA KLIENTOWI, nie do naprawienia przez nas.** Strona ma STARE logo (jego wybór), a jego własne zdjęcia z FB/IG mają znak wodny z NOWYM - widać to w sekcji „przed i po". Znaku wodnego nie ruszamy, to jego znak. Warto tylko, żeby wiedział |
 | **„Darmowa wycena"** | ✅ stoi w opisie **ich własnego Facebooka**. Zdejmuje mój blok na to zdanie (bałem się go, bo klient go nie wypowiedział). ⏳ Zostaje tylko zakres: do ilu km oględziny są darmowe |
 | **adres** | ✅ **ROZSTRZYGNIĘTE BEZ KLIENTA.** `64-308` to poczta **Jabłonna**, obejmująca m.in. Błońsko. Poprawnie: **`Błońsko 46, 64-308 Jabłonna`** - wpisane w `build.py`, kartę danych, politykę i dane strukturalne. ⛔ Nasze poprzednie „64-308 Błońsko" było błędne |
 | **„20 lat doświadczenia"** | ✅ zgodne z tym, co mówił klient („ponad 20 lat"). Na FB jest też 🇩🇪🇵🇱 - potwierdza wątek niemiecki |

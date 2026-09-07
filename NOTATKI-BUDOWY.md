@@ -88,11 +88,51 @@ to 2,3× i tam jest granica** - dalej nie ma po co iść bez oryginałów od kli
 w 3072×4096 i jako jedyna uniosła kinowy pas; łazienka i poddasze przyszły z INSTAGRAMA
 w 739-1200 px i nie uniosą żadnego dużego kadru. Instagram kompresuje, Facebook nie.
 
-**⏳ ZOSTAJE Z BLOKU E (nie zaczęte, wymaga decyzji o wyglądzie):**
-- 🔴 `o-nas` na telefonie: **ściana tekstu pod hero** (104 słowa, 0 % obrazu) - dwie kolumny
-  (oś lat | tekst) zwijają się w jedną. Trzeba wpuścić kadr między oś a narrację **albo**
-  uznać za świadome odstępstwo i zapisać w `DESIGN.md`. ⛔ Nie ruszać bez zgody K.
-- ⚠️ `polityka-prywatnosci` dostaje to samo ostrzeżenie = **fałszywy alarm bramki**;
+### 🔴🔴 ODWRÓCENIE PALETY 07.09 21:15 — dwie decyzje K. i przebudowa
+
+**Co się stało:** klient potwierdził Adamowi, że aktualne jest **STARE logo** — rysunek
+z domkami i narzędziami, z **czarnym napisem „TCHÓRZEWSKI"**. To nie była podmiana pliku:
+kierunek B „Scena" wygrał m.in. dlatego, że NOWE logo jest białe i żyje na czerni. Zmierzone:
+**59 % widocznych pikseli starego znaku jest ciemnych** — na `#0F0F12` zostaje z niego biały
+dach i srebrna kielnia.
+
+**Decyzja K. nr 1 (21:15): droga A — strona przechodzi na jasną.** Rozważane były cztery
+(A jasna · B płytka pod logo · C prosić klienta o wersję na ciemne · D przemalować u siebie);
+tabela z kosztami i ryzykiem została w `DESIGN.md`. Rekomendacja brzmiała „C, a jak nie chce
+czekać — A", z zastrzeżeniem, że klient dosłał logo JPG-iem z WhatsAppa i nie odpowiedział
+na 15 pytań obiecanych na 07.09, więc C to najpewniej czekanie na coś, czego nie ma.
+
+**Decyzja K. nr 2 (21:15): `o-nas` dostaje kadr**, a nie wpis „świadome odstępstwo".
+
+**Wykonane w tej samej pracy:**
+- `assets/app.css` — paleta odwrócona. Papier `#F3F1ED` jest tłem, atrament `#1B1B1E` tekstem.
+  Czerń NIE zniknęła — dostała rolę akcentu i ma dokładnie **cztery** miejsca: scena strony
+  głównej, otwarcie każdej podstrony (`.otwarcie.ciemna`), ramka wezwania (`.domkniecie`)
+  i zasłona przy powiększeniu zdjęcia. Do tego pasy zdjęć, ciemne z natury.
+  Wprowadzona jedna klasa `.ciemna`, która odwraca WSZYSTKO wewnątrz bloku — żeby przy
+  następnej sekcji nie polować po pliku za kolorami.
+- 🔒 **Zasada, która to spina: LOGO STOI WYŁĄCZNIE NA JASNYM.** Dlatego pasek i stopka są
+  jasne, a znak nie wchodzi do żadnego ciemnego bloku.
+- `img/logo.png` — stary znak, przycięty i przeskalowany do 240×177. 🔴 Skwantowany do
+  128 kolorów, bo pełny plik ważył **558 kB i leciał na każdej podstronie** (złapane bramką)
+  → **14 kB**. Przepis do odtworzenia w `DESIGN.md`.
+- Pasek urósł 82 → **96 px**, znak 34 → **60 px** (46 px na telefonie): stare logo to rysunek
+  4:3, nie poziomy wordmark, i przy 34 px napis „TCHÓRZEWSKI" był nieczytelną kreską.
+  ⚠️ Razem z paskiem poprawione odjęcie w `.kadr-scena img` (`100dvh - 256px` → `- 276px`),
+  inaczej hero wyszłoby poza pierwszy ekran i złamało regułę K.
+- `pages.py` — nowa funkcja `kadr_o_nas()`: kadr „Schody po wykończeniu" **między osią lat
+  a narracją**, wewnątrz lewej kolumny. Na telefonie przerywa ścianę tekstu w połowie,
+  na laptopie wypełnia pustkę pod krótką osią. ⛔ Bez `loading="lazy"` — stoi 1023 px od góry
+  i z leniwym ładowaniem zostawiał dziurę przy przewijaniu (bramka).
+- `build.py` — `theme-color` z `#0F0F12` na `#F3F1ED`.
+
+⚠️ **Koszt, dla uczciwości zapisu:** „drogi" nastrój, dla którego kierunek B wygrał, jest teraz
+słabszy niż w makiecie `kierunek-B-scena.html`. Nie zniknął — kadry pionowe nadal stoją na
+czerni w scenie i w otwarciach podstron — ale strona czyta się jaśniej i lżej. To był świadomy
+koszt drogi A, nie wpadka.
+
+**⏳ ZOSTAJE Z BLOKU E:**
+- ⚠️ `polityka-prywatnosci` dostaje ostrzeżenie o ścianie tekstu = **fałszywy alarm bramki**;
   na stronie prawnej ściana tekstu jest poprawna. Do pominięcia w `sciana_tekstu`.
 - ⏳ Test „czy topowa firma tej branży dałaby to u siebie?" - obejrzenie całej strony.
 

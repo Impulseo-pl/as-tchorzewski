@@ -38,7 +38,7 @@ NIP = "995 004 44 65"
 REGON = "363138510"
 
 # 🔄 Podbij przy KAŻDEJ zmianie pliku, inaczej klient zostanie na starej wersji.
-V_CSS = 5
+V_CSS = 6  # 6 = odwrócenie palety na jasną (07.09.2026, droga A)
 V_RDZEN = 10
 
 # 🔴 PODGLĄD ROBOCZY. Strona stoi na zdjęciach klienta, na które NIE MAMY jeszcze
@@ -89,7 +89,7 @@ def naglowek(biezaca):
     return f"""<header class="top">
   <div class="wrap">
     <a class="znak" href="index.html" aria-label="{MARKA} - strona główna"><img
-      src="img/logo.png" width="704" height="154" alt="{MARKA} - {PODPIS}"></a>
+      src="img/logo.png" width="240" height="177" alt="{MARKA} - {PODPIS}"></a>
     <button class="burger" type="button" aria-expanded="false" aria-controls="menu-glowne">
       <span class="burger-kreski" aria-hidden="true"><i></i><i></i><i></i></span>
       <span>Menu</span>
@@ -110,7 +110,7 @@ def stopka():
   <div class="wrap">
     <div class="stopka">
       <div>
-        <img src="img/logo.png" width="704" height="154" alt="{MARKA} - {PODPIS}"
+        <img src="img/logo.png" width="240" height="177" alt="{MARKA} - {PODPIS}"
           loading="lazy" decoding="async">
         <p>Szpachlowanie, malowanie, łazienki i sucha zabudowa.
           Wykończenia wnętrz w wielkopolskiem i lubuskiem.</p>
@@ -181,7 +181,7 @@ def szkielet(strona):
 <meta property="og:description" content="{strona['opis']}">
 <meta property="og:url" content="{kanon}">
 <meta property="og:image" content="{SITE}/img/hero.jpg">
-<meta name="theme-color" content="#0F0F12">
+<meta name="theme-color" content="#F3F1ED">
 <link rel="preload" as="font" type="font/woff2" crossorigin
       href="assets/fonty/jost-latin-ext-300-normal.woff2">
 <link rel="preload" as="font" type="font/woff2" crossorigin

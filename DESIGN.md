@@ -1,12 +1,13 @@
 ---
 name: "A.S TCHÓRZEWSKI"
 opis: "Wykończenia wnętrz — Błońsko k. Rakoniewic, wielkopolskie i lubuskie"
-fundament: "Apple Premium Cinematic (designmd.app) — kierunek B „Scena”"
-wybrany: "2026-09-07 przez Krzysztofa, z poleceniem: BEZ ZAOKRĄGLONYCH RAMEK"
+fundament: "Apple Premium Cinematic (designmd.app) — kierunek B „Scena”, ODWRÓCONY NA JASNY"
+wybrany: "2026-09-07 przez Krzysztofa, z dwoma poleceniami: BEZ ZAOKRĄGLONYCH RAMEK
+  oraz (21:15) STRONA NA JASNĄ — droga A z sekcji o logo"
 kolory:
-  tlo: "#0F0F12"
-  tlo_jasne: "#F3F1ED"
-  tekst: "#F5F5F7"
+  tlo: "#F3F1ED"
+  tlo_ciemne: "#0F0F12"
+  tekst: "#1B1B1E"
   akcent: "#C85C13"
 typografia:
   naglowki: "Jost 300"
@@ -23,9 +24,15 @@ zaokraglenia: "0 — wszędzie, bez wyjątku"
 > **Fundament:** [Apple Premium Cinematic](https://designmd.app/library/apple-premium-cinematic)
 > — gotowy szablon z biblioteki `DESIGN.md`.
 > **Dlaczego ten:** filozofia *„let the product float in void" — pustka jest sceną, każda sekcja
-> pokazuje jedną rzecz naraz.* Wybrane, bo (1) **nowe logo klienta jest białe i żyje na czerni**,
-> więc ten szablon je kontynuuje zamiast z nim walczyć, i (2) **wszystkie jego dobre zdjęcia są
-> pionowe** — ciemna scena pozwala postawić kadr pionowy bez kadrowania.
+> pokazuje jedną rzecz naraz.* Wybrane z dwóch powodów; ⚠️ **07.09.2026 pierwszy z nich upadł:**
+> ~~(1) nowe logo klienta jest białe i żyje na czerni~~ — klient potwierdził, że aktualne jest
+> **STARE** logo, z czarnym napisem (patrz sekcja „LOGO"). Powód (2) stoi dalej i to on utrzymał
+> ten kierunek przy życiu: **wszystkie jego dobre zdjęcia są pionowe**, a scena pozwala postawić
+> kadr pionowy bez kadrowania.
+> 🔴 **Dlatego od 07.09.2026 pustka jest z PAPIERU, nie z czerni.** Filozofia nietknięta —
+> jedna rzecz na ekran, kadr jako przedmiot na scenie — zmienił się kolor sceny.
+> Czerń została akcentem: nagłówek strony głównej, otwarcia podstron, ramka wezwania,
+> podpisy na pasach zdjęć i zasłona przy powiększeniu zdjęcia.
 > **Makieta źródłowa:** `design/_kierunki/kierunek-B-scena.html` · uzasadnienie: `design/kandydat-B-scena.md`
 
 ---
@@ -49,19 +56,26 @@ nie decyzja. Kontrola: `grep -n "border-radius" assets/app.css | grep -v ":0"` m
 
 | Nazwa | Wartość | Zastosowanie |
 |---|---|---|
-| noc | `#0F0F12` | tło główne · **zmierzone z jego własnego banera**, nie wymyślone |
-| noc jaśniejsza | `#17171B` | karty i pola na ciemnym tle, jeśli w ogóle potrzebne |
-| dzień | `#F3F1ED` | tło sekcji jasnych (naprzemienność ciemna ↔ jasna) |
-| biel | `#F5F5F7` | tekst na ciemnym |
-| przygaszony | `#9A9AA2` | tekst drugiego planu na ciemnym |
-| atrament | `#1B1B1E` | tekst na sekcjach jasnych |
-| przygaszony jasny | `#63636B` | tekst drugiego planu na jasnym |
+| **papier** | `#F3F1ED` | **tło główne całej strony** (od 07.09.2026, droga A) |
+| papier 2 | `#FFFFFF` | karty i pola na papierze |
+| papier 3 | `#E9E5DE` | stopka — ton głębszy od papieru, oddziela ją bez rysowania kreski |
+| noc | `#0F0F12` | **akcent**: scena, otwarcia podstron, ramka wezwania, zasłona zdjęcia · **zmierzone z jego banera**, nie wymyślone |
+| noc jaśniejsza | `#18161A` | karty i pola wewnątrz bloku ciemnego |
+| atrament | `#1B1B1E` | **tekst podstawowy** (na papierze) |
+| przygaszony jasny | `#6B6259` | tekst drugiego planu na papierze · kontrast 5,29 |
+| biel | `#F5F5F7` | tekst wewnątrz bloku ciemnego |
+| przygaszony | `#A39A93` | tekst drugiego planu na ciemnym · kontrast 6,93 |
 | **akcent** | `#C85C13` | **jedyny kolor akcentu** — odczytany z pikseli jego logo. Kreski, obrysy, hover |
 | akcent — przycisk | `#A34A0F` | tło przycisków (biel na `#C85C13` daje 4,20 — poniżej progu 4,5) |
 | akcent — mały tekst na ciemnym | `#E2762A` | etykiety i „Zobacz →" na kaflu `#17171B` |
 | akcent — mały tekst na jasnym | `#8F3F0A` | etykiety i numery na sekcji `#F3F1ED` |
 | WhatsApp | `#25A63F` | wyłącznie tło przycisku WhatsApp (znaczeniowe, nie dekoracyjne) |
-| linia na ciemnym | `rgba(255,255,255,.16)` | obrysy, ramki, podziały |
+| linia | `rgba(27,27,30,.22)` | obrysy i ramki **na papierze** (domyślne) |
+| linia słaba | `rgba(27,27,30,.12)` | podziały i cienkie kreski na papierze |
+| linia na ciemnym | `rgba(255,255,255,.16)` | to samo, ale wewnątrz bloku `.ciemna` |
+
+🔴 **Domyślna linia jest CIEMNA.** Białe warianty obsługują wyłącznie bloki `.ciemna`;
+biała linia na papierze znika bez śladu i tak się właśnie gubi ramki po odwróceniu palety.
 
 ⛔ **Jeden akcent i nic więcej.** Zero drugiego koloru „dla ożywienia". Trzy warianty wyżej
 to ten SAM pomarańcz przyciemniony albo rozjaśniony pod próg kontrastu 4,5 — zmierzone bramką
@@ -88,7 +102,15 @@ z obcym serwerem i nie potrzebuje banera cookies (reguła silnika stron docelowy
 
 - Siatka CSS Grid, `max-width: 1240px`, padding boczny 32px (20px na telefonie).
 - Rytm sekcji: `clamp(4rem, 8vw, 8rem)`.
-- **Sekcje naprzemiennie: ciemna → jasna → ciemna.** To jest kręgosłup tego szablonu.
+- 🔴 **Sekcje są JASNE, czerń jest gościem** (od 07.09.2026). Ciemny blok dostają dokładnie
+  cztery rzeczy: **nagłówek strony głównej** (`.scena`), **otwarcie każdej podstrony**
+  (`.otwarcie.ciemna`), **ramka wezwania do kontaktu** (`.domkniecie`) i **zasłona przy
+  powiększeniu zdjęcia** (`.lb`). Do tego pasy zdjęć na całą szerokość, które ciemne są
+  z natury. ⛔ Nie dokładać piątego ciemnego bloku bez decyzji K. — dwa ciemne bloki obok
+  siebie i papier przestaje być tłem, a zaczyna być przerwą.
+- 🔒 **LOGO STOI WYŁĄCZNIE NA JASNYM** — górny pasek i stopka, nigdzie indziej. To nie jest
+  preferencja, tylko powód, dla którego cała strona jest jasna: znak ma czarny napis
+  i czarne wieżowce, na `#0F0F12` zostaje z niego biały dach i srebrna kielnia.
 - Hero: tekst po lewej, **jeden kadr pionowy po prawej**, w cienkiej ramce odsuniętej o 26px.
 - ⛔ **Zero trzech równych kolumn** (zakaz szablonu). Cztery kafle wolno, zygzak wolno.
 - ⛔ Zero `h-screen` — `min-h:100dvh`.
@@ -119,12 +141,18 @@ z obcym serwerem i nie potrzebuje banera cookies (reguła silnika stron docelowy
 
 - **Przycisk główny:** prostokąt, tło `#C85C13`, tekst biały, waga 500, hover ciemniej o 8%,
   active `translateY(-1px)`. Zero poświat.
-- **Przycisk drugi („duch"):** obrys 1,5px `rgba(255,255,255,.22)`, tło przezroczyste.
-- **Kafel/karta:** obrys 1px, tło `#17171B`, **krawędź ostra**, cień nie cięższy niż
-  `0 2px 8px rgba(0,0,0,.08)`.
+- **Przycisk drugi („duch"):** obrys 1,5px, tło przezroczyste. Na papierze `rgba(27,27,30,.3)`,
+  wewnątrz bloku ciemnego `rgba(255,255,255,.22)`.
+- **Kafel/karta:** obrys 1px, tło `#FFFFFF` na papierze (`#18161A` w bloku ciemnym),
+  **krawędź ostra**, cień nie cięższy niż `0 2px 8px rgba(0,0,0,.08)`.
 - **Pole formularza:** etykieta NAD polem, obrys 1px, focus ring 2px w kolorze akcentu z offsetem 2px,
   błąd pod polem. Zero floating labels.
-- **Nawigacja:** tło `rgba(15,15,18,.8)` + `backdrop-filter: saturate(180%) blur(20px)`.
+- **Nawigacja:** tło `rgba(243,241,237,.86)` + `backdrop-filter: saturate(180%) blur(20px)`.
+  🔴 **Jasna, bo stoi w niej logo.** Wysokość **96 px** (70 → 76 px na telefonie), bo znak
+  urósł z 34 na **60 px** (46 px na telefonie): stare logo jest rysunkiem w proporcji 4:3,
+  nie poziomym wordmarkiem, i przy 34 px napis „TCHÓRZEWSKI" robił się nieczytelną kreską.
+  ⚠️ Zmieniasz wysokość paska → popraw też odjęcie w `.kadr-scena img`
+  (`calc(100dvh - 276px)`), inaczej hero wyjdzie poza pierwszy ekran.
 
 ---
 
@@ -148,7 +176,7 @@ z obcym serwerem i nie potrzebuje banera cookies (reguła silnika stron docelowy
 
 ---
 
-## 🔴 LOGO — ROZSTRZYGNIĘTE 07.09.2026 21:05 i to WYWRACA ZAŁOŻENIE TEGO KIERUNKU
+## ✅ LOGO — ROZSTRZYGNIĘTE 07.09.2026 21:15: IDZIEMY DROGĄ A
 
 **Klient potwierdził Adamowi, że aktualne jest STARE logo** (domki, młotek, klucz, pędzel,
 kielnia, czarny napis „TCHÓRZEWSKI"), a nie monogram A+S z banera na Facebooku.
@@ -157,7 +185,24 @@ kielnia, czarny napis „TCHÓRZEWSKI"), a nie monogram A+S z banera na Facebook
 że nowe logo jest białe i żyje na czerni — to jest dosłownie zapisane wyżej w tym pliku jako
 powód nr 1. Stare logo ma czarny napis i czarne wieżowce: **na tle `#0F0F12` znika.**
 
-**Cztery drogi — decyzja K., ⛔ nie wybierać samemu:**
+### ✅ Decyzja K. (07.09.2026 21:15): **droga A — strona przechodzi na jasną.**
+
+Wykonane w tej samej pracy: paleta odwrócona (`assets/app.css`), pasek i stopka jasne,
+znak podmieniony na stary (`img/logo.png`, 240×177, 14 kB — przycięty z przezroczystego
+oryginału i skwantowany do 128 kolorów, bo pełny plik ważył 558 kB na każdej podstronie).
+Czerń została **akcentem**, nie zniknęła: scena, otwarcia podstron, ramka wezwania, zasłona
+przy powiększeniu zdjęcia, pasy zdjęć.
+
+⚠️ **Co za to zapłaciliśmy** — dla uczciwości zapisu: „drogi" nastrój, dla którego kierunek B
+wygrał, jest teraz słabszy niż w makiecie. Nie zniknął (kadry pionowe nadal stoją na czerni
+w scenie i w otwarciach podstron), ale strona czyta się jaśniej i lżej niż `kierunek-B-scena.html`.
+To był świadomy koszt drogi A, nie wpadka.
+
+🔵 Droga **C** (poprosić klienta o wersję znaku na ciemne tło) **jest nadal warta pytania** —
+jeśli kiedyś przyśle wektor (pytanie 2), można rozważyć powrót ciemnej stopki. ⛔ Ale nie
+odwracamy dla tego całej strony drugi raz.
+
+**Tabela, z której wybieraliśmy** (zostaje jako zapis, dlaczego nie poszliśmy B ani D):
 
 | | droga | co kosztuje | ryzyko |
 |---|---|---|---|
@@ -166,39 +211,73 @@ powód nr 1. Stare logo ma czarny napis i czarne wieżowce: **na tle `#0F0F12` z
 | **C** | Prosimy klienta o **wersję na ciemne tło** (biały napis) | jeden telefon + czekanie | najlepszy efekt, ale znów stoimy na kliencie |
 | **D** | **Przemalowujemy** czarne elementy na białe u siebie | godzina | ⛔ wymaga jego wyraźnej zgody — to ingerencja w znak |
 
-🔵 **Moja rekomendacja: C, a jeśli nie chce czekać — A.** Płytka (B) psuje to, za co zapłacił,
-a przemalowanie (D) bez zgody jest poza naszą rolą.
+Rekomendacja brzmiała „C, a jeśli nie chce czekać — A". K. wybrał **A** — i była to trafna
+poprawka: klient dosłał logo JPG-iem przez WhatsAppa i nie odpowiedział na 15 pytań obiecanych
+na 07.09, więc C oznaczałoby czekanie na coś, czego najpewniej nie ma.
+Płytka (B) psuje to, za co zapłacił; przemalowanie (D) bez jego zgody jest poza naszą rolą.
 
 **Plik jest u nas i nie trzeba nic dosyłać:** `materialy/logo/logo-stare-przezroczyste.png`
 (1018×753, przezroczyste tło) — lepszy niż kopia, która przyszła WhatsAppem.
 
 ---
 
-## Logo klienta (⚠️ poniżej opis NIEAKTUALNY od 07.09 21:05 — zostawiony jako zapis, dlaczego kierunek wygląda tak, jak wygląda)
+## Logo klienta — STARE, potwierdzone przez klienta 07.09.2026
 
-**Idzie NOWE logo** (monogram A+S, cienka biała kreska + pomarańczowa esica, wordmark
-`A.S_TCHORZEWSKI` / `USŁUGI OGÓLNOBUDOWLANE`) — nie stare, rysunkowe z domkami i narzędziami.
-To nim firma znakuje własne zdjęcia.
+**Idzie STARE logo:** rysunek z wieżowcami, trzema domkami, młotkiem, kluczem, pędzlem
+i kielnią, pomarańczowe „A.S" i **czarny napis „TCHÓRZEWSKI"** pod spodem. Klient potwierdził
+to Adamowi. ⛔ NIE monogram A+S z banera na Facebooku — mimo że to nim firma znakuje zdjęcia.
 
-**Czego wolno:** stawiać je na ciemnym tle w oryginalnych kolorach; skalować proporcjonalnie.
-**Czego NIE wolno:** przemalowywać, dodawać poświat i cieni, rozciągać, poprawiać `A.S_TCHORZEWSKI`
-na `A.S TCHÓRZEWSKI` w samym ZNAKU (w tekstach idzie wersja z „ó" — w znaku nie).
+**Plik:** `img/logo.png` (240×177, 14 kB), źródło `materialy/logo/logo-stare-przezroczyste.png`
+(1018×753, przezroczyste). Poprzedni znak leży w `materialy/logo/logo-nowe-*` — nie kasować,
+gdyby klient jeszcze raz zmienił zdanie.
 
-⚠️ **Plik, którego używamy, jest ODZYSKANY z JPG, nie oryginałem od grafika.** W nagłówku będzie
-minimalnie miękki. Oryginał (SVG/AI/PDF) zamówiony u klienta — pytanie 2 w `PYTANIA-DO-KLIENTA.md`.
-Po jego otrzymaniu **podmienić i skasować odzyskany plik**.
+**Czego wolno:** stawiać na jasnym tle w oryginalnych kolorach; skalować proporcjonalnie.
+**Czego NIE wolno:**
+- 🔒 **stawiać na ciemnym tle** — 59 % widocznych pikseli znaku jest ciemnych; na `#0F0F12`
+  zostaje z niego biały dach i srebrna kielnia. To jest powód, dla którego cała strona jest jasna.
+- przemalowywać (droga D — wymagałaby wyraźnej zgody klienta, której nie mamy),
+- podkładać jasnej płytki pod znak na ciemnym (droga B — czyta się jak naklejka),
+- dodawać poświat i cieni, rozciągać,
+- schodzić w pasku poniżej **60 px wysokości** (46 px na telefonie): przy 34 px napis
+  „TCHÓRZEWSKI" robi się nieczytelną kreską.
 
-**Przepis do odtworzenia** (gdyby plik zginął):
+⚠️ **Nadal nie mamy wektora.** Znak jest rastrem odzyskanym z pliku od klienta; przy 60 px
+w pasku to bez znaczenia, ale do druku i do dużych formatów będzie potrzebny oryginał —
+pytanie 2 w `PYTANIA-DO-KLIENTA.md`. Po otrzymaniu **podmienić i skasować raster**.
+
+**Przepis do odtworzenia** `img/logo.png` (gdyby plik zginął):
 ```
-źródło: materialy/logo/baner-fb-z-nowym-logo-1942.jpg  (okładka FB, 1942×809)
-wycinek: [89:243, 89:793]
-alfa   = clip((max(R,G,B) − 42) / (200 − 42), 0, 1);  alfa < 0.06 → 0
-kolor  = piksel / max(alfa, 0.10)      # zdjęcie krycia z przyciemnionej krawędzi
-wynik  → materialy/logo/logo-nowe-przezroczyste.png    (704×154, na ciemne tło)
+źródło: materialy/logo/logo-stare-przezroczyste.png     (1018×753, przezroczyste)
+1. przytnij do zawartości po kanale alfa (próg 8)       → 1006×742
+2. przeskaluj LANCZOS do szerokości 240 px              → 240×177
+3. skwantuj do 128 kolorów (FASTOCTREE) + optimize      → 14 kB
 ```
-Wersja na jasne tło (`logo-nowe-na-jasne-tlo.png`) powstaje z tego samego wycinka przez
-przemalowanie pikseli neutralnych na `#111114`. **W tym kierunku nie jest potrzebna** — cały
-nagłówek i stopka są ciemne. Trzymamy ją wyłącznie na wypadek jasnych materiałów drukowanych.
+🔴 Krok 3 nie jest kosmetyką: bez niego plik waży **558 kB i leci na KAŻDEJ podstronie**
+(bramka „pliki wielokrotnie cięższe niż miejsce, w którym stoją", 07.09.2026).
+240 px to 2,7× miejsca, w którym znak stoi — z zapasem na ekran Retina.
+
+---
+
+## ✅ „O NAS" NA TELEFONIE — ROZSTRZYGNIĘTE 07.09.2026 21:15
+
+**Problem:** podstrona `o-nas` ma układ LIST — dwie kolumny `oś lat | narracja`. Na telefonie
+zwijają się w jedną i człowiek dostaje **104 słowa bez ani jednego obrazu** pod nagłówkiem.
+Bramka zgłaszała to jako `sciana_tekstu`.
+
+**Decyzja K.: wpuszczamy kadr** (a nie: uznajemy za świadome odstępstwo).
+
+Kadr `z-schody-01.jpg` („Schody po wykończeniu") wchodzi **między oś lat a narrację**,
+wewnątrz LEWEJ kolumny. Dwa zyski naraz:
+- na telefonie przerywa ścianę tekstu **w połowie**, nie na końcu,
+- na laptopie wypełnia pustkę pod krótką osią — trzy pozycje kontra pięć akapitów obok
+  zostawiały pół kolumny pustego papieru.
+
+⛔ **Nie przenosić kadru do prawej kolumny ani na koniec sekcji.** Na telefonie wyląduje wtedy
+POD całym tekstem i nie przerwie niczego — kolejność w HTML jest tu treścią, nie układem.
+⛔ **Bez `loading="lazy"`** — kadr stoi 1023 px od góry, czyli tuż nad drugim ekranem,
+i z leniwym ładowaniem zostawiał przy przewijaniu pustą dziurę (bramka, 07.09.2026).
+
+Kod: `pages.py`, funkcja `kadr_o_nas()`. Wygląd: `.kadr-o-nas` w `assets/app.css`.
 
 ---
 
