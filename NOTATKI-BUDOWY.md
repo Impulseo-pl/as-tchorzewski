@@ -72,6 +72,22 @@ pasek zaczyna na 790, **zapas 35 px**. Zapisane w `DESIGN.md`.
    mierzyła wygląd WYŁĄCZNIE na 1440 px, choć klient otwiera link z SMS-a na telefonie -
    cała ta klasa wad była dla niej niewidoczna.
 
+### 📸 RUNDA ZDJĘCIOWA 07.09 20:35 - polecenie K. „więcej większych zdjęć, mniej tekstu"
+⚠️ K. powiedział wprost, że **animacje i przejścia zostają** („ludzie je lubią, skupiają uwagę") -
+⛔ nie zdejmować `.rv`, kaskady ani `scale(1.03)`. To była moja propozycja, którą odrzucił.
+
+Zrobione na stronie głównej: kadr hero 430→560 px · kafle wyższe (2:3) i szersze (276→326 px),
+bez jednolinijkowych opisów · „przed i po" oraz kafle na kontenerze 1500 px · **nowy pas 21:9
+z elewacji 2400×1029** · tekst 247→229 słów.
+
+🔴 **Powiększenia dobierane POMIAREM gęstości** (`naturalWidth` / szerokość na ekranie), nie na oko:
+kafle miały 3,6× zapasu (powiększenie darmowe), po zmianie 2,2-3,1×. **Przy „Łazienkach" zapas
+to 2,3× i tam jest granica** - dalej nie ma po co iść bez oryginałów od klienta.
+
+🔴 **Rozdzielczość materiału wyznacza, co wolno zaprojektować.** Elewacja przyszła z FACEBOOKA
+w 3072×4096 i jako jedyna uniosła kinowy pas; łazienka i poddasze przyszły z INSTAGRAMA
+w 739-1200 px i nie uniosą żadnego dużego kadru. Instagram kompresuje, Facebook nie.
+
 **⏳ ZOSTAJE Z BLOKU E (nie zaczęte, wymaga decyzji o wyglądzie):**
 - 🔴 `o-nas` na telefonie: **ściana tekstu pod hero** (104 słowa, 0 % obrazu) - dwie kolumny
   (oś lat | tekst) zwijają się w jedną. Trzeba wpuścić kadr między oś a narrację **albo**
