@@ -5,7 +5,7 @@ Zamówienie IMP/2026/09/005, opłacone w całości 04.09.2026. Karta CRM `de55d1
 
 ---
 
-## STAN PO BLOKU B (07.09.2026, 14:0x) ⬅️ CZYTAJ TO
+## STAN PO BLOKU B (07.09.2026, 14:15) ⬅️ CZYTAJ TO
 
 **Zrobione w bloku B (etapy 2–4):**
 - ✅ **Pytania przycięte 97 → 10** blokujących + 5 bonusowych → `PYTANIA-DO-KLIENTA.md` (do ręki Adamowi).
@@ -16,8 +16,22 @@ Zamówienie IMP/2026/09/005, opłacone w całości 04.09.2026. Karta CRM `de55d1
   `design/kierunki/kierunek-*.html`.
   Porównanie: `design/kierunki/_kierunki-podglad/POROWNANIE.png` (komputer) i `.../telefon/`.
 
-**⏳ NASTĘPNY KROK: wybór K.** — jeden z trzech kierunków (wolno mieszankę: „B, ale nagłówek z C").
-Po wyborze: `DESIGN.md` w korzeniu repo → dopiero wtedy blok C (kod).
+### ✅ KIERUNEK WYBRANY — **B „Scena", BEZ ZAOKRĄGLONYCH RAMEK**
+
+Krzysztof, 07.09.2026 ok. 14:00: *„Możemy zrobić B ale bez zaokrąglonych ramek?"*
+
+- Fundament: [Apple Premium Cinematic](https://designmd.app/library/apple-premium-cinematic).
+- 🔴 **`border-radius: 0` wszędzie** — unieważnia pigułki `980px`, najbardziej charakterystyczny
+  element oryginału. Ostra krawędź pasuje do cienkiej kreski w jego logo i do branży lepiej.
+- **Dlaczego B wygrało:** jedyny kierunek, w którym jego białe logo działa bez przemalowania,
+  i jedyny, w którym pionowe zdjęcia stoją bez kadrowania.
+- 🔒 **Wszystko o wyglądzie jest teraz w `DESIGN.md` w korzeniu repo.** Zmiana wyglądu = zmiana
+  w tamtym pliku, nie kolejny pomysł w trakcie budowy.
+- Poprawione przy okazji: **kadr w hero zamieniony na wnętrze SKOŃCZONE** (`poddasze-belki`).
+  Poprzedni pokazywał odkryte puszki elektryczne, co zaprzeczało nagłówkowi „gotowe do wprowadzenia".
+
+**⏳ NASTĘPNY KROK: blok C — kod.** Wejście: `DESIGN.md` + `materialy/` + makieta
+`design/kierunki/kierunek-B-scena.html`. ⛔ Zdjęcia nie idą na produkcję przed zgodą klienta (pytanie 3).
 
 **Blokery, które nie zniknęły:**
 - ⏳ Odpowiedzi klienta na 10 pytań (obiecane wieczorem 07.09: gwarancja, logo, zdjęcia).
