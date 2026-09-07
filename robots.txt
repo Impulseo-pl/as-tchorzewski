@@ -1,0 +1,4 @@
+# PODGLĄD ROBOCZY - strona czeka na zgodę klienta na publikację jego
+# zdjęć i na domenę. Zdjąć razem z PODGLAD_ROBOCZY w build.py.
+User-agent: *
+Disallow: /

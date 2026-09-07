@@ -26,7 +26,7 @@ zaokraglenia: "0 — wszędzie, bez wyjątku"
 > pokazuje jedną rzecz naraz.* Wybrane, bo (1) **nowe logo klienta jest białe i żyje na czerni**,
 > więc ten szablon je kontynuuje zamiast z nim walczyć, i (2) **wszystkie jego dobre zdjęcia są
 > pionowe** — ciemna scena pozwala postawić kadr pionowy bez kadrowania.
-> **Makieta źródłowa:** `design/kierunki/kierunek-B-scena.html` · uzasadnienie: `design/kandydat-B-scena.md`
+> **Makieta źródłowa:** `design/_kierunki/kierunek-B-scena.html` · uzasadnienie: `design/kandydat-B-scena.md`
 
 ---
 
@@ -40,7 +40,8 @@ oryginału (pigułki `980px`) i jest świadome: ostra krawędź pasuje do cienki
 w jego logo i do branży budowlanej lepiej niż zaokrąglenia Apple'a.
 
 ⛔ Jeżeli w trakcie budowy pojawi się gdziekolwiek `border-radius` inny niż `0` — to jest błąd,
-nie decyzja. Kontrola: `grep -rn "border-radius" *.css | grep -v ":0"` musi zwrócić pustkę.
+nie decyzja. Kontrola: `grep -n "border-radius" assets/app.css | grep -v ":0"` musi zwrócić pustkę.
+(Arkusz strony leży w `assets/`, nie w korzeniu — `*.css` w korzeniu nie sprawdza niczego.)
 
 ---
 
@@ -55,11 +56,16 @@ nie decyzja. Kontrola: `grep -rn "border-radius" *.css | grep -v ":0"` musi zwr�
 | przygaszony | `#9A9AA2` | tekst drugiego planu na ciemnym |
 | atrament | `#1B1B1E` | tekst na sekcjach jasnych |
 | przygaszony jasny | `#63636B` | tekst drugiego planu na jasnym |
-| **akcent** | `#C85C13` | **jedyny kolor akcentu** — odczytany z pikseli jego logo |
+| **akcent** | `#C85C13` | **jedyny kolor akcentu** — odczytany z pikseli jego logo. Kreski, obrysy, hover |
+| akcent — przycisk | `#A34A0F` | tło przycisków (biel na `#C85C13` daje 4,20 — poniżej progu 4,5) |
+| akcent — mały tekst na ciemnym | `#E2762A` | etykiety i „Zobacz →" na kaflu `#17171B` |
+| akcent — mały tekst na jasnym | `#8F3F0A` | etykiety i numery na sekcji `#F3F1ED` |
 | WhatsApp | `#25A63F` | wyłącznie tło przycisku WhatsApp (znaczeniowe, nie dekoracyjne) |
 | linia na ciemnym | `rgba(255,255,255,.16)` | obrysy, ramki, podziały |
 
-⛔ **Jeden akcent i nic więcej.** Zero drugiego koloru „dla ożywienia". Zero gradientów
+⛔ **Jeden akcent i nic więcej.** Zero drugiego koloru „dla ożywienia". Trzy warianty wyżej
+to ten SAM pomarańcz przyciemniony albo rozjaśniony pod próg kontrastu 4,5 — zmierzone bramką
+07.09.2026, nie dobrane na oko. Zero gradientów
 dekoracyjnych poza jedną wskazaną niżej. Zero wielkich płaszczyzn pomarańczu — akcent to kreska,
 przycisk, mała etykieta, **nigdy tło sekcji**.
 
@@ -74,7 +80,9 @@ przycisk, mała etykieta, **nigdy tło sekcji**.
 
 ⛔ **Zero nagłówków wersalikami.** Wersaliki wolno wyłącznie na małych etykietach (12 px)
 i w samym znaku graficznym logo — tam są częścią znaku.
-Oba kroje mają pełne polskie znaki. Ładowane z Google Fonts, `display=swap`.
+Oba kroje mają pełne polskie znaki. 🔴 Ładowane **z naszego serwera** (`assets/fonty/*.woff2`,
+latin + latin-ext, `font-display:swap`), nie z Google Fonts — dzięki temu strona nie łączy się
+z obcym serwerem i nie potrzebuje banera cookies (reguła silnika stron docelowych).
 
 ## Układ
 

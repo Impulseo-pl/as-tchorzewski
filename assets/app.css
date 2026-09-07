@@ -1,0 +1,398 @@
+/* ══════════════════════════════════════════════════════════════════════════════
+   A.S TCHÓRZEWSKI — wygląd strony.        Jedyne źródło prawdy: `DESIGN.md`
+   ══════════════════════════════════════════════════════════════════════════════
+   Kierunek B „Scena" na fundamencie Apple Premium Cinematic, z jednym twardym
+   odstępstwem: 🔴 `border-radius: 0` WSZĘDZIE (polecenie K. z 07.09.2026).
+   Kontrola: `grep -n "border-radius" assets/app.css | grep -v ":0"` — pusto.
+
+   Mechanika i dostępność siedzą w `rdzen.css` / `rdzen.js` i NIE są tu powtarzane.
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+/* ── KROJE (u siebie, bez Google Fonts → bez banera cookies) ─────────────────── */
+@font-face{font-family:Jost;font-style:normal;font-weight:300;font-display:swap;
+  src:url(fonty/jost-latin-ext-300-normal.woff2) format('woff2');
+  unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:Jost;font-style:normal;font-weight:300;font-display:swap;
+  src:url(fonty/jost-latin-300-normal.woff2) format('woff2');
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:Jost;font-style:normal;font-weight:400;font-display:swap;
+  src:url(fonty/jost-latin-ext-400-normal.woff2) format('woff2');
+  unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:Jost;font-style:normal;font-weight:400;font-display:swap;
+  src:url(fonty/jost-latin-400-normal.woff2) format('woff2');
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:Jost;font-style:normal;font-weight:500;font-display:swap;
+  src:url(fonty/jost-latin-ext-500-normal.woff2) format('woff2');
+  unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:Jost;font-style:normal;font-weight:500;font-display:swap;
+  src:url(fonty/jost-latin-500-normal.woff2) format('woff2');
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:Inter;font-style:normal;font-weight:400;font-display:swap;
+  src:url(fonty/inter-latin-ext-400-normal.woff2) format('woff2');
+  unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:Inter;font-style:normal;font-weight:400;font-display:swap;
+  src:url(fonty/inter-latin-400-normal.woff2) format('woff2');
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:Inter;font-style:normal;font-weight:500;font-display:swap;
+  src:url(fonty/inter-latin-ext-500-normal.woff2) format('woff2');
+  unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:Inter;font-style:normal;font-weight:500;font-display:swap;
+  src:url(fonty/inter-latin-500-normal.woff2) format('woff2');
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+
+/* ── TOKENY (kolory zmierzone z ich banera — `DESIGN.md`) ───────────────────── */
+:root{
+  --noc:#0F0F12;
+  --noc-2:#17171B;
+  --dzien:#F3F1ED;
+  --biel:#F5F5F7;
+  --przyg:#9A9AA2;
+  --atrament:#1B1B1E;
+  --przyg-jasny:#63636B;
+  --akcent:#C85C13;
+  --akcent-ciemniej:#B0500F;
+  /* 🔴 Kontrast: biel na #C85C13 daje 4,20 - poniżej progu 4,5. Przyciski i etykiety
+     na jasnym tle biorą więc ciemniejsze warianty tego samego pomarańczu.
+     Zmierzone bramką 07.09.2026, nie na oko. */
+  --akcent-btn:#A34A0F;              /* tło przycisku - biel na tym = 5,89 */
+  --akcent-btn-hover:#8F3F0A;
+  --akcent-na-jasnym:#8F3F0A;        /* mały tekst akcentem na sekcji jasnej = 6,4 */
+  --akcent-jasny:#E2762A;            /* mały tekst akcentem na kaflu #17171B = 5,9 */
+  --wa:#25A63F;
+  --linia:rgba(255,255,255,.16);
+  --linia-slaba:rgba(255,255,255,.08);
+  --linia-jasna:rgba(27,27,30,.14);
+  --rytm:clamp(4rem,8vw,8rem);
+  --wrap:1240px;
+  --bok:32px;
+  /* plakietka opinii Google (rdzeń) — gdyby weszła, ma być prostokątna jak reszta */
+  --gb-promien:0;
+}
+
+*{margin:0;padding:0}
+html{background:var(--noc)}
+body{background:var(--noc);color:var(--biel);
+  font:400 17px/1.65 Inter,system-ui,-apple-system,sans-serif;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+h1,h2,h3,h4{font-family:Jost,Inter,sans-serif;font-weight:300;line-height:1.08;
+  letter-spacing:-.015em}
+a{text-decoration:none}
+::selection{background:var(--akcent);color:#fff}
+
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 var(--bok);width:100%}
+.skip{background:var(--noc);color:var(--biel);font-weight:500;border:1px solid var(--akcent)}
+
+/* etykieta nad nagłówkiem — jedyne miejsce na wersaliki (`DESIGN.md`) */
+.etykieta{display:block;font:500 12px/1 Inter;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--akcent-jasny);margin-bottom:22px}
+.jasna .etykieta{color:var(--akcent-na-jasnym)}
+
+/* ── PRZYCISKI ──────────────────────────────────────────────────────────────── */
+.btn,.duch{display:inline-flex;align-items:center;gap:10px;border-radius:0;
+  font:500 15px/1 Inter;padding:15px 24px;border:1.5px solid transparent;
+  transition:background .2s ease,border-color .2s ease,transform .2s ease}
+.btn{background:var(--akcent-btn);color:#fff}
+.btn:hover{background:var(--akcent-btn-hover)}
+.btn:active,.duch:active{transform:translateY(-1px)}
+.duch{border-color:rgba(255,255,255,.22);color:var(--biel);background:transparent}
+.duch:hover{border-color:var(--biel)}
+.jasna .duch{border-color:rgba(27,27,30,.3);color:var(--atrament)}
+.jasna .duch:hover{border-color:var(--atrament)}
+.btn-wa{background:var(--wa)}
+.btn-wa:hover{background:#1E8A33}
+.ikona-wa{flex:none}
+
+/* ── GÓRNY PASEK ────────────────────────────────────────────────────────────── */
+.top{position:sticky;top:0;z-index:100;background:rgba(15,15,18,.82);
+  -webkit-backdrop-filter:saturate(180%) blur(20px);backdrop-filter:saturate(180%) blur(20px);
+  border-bottom:1px solid var(--linia-slaba);transition:transform .3s var(--ease)}
+.top .wrap{display:flex;align-items:center;gap:28px;height:82px}
+.znak{flex:none;display:block}
+.znak img{height:34px;width:auto}
+.nawigacja{margin-left:auto}
+.nawigacja ul{list-style:none;display:flex;gap:34px}
+.nawigacja a:not(.btn){font-size:14.5px;color:var(--przyg);padding:6px 0;letter-spacing:.01em}
+.nawigacja a:not(.btn):hover{color:var(--biel)}
+.nawigacja a[aria-current="page"]{color:var(--biel)}
+.nawigacja a:not(.btn)::after{background:var(--akcent);height:1px;bottom:-2px}
+.nawigacja .strzalka-poz{display:none}
+.tel-gora{flex:none;display:inline-flex;align-items:center;gap:9px;background:var(--akcent-btn);
+  color:#fff;font:500 15px/1 Inter;padding:13px 22px;border-radius:0}
+.tel-gora:hover{background:var(--akcent-btn-hover)}
+.burger{display:none}
+
+/* ── SCENA (nagłówek strony głównej) ────────────────────────────────────────── */
+.scena{position:relative;overflow:hidden;padding:88px 0 100px}
+/* ⚠️ Świadome złamanie zakazu gradientów (`DESIGN.md`, odstępstwo 6): płaska czerń
+   przy zdjęciach z budowy robi się martwa. Do skasowania, jeśli będzie widać. */
+.scena::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(120% 80% at 50% 30%,rgba(200,92,19,.10),transparent 62%)}
+.scena>.wrap{position:relative;z-index:2;display:grid;grid-template-columns:1fr auto;
+  gap:70px;align-items:center}
+.scena h1{font-size:clamp(2.9rem,5.4vw,4.6rem);margin-bottom:26px;max-width:16ch}
+.lead{color:var(--przyg);font-size:19px;max-width:46ch;margin-bottom:34px}
+.obietnica{display:inline-flex;align-items:baseline;gap:14px;flex-wrap:wrap;
+  border:1px solid var(--linia);border-radius:0;padding:14px 24px;margin-bottom:32px}
+.obietnica b{font-family:Jost;font-weight:500;font-size:19px;color:var(--biel)}
+.obietnica span{font-size:14px;color:var(--przyg)}
+.kontakt-linia{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.godziny{font-size:14px;color:var(--przyg)}
+
+/* kadr pionowy jako obiekt na scenie — bez kadrowania, w odsuniętej ramce */
+.kadr-scena{position:relative;width:430px;flex:none}
+.kadr-scena img{width:100%;border-radius:0}
+.kadr-scena::before{content:"";position:absolute;inset:-26px;border:1px solid var(--linia-slaba);
+  pointer-events:none}
+.kadr-scena figcaption{margin-top:20px;font-size:13.5px;color:var(--przyg);text-align:right}
+
+/* ── SEKCJE ─────────────────────────────────────────────────────────────────── */
+.sekcja{padding:var(--rytm) 0}
+/* otwarcie podstrony: pełny rytm pod nagłówkiem zostawiał pół ekranu pustej czerni,
+   bo zaraz pod nim zaczyna się sekcja z własnym górnym marginesem */
+.otwarcie{padding:clamp(3rem,6vw,5rem) 0 clamp(1.5rem,3vw,2.5rem)}
+.otwarcie h1{font-size:clamp(2.3rem,4.4vw,3.6rem);margin-bottom:20px;max-width:18ch}
+.jasna{background:var(--dzien);color:var(--atrament)}
+.jasna h1,.jasna h2,.jasna h3{color:var(--atrament)}
+.jasna .pod,.jasna .przyciemniony{color:var(--przyg-jasny)}
+.sekcja h2{font-size:clamp(2rem,3.6vw,2.9rem);margin-bottom:14px}
+.pod{color:var(--przyg);font-size:16.5px;max-width:52ch;margin-bottom:46px}
+.naglowek-sekcji{margin-bottom:46px}
+.naglowek-sekcji .pod{margin-bottom:0}
+
+/* ── PRZED I PO ─────────────────────────────────────────────────────────────── */
+.para{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+.klatka{position:relative}
+.klatka img{width:100%;border-radius:0;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.klatka p{margin-top:16px;font-size:15px;color:var(--przyg-jasny)}
+.znacznik{position:absolute;top:18px;left:18px;background:rgba(15,15,18,.86);color:#fff;
+  font:500 12px/1 Inter;letter-spacing:.16em;text-transform:uppercase;padding:9px 14px;
+  border-radius:0}
+.znacznik.po{background:var(--akcent-btn)}
+
+/* ── KAFLE USŁUG ────────────────────────────────────────────────────────────── */
+.kafle{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+.kafel{display:block;border:1px solid var(--linia-slaba);background:var(--noc-2);
+  border-radius:0;overflow:hidden;transition:border-color .2s ease}
+.kafel:hover{border-color:var(--linia)}
+.kafel .obraz{overflow:hidden;aspect-ratio:3/4}
+.kafel img{width:100%;height:100%;object-fit:cover;border-radius:0;
+  transition:transform .55s var(--ease)}
+.kafel:hover img{transform:scale(1.03)}
+.kafel{display:flex;flex-direction:column}
+.kafel .opis{padding:20px 20px 24px;display:flex;flex-direction:column;flex:1}
+.kafel h3{font-size:1.35rem;margin-bottom:8px}
+/* `spec` i `dalej` MUSZĄ być blokami: jako elementy liniowe sklejały się w jedno zdanie
+   („zabudowa i podejścia. Zobacz →") i dolne krawędzie kafli rozjeżdżały się o wiersz. */
+.kafel .spec{display:block;font-size:14px;color:var(--przyg);line-height:1.5}
+.kafel .dalej{display:block;margin-top:auto;padding-top:16px;font:500 13px/1 Inter;
+  color:var(--akcent-jasny);letter-spacing:.06em}
+
+/* wiersz „mniejsza robota" pod kaflami */
+.wiersz-usluga{display:flex;align-items:center;gap:22px;flex-wrap:wrap;
+  border:1px solid var(--linia-slaba);border-radius:0;padding:22px 24px;margin-top:22px}
+.wiersz-usluga h3{font-size:1.2rem}
+.wiersz-usluga .spec{color:var(--przyg);font-size:14.5px}
+.wiersz-usluga .dalej{margin-left:auto;color:var(--akcent-jasny);font:500 13px/1 Inter;letter-spacing:.06em}
+
+/* ── FILM (rdzeń, blok 7: ładuje się dopiero po kliknięciu) ─────────────────── */
+.reel{max-width:420px;margin:0;border:1px solid var(--linia-slaba)}
+.reel-media{position:relative;line-height:0;background:#000}
+.reel video{width:100%;height:auto;background:#000;display:none}
+.reel .plakat{display:block;width:100%}
+.reel.gra .plakat{display:none}
+.reel.gra video{display:block}
+.reel-btn{position:absolute;inset:0;width:100%;display:flex;align-items:flex-end;
+  justify-content:flex-start;gap:12px;padding:22px;background:transparent;border:0;
+  color:#fff;font:500 15px/1 Inter;cursor:pointer;border-radius:0}
+.reel.gra .reel-btn{align-items:flex-start;justify-content:flex-end;padding:14px}
+.reel-btn span{display:inline-flex;align-items:center;gap:10px;background:rgba(15,15,18,.72);
+  padding:12px 18px;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.reel figcaption{padding:16px 18px;font-size:14px;color:var(--przyg);
+  border-top:1px solid var(--linia-slaba)}
+.film-obok{display:grid;grid-template-columns:420px 1fr;gap:60px;align-items:center}
+
+/* ── ZYGZAK (podstrona „Co robimy") ─────────────────────────────────────────── */
+.zygzak{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;
+  padding:56px 0;border-top:1px solid var(--linia-slaba)}
+.jasna .zygzak{border-top-color:var(--linia-jasna)}
+.zygzak:first-of-type{border-top:0;padding-top:0}
+.zygzak--odwrocony .zygzak-obraz{order:-1}
+.zygzak-obraz img{width:100%;border-radius:0}
+.zygzak .kod{font:500 12px/1 Inter;letter-spacing:.2em;color:var(--akcent-jasny);display:block;
+  margin-bottom:16px}
+.zygzak h2{font-size:clamp(1.7rem,3vw,2.3rem);margin-bottom:16px}
+.zygzak p+p{margin-top:14px}
+.zygzak .spec-linia{margin-top:20px;padding-top:16px;border-top:1px solid var(--linia-slaba);
+  font-size:14px;color:var(--przyg);letter-spacing:.02em}
+.jasna .zygzak .spec-linia{border-top-color:var(--linia-jasna);color:var(--przyg-jasny)}
+.jasna .zygzak .kod,.jasna .grupa-tyt .licznik{color:var(--akcent-na-jasnym)}
+/* film na sekcji jasnej: obrys i podpis muszą zmienić kolor, inaczej znikają */
+.jasna .reel{border-color:var(--linia-jasna)}
+.jasna .reel figcaption{color:var(--przyg-jasny);border-top-color:var(--linia-jasna)}
+
+/* ── GALERIA (naturalne proporcje, bez kadrowania) ──────────────────────────── */
+.galeria{columns:3;column-gap:22px}
+.galeria figure{break-inside:avoid;margin:0 0 22px;cursor:zoom-in;position:relative}
+.galeria img{width:100%;border-radius:0;display:block}
+.galeria figcaption{margin-top:10px;font-size:13.5px;color:var(--przyg);line-height:1.45}
+.jasna .galeria figcaption{color:var(--przyg-jasny)}
+.grupa+.grupa{margin-top:var(--rytm)}
+.grupa-tyt{display:flex;align-items:baseline;gap:18px;flex-wrap:wrap;margin-bottom:28px;
+  padding-bottom:14px;border-bottom:1px solid var(--linia-slaba)}
+.jasna .grupa-tyt{border-bottom-color:var(--linia-jasna)}
+.grupa-tyt h2{font-size:1.9rem;margin:0}
+.grupa-tyt .licznik{font:500 12px/1 Inter;letter-spacing:.2em;color:var(--akcent-jasny);
+  text-transform:uppercase}
+
+/* powiększenie zdjęcia (mechanika: `rdzen.js`, blok 5) */
+.lb{position:fixed;inset:0;z-index:150;background:rgba(9,9,11,.96);display:flex;
+  align-items:center;justify-content:center;padding:clamp(1rem,5vw,3rem)}
+.lb[hidden]{display:none}
+.lb img{max-width:100%;max-height:84vh;object-fit:contain;border-radius:0}
+.lb-cap{position:absolute;left:0;right:0;bottom:clamp(1rem,3vw,2rem);text-align:center;
+  font-size:13.5px;color:var(--przyg);padding:0 20px}
+.lb button{position:absolute;background:rgba(255,255,255,.08);border:1px solid var(--linia);
+  color:#fff;width:46px;height:46px;font-size:24px;line-height:1;cursor:pointer;border-radius:0}
+.lb button:hover{background:rgba(255,255,255,.18)}
+.lb-x{top:clamp(1rem,3vw,2rem);right:clamp(1rem,3vw,2rem)}
+.lb-p{left:clamp(.5rem,2vw,1.5rem);top:50%;transform:translateY(-50%)}
+.lb-n{right:clamp(.5rem,2vw,1.5rem);top:50%;transform:translateY(-50%)}
+
+/* ── PAS ZDJĘCIA NA CAŁĄ SZEROKOŚĆ ──────────────────────────────────────────── */
+.pas{position:relative;line-height:0}
+.pas img{width:100%;height:clamp(240px,34vw,420px);object-fit:cover;border-radius:0}
+.pas figcaption{position:absolute;left:0;right:0;bottom:0;padding:22px var(--bok);
+  font:400 14px/1.5 Inter;color:#fff;line-height:1.5;
+  background:linear-gradient(to top,rgba(15,15,18,.8),transparent)}
+
+/* ── LISTA FAKTÓW / KARTA DANYCH ────────────────────────────────────────────── */
+.karta{border:1px solid var(--linia);background:var(--noc-2);padding:34px;border-radius:0}
+.jasna .karta{border-color:var(--linia-jasna);background:#fff}
+.karta h2{font-size:1.6rem;margin-bottom:22px}
+.dane{width:100%;border-collapse:collapse}
+.dane th,.dane td{text-align:left;padding:14px 0 18px;border-bottom:1px solid var(--linia-slaba);
+  font-size:15.5px;line-height:1.5;vertical-align:top}
+.jasna .dane th,.jasna .dane td{border-bottom-color:var(--linia-jasna)}
+.dane th{font-weight:400;color:var(--przyg);width:40%;padding-right:20px}
+.jasna .dane th{color:var(--przyg-jasny)}
+.dane tr:last-child th,.dane tr:last-child td{border-bottom:0}
+.dane a{border-bottom:1px solid var(--akcent);padding-bottom:1px}
+
+.dwie-kolumny{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start}
+.trzy-kolumny{display:grid;grid-template-columns:repeat(3,1fr);gap:34px}
+.tekst-dlugi p{max-width:58ch}
+.tekst-dlugi p+p{margin-top:18px}
+.tekst-dlugi h3{font-size:1.5rem;margin:38px 0 14px}
+
+/* oś lat (podstrona „O nas") */
+.lata{list-style:none;display:grid;gap:0}
+.lata li{display:grid;grid-template-columns:120px 1fr;gap:26px;padding:22px 0;
+  border-top:1px solid var(--linia-slaba)}
+.jasna .lata li{border-top-color:var(--linia-jasna)}
+/* rok akcentem na papierze: jasny wariant daje 2,71 - musi zejść na ciemniejszy */
+.jasna .lata b{color:var(--akcent-na-jasnym)}
+.lata b{font-family:Jost;font-weight:400;font-size:1.7rem;color:var(--akcent-jasny);line-height:1}
+.lata p{color:var(--przyg);font-size:16px}
+.jasna .lata p{color:var(--przyg-jasny)}
+
+/* ── ZAMKNIĘCIE STRONY: wezwanie do kontaktu ────────────────────────────────── */
+.domkniecie{border:1px solid var(--linia);padding:clamp(2rem,4vw,3.4rem);border-radius:0;
+  display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center}
+.domkniecie h2{font-size:clamp(1.7rem,3vw,2.4rem);margin-bottom:12px}
+.domkniecie p{color:var(--przyg);max-width:52ch}
+.domkniecie .kontakt-linia{justify-content:flex-end}
+
+/* ── MAPA PO KLIKNIĘCIU (rdzeń, blok 6) ─────────────────────────────────────── */
+[data-po-kliknieciu]{border:1px solid var(--linia);background:var(--noc-2);min-height:320px}
+.jasna [data-po-kliknieciu]{border-color:var(--linia-jasna);background:#fff}
+.pk-btn{background:var(--akcent-btn);color:#fff;font:500 15px/1 Inter;padding:15px 24px;
+  border-radius:0}
+.pk-btn:hover{background:var(--akcent-btn-hover)}
+[data-po-kliknieciu]+iframe,iframe{width:100%;min-height:320px;border:0}
+
+/* ── STOPKA ─────────────────────────────────────────────────────────────────── */
+footer{background:var(--noc);border-top:1px solid var(--linia-slaba);padding:70px 0 40px;
+  color:var(--przyg)}
+.stopka{display:grid;grid-template-columns:1.4fr 1fr 1.2fr;gap:50px}
+.stopka img{height:34px;width:auto;margin-bottom:20px}
+.stopka p{font-size:14.5px;line-height:1.6}
+.stopka h2{font-family:Inter;font-size:12px;font-weight:500;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--biel);margin-bottom:18px}
+.stopka a{display:block;font-size:14.5px;padding:5px 0}
+.stopka a:hover{color:var(--biel)}
+.stopka-dol{display:flex;gap:20px;flex-wrap:wrap;justify-content:space-between;
+  margin-top:50px;padding-top:24px;border-top:1px solid var(--linia-slaba);font-size:13px}
+.stopka-dol a{border-bottom:1px solid var(--linia)}
+
+/* ── PASEK PRZY DOLNEJ KRAWĘDZI (telefon) ───────────────────────────────────── */
+.pasek-dolny{display:none;position:fixed;left:0;right:0;bottom:0;z-index:120;gap:1px;
+  box-shadow:0 -2px 12px rgba(0,0,0,.22)}
+.pasek-dolny a{flex:1;display:flex;align-items:center;justify-content:center;gap:9px;
+  padding:18px 8px;font:500 16px/1 Inter;color:#fff;border-radius:0}
+.pasek-dolny .a-tel{background:#16181C}
+.pasek-dolny .a-wa{background:var(--wa)}
+
+/* ── TELEFON ────────────────────────────────────────────────────────────────── */
+@media (max-width:980px){
+  :root{--bok:20px}
+  body{padding-bottom:0}
+  .top .wrap{height:70px;flex-wrap:wrap;gap:16px}
+  .tel-gora{display:none}          /* numer stoi na pasku przy kciuku, nie dublujemy */
+  .burger{display:inline-flex;align-items:center;gap:10px;margin-left:auto;
+    background:transparent;color:var(--biel);border:1.5px solid rgba(255,255,255,.22);
+    border-radius:0;padding:11px 16px;font:500 15px/1 Inter;cursor:pointer}
+  .burger-kreski{display:inline-flex;flex-direction:column;gap:3px}
+  .burger-kreski i{display:block;width:16px;height:1.5px;background:currentColor}
+  .nawigacja{margin-left:0;width:100%;order:3}
+  html.js .nawigacja{display:none}
+  html.js .nawigacja.is-open{display:block}
+  .nawigacja ul{display:block;padding:6px 0 14px}
+  .nawigacja a:not(.btn){display:flex;justify-content:space-between;align-items:center;
+    width:100%;padding:16px 0;font-size:17px;color:var(--biel);
+    border-bottom:1px solid var(--linia-slaba)}
+  .nawigacja a:not(.btn)::after{display:none}
+  .nawigacja .strzalka-poz{display:inline;color:var(--akcent);font-size:18px}
+  .nawigacja a[aria-current="page"]{color:var(--akcent)}
+
+  .scena{padding:48px 0 60px}
+  .scena>.wrap{grid-template-columns:1fr;gap:40px}
+  .scena h1{font-size:clamp(2.2rem,8vw,2.9rem);max-width:none}
+  /* 🔴 Na telefonie kadr idzie PRZED tekstem: decyzja z etapu 2 - pierwszy ekran ma
+     rozstrzygnąć jednym zdjęciem prawdziwej roboty, a nie samym nagłówkiem.
+     Numery i tak są pod kciukiem, na przyklejonym pasku przy dolnej krawędzi. */
+  .kadr-scena{width:100%;order:-1}
+  .kadr-scena::before{inset:-12px}
+  .kadr-scena figcaption{text-align:left}
+  .kafle{grid-template-columns:1fr 1fr;gap:16px}
+  .galeria{columns:2;column-gap:16px}
+  .galeria figure{margin-bottom:16px}
+  .zygzak,.dwie-kolumny,.film-obok{grid-template-columns:1fr;gap:32px}
+  .zygzak{padding:38px 0}
+  .zygzak--odwrocony .zygzak-obraz{order:0}
+  .trzy-kolumny{grid-template-columns:1fr;gap:26px}
+  .domkniecie{grid-template-columns:1fr;gap:26px}
+  .domkniecie .kontakt-linia{justify-content:flex-start}
+  .stopka{grid-template-columns:1fr;gap:36px}
+  .reel,.film-obok .reel{max-width:none}
+  .pasek-dolny{display:flex}
+  body{padding-bottom:70px}
+}
+
+@media (max-width:600px){
+  .para{grid-template-columns:1fr;gap:22px}
+  .kafle{grid-template-columns:1fr}
+  .galeria{columns:1}
+  .lata li{grid-template-columns:1fr;gap:6px;padding:18px 0}
+  .karta{padding:24px 20px}
+  .dane th{width:44%}
+}
+
+/* ── DRUK: klient drukuje kontakt i zakres ──────────────────────────────────── */
+@media print{
+  body{background:#fff;color:#000}
+  .pasek-dolny,.reel-btn,.lb{display:none!important}
+  .jasna,.karta{background:#fff;color:#000}
+}
+
+/* odstęp między tekstem sekcji a ramką wezwania na stronie głównej */
+.odstep-domkniecie{margin-top:clamp(2.5rem,5vw,4.5rem)}

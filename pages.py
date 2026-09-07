@@ -1,0 +1,714 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""A.S TCHÓRZEWSKI - treść stron. Układ i część wspólna: `build.py`.
+
+🔴 REGUŁY TREŚCI, których nie wolno tu złamać (źródło: `DESIGN.md`, `BRIEF-KLIENTA.md`):
+
+1. 🔴 WSZYSTKO W LICZBIE MNOGIEJ („robimy", „malujemy", „polecamy") - wyraźne polecenie
+   klienta. Łamie domyślną regułę silnika, tu wygrywa klient.
+2. ⛔ ZERO cen i widełek. „W kwestii ceny trzeba się skontaktować".
+3. ⛔ ZERO zdań, których klient nie powiedział: „bezpłatna wycena", „Wolsztyn i okolice",
+   „bez umowy nie ruszamy", „od 20 lat", „zaczynaliśmy od murarki".
+   „ponad 20 lat" - nie zaokrąglać w górę.
+4. ⛔ ZERO frazesów: kompleksowo · solidnie · terminowo · indywidualne podejście · pasja ·
+   profesjonalizm · najwyższa jakość · zadowolenie klienta.
+5. ⛔ ZERO pustych sekcji i tekstów zastępczych. Nie ma opinii → nie ma sekcji opinii.
+   Nie znamy długości gwarancji → nie piszemy o gwarancji ani słowa.
+6. Kolejność usług podyktowana przez klienta: szpachlowanie, malowanie, łazienki,
+   sucha zabudowa NA GÓRZE; montaż drzwi i okien niżej.
+7. 🔴 KAŻDA PODSTRONA MA WŁASNY UKŁAD, nie tylko własne otwarcie:
+   `co-robimy` = KATALOG (zygzak) · `realizacje` = INDEKS (galeria w grupach) ·
+   `o-nas` = LIST (oś lat + narracja) · `kontakt` = DOKUMENT (karta danych).
+8. Podpis pod zdjęciem mówi, CO WIDAĆ w kadrze - nie dopowiada faktów o firmie.
+   Kadry „w trakcie" są podpisane jako w trakcie; to atut, nie wstyd.
+
+⚠️ Rzeczy oznaczone `DO-POTWIERDZENIA.md` czekają na odpowiedzi klienta (10 pytań).
+"""
+
+TEL = "667 434 222"
+TEL_E164 = "+48667434222"
+WA = "882 832 244"
+WA_LINK = "https://wa.me/48882832244"
+
+
+def ikona_wa(kolor="currentColor"):
+    """Znak WhatsAppa przy numerze - zamówiony przez klienta wprost (brief)."""
+    return (f'<svg class="ikona-wa" width="18" height="18" viewBox="0 0 24 24" '
+            f'aria-hidden="true"><path fill="{kolor}" d="M17.47 14.38c-.3-.15-1.74-.86-2-.96-.27-.1-.47'
+            f'-.15-.66.15-.2.3-.76.96-.93 1.15-.17.2-.34.22-.63.08-.3-.15-1.25-.46-2.38-1.47-.88-.78'
+            f'-1.47-1.75-1.64-2.05-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.53.15-.18.2-.3.3-.5.1-.2.05'
+            f'-.38-.02-.53-.08-.15-.66-1.6-.9-2.19-.24-.57-.48-.5-.66-.5h-.57c-.2 0-.52.07-.79.37'
+            f'-.27.3-1.03 1.01-1.03 2.46s1.06 2.86 1.2 3.06c.15.2 2.08 3.18 5.04 4.46.7.3 1.25.48 '
+            f'1.68.62.71.22 1.35.19 1.86.12.57-.09 1.74-.71 1.99-1.4.25-.69.25-1.28.17-1.4-.07-.13'
+            f'-.27-.2-.57-.35M12.05 21.8h-.02a9.8 9.8 0 0 1-4.99-1.37l-.36-.21-3.71.97.99-3.62'
+            f'-.23-.37a9.8 9.8 0 0 1-1.5-5.23c0-5.41 4.4-9.81 9.82-9.81a9.75 9.75 0 0 1 6.94 2.88 '
+            f'9.74 9.74 0 0 1 2.87 6.94c0 5.41-4.4 9.82-9.81 9.82M20.5 3.49A11.75 11.75 0 0 0 12.05 0'
+            f'C5.54 0 .25 5.29.25 11.79c0 2.08.54 4.11 1.58 5.9L.15 24l6.45-1.69a11.8 11.8 0 0 0 5.45 '
+            f'1.39h.01c6.5 0 11.79-5.29 11.79-11.79 0-3.15-1.23-6.11-3.46-8.34"/></svg>')
+
+
+def przyciski_kontakt(duch_link="realizacje.html", duch_tekst="Zobacz realizacje"):
+    return f"""<div class="kontakt-linia">
+      <a class="btn" href="tel:{TEL_E164}">Zadzwoń {TEL}</a>
+      <a class="duch" href="{WA_LINK}" rel="noopener">{ikona_wa()}WhatsApp {WA}</a>
+      <a class="duch" href="{duch_link}">{duch_tekst}</a>
+      <span class="godziny">Odbieramy 8:00-20:00</span>
+    </div>"""
+
+
+def domkniecie_ramka(naglowek_txt, zdanie):
+    """Sama ramka z wezwaniem - do wstawienia w cudzą sekcję (strona główna)."""
+    return f"""<div class="domkniecie rv">
+      <div>
+        <h2>{naglowek_txt}</h2>
+        <p>{zdanie}</p>
+      </div>
+      <div class="kontakt-linia">
+        <a class="btn" href="tel:{TEL_E164}">Zadzwoń {TEL}</a>
+        <a class="duch" href="{WA_LINK}" rel="noopener">{ikona_wa()}WhatsApp</a>
+      </div>
+    </div>"""
+
+
+def domkniecie(naglowek_txt, zdanie):
+    """Zamknięcie podstrony: jedna rzecz do zrobienia, dwa numery pod ręką."""
+    return f"""<section class="sekcja">
+  <div class="wrap">
+    {domkniecie_ramka(naglowek_txt, zdanie)}
+  </div>
+</section>"""
+
+
+def otwarcie(etykieta, tytul, lead):
+    """Otwarcie podstrony - ciemne, jedna rzecz na ekran (fundament „Scena")."""
+    return f"""<section class="sekcja otwarcie" id="tresc">
+  <div class="wrap">
+    <span class="etykieta">{etykieta}</span>
+    <h1>{tytul}</h1>
+    <p class="lead">{lead}</p>
+  </div>
+</section>"""
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+#  ZDJĘCIA - jedno miejsce na podpisy, żeby ten sam kadr nie opowiadał na dwóch
+#  podstronach dwóch różnych historii.
+#  ⛔ Podpis mówi, CO WIDAĆ. Nie dopowiada faktów o firmie (reguła 8).
+# ══════════════════════════════════════════════════════════════════════════════
+KADRY = {
+    # klucz: (plik, szerokość, wysokość, alt, podpis)
+    "poddasze-01": ("z-poddasze-01.jpg", 1100, 1467,
+                    "Otwarta przestrzeń poddasza z drewnianymi belkami i oknem",
+                    "Otwarta przestrzeń, belki zostawione na widoku"),
+    "poddasze-02": ("z-poddasze-02.jpg", 1100, 1467,
+                    "Belka konstrukcyjna i okno dachowe w wykończonym pokoju na poddaszu",
+                    "Belka i okno dachowe w gotowym pokoju"),
+    "poddasze-03": ("z-poddasze-03.jpg", 1100, 1467,
+                    "Pokój na poddaszu po gładziach, z otwartą rozdzielnicą elektryczną na ścianie",
+                    "W trakcie: pokój po gładziach, przed montażem osprzętu"),
+    "poddasze-04": ("z-poddasze-04.jpg", 1100, 1467,
+                    "Skos poddasza zabudowany płytą, okno dachowe, podłoga z płytek",
+                    "Skos zabudowany płytą, okno dachowe"),
+    "poddasze-05": ("z-poddasze-05.jpg", 1100, 1467,
+                    "Łazienka na poddaszu z umywalką, muszlą i oknem dachowym",
+                    "Łazienka pod skosem: umywalka, WC, okno dachowe"),
+
+    "lazienka-01": ("z-lazienka-01.jpg", 900, 1199,
+                    "Wolnostojąca wanna na podłodze z płytek drewnopodobnych, okno nad wanną",
+                    "Wanna wolnostojąca, podłoga z płytek drewnopodobnych"),
+    "lazienka-02": ("z-lazienka-02.jpg", 900, 1199,
+                    "Wanna wolnostojąca obok wykończonej wnęki prysznicowej",
+                    "Wanna i wnęka prysznicowa po wykończeniu"),
+    "lazienka-03": ("z-lazienka-03.jpg", 900, 1199,
+                    "Ściana wyłożona płytkami wielkoformatowymi w łazience",
+                    "Płytki wielkoformatowe na całej ścianie"),
+    "lazienka-04": ("z-lazienka-04.jpg", 1100, 1467,
+                    "Ściana z płytek z wyprowadzonymi podejściami wodnymi w trakcie robót",
+                    "W trakcie: podejścia wodne wyprowadzone w płytkach"),
+
+    "poddasze2-01": ("z-poddasze2-01.jpg", 1100, 1467,
+                     "Poddasze w trakcie robót: dwa okna dachowe i murowana obudowa wanny",
+                     "W trakcie: obudowa wanny między oknami dachowymi"),
+    "poddasze2-02": ("z-poddasze2-02.jpg", 1100, 1467,
+                     "Wanna we wnęce pod skosem poddasza, okno dachowe nad wanną",
+                     "Wanna wpuszczona we wnękę pod skosem"),
+    "poddasze2-03": ("z-poddasze2-03.jpg", 1100, 1467,
+                     "Ściana w ciemnym wykończeniu dekoracyjnym obok wnęki prysznicowej",
+                     "Ciemna ściana dekoracyjna przy wnęce prysznicowej"),
+
+    "schody-01": ("z-schody-01.jpg", 1100, 1467,
+                  "Wykończone schody betonowe z barierką w jasnym holu",
+                  "Schody po wykończeniu"),
+    "schody-02": ("z-schody-02.jpg", 1100, 1467,
+                  "Bieg schodów przy gładkiej białej ścianie",
+                  "Bieg schodów przy gotowej ścianie"),
+
+    "beton-01": ("z-beton-01.jpg", 1100, 1463,
+                 "Ciemna ściana z betonu architektonicznego z cienkimi liniami podziału",
+                 "Beton architektoniczny z liniami podziału"),
+    "beton-02": ("z-beton-02.jpg", 1200, 900,
+                 "Jasna ściana z betonu architektonicznego w pokoju w trakcie robót",
+                 "W trakcie: jasny beton architektoniczny na ścianie"),
+    "beton-03": ("z-beton-03.jpg", 1200, 900,
+                 "Ściana dekoracyjna przy skosie, pokój w trakcie wykończenia",
+                 "W trakcie: ściana dekoracyjna przy skosie"),
+
+    "elewacja-01": ("z-elewacja-01.jpg", 1200, 1600,
+                    "Dom po wykonaniu elewacji, taras z kostki i wejście z zadaszeniem",
+                    "Elewacja skończona, wejście od strony tarasu"),
+    "elewacja-02": ("z-elewacja-02.jpg", 1200, 1600,
+                    "Biała elewacja domu z rynną i oknem, zieleń wokół budynku",
+                    "Elewacja i obróbki po robocie"),
+    "elewacja-03": ("z-elewacja-03.jpg", 1200, 1600,
+                    "Elewacja domu z oknem i skrzynką kwiatową, wąskie przejście wzdłuż ściany",
+                    "Ściana szczytowa po wykończeniu"),
+    "elewacja-04": ("z-elewacja-04.jpg", 1200, 1600,
+                    "Drewniana podbitka pod okapem dachu widziana od dołu",
+                    "Podbitka pod okapem"),
+    "elewacja-05": ("z-elewacja-05.jpg", 1200, 1600,
+                    "Rusztowanie ustawione przy ścianie budynku w trakcie robót elewacyjnych",
+                    "W trakcie: rusztowanie przy ścianie"),
+
+    # ten sam plik co w sekcji „przed i po" na stronie głównej - jeden kadr, jeden plik
+    "przed": ("przed.jpg", 1100, 1100,
+              "Rozbudowa w stanie surowym: mury z bloczków, stemple i otwarty otwór okienny",
+              "Przed: stan surowy rozbudowy"),
+    "po": ("po.jpg", 1100, 1100,
+           "Ta sama rozbudowa po wykończeniu: biała elewacja, duże okno tarasowe, trawnik",
+           "Po: elewacja, stolarka, uporządkowane otoczenie"),
+}
+
+
+def kadr_galerii(klucz, lazy=True):
+    plik, w, h, alt, podpis = KADRY[klucz]
+    l = ' loading="lazy" decoding="async"' if lazy else ""
+    return (f'<figure data-zoom="img/{plik}" data-alt="{alt}" data-cap="{podpis}" tabindex="0">'
+            f'<img src="img/{plik}" alt="{alt}" width="{w}" height="{h}"{l}>'
+            f'<figcaption>{podpis}</figcaption></figure>')
+
+
+def grupa(tytul, licznik, klucze, lazy=True):
+    kadry = "\n      ".join(kadr_galerii(k, lazy) for k in klucze)
+    return f"""    <div class="grupa rv">
+      <div class="grupa-tyt"><h2>{tytul}</h2><span class="licznik">{licznik}</span></div>
+      <div class="galeria">
+      {kadry}
+      </div>
+    </div>"""
+
+
+IKONA_PLAY = ('<svg class="ikona-play" width="16" height="16" viewBox="0 0 16 16" '
+              'aria-hidden="true"><path fill="currentColor" d="M3 1.6 14 8 3 14.4Z"/></svg>')
+
+
+def film(plik, plakat, tytul, podpis, alt, lazy=True):
+    """Film rusza dopiero po kliknięciu (rdzeń, blok 7) - nie zjada transferu na telefonie.
+    Filmy są bez dźwięku: to hałas budowy."""
+    return f"""<figure class="reel">
+        <div class="reel-media">
+          <img class="plakat" src="img/{plakat}" alt="{alt}"{" loading=\"lazy\"" if lazy else ""} decoding="async">
+          <video preload="none" playsinline muted poster="img/{plakat}">
+            <source src="video/{plik}" type="video/mp4">
+          </video>
+          <button class="reel-btn" type="button"><span>{IKONA_PLAY}{tytul}</span></button>
+        </div>
+        <figcaption>{podpis}</figcaption>
+      </figure>"""
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+#  STRONA GŁÓWNA - SCENA. Jedna rzecz na ekran, sekcje naprzemiennie ciemna/jasna.
+#  Główna zapowiada, podstrony niosą treść.
+# ══════════════════════════════════════════════════════════════════════════════
+def index(naglowek):
+    return f"""{naglowek("index.html")}
+
+<header class="scena">
+  <div class="wrap" id="tresc">
+    <div class="rv">
+      <span class="etykieta">Wykończenia wnętrz · wielkopolskie i lubuskie</span>
+      <h1>Zostawiamy wnętrze gotowe do wprowadzenia.</h1>
+      <p class="lead">Szpachlowanie, malowanie, łazienki i sucha zabudowa. Jesteśmy firmą
+        rodzinną - na budowach od ponad 20 lat, w Polsce pracujemy od 2015 roku.</p>
+      <div class="obietnica"><b>Wycena do 5 dni roboczych</b><span>od oględzin na miejscu</span></div>
+      {przyciski_kontakt()}
+    </div>
+    <figure class="kadr-scena">
+      <img src="img/hero.jpg" width="1200" height="1600" fetchpriority="high"
+        alt="Wykończone poddasze z drewnianymi belkami, dwoma oknami i podłogą z płytek wielkoformatowych">
+      <figcaption>Poddasze pod klucz - gładzie, malowanie, płytki wielkoformatowe</figcaption>
+    </figure>
+  </div>
+</header>
+
+<section class="sekcja jasna">
+  <div class="wrap">
+    <div class="naglowek-sekcji rv">
+      <span class="etykieta">Przed i po</span>
+      <h2>Ta sama bryła. Dwa zdjęcia.</h2>
+      <p class="pod">Zdjęcia z budowy trudno wziąć z internetu - dlatego pokazujemy stan
+        surowy obok tego, co po sobie zostawiliśmy.</p>
+    </div>
+    <div class="para rv">
+      <figure class="klatka">
+        <span class="znacznik">Przed</span>
+        <img src="img/przed.jpg" width="1100" height="1100" decoding="async"
+          alt="Rozbudowa w stanie surowym: mury z bloczków, stemple i otwarty otwór okienny">
+        <p>Stan surowy: mury z bloczków, stemple, otwarty otwór okienny.</p>
+      </figure>
+      <figure class="klatka">
+        <span class="znacznik po">Po</span>
+        <img src="img/po.jpg" width="1100" height="1100" decoding="async"
+          alt="Ta sama rozbudowa po wykończeniu: biała elewacja, duże okno tarasowe, trawnik">
+        <p>Po naszej robocie: elewacja, stolarka okienna, opaska i uporządkowane otoczenie.</p>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="sekcja">
+  <div class="wrap">
+    <div class="naglowek-sekcji rv">
+      <span class="etykieta">Zakres</span>
+      <h2>Co robimy najczęściej</h2>
+      <p class="pod">Kolejność nie jest przypadkowa - tak wygląda robota, którą bierzemy
+        najczęściej.</p>
+    </div>
+    <div class="kafle kaskada rv">
+      <a class="kafel" href="co-robimy.html#u-01">
+        <div class="obraz"><img src="img/u-szpachlowanie.jpg" width="1000" height="1333"
+          alt="Światło z okna dachowego na gotowej gładzi, przy drewnianej belce" loading="lazy" decoding="async"></div>
+        <div class="opis"><h3>Szpachlowanie i gładzie</h3>
+          <span class="spec">Ściany, sufity i skosy przygotowane pod malowanie.</span>
+          <span class="dalej">Zobacz →</span></div>
+      </a>
+      <a class="kafel" href="co-robimy.html#u-02">
+        <div class="obraz"><img src="img/u-malowanie.jpg" width="720" height="960"
+          alt="Pracownik w kombinezonie maluje ścianę agregatem natryskowym" loading="lazy" decoding="async"></div>
+        <div class="opis"><h3>Malowanie</h3>
+          <span class="spec">Wałkiem i agregatem natryskowym.</span>
+          <span class="dalej">Zobacz →</span></div>
+      </a>
+      <a class="kafel" href="co-robimy.html#u-03">
+        <div class="obraz"><img src="img/u-lazienki.jpg" width="900" height="1200"
+          alt="Łazienka z wolnostojącą wanną i płytkami drewnopodobnymi" loading="lazy" decoding="async"></div>
+        <div class="opis"><h3>Łazienki</h3>
+          <span class="spec">Płytki wielkoformatowe, wanny, zabudowa i podejścia.</span>
+          <span class="dalej">Zobacz →</span></div>
+      </a>
+      <a class="kafel" href="co-robimy.html#u-04">
+        <div class="obraz"><img src="img/u-sucha-zabudowa.jpg" width="1000" height="1333"
+          alt="Skos poddasza zabudowany płytą gipsowo-kartonową z oknem dachowym" loading="lazy" decoding="async"></div>
+        <div class="opis"><h3>Sucha zabudowa</h3>
+          <span class="spec">Skosy, sufity, ścianki działowe i wnęki.</span>
+          <span class="dalej">Zobacz →</span></div>
+      </a>
+    </div>
+    <div class="wiersz-usluga rv">
+      <h3>Montaż drzwi i okien</h3>
+      <span class="spec">Robimy przy okazji wykończenia, razem z obróbką po montażu.</span>
+      <a class="dalej" href="co-robimy.html#u-05">Zobacz →</a>
+    </div>
+  </div>
+</section>
+
+<figure class="pas">
+  <img src="img/pas-beton.jpg" width="1440" height="617" loading="lazy" decoding="async"
+    alt="Ciemna ściana z betonu architektonicznego z cienkimi liniami podziału">
+  <figcaption>Ściana w betonie architektonicznym - z naszych realizacji.</figcaption>
+</figure>
+
+<section class="sekcja jasna">
+  <div class="wrap film-obok rv">
+    {film("agregat.mp4", "plakat-agregat.jpg", "Zobacz film (37 s)",
+          "Malowanie agregatem natryskowym. Film bez dźwięku.",
+          "Pracownik w kombinezonie i masce maluje ścianę agregatem natryskowym")}
+    <div>
+      <span class="etykieta">Nasza robota, nie zdjęcie z internetu</span>
+      <h2>Tak to wygląda od naszej strony</h2>
+      <p class="pod">Na filmie malujemy agregatem natryskowym. Bierzemy go tam, gdzie
+        powierzchnia jest duża, a powłoka ma być równa - bez śladów po wałku.
+        Drugi film, z roboty przy elewacji, stoi na stronie z realizacjami.</p>
+      <a class="duch" href="realizacje.html">Zobacz realizacje</a>
+    </div>
+  </div>
+</section>
+
+<section class="sekcja">
+  <div class="wrap">
+    <div class="dwie-kolumny rv">
+      <div>
+        <span class="etykieta">Uczciwie</span>
+        <h2>Nie bierzemy każdej roboty. Za to wiemy, kto ją zrobi.</h2>
+      </div>
+      <div class="tekst-dlugi">
+        <p>Pytasz o coś, czego nie robimy? Mówimy to wprost i polecamy sprawdzone osoby,
+          z którymi spotykamy się na budowach. Nikt nie odchodzi od nas z niczym.</p>
+        <p>Pracujemy w wielkopolskiem i lubuskiem, telefon odbieramy od 8:00 do 20:00.</p>
+      </div>
+    </div>
+    <div class="odstep-domkniecie">
+      {domkniecie_ramka("Wycena po oględzinach - do 5 dni roboczych",
+                        "Zadzwoń albo napisz na WhatsAppie. Umawiamy się na miejscu, "
+                        "oglądamy zakres i wracamy z wyceną.")}
+    </div>
+  </div>
+</section>"""
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+#  CO ROBIMY - układ KATALOG: zygzak tekst/kadr, kolejność podyktowana przez klienta.
+# ══════════════════════════════════════════════════════════════════════════════
+def blok_uslugi(kod, numer, tytul, akapity, spec, obraz, alt, odwrocony=False, lazy=True):
+    tresc = "\n        ".join(f"<p>{a}</p>" for a in akapity)
+    klasa = "zygzak zygzak--odwrocony" if odwrocony else "zygzak"
+    plik, w, h = obraz
+    return f"""      <div class="{klasa} rv" id="{kod}">
+        <div>
+          <span class="kod">{numer}</span>
+          <h2>{tytul}</h2>
+          {tresc}
+          <p class="spec-linia">{spec}</p>
+        </div>
+        <figure class="zygzak-obraz">
+          <img src="img/{plik}" width="{w}" height="{h}" alt="{alt}"{" loading=\"lazy\"" if lazy else " fetchpriority=\"high\""} decoding="async">
+        </figure>
+      </div>"""
+
+
+def co_robimy(naglowek):
+    return f"""{naglowek("co-robimy.html")}
+
+{otwarcie("Zakres robót", "Wykończenia wnętrz od gładzi po drzwi",
+          "Robimy to, na czym się znamy - a przy robocie, której nie bierzemy, "
+          "polecamy sprawdzone osoby. Cena zależy od zakresu i stanu wnętrza, "
+          "dlatego wyceniamy po oględzinach na miejscu.")}
+
+<section class="sekcja jasna">
+  <div class="wrap">
+{blok_uslugi("u-01", "01", "Szpachlowanie i gładzie", [
+    "Gładź decyduje o tym, jak ściana wygląda po pomalowaniu. Każde zafalowanie widać "
+    "dopiero wtedy, gdy padnie na nie światło z okna - dlatego to jest robota, przy której "
+    "nie ma dróg na skróty.",
+    "Robimy gładzie ręcznie i maszynowo: ściany, sufity i skosy poddaszy."],
+    "gładzie ręczne i maszynowe · ściany, sufity, skosy · przygotowanie pod malowanie",
+    ("u-szpachlowanie.jpg", 1000, 1333),
+    "Światło z okna dachowego na gotowej gładzi, przy drewnianej belce", lazy=False)}
+
+{blok_uslugi("u-02", "02", "Malowanie", [
+    "Malujemy wałkiem i agregatem natryskowym. Agregat bierzemy tam, gdzie powierzchnia "
+    "jest duża, a powłoka ma być równa - bez śladów po wałku i bez łączeń.",
+    "Podłogi, stolarkę i grzejniki zaklejamy przed robotą, a nie po niej."],
+    "malowanie wnętrz · agregat natryskowy · zabezpieczenie podłóg i stolarki",
+    ("u-malowanie.jpg", 720, 960),
+    "Pracownik w kombinezonie maluje ścianę agregatem natryskowym", odwrocony=True, lazy=False)}
+
+{blok_uslugi("u-03", "03", "Łazienki", [
+    "Łazienka to najwięcej rzemiosła na najmniejszym metrażu: podejścia wodne, płytki "
+    "wielkoformatowe, zabudowa wanny albo wnęki prysznicowej, na końcu silikony.",
+    "Płytka wielkoformatowa nie wybacza krzywej ściany, więc równanie podłoża jest tu "
+    "połową roboty."],
+    "płytki wielkoformatowe · wanny wolnostojące · zabudowa i wnęki · podejścia wodne",
+    ("u-lazienki.jpg", 900, 1200),
+    "Łazienka z wolnostojącą wanną i płytkami drewnopodobnymi")}
+
+{blok_uslugi("u-04", "04", "Sucha zabudowa", [
+    "Płyta gipsowo-kartonowa zamienia poddasze w pokoje: skosy, sufity, ścianki działowe, "
+    "wnęki i obudowy.",
+    "Zabudowę prowadzimy tak, żeby od razu szła pod gładź - to ta sama ekipa, więc nikt "
+    "nie zrzuca winy za nierówności na poprzednika."],
+    "skosy i sufity · ścianki działowe · wnęki i obudowy",
+    ("u-sucha-zabudowa.jpg", 1000, 1333),
+    "Skos poddasza zabudowany płytą gipsowo-kartonową z oknem dachowym", odwrocony=True)}
+
+{blok_uslugi("u-05", "05", "Montaż drzwi i okien", [
+    "Montujemy drzwi i okna najczęściej przy okazji wykończenia wnętrza - razem "
+    "z obróbką ościeży i wykończeniem ściany po montażu."],
+    "drzwi wewnętrzne i zewnętrzne · okna · obróbka i wykończenie po montażu",
+    ("u-drzwi-okna.jpg", 1000, 1333),
+    "Hol z zamontowanymi drzwiami wejściowymi z matowym szkłem")}
+  </div>
+</section>
+
+<section class="sekcja">
+  <div class="wrap dwie-kolumny rv">
+    <div>
+      <span class="etykieta">Poza wnętrzami</span>
+      <h2>Robimy też elewacje, podbitki i ściany dekoracyjne</h2>
+    </div>
+    <div class="tekst-dlugi">
+      <p>Wnętrza są naszą główną robotą, ale na koncie mamy też elewacje z podbitką,
+        ściany w betonie architektonicznym i wykończenia schodów. Zdjęcia z tych budów
+        stoją w <a href="realizacje.html">realizacjach</a>.</p>
+      <p>Czego nie bierzemy - mówimy od razu i polecamy sprawdzone osoby, z którymi
+        pracujemy na budowach.</p>
+    </div>
+  </div>
+</section>
+
+{domkniecie("Powiedz, co ma być zrobione",
+            "Umawiamy oględziny na miejscu i wracamy z wyceną do 5 dni roboczych.")}"""
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+#  REALIZACJE - układ INDEKS: grupy budów, w każdej kadry w naturalnych proporcjach.
+# ══════════════════════════════════════════════════════════════════════════════
+def realizacje(naglowek):
+    return f"""{naglowek("realizacje.html")}
+
+{otwarcie("Realizacje", "Nasze budowy, nasze zdjęcia",
+          "Wszystkie zdjęcia na tej stronie są z naszych budów. Część kadrów jest "
+          "„w trakcie” i tak je podpisujemy - pokazują to, czego na gotowym zdjęciu "
+          "już nie widać.")}
+
+<section class="sekcja jasna">
+  <div class="wrap">
+{grupa("Rozbudowa - przed i po", "01", ["przed", "po"], lazy=False)}
+
+{grupa("Poddasze pod klucz", "02", ["poddasze-01", "poddasze-02", "poddasze-03",
+                                    "poddasze-04", "poddasze-05"], lazy=False)}
+
+{grupa("Łazienki", "03", ["lazienka-01", "lazienka-02", "lazienka-03", "lazienka-04"])}
+
+{grupa("Poddasze z wnęką na wannę", "04", ["poddasze2-01", "poddasze2-02", "poddasze2-03"])}
+
+{grupa("Schody", "05", ["schody-01", "schody-02"])}
+
+{grupa("Beton architektoniczny", "06", ["beton-01", "beton-02", "beton-03"])}
+
+{grupa("Elewacja i podbitka", "07", ["elewacja-01", "elewacja-02", "elewacja-03",
+                                     "elewacja-04", "elewacja-05"])}
+  </div>
+</section>
+
+<section class="sekcja">
+  <div class="wrap">
+    <div class="naglowek-sekcji rv">
+      <span class="etykieta">Filmy z budowy</span>
+      <h2>Dwie minuty roboty</h2>
+      <p class="pod">Oba filmy są bez dźwięku i ruszają dopiero po kliknięciu - nie zjadają
+        transferu na telefonie.</p>
+    </div>
+    <div class="para rv">
+      {film("agregat.mp4", "plakat-agregat.jpg", "Malowanie agregatem (37 s)",
+            "Malowanie agregatem natryskowym.",
+            "Pracownik w kombinezonie i masce maluje ścianę agregatem natryskowym")}
+      {film("ekipa.mp4", "plakat-ekipa.jpg", "Robota przy elewacji (39 s)",
+            "Robota przy elewacji budynku.",
+            "Ekipa przy elewacji budynku, rusztowanie ustawione wzdłuż ściany")}
+    </div>
+  </div>
+</section>
+
+{domkniecie("Chcesz mieć podobnie u siebie?",
+            "Zadzwoń albo napisz na WhatsAppie - umawiamy oględziny i wracamy "
+            "z wyceną do 5 dni roboczych.")}"""
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+#  O NAS - układ LIST: oś lat i narracja, na końcu film z ekipą i dane firmy.
+# ══════════════════════════════════════════════════════════════════════════════
+def o_nas(naglowek):
+    return f"""{naglowek("o-nas.html")}
+
+{otwarcie("O nas", "Firma rodzinna z Błońska",
+          "Na budowach jesteśmy od ponad 20 lat - najpierw w Niemczech, od 2015 roku "
+          "pod własnym szyldem w Polsce. Pracujemy w wielkopolskiem i lubuskiem.")}
+
+<section class="sekcja jasna">
+  <div class="wrap dwie-kolumny">
+    <ol class="lata rv">
+      <li><b>2005</b><p>Zaczynamy pracę na budowach w Niemczech.</p></li>
+      <li><b>2015</b><p>Rejestrujemy własną firmę w Polsce, w Błońsku pod Rakoniewicami.</p></li>
+      <li><b>Dziś</b><p>Wykończenia wnętrz w wielkopolskiem i lubuskiem. Telefon odbieramy
+        od 8:00 do 20:00.</p></li>
+    </ol>
+    <div class="tekst-dlugi rv">
+      <h3>Firma rodzinna</h3>
+      <p>Jesteśmy firmą rodzinną. To znaczy tyle, że nazwisko na fakturze i ludzie
+        na budowie to ta sama historia - i że nie znikamy po odbiorze.</p>
+      <h3>Robota, która sama się sprawdza</h3>
+      <p>Gładź, płytka wielkoformatowa i skos poddasza mają tę wspólną cechę, że po
+        wyschnięciu widać każdą drogę na skróty. Dlatego u nas zabudowa, gładzie
+        i malowanie idą jedną ręką - nie ma komu zrzucić winy za nierówną ścianę.</p>
+      <p>Przy robocie, której nie bierzemy, polecamy sprawdzone osoby, z którymi
+        spotykamy się na budowach.</p>
+    </div>
+  </div>
+</section>
+
+<section class="sekcja">
+  <div class="wrap film-obok rv">
+    {film("ekipa.mp4", "plakat-ekipa.jpg", "Zobacz film (39 s)",
+          "Robota przy elewacji. Film bez dźwięku.",
+          "Ekipa przy elewacji budynku, rusztowanie ustawione wzdłuż ściany", lazy=False)}
+    <div>
+      <span class="etykieta">Z budowy</span>
+      <h2>Nasza ekipa przy robocie</h2>
+      <p class="pod">Film z budowy przy elewacji. Bez pozowania i bez lektora - po prostu
+        tak wygląda dzień na rusztowaniu.</p>
+      <a class="duch" href="realizacje.html">Zobacz realizacje</a>
+    </div>
+  </div>
+</section>
+
+{domkniecie("Poznajmy się przy wycenie",
+            "Zadzwoń - umawiamy oględziny na miejscu i wracamy z wyceną "
+            "do 5 dni roboczych.")}"""
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+#  KONTAKT - układ DOKUMENT: karta danych, droga do wyceny, mapa po kliknięciu.
+# ══════════════════════════════════════════════════════════════════════════════
+def kontakt(naglowek):
+    return f"""{naglowek("kontakt.html")}
+
+{otwarcie("Kontakt", "Zadzwoń albo napisz",
+          "Telefon odbieramy od 8:00 do 20:00. Na WhatsAppie możesz od razu wrzucić "
+          "zdjęcia wnętrza - to najszybszy sposób, żebyśmy wiedzieli, o czym mowa.")}
+
+<section class="sekcja">
+  <div class="wrap dwie-kolumny">
+    <div class="karta rv">
+      <h2>Dane kontaktowe</h2>
+      <table class="dane">
+        <tr><th>Telefon</th><td><a href="tel:{TEL_E164}">{TEL}</a></td></tr>
+        <tr><th>WhatsApp</th><td><a href="{WA_LINK}" rel="noopener">{WA}</a></td></tr>
+        <tr><th>E-mail</th><td><a href="mailto:a.s-tchorzewski@wp.pl">a.s-tchorzewski@wp.pl</a></td></tr>
+        <tr><th>Godziny</th><td>8:00-20:00</td></tr>
+        <tr><th>Obszar</th><td>województwo wielkopolskie i lubuskie</td></tr>
+        <tr><th>Adres</th><td>Błońsko 46, 64-308 Błońsko</td></tr>
+        <tr><th>Dane firmy</th><td>Firma Ogólnobudowlana Artur Tchórzewski<br>
+          NIP 995 004 44 65 · REGON 363138510</td></tr>
+      </table>
+      <div class="kontakt-linia" style="margin-top:26px">
+        <a class="btn" href="tel:{TEL_E164}">Zadzwoń {TEL}</a>
+        <a class="duch" href="{WA_LINK}" rel="noopener">{ikona_wa()}WhatsApp</a>
+      </div>
+    </div>
+
+    <div class="tekst-dlugi rv">
+      <span class="etykieta">Jak wygląda wycena</span>
+      <h2>Trzy kroki do ceny</h2>
+      <ol class="lata">
+        <li><b>1</b><p>Dzwonisz albo piszesz na WhatsAppie i mówisz, co ma być zrobione.</p></li>
+        <li><b>2</b><p>Umawiamy się na oględziny - cenę robi zakres i stan wnętrza,
+          a tego nie da się ocenić przez telefon.</p></li>
+        <li><b>3</b><p>Wracamy z wyceną do 5 dni roboczych od oględzin.</p></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section class="sekcja jasna">
+  <div class="wrap">
+    <div class="naglowek-sekcji rv">
+      <span class="etykieta">Gdzie nas znaleźć</span>
+      <h2>Błońsko, powiat grodziski</h2>
+      <p class="pod">Mapa łączy się z Google dopiero wtedy, gdy ją włączysz - do tego
+        czasu ta strona nie wysyła o tobie nigdzie ani jednej informacji.</p>
+    </div>
+    <div data-po-kliknieciu
+         data-src="https://www.google.com/maps?q=B%C5%82o%C5%84sko%2046%2C%2064-308&amp;output=embed"
+         data-tytul="Mapa: Błońsko 46">
+      <p>Mapa Google - włącza się po kliknięciu.</p>
+      <button class="pk-btn" type="button">Pokaż mapę</button>
+    </div>
+  </div>
+</section>
+
+{domkniecie("Najszybciej - telefonem",
+            "8:00-20:00, wielkopolskie i lubuskie. Nie odbieramy tylko wtedy, "
+            "gdy jesteśmy na rusztowaniu - oddzwaniamy.")}"""
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+#  DOKUMENTY
+# ══════════════════════════════════════════════════════════════════════════════
+def polityka(naglowek):
+    return f"""{naglowek("")}
+
+{otwarcie("Dokument", "Polityka prywatności",
+          "Krótko, bo i strona jest prosta: nie zbieramy danych, nie mierzymy ruchu "
+          "i nie zapisujemy ciasteczek.")}
+
+<section class="sekcja jasna">
+  <div class="wrap tekst-dlugi">
+    <p><strong>Administrator danych:</strong> Firma Ogólnobudowlana Artur Tchórzewski,
+      Błońsko 46, 64-308 Błońsko, NIP 995 004 44 65.</p>
+    <p><strong>Kontakt:</strong> telefon {TEL}, WhatsApp {WA}, e-mail a.s-tchorzewski@wp.pl.</p>
+    <p><strong>Formularze:</strong> na tej stronie nie ma formularza kontaktowego. Kontakt
+      odbywa się telefonicznie, przez WhatsAppa albo mailem, a dane podane w rozmowie służą
+      wyłącznie do przygotowania wyceny i wykonania robót.</p>
+    <p><strong>Ciasteczka i statystyki:</strong> strona nie zapisuje ciasteczek, nie mierzy
+      ruchu i nie ma skryptów śledzących ani reklam.</p>
+    <p><strong>Mapa Google:</strong> na stronie „Kontakt” mapa włącza się dopiero po
+      kliknięciu. Dopóki jej nie włączysz, przeglądarka nie łączy się z serwerami Google.
+      Po włączeniu obowiązują zasady Google.</p>
+    <p><strong>Twoje prawa:</strong> dostęp do swoich danych, sprostowanie, usunięcie,
+      ograniczenie przetwarzania i sprzeciw. Wystarczy telefon albo mail. Przysługuje też
+      skarga do Prezesa Urzędu Ochrony Danych Osobowych.</p>
+    <p><strong>Jak długo trzymamy dane:</strong> przez czas potrzebny na wycenę i wykonanie
+      robót, a dokumenty księgowe przez okres wymagany przepisami podatkowymi.</p>
+  </div>
+</section>"""
+
+
+def czterysta(naglowek):
+    return f"""{naglowek("")}
+
+{otwarcie("Błąd 404", "Tej strony nie ma",
+          "Adres jest nieaktualny albo ma literówkę. Wszystko, co mamy, jest pod linkami "
+          "niżej - albo po prostu zadzwoń.")}
+
+<section class="sekcja">
+  <div class="wrap">
+    {przyciski_kontakt("index.html", "Strona główna")}
+  </div>
+</section>"""
+
+
+def strony(naglowek):
+    return [
+        {"plik": "index.html",
+         "tytul": "A.S Tchórzewski - wykończenia wnętrz, wielkopolskie i lubuskie",
+         "opis": "Szpachlowanie i gładzie, malowanie, łazienki i sucha zabudowa. Rodzinna "
+                 "firma, ponad 20 lat na budowach. Wycena do 5 dni roboczych od oględzin. "
+                 "Tel. 667 434 222.",
+         "hero": "scena",
+         "tresc": index(naglowek)},
+        {"plik": "co-robimy.html",
+         "tytul": "Co robimy - gładzie, malowanie, łazienki, sucha zabudowa | A.S Tchórzewski",
+         "opis": "Szpachlowanie i gładzie ręczne oraz maszynowe, malowanie agregatem, "
+                 "łazienki z płytką wielkoformatową, sucha zabudowa poddaszy, montaż drzwi "
+                 "i okien. Wielkopolskie i lubuskie.",
+         "tresc": co_robimy(naglowek)},
+        {"plik": "realizacje.html",
+         "tytul": "Realizacje - poddasza, łazienki, elewacje | A.S Tchórzewski",
+         "opis": "Zdjęcia z naszych budów: poddasza pod klucz, łazienki z wanną "
+                 "wolnostojącą, beton architektoniczny, schody, elewacje z podbitką "
+                 "oraz rozbudowa przed i po.",
+         "tresc": realizacje(naglowek)},
+        {"plik": "o-nas.html",
+         "tytul": "O nas - firma rodzinna, ponad 20 lat na budowach | A.S Tchórzewski",
+         "opis": "Od 2005 roku na budowach w Niemczech, od 2015 pod własnym szyldem "
+                 "w Polsce. Firma rodzinna z Błońska, wykończenia wnętrz w wielkopolskiem "
+                 "i lubuskiem.",
+         "tresc": o_nas(naglowek)},
+        {"plik": "kontakt.html",
+         "tytul": "Kontakt - 667 434 222, WhatsApp 882 832 244 | A.S Tchórzewski",
+         "opis": "Telefon 667 434 222, WhatsApp 882 832 244, godziny 8:00-20:00. "
+                 "Wykończenia wnętrz w wielkopolskiem i lubuskiem. Wycena do 5 dni "
+                 "roboczych od oględzin.",
+         "tresc": kontakt(naglowek)},
+        {"plik": "polityka-prywatnosci.html",
+         "tytul": "Polityka prywatności | A.S Tchórzewski",
+         "opis": "Kto jest administratorem danych, po co je zbieramy i jakie masz prawa. "
+                 "Strona bez ciasteczek, statystyk i narzędzi zewnętrznych.",
+         "tresc": polityka(naglowek)},
+        {"plik": "404.html",
+         "tytul": "Nie ma takiej strony | A.S Tchórzewski",
+         "opis": "Tej strony nie ma pod tym adresem.",
+         "noindex": True,
+         "tresc": czterysta(naglowek)},
+    ]

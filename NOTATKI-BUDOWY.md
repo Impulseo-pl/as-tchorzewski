@@ -5,7 +5,79 @@ Zamówienie IMP/2026/09/005, opłacone w całości 04.09.2026. Karta CRM `de55d1
 
 ---
 
-## STAN PO BLOKU B (07.09.2026, 14:15) ⬅️ CZYTAJ TO
+## STAN PO BLOKU C (07.09.2026, 18:40) ⬅️ CZYTAJ TO
+
+**Strona STOI — kod gotowy, bramki przechodzą, nic jeszcze nie jest opublikowane.**
+
+### Co powstało (etap 5)
+| plik | co robi |
+|---|---|
+| `build.py` | szkielet: nagłówek, stopka, dane strukturalne, `sitemap.xml`, `robots.txt`, wersje `?v=` |
+| `pages.py` | CAŁA treść + reguły treści na górze pliku (liczba mnoga, zero cen, zakazane frazy) |
+| `assets/app.css` | wygląd pisany pod `DESIGN.md` (kierunek B, `border-radius: 0` wszędzie) |
+| `assets/rdzen.*` | mechanika i dostępność, wersja 10, wgrana `rdzen.py` |
+| `assets/fonty/` | Jost 300/400/500 + Inter 400/500, latin i latin-ext, U SIEBIE (bez Google Fonts → bez banera cookies) |
+| `przygotuj-media.py` | `materialy/` → `img/` i `video/`; nazwa pliku = MIEJSCE NA STRONIE, nie pochodzenie |
+| `DO-POTWIERDZENIA.md` | ⭐ co stoi na stronie, a nie jest potwierdzone przez klienta + co zrobić po odpowiedzi |
+| `.deklaracje-potwierdzone` | „od 2015 roku" - potwierdzone białą listą VAT |
+
+**Podstrony:** `index` (scena) · `co-robimy` (katalog, zygzak) · `realizacje` (indeks galerii
++ 2 filmy) · `o-nas` (oś lat + film z ekipą) · `kontakt` (karta danych + mapa po kliknięciu)
++ `polityka-prywatnosci` i `404`. Każda ma WŁASNY układ, nie tylko własne otwarcie.
+
+### Decyzje podjęte w bloku C (nie były w `DESIGN.md`)
+1. 🔴 **Firma o sobie w liczbie MNOGIEJ (polecenie klienta), do czytelnika w POJEDYNCZEJ**
+   („zadzwoń", nie „zadzwońcie"). Bramka języka blokuje drugą osobę mnogą, a polecenie
+   klienta dotyczyło tego, jak firma mówi o SOBIE. Opisane w `DO-POTWIERDZENIA.md`.
+2. **Zero formularza kontaktowego** - klient sprzedaje telefonem i WhatsAppem.
+3. **Zero kurtyny powitalnej** - pokazywałaby na pełnym ekranie logo odzyskane z JPG-a.
+4. **Zero plakietki opinii Google** - nie mamy pewności, że wizytówka z 6 opiniami jest ICH
+   (pod tym samym adresem druga firma o tym nazwisku), ani zgody na przepisanie opinii.
+5. **Filmy: bez dźwięku, `preload=none`, rusza po kliknięciu.** 5,6 MB → 1,7 MB i 3,5 MB.
+6. **Na telefonie kadr hero idzie PRZED nagłówkiem** - pierwszy ekran ma rozstrzygać
+   zdjęciem prawdziwej roboty (decyzja z etapu 2).
+7. **Myślniki: tylko zwykłe `-`** (twarda reguła bramki języka), zero emoji - przycisk filmu
+   dostał ikonę SVG.
+
+### 🪤 Pułapki, które kosztowały rundę - zapisane, żeby nie wracały
+- 🔴 **`.kaskada` SAMA NIC NIE ODSŁANIA.** Klasę `is-in` dokłada obserwator `.rv` (rdzeń,
+  blok 4), więc kontener musi mieć `class="... kaskada rv"`. Bez `rv` cztery kafle usług
+  stały na `opacity:0` - sekcja była PUSTA i widać to było dopiero na zrzucie.
+- **Biel na `#C85C13` to kontrast 4,20 - poniżej progu.** Przyciski biorą `--akcent-btn`
+  `#A34A0F`, mały tekst akcentem na sekcji jasnej `--akcent-na-jasnym` `#8F3F0A`.
+  Sam `#C85C13` zostaje na kreski i na tekst na ciemnym tle.
+- **`.spec` i `.dalej` w kaflu muszą być blokami** - jako elementy liniowe sklejały się
+  w jedno zdanie („zabudowa i podejścia. Zobacz →").
+- **Makiety kierunków przeniesione do `design/_kierunki/`** - katalog z podkreśleniem
+  bramka pomija; wcześniej trzy makiety zgłaszały brak `canonical` i og:.
+- **To samo zdjęcie w kaflu i w galerii bramka widzi jako klon szablonu.** Kafle usług
+  i galeria stoją teraz na ROZŁĄCZNYCH kadrach (`przygotuj-media.py`).
+
+### Stan bramek (07.09.2026, 18:40)
+✅ statyczne · ✅ język (0 błędów) · ✅ wygląd na przeglądarce (wszystkie podstrony) ·
+✅ hover · ✅ hero zatwierdzone (`.hero-ok.json`).
+⛔ Zostają - CELOWO, nie do naprawy teraz:
+- `noindex` na każdej podstronie i `Disallow: /` w `robots.txt` → `PODGLAD_ROBOCZY = True`
+  w `build.py`. Zdjąć razem ze zgodą klienta na zdjęcia + domeną.
+- „repo nie ma zdalnego adresu" → strona świadomie nigdzie nie stoi (patrz niżej).
+- Błędy z kontroli DEM (`stopklatka`, `pasek-kontaktu`, `ikony-social`) - to testy silnika
+  dem, których strona docelowa nie używa. Pasek kontaktu JEST (`.pasek-dolny`).
+
+### ⛔ Czego NIE zrobiono i dlaczego
+**Strona nie została nigdzie opublikowana.** Zdjęcia klienta nie mogą iść na produkcję przed
+jego pisemną zgodą (pytanie 3), więc nie ma repozytorium zdalnego, nie ma Cloudflare i nie ma
+CNAME. Podgląd: `open -g index.html` albo `python3 -m http.server` w tym katalogu.
+
+**⏳ NASTĘPNY KROK: blok D - teksty** (skill `redakcja-tekstow`, pełne osiem etapów).
+Wejście: `pages.py` + `DO-POTWIERDZENIA.md` + odpowiedzi klienta na 10 pytań.
+
+**Blokery, które nie zniknęły:**
+- ⏳ Odpowiedzi klienta na 10 pytań (obiecane wieczorem 07.09: gwarancja, logo, zdjęcia).
+- ⚠️ Sprawdzić w OVH, czy **abonentem domeny jest klient**, nie Krzysztof prywatnie.
+
+---
+
+## STAN PO BLOKU B (07.09.2026, 14:15) - archiwalnie
 
 **Zrobione w bloku B (etapy 2–4):**
 - ✅ **Pytania przycięte 97 → 10** blokujących + 5 bonusowych → `PYTANIA-DO-KLIENTA.md` (do ręki Adamowi).
@@ -13,8 +85,8 @@ Zamówienie IMP/2026/09/005, opłacone w całości 04.09.2026. Karta CRM `de55d1
 - ✅ **Materiały ściągnięte** — `materialy/` (38 zdjęć, 2 filmy, 3 pliki logo). Szczegóły niżej.
 - ✅ **Decyzje projektowe** — sekcja „ETAP 2" niżej.
 - ✅ **Trzy kierunki zbudowane i wyrenderowane** — `design/kandydat-{A,B,C}-*.md` + makiety
-  `design/kierunki/kierunek-*.html`.
-  Porównanie: `design/kierunki/_kierunki-podglad/POROWNANIE.png` (komputer) i `.../telefon/`.
+  `design/_kierunki/kierunek-*.html`.
+  Porównanie: `design/_kierunki/_kierunki-podglad/POROWNANIE.png` (komputer) i `.../telefon/`.
 
 ### ✅ KIERUNEK WYBRANY — **B „Scena", BEZ ZAOKRĄGLONYCH RAMEK**
 
@@ -31,7 +103,7 @@ Krzysztof, 07.09.2026 ok. 14:00: *„Możemy zrobić B ale bez zaokrąglonych ra
   Poprzedni pokazywał odkryte puszki elektryczne, co zaprzeczało nagłówkowi „gotowe do wprowadzenia".
 
 **⏳ NASTĘPNY KROK: blok C — kod.** Wejście: `DESIGN.md` + `materialy/` + makieta
-`design/kierunki/kierunek-B-scena.html`. ⛔ Zdjęcia nie idą na produkcję przed zgodą klienta (pytanie 3).
+`design/_kierunki/kierunek-B-scena.html`. ⛔ Zdjęcia nie idą na produkcję przed zgodą klienta (pytanie 3).
 
 **Blokery, które nie zniknęły:**
 - ⏳ Odpowiedzi klienta na 10 pytań (obiecane wieczorem 07.09: gwarancja, logo, zdjęcia).
