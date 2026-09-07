@@ -50,6 +50,13 @@ PLAN = [
     #    bo u dołu stoją wiadra i pace (bałagan budowlany) ────────────────────────
     ("pas-beton.jpg",         "beton-arch-ciemny-01.jpg",        1440, 21/9, 0.30, 78),
 
+    # ── DRUGI pas 21:9, tym razem SZEROKI I OSTRY. Elewacja to jedyny materiał
+    #    z pełnych oryginałów (3072×4096), więc jako jedyna wytrzymuje wycięcie
+    #    pasa 2400 px bez powiększania. Zmierzone 07.09.2026: przy 21:9 zostaje
+    #    32 % kadru i nadal jest ostre. Kadr bierze ŚRODEK - u góry samo niebo,
+    #    u dołu kostka brukowa.
+    ("pas-elewacja.jpg",      "elewacja-po-taras-04.jpg",        2400, 21/9, 0.46, 80),
+
     # ── galeria realizacji: naturalne proporcje, bez kadrowania ─────────────────
     ("z-poddasze-01.jpg",     "poddasze-belki-02.jpg",           1100, None, 0.5, 78),
     ("z-poddasze-02.jpg",     "poddasze-belki-03.jpg",           1100, None, 0.5, 78),

@@ -139,7 +139,10 @@ a{text-decoration:none}
 .godziny{font-size:14px;color:var(--przyg)}
 
 /* kadr pionowy jako obiekt na scenie — bez kadrowania, w odsuniętej ramce */
-.kadr-scena{position:relative;width:430px;flex:none}
+/* Kadr hero: 430 px robiło ze zdjęcia przypis do tekstu. Decyzja K. 07.09.2026:
+   „więcej większych zdjęć, mniej tekstu”. Źródło ma 1200 px, więc przy 560 px
+   nadal mamy 2,1× na ekran Retina - powiększenie jest darmowe. */
+.kadr-scena{position:relative;width:min(44vw,560px);flex:none}
 .kadr-scena img{width:100%;border-radius:0}
 .kadr-scena::before{content:"";position:absolute;inset:-26px;border:1px solid var(--linia-slaba);
   pointer-events:none}
@@ -161,6 +164,10 @@ a{text-decoration:none}
 
 /* ── PRZED I PO ─────────────────────────────────────────────────────────────── */
 .para{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+/* Zdjęcia „przed i po" to najmocniejszy dowód na stronie - dostają szerszy
+   kontener niż tekst. 1500 px daje ~735 px na kadr przy źródle 1100 px (1,5×);
+   ⛔ szerzej NIE - pełna szerokość na ekranie 1920 zeszłaby do 1,15× i zmiękła. */
+.wrap--szeroki{max-width:1500px}
 .klatka{position:relative}
 .klatka img{width:100%;border-radius:0;box-shadow:0 2px 8px rgba(0,0,0,.08)}
 .klatka p{margin-top:16px;font-size:15px;color:var(--przyg-jasny)}
@@ -174,7 +181,7 @@ a{text-decoration:none}
 .kafel{display:block;border:1px solid var(--linia-slaba);background:var(--noc-2);
   border-radius:0;overflow:hidden;transition:border-color .2s ease}
 .kafel:hover{border-color:var(--linia)}
-.kafel .obraz{overflow:hidden;aspect-ratio:3/4}
+.kafel .obraz{overflow:hidden;aspect-ratio:2/3}
 .kafel img{width:100%;height:100%;object-fit:cover;border-radius:0;
   transition:transform .55s var(--ease)}
 .kafel:hover img{transform:scale(1.03)}
@@ -261,9 +268,18 @@ a{text-decoration:none}
 /* ── PAS ZDJĘCIA NA CAŁĄ SZEROKOŚĆ ──────────────────────────────────────────── */
 .pas{position:relative;line-height:0}
 .pas img{width:100%;height:clamp(240px,34vw,420px);object-fit:cover;border-radius:0}
+/* ⚠️ Wyższy pas TYLKO dla kadru z pełnego oryginału (2400 px). Pas z betonu ma
+   źródło 1440 px i przy tej wysokości by zmiękł - dlatego to osobna klasa, a nie
+   podniesienie wartości dla wszystkich. */
+.pas--duzy img{height:clamp(320px,46vw,620px)}
+/* 🔴 Gradient policzony pod CIEMNE zdjęcia nie wystarcza pod jasne. Pas z elewacji
+   (biały tynk + niebo) dał kontrast 3,76:1 przy progu 4,5 - złapane przez bramkę
+   na telefonie 07.09.2026. Mocniejszy gradient z przystankiem w połowie + cień
+   pod tekstem; na ciemnym pasie z betonu nie widać różnicy. */
 .pas figcaption{position:absolute;left:0;right:0;bottom:0;padding:22px var(--bok);
   font:400 14px/1.5 Inter;color:#fff;line-height:1.5;
-  background:linear-gradient(to top,rgba(15,15,18,.8),transparent)}
+  text-shadow:0 1px 3px rgba(0,0,0,.55);
+  background:linear-gradient(to top,rgba(15,15,18,.94) 0%,rgba(15,15,18,.72) 55%,transparent 100%)}
 
 /* ── LISTA FAKTÓW / KARTA DANYCH ────────────────────────────────────────────── */
 .karta{border:1px solid var(--linia);background:var(--noc-2);padding:34px;border-radius:0}
