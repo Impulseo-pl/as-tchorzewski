@@ -94,6 +94,11 @@ z obcym serwerem i nie potrzebuje banera cookies (reguła silnika stron docelowy
 - ⛔ Zero `h-screen` — `min-h:100dvh`.
 - Telefon: **przycisk „Menu"**, nie pasek pozycji + **przyklejony na dole pasek**
   „Zadzwoń 667 434 222" / „WhatsApp".
+- 🔴 **Kadr hero na telefonie ma limit wysokości: `max-height: 44vh`.** Bez niego zdjęcie
+  1200×1600 zjadało 531 z 844 px pierwszego ekranu i spychało H1 pod przyklejony pasek -
+  nagłówek był przecięty na 60 px (zmierzone 07.09.2026). Skalujemy CAŁE zdjęcie, **nie
+  kadrujemy** - kadry pionowe bez kadrowania to sens tego kierunku. Ramka `::before` idzie
+  za figurą dzięki `width: fit-content`. Bramka pilnuje tego testem `zaslona_fixed`.
 
 ## Ruch
 

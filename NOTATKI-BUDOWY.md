@@ -55,6 +55,31 @@ oba numery, godziny, oba województwa).
 ⛔ Zostają - CELOWO, bez zmian od bloku C: `noindex` + `Disallow: /` (`PODGLAD_ROBOCZY = True`)
 oraz „repo nie ma zdalnego adresu". Błędy z kontroli DEM nadal nie dotyczą strony docelowej.
 
+### 🔴 BLOK E (etap 7, kontrola) - częściowo zrobiony 07.09 19:55
+**Znaleziony i naprawiony realny błąd, którego nie widziała żadna bramka:** na telefonie
+390×844 pionowy kadr hero zjadał 531 px, przez co H1 stał na 736-850, a przyklejony pasek
+kontaktu (`fixed`, 790-844) **przecinał nagłówek na 60 px**. Najważniejsze zdanie strony było
+nieczytelne na ekranie, na którym ta strona się rozstrzyga.
+Naprawa: `max-height: 44vh` na kadrze (skalowanie, ZERO kadrowania) → H1 kończy się na 755,
+pasek zaczyna na 790, **zapas 35 px**. Zapisane w `DESIGN.md`.
+
+**Dwie rzeczy dołożone do silnika, żeby to nie wróciło u następnego klienta:**
+1. `bramki/wyglad.js` - nowy test **`zaslona_fixed`**: czy element `fixed`/`sticky` zasłania
+   nagłówek albo przycisk na PIERWSZYM ekranie. Sprawdzony na obu stanach (łapie przed
+   naprawą, milczy po). Celowo NIE obejmuje akapitów - urwany na krawędzi `.lead` to
+   normalne przewijanie, a nie wada.
+2. `bramki/sprawdz.py` - **drugi przebieg na telefonie (390×844)**. 🔴 Do 07.09.2026 bramka
+   mierzyła wygląd WYŁĄCZNIE na 1440 px, choć klient otwiera link z SMS-a na telefonie -
+   cała ta klasa wad była dla niej niewidoczna.
+
+**⏳ ZOSTAJE Z BLOKU E (nie zaczęte, wymaga decyzji o wyglądzie):**
+- 🔴 `o-nas` na telefonie: **ściana tekstu pod hero** (104 słowa, 0 % obrazu) - dwie kolumny
+  (oś lat | tekst) zwijają się w jedną. Trzeba wpuścić kadr między oś a narrację **albo**
+  uznać za świadome odstępstwo i zapisać w `DESIGN.md`. ⛔ Nie ruszać bez zgody K.
+- ⚠️ `polityka-prywatnosci` dostaje to samo ostrzeżenie = **fałszywy alarm bramki**;
+  na stronie prawnej ściana tekstu jest poprawna. Do pominięcia w `sciana_tekstu`.
+- ⏳ Test „czy topowa firma tej branży dałaby to u siebie?" - obejrzenie całej strony.
+
 **⏳ NASTĘPNY KROK: odpowiedzi klienta.** Redakcja zrobiła wszystko, co da się zrobić bez niego.
 Publikacja stoi na zgodzie na zdjęcia (pytanie 3). Pytania: `PYTANIA-DO-KLIENTA.md` - **10 blokujących
 + 6 bonusowych** (nowe 16: jak szybko oddzwaniają, gdy nie odbiorą).

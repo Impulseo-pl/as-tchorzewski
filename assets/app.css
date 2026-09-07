@@ -360,7 +360,14 @@ footer{background:var(--noc);border-top:1px solid var(--linia-slaba);padding:70p
   /* 🔴 Na telefonie kadr idzie PRZED tekstem: decyzja z etapu 2 - pierwszy ekran ma
      rozstrzygnąć jednym zdjęciem prawdziwej roboty, a nie samym nagłówkiem.
      Numery i tak są pod kciukiem, na przyklejonym pasku przy dolnej krawędzi. */
-  .kadr-scena{width:100%;order:-1}
+  /* 🔴 Wysokość kadru na telefonie MA LIMIT. Bez niego zdjęcie 1200x1600 zjadało 531 px
+     z 844 px pierwszego ekranu i spychało H1 na 736-850, czyli POD przyklejony pasek
+     kontaktu (fixed, 790-844) - nagłówek był przecięty na 60 px. Bramka tego nie łapie:
+     mierzy kontrast i odstępy, nie kolizję z elementem `fixed`. (Zmierzone 07.09.2026.)
+     Skalujemy CAŁE zdjęcie, nie kadrujemy - kadry pionowe bez kadrowania to sens
+     tego kierunku (DESIGN.md). Ramka `::before` idzie za figurą dzięki `width:fit-content`. */
+  .kadr-scena{width:fit-content;max-width:100%;margin-inline:auto;order:-1}
+  .kadr-scena img{max-height:44vh;width:auto}
   .kadr-scena::before{inset:-12px}
   .kadr-scena figcaption{text-align:left}
   .kafle{grid-template-columns:1fr 1fr;gap:16px}
