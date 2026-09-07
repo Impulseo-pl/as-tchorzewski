@@ -5,7 +5,68 @@ Zamówienie IMP/2026/09/005, opłacone w całości 04.09.2026. Karta CRM `de55d1
 
 ---
 
-## STAN PO BLOKU C (07.09.2026, 18:40) ⬅️ CZYTAJ TO
+## STAN PO BLOKU D (07.09.2026, 19:35) ⬅️ CZYTAJ TO
+
+**Teksty przeredagowane, wdrożone i przebudowane. Bramki w tym samym stanie co po bloku C
+(czysto poza dwiema celowymi). Nadal nic nie opublikowane.**
+
+### Co powstało (etap 6 - skill `redakcja-tekstow`, pełne osiem etapów)
+| plik | co robi |
+|---|---|
+| `_dokumentacja/AUDYT-TEKSTOW.md` | ⭐ całe rozumowanie: audyt podstrona po podstronie, autorewizja, przegląd, korekta |
+| `_dokumentacja/INSTRUKCJA-WDROZENIA-TEKSTOW.md` | 25 par STARE → NOWE, dla kogoś, kto nie zna tej rozmowy |
+
+**25 zamian w 5 podstronach · treść -190 znaków (-2,2 %) · bramka języka 0 błędów.**
+⤴️ **Cofnięcie całej redakcji: `git reset --hard przed-tekstami`**
+
+### Na czym polegała ta redakcja
+Teksty z bloku C były **dobre** - zero frazesów, zero zdań zastępczych, zero wymyślonych liczb.
+Miały jeden problem i systemowy: **sześć argumentów firmy padało po trzy-cztery razy każdy**,
+w prawie identycznym brzmieniu, bo każda podstrona była pisana tak, żeby broniła się sama.
+Redakcja to głównie decyzja, **gdzie każdy argument pada RAZ i mocno**:
+
+| argument | stoi teraz na |
+|---|---|
+| to nasze zdjęcia, nie stock | `realizacje` (H1 + lead) |
+| polecamy sprawdzone osoby | `index` („Nie bierzemy każdej roboty") + `co-robimy` („Poza wnętrzami") |
+| agregat: duża powierzchnia, równa powłoka | `co-robimy` 02 |
+| jedna ekipa, nie ma komu zrzucić winy | `o-nas` |
+| „drogi na skróty" | `co-robimy` 01 |
+| wycena do 5 dni roboczych | hero `index` · domknięcie `realizacje` · `kontakt` krok 3 |
+
+⛔ **Żaden fakt podyktowany przez klienta nie zniknął** - sprawdzone po kolei skryptem
+(liczba mnoga, zero cen, 5 dni, kolejność usług, polecanie, rodzinna, ponad 20 lat, 2005/2015,
+oba numery, godziny, oba województwa).
+
+### 🪤 Trzy rzeczy, które ta redakcja o sobie ustaliła
+- 🔴 **Autorewizja (etap 4) zwróciła 9 poprawek i 1 wycofanie na 19 propozycji.** Wycofane:
+  „to część tej samej roboty, nie osobne zlecenie" przy montażu drzwi - **obietnica cenowa
+  złożona za klienta** (ten sam błąd co „bezpłatny pomiar" u PEC STAL).
+- 🔴 **Wycinanie powtórzeń samo tworzy powtórzenia.** Cztery razy nowa propozycja duplikowała
+  coś innego na stronie (Z-04 kopiował listę `spec`, Z-05 dublował „budowę", Z-08+Z-09 „najczęściej",
+  Z-05+Z-17 wzorzec „bez X i bez Y"). Sprawdzać PO wdrożeniu, na wyniku, nie na propozycjach.
+- 🔴 **`o-nas` ma twardy próg 1 800 znaków** (bramka, lekcja 2026-08-06-018). Po skróceniach
+  spadło do 1 771 i bramka zapaliła się na czerwono. Naprawione **treścią, nie watą**: obszar
+  wrócił do leadu, punkt „Dziś" został puentą o zakresie.
+
+### Stan bramek (07.09.2026, 19:35)
+✅ statyczne · ✅ język (0 błędów, 0 ostrzeżeń) · ✅ wygląd na przeglądarce · ✅ hover ·
+✅ korekta skryptem (zero literówek, długich myślników, emoji).
+⛔ Zostają - CELOWO, bez zmian od bloku C: `noindex` + `Disallow: /` (`PODGLAD_ROBOCZY = True`)
+oraz „repo nie ma zdalnego adresu". Błędy z kontroli DEM nadal nie dotyczą strony docelowej.
+
+**⏳ NASTĘPNY KROK: odpowiedzi klienta.** Redakcja zrobiła wszystko, co da się zrobić bez niego.
+Publikacja stoi na zgodzie na zdjęcia (pytanie 3). Pytania: `PYTANIA-DO-KLIENTA.md` - **10 blokujących
++ 6 bonusowych** (nowe 16: jak szybko oddzwaniają, gdy nie odbiorą).
+
+**Blokery, które nie zniknęły:**
+- ⏳ Odpowiedzi klienta na 10 pytań (obiecane wieczorem 07.09 - nie przyszły; sprawdzone 18:55
+  w CRM i w Gmailu).
+- ⚠️ Sprawdzić w OVH, czy **abonentem domeny jest klient**, nie Krzysztof prywatnie.
+
+---
+
+## STAN PO BLOKU C (07.09.2026, 18:40) - archiwalnie
 
 **Strona STOI — kod gotowy, bramki przechodzą, nic jeszcze nie jest opublikowane.**
 

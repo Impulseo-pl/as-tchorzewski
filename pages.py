@@ -245,9 +245,8 @@ def index(naglowek):
   <div class="wrap">
     <div class="naglowek-sekcji rv">
       <span class="etykieta">Przed i po</span>
-      <h2>Ta sama bryła. Dwa zdjęcia.</h2>
-      <p class="pod">Zdjęcia z budowy trudno wziąć z internetu - dlatego pokazujemy stan
-        surowy obok tego, co po sobie zostawiliśmy.</p>
+      <h2>Ten sam dom. Dwa zdjęcia.</h2>
+      <p class="pod">Przed rozbudową i po niej. Na gotowym zdjęciu nie widać już, od czego się zaczynało.</p>
     </div>
     <div class="para rv">
       <figure class="klatka">
@@ -271,8 +270,7 @@ def index(naglowek):
     <div class="naglowek-sekcji rv">
       <span class="etykieta">Zakres</span>
       <h2>Co robimy najczęściej</h2>
-      <p class="pod">Kolejność nie jest przypadkowa - tak wygląda robota, którą bierzemy
-        najczęściej.</p>
+      <p class="pod">Cztery roboty, na których stoi większość naszych budów. Montaż drzwi i okien robimy do kompletu.</p>
     </div>
     <div class="kafle kaskada rv">
       <a class="kafel" href="co-robimy.html#u-01">
@@ -306,7 +304,7 @@ def index(naglowek):
     </div>
     <div class="wiersz-usluga rv">
       <h3>Montaż drzwi i okien</h3>
-      <span class="spec">Robimy przy okazji wykończenia, razem z obróbką po montażu.</span>
+      <span class="spec">Wstawiamy, gdy ściany są gotowe - z obróbką ościeży.</span>
       <a class="dalej" href="co-robimy.html#u-05">Zobacz →</a>
     </div>
   </div>
@@ -324,12 +322,11 @@ def index(naglowek):
           "Malowanie agregatem natryskowym. Film bez dźwięku.",
           "Pracownik w kombinezonie i masce maluje ścianę agregatem natryskowym")}
     <div>
-      <span class="etykieta">Nasza robota, nie zdjęcie z internetu</span>
+      <span class="etykieta">Kadr z roboty</span>
       <h2>Tak to wygląda od naszej strony</h2>
-      <p class="pod">Na filmie malujemy agregatem natryskowym. Bierzemy go tam, gdzie
-        powierzchnia jest duża, a powłoka ma być równa - bez śladów po wałku.
-        Drugi film, z roboty przy elewacji, stoi na stronie z realizacjami.</p>
-      <a class="duch" href="realizacje.html">Zobacz realizacje</a>
+      <p class="pod">Malowanie agregatem - trzydzieści siedem sekund prosto z budowy, bez montażu i bez komentarza.
+</p>
+      <a class="duch" href="co-robimy.html#u-02">Zobacz, jak malujemy</a>
     </div>
   </div>
 </section>
@@ -344,11 +341,10 @@ def index(naglowek):
       <div class="tekst-dlugi">
         <p>Pytasz o coś, czego nie robimy? Mówimy to wprost i polecamy sprawdzone osoby,
           z którymi spotykamy się na budowach. Nikt nie odchodzi od nas z niczym.</p>
-        <p>Pracujemy w wielkopolskiem i lubuskiem, telefon odbieramy od 8:00 do 20:00.</p>
       </div>
     </div>
     <div class="odstep-domkniecie">
-      {domkniecie_ramka("Wycena po oględzinach - do 5 dni roboczych",
+      {domkniecie_ramka("Zacznijmy od telefonu",
                         "Zadzwoń albo napisz na WhatsAppie. Umawiamy się na miejscu, "
                         "oglądamy zakres i wracamy z wyceną.")}
     </div>
@@ -380,9 +376,7 @@ def co_robimy(naglowek):
     return f"""{naglowek("co-robimy.html")}
 
 {otwarcie("Zakres robót", "Wykończenia wnętrz od gładzi po drzwi",
-          "Robimy to, na czym się znamy - a przy robocie, której nie bierzemy, "
-          "polecamy sprawdzone osoby. Cena zależy od zakresu i stanu wnętrza, "
-          "dlatego wyceniamy po oględzinach na miejscu.")}
+          "Pięć robót, które bierzemy najczęściej - i to, co przy każdej z nich decyduje o efekcie. Ceny nie podajemy z góry - zależy od zakresu i od tego, co zastaniemy na ścianie.")}
 
 <section class="sekcja jasna">
   <div class="wrap">
@@ -415,15 +409,15 @@ def co_robimy(naglowek):
 {blok_uslugi("u-04", "04", "Sucha zabudowa", [
     "Płyta gipsowo-kartonowa zamienia poddasze w pokoje: skosy, sufity, ścianki działowe, "
     "wnęki i obudowy.",
-    "Zabudowę prowadzimy tak, żeby od razu szła pod gładź - to ta sama ekipa, więc nikt "
-    "nie zrzuca winy za nierówności na poprzednika."],
+    "Zabudowę prowadzimy tak, żeby od razu szła pod gładź: równe płaszczyzny, wyprowadzone narożniki, taśmowanie na łączeniach."],
     "skosy i sufity · ścianki działowe · wnęki i obudowy",
     ("u-sucha-zabudowa.jpg", 1000, 1333),
     "Skos poddasza zabudowany płytą gipsowo-kartonową z oknem dachowym", odwrocony=True)}
 
 {blok_uslugi("u-05", "05", "Montaż drzwi i okien", [
-    "Montujemy drzwi i okna najczęściej przy okazji wykończenia wnętrza - razem "
-    "z obróbką ościeży i wykończeniem ściany po montażu."],
+    "Drzwi i okna montujemy zwykle na końcu wykończenia - wtedy, gdy ściany "
+    "są już gotowe i wiadomo, w co się wstawia.",
+    "Po montażu zostaje obróbka ościeży i wykończenie ściany wokół futryny."],
     "drzwi wewnętrzne i zewnętrzne · okna · obróbka i wykończenie po montażu",
     ("u-drzwi-okna.jpg", 1000, 1333),
     "Hol z zamontowanymi drzwiami wejściowymi z matowym szkłem")}
@@ -457,9 +451,7 @@ def realizacje(naglowek):
     return f"""{naglowek("realizacje.html")}
 
 {otwarcie("Realizacje", "Nasze budowy, nasze zdjęcia",
-          "Wszystkie zdjęcia na tej stronie są z naszych budów. Część kadrów jest "
-          "„w trakcie” i tak je podpisujemy - pokazują to, czego na gotowym zdjęciu "
-          "już nie widać.")}
+          "Wszystkie z naszych budów - żadnego kupionego w banku zdjęć. Na gotowej łazience nie widać już, jak wyprowadzono podejścia wodne ani co siedzi pod płytką, więc obok skończonych wnętrz pokazujemy kadry z samej roboty, podpisane „w trakcie”.")}
 
 <section class="sekcja jasna">
   <div class="wrap">
@@ -485,9 +477,8 @@ def realizacje(naglowek):
   <div class="wrap">
     <div class="naglowek-sekcji rv">
       <span class="etykieta">Filmy z budowy</span>
-      <h2>Dwie minuty roboty</h2>
-      <p class="pod">Oba filmy są bez dźwięku i ruszają dopiero po kliknięciu - nie zjadają
-        transferu na telefonie.</p>
+      <h2>Minuta i szesnaście sekund roboty</h2>
+      <p class="pod">Oba z budowy, oba bez dźwięku - ruszają dopiero, gdy je włączysz.</p>
     </div>
     <div class="para rv">
       {film("agregat.mp4", "plakat-agregat.jpg", "Malowanie agregatem (37 s)",
@@ -520,17 +511,14 @@ def o_nas(naglowek):
     <ol class="lata rv">
       <li><b>2005</b><p>Zaczynamy pracę na budowach w Niemczech.</p></li>
       <li><b>2015</b><p>Rejestrujemy własną firmę w Polsce, w Błońsku pod Rakoniewicami.</p></li>
-      <li><b>Dziś</b><p>Wykończenia wnętrz w wielkopolskiem i lubuskiem. Telefon odbieramy
-        od 8:00 do 20:00.</p></li>
+      <li><b>Dziś</b><p>Wykończenia wnętrz pod klucz - od gładzi i malowania
+        po łazienki, poddasza i montaż drzwi.</p></li>
     </ol>
     <div class="tekst-dlugi rv">
-      <h3>Firma rodzinna</h3>
-      <p>Jesteśmy firmą rodzinną. To znaczy tyle, że nazwisko na fakturze i ludzie
-        na budowie to ta sama historia - i że nie znikamy po odbiorze.</p>
-      <h3>Robota, która sama się sprawdza</h3>
-      <p>Gładź, płytka wielkoformatowa i skos poddasza mają tę wspólną cechę, że po
-        wyschnięciu widać każdą drogę na skróty. Dlatego u nas zabudowa, gładzie
-        i malowanie idą jedną ręką - nie ma komu zrzucić winy za nierówną ścianę.</p>
+      <h3>Co znaczy „rodzinna”</h3>
+      <p>Tyle, że nazwisko na fakturze i ludzie na budowie to ta sama historia - i że nie znikamy po odbiorze.</p>
+      <h3>Po wyschnięciu widać wszystko</h3>
+      <p>Gładź, płytka wielkoformatowa i skos poddasza mają jedną wspólną cechę: efekt widać dopiero wtedy, gdy jest za późno na poprawki. Dlatego zabudowa, gładzie i malowanie idą u nas jedną ręką - nie ma komu zrzucić winy za nierówną ścianę.</p>
       <p>Przy robocie, której nie bierzemy, polecamy sprawdzone osoby, z którymi
         spotykamy się na budowach.</p>
     </div>
@@ -545,16 +533,14 @@ def o_nas(naglowek):
     <div>
       <span class="etykieta">Z budowy</span>
       <h2>Nasza ekipa przy robocie</h2>
-      <p class="pod">Film z budowy przy elewacji. Bez pozowania i bez lektora - po prostu
-        tak wygląda dzień na rusztowaniu.</p>
+      <p class="pod">Film z budowy przy elewacji. Nikt tu nie pozuje - tak po prostu wygląda dzień na rusztowaniu.</p>
       <a class="duch" href="realizacje.html">Zobacz realizacje</a>
     </div>
   </div>
 </section>
 
-{domkniecie("Poznajmy się przy wycenie",
-            "Zadzwoń - umawiamy oględziny na miejscu i wracamy z wyceną "
-            "do 5 dni roboczych.")}"""
+{domkniecie("Teraz wiesz, kto przyjedzie",
+            "Zadzwoń albo napisz - umawiamy oględziny na miejscu.")}"""
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -605,8 +591,7 @@ def kontakt(naglowek):
     <div class="naglowek-sekcji rv">
       <span class="etykieta">Gdzie nas znaleźć</span>
       <h2>Błońsko, powiat grodziski</h2>
-      <p class="pod">Mapa łączy się z Google dopiero wtedy, gdy ją włączysz - do tego
-        czasu ta strona nie wysyła o tobie nigdzie ani jednej informacji.</p>
+      <p class="pod">Błońsko leży pod Rakoniewicami, w powiecie grodziskim - stąd wyjeżdżamy na budowy. Mapa włącza się dopiero po kliknięciu.</p>
     </div>
     <div data-po-kliknieciu
          data-src="https://www.google.com/maps?q=B%C5%82o%C5%84sko%2046%2C%2064-308&amp;output=embed"

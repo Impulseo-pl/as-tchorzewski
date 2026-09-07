@@ -149,6 +149,12 @@ Nieblokujące. Ale każda z nich to zdanie, którego nie napisze żadna inna fir
 15. **Zgadzacie się na zdjęcie ekipy albo Wasze na stronie?** Twarz przy nazwisku to najtańszy dowód
     prawdziwości firmy, którą ktoś dostał z polecenia — a dziś na całej stronie nie ma ani jednej twarzy.
 
+16. **Jak szybko oddzwaniacie, gdy nie odbierzecie?** (Tego samego dnia? Do godziny?)
+    Na stronie stoi „Nie odbieramy tylko wtedy, gdy jesteśmy na rusztowaniu - oddzwaniamy",
+    ale bez „kiedy" to nie jest obietnica, tylko uspokojenie. Jedna liczba robi z tego drugi
+    twardy termin obok pięciu dni - i tak samo jak tamten, nie ma go żadna firma z okolicy.
+    ⚠️ Pytanie doszło przy redakcji tekstów 07.09 - nie było go w pierwszej dziesiątce.
+
 ---
 
 ## ⛔ O co NIE pytamy (żeby Adam nie pytał niepotrzebnie)

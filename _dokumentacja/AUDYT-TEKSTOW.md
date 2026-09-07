@@ -582,3 +582,99 @@ w tym na pierwszym ekranie. To nie jest usunięcie argumentu, tylko zdjęcie jeg
 | marka/fraza wyrzucona z nagłówka | **nie** - H1 nietknięte na wszystkich pięciu podstronach |
 | własny błąd, wcześniej wytykany | **tak** (Z-04) - tworzyłem nowe powtórzenie, wycinając stare |
 | **obietnica za klienta** | **tak** (Z-09) - ⛔ wycofane w całości |
+
+---
+
+# ETAP 5 — PRZEGLĄD CAŁOŚCI (liczony na wdrożonym wyniku, nie na propozycjach)
+
+| fraza | PRZED | PO |
+|---|---|---|
+| „5 dni roboczych" | 6 | **4** |
+| „oględziny" | 8 | **6** |
+| „polecamy sprawdzone osoby" | 4 | **3** |
+| „z internetu" | 2 | **0** |
+| „przy okazji" | 2 | **0** |
+| „droga na skróty" | 2 | **1** |
+| „zrzucić winy" | 2 | **1** |
+| „firma rodzinna" | 4 | **3** |
+| „transfer" | 1 | **0** |
+| obszar w treści | 6 | **4** |
+| godziny w treści | 6 | **4** |
+| „najczęściej" | 3 | **2** |
+| „bryła", „dwie minuty" | 1 + 1 | **0 + 0** |
+
+**Treść: 8 670 → 8 480 znaków (-190, -2,2 %).** To jest miara tego, że redakcja nie polegała
+na skracaniu: zniknęły powtórzenia, a nie argumenty.
+
+### Nowe powtórzenia stworzone przez samą redakcję - szukane osobno i naprawione
+- **Z-04** powielało listę `spec` z `co-robimy` → przepisane (złapane w etapie 4).
+- **Z-05** dawało „budowa" dwa razy w jednym bloku → etykieta zmieniona na „Kadr z roboty".
+- **Z-08 + Z-09** dawały „najczęściej" dwa razy na `co-robimy` → w Z-09 „zwykle".
+- **Z-05 + Z-17** dawały wzorzec „bez X i bez Y" dwa razy → na `o-nas` „Nikt tu nie pozuje".
+
+### Sprzeczności między podstronami
+Sprawdzone: żadna. Cena, termin wyceny, obszar, godziny i historia mówią wszędzie to samo.
+
+### Fakty klienta - kontrola po kolei
+Liczba mnoga ✅ · zero cen ✅ (jedyne trafienie na „zł" to słowo „szła") · 5 dni roboczych ✅ ·
+kolejność usług ✅ · polecanie sprawdzonych osób ✅ · rodzinna ✅ · ponad 20 lat ✅ ·
+2005 i 2015 ✅ · oba numery i ikona WA ✅ · godziny 8-20 ✅ · wielkopolskie i lubuskie ✅.
+
+### 🔴 Regresja złapana przez bramkę, nie przeze mnie
+Po pierwszym przebiegu `o-nas.html` miało **1 771 znaków przy progu 1 800** - moje skrócenia
+zbiły podstronę poniżej minimum treści (lekcja 2026-08-06-018). Bramka statyczna, czysta przed
+blokiem D, zapaliła się na czerwono.
+**Naprawa nie polegała na dosypaniu waty:** obszar działania wrócił do leadu `o-nas`, czyli tam,
+gdzie człowiek czyta go najpierw, a punkt „Dziś" na osi lat został czystą puentą o zakresie.
+To jest ta sama decyzja, którą etap 4 podjął odwrotnie - i tak jest lepiej.
+
+---
+
+# ETAP 6 — REDAKCJA I KOREKTA
+
+**Redakcja:** ostatnie powtórzenie („najczęściej" ×2 na `co-robimy`) - usunięte.
+**Korekta skryptem** (7 podstron, znaczniki liniowe zdejmowane bez wstawiania spacji, żeby
+nie robić fałszywych alarmów):
+✅ zero literówek · zero podwójnych spacji i kropek · **zero długich myślników (– —)** ·
+zero emoji · zero sklejonych słów.
+
+---
+
+# ETAP 7 — WDROŻENIE
+
+1. **Punkt cofnięcia:** commit `35da141` + tag `przed-tekstami`.
+   ⤴️ **Cofnięcie całości: `git reset --hard przed-tekstami`**
+2. 25 zamian skryptem z raportem trafień - **25 × ✓, 0 nietrafionych.** Dopasowanie elastyczne,
+   bo zdania w `pages.py` są łamane na kilka wierszy i sklejane ze stringów.
+3. Przebudowa `build.py` - 7 podstron + `sitemap.xml` + `robots.txt`.
+4. **Bramki:** statyczne ✅ · język **0 błędów, 0 ostrzeżeń** ✅ · wygląd na przeglądarce
+   (wszystkie podstrony) ✅ · reakcja na kursor ✅.
+   ⛔ Zostają dwie, **celowo**: strona nigdzie nie stoi i `noindex` + `Disallow: /`
+   (`PODGLAD_ROBOCZY = True`) - schodzą razem ze zgodą klienta na zdjęcia i z domeną.
+5. **Zrzuty obejrzane** (`index`, `o-nas`, `realizacje`) - po usuniętym akapicie w sekcji
+   „Uczciwie" nie została pusta kolumna, oś lat na `o-nas` ma puentę, sekcje trzymają rytm.
+
+---
+
+# ETAP 8 — CMENTARZ FRAZ
+
+`cmentarz_fraz.py zbierz-redakcje` → **17 zdań dodanych**, 7 pominiętych (za krótkie albo już były),
+0 stojących w banku fraz silnika. Sprawdzone ręcznie: **na liście nie ma ani jednego zdania
+podyktowanego przez klienta** - wyłącznie nasze własne sformułowania, które ta redakcja odrzuciła.
+Dzięki temu nie wrócą u następnego klienta.
+
+---
+
+# LISTA PYTAŃ DO KLIENTA
+
+Dziesięć blokujących i pięć bonusowych leży w `PYTANIA-DO-KLIENTA.md` (blok B).
+**Ta redakcja dołożyła jedno, szesnaste:**
+
+> **Jak szybko oddzwaniacie, gdy nie odbierzecie?** Na stronie stoi „Nie odbieramy tylko wtedy,
+> gdy jesteśmy na rusztowaniu - oddzwaniamy". Bez „kiedy" to nie jest obietnica, tylko
+> uspokojenie. Jedna liczba robi z tego **drugi twardy termin obok pięciu dni** - i tak samo
+> jak tamten, nie ma go żadna firma z okolicy.
+
+⛔ **Czego copywriting nie załatwi i co dalej blokuje publikację:** zgoda na zdjęcia (#3),
+gwarancja (#1), logo w wektorze (#2), pięć miejscowości (#5), liczba osób w ekipie (#11),
+zgody na opinie (#7). Jedna rozmowa z właścicielem daje tu więcej niż cały ten audyt.
