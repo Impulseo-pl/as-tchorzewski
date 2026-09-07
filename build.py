@@ -127,6 +127,7 @@ def stopka():
         <p>Odbieramy 8:00-20:00</p>
         <p>{FIRMA}<br>{ULICA}<br>{KOD} {MIASTO}</p>
         <p>NIP {NIP}<br>REGON {REGON}</p>
+        {pages.ikony_social_stopka()}
       </div>
     </div>
     <div class="stopka-dol">
@@ -139,7 +140,8 @@ def stopka():
 <div class="pasek-dolny">
   <a class="a-tel" href="tel:{TEL_E164}">Zadzwoń {TEL}</a>
   <a class="a-wa" href="{WA_LINK}" rel="noopener">{pages.ikona_wa("#fff")}WhatsApp</a>
-</div>"""
+</div>
+{pages.dymki_social()}"""
 
 
 # ⚠️ Bez godzin otwarcia: klient podał 8-20, ale wizytówka Google mówi 18:00 i nie

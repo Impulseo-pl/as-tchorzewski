@@ -43,12 +43,15 @@
 /* ── TOKENY (kolory zmierzone z ich banera — `DESIGN.md`) ───────────────────── */
 :root{
   --noc:#0F0F12;
-  --noc-2:#17171B;
+  --noc-2:#18161A;                   /* karta - ocieplona o włos, żeby nie była chłodnym grafitem */
   --dzien:#F3F1ED;
   --biel:#F5F5F7;
-  --przyg:#9A9AA2;
+  /* 🔴 Neutralne są CIEPŁE, nie chłodnoszare. Chłodny szary obok ciepłego pomarańczu
+     to najczęstszy „domyślny" zestaw i właśnie on czyta się jak szablon. Te dwa
+     odcienie są przesunięte w stronę ich #C85C13; kontrast sprawdzony (6,93 i 5,29). */
+  --przyg:#A39A93;
   --atrament:#1B1B1E;
-  --przyg-jasny:#63636B;
+  --przyg-jasny:#6B6259;
   --akcent:#C85C13;
   --akcent-ciemniej:#B0500F;
   /* 🔴 Kontrast: biel na #C85C13 daje 4,20 - poniżej progu 4,5. Przyciski i etykiety
@@ -62,7 +65,7 @@
   --linia:rgba(255,255,255,.16);
   --linia-slaba:rgba(255,255,255,.08);
   --linia-jasna:rgba(27,27,30,.14);
-  --rytm:clamp(4rem,8vw,8rem);
+  --rytm:clamp(5rem,9.5vw,10rem);    /* więcej powietrza między sekcjami (K. 07.09) */
   --wrap:1240px;
   --bok:32px;
   /* plakietka opinii Google (rdzeń) — gdyby weszła, ma być prostokątna jak reszta */
@@ -122,7 +125,7 @@ a{text-decoration:none}
 .burger{display:none}
 
 /* ── SCENA (nagłówek strony głównej) ────────────────────────────────────────── */
-.scena{position:relative;overflow:hidden;padding:88px 0 100px}
+.scena{position:relative;overflow:hidden;padding:76px 0 104px}
 /* ⚠️ Świadome złamanie zakazu gradientów (`DESIGN.md`, odstępstwo 6): płaska czerń
    przy zdjęciach z budowy robi się martwa. Do skasowania, jeśli będzie widać. */
 .scena::after{content:"";position:absolute;inset:0;pointer-events:none;
@@ -139,11 +142,18 @@ a{text-decoration:none}
 .godziny{font-size:14px;color:var(--przyg)}
 
 /* kadr pionowy jako obiekt na scenie — bez kadrowania, w odsuniętej ramce */
-/* Kadr hero: 430 px robiło ze zdjęcia przypis do tekstu. Decyzja K. 07.09.2026:
-   „więcej większych zdjęć, mniej tekstu”. Źródło ma 1200 px, więc przy 560 px
-   nadal mamy 2,1× na ekran Retina - powiększenie jest darmowe. */
-.kadr-scena{position:relative;width:min(44vw,560px);flex:none}
-.kadr-scena img{width:100%;border-radius:0}
+/* Kadr hero: 430 px robiło ze zdjęcia przypis do tekstu; 560 px daje nadal 2,1×
+   na ekran Retina (źródło 1200 px), więc powiększenie jest darmowe.
+   🔴 ALE MA SIĘ MIEŚCIĆ W EKRANIE - reguła K. z 07.09.2026: „zdjęcie hero na landingu
+   zawsze musi się mieścić na każdym urządzeniu”. Pierwsza wersja miała samą szerokość
+   i na laptopie 1440×900 kadr wychodził poza pierwszy ekran.
+   Dlatego wysokość jest odjęta od WIDOKU, nie wpisana na sztywno:
+   nawigacja 76 + górny odstęp sceny 76 + podpis ~64 + oddech 40 = 256 px.
+   Figura ma `fit-content`, więc ramka `::before` idzie za zdjęciem, cokolwiek wyjdzie.
+   Bramka pilnuje tego testem `hero_poza_ekranem`. */
+.kadr-scena{position:relative;width:fit-content;flex:none}
+.kadr-scena img{width:auto;max-width:min(44vw,560px);
+  max-height:calc(100dvh - 256px);border-radius:0}
 .kadr-scena::before{content:"";position:absolute;inset:-26px;border:1px solid var(--linia-slaba);
   pointer-events:none}
 .kadr-scena figcaption{margin-top:20px;font-size:13.5px;color:var(--przyg);text-align:right}
@@ -157,13 +167,13 @@ a{text-decoration:none}
 .jasna{background:var(--dzien);color:var(--atrament)}
 .jasna h1,.jasna h2,.jasna h3{color:var(--atrament)}
 .jasna .pod,.jasna .przyciemniony{color:var(--przyg-jasny)}
-.sekcja h2{font-size:clamp(2rem,3.6vw,2.9rem);margin-bottom:14px}
+.sekcja h2{font-size:clamp(2rem,3.6vw,2.9rem);margin-bottom:18px}
 .pod{color:var(--przyg);font-size:16.5px;max-width:52ch;margin-bottom:46px}
-.naglowek-sekcji{margin-bottom:46px}
+.naglowek-sekcji{margin-bottom:64px}
 .naglowek-sekcji .pod{margin-bottom:0}
 
 /* ── PRZED I PO ─────────────────────────────────────────────────────────────── */
-.para{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+.para{display:grid;grid-template-columns:1fr 1fr;gap:34px}
 /* Zdjęcia „przed i po" to najmocniejszy dowód na stronie - dostają szerszy
    kontener niż tekst. 1500 px daje ~735 px na kadr przy źródle 1100 px (1,5×);
    ⛔ szerzej NIE - pełna szerokość na ekranie 1920 zeszłaby do 1,15× i zmiękła. */
@@ -177,7 +187,7 @@ a{text-decoration:none}
 .znacznik.po{background:var(--akcent-btn)}
 
 /* ── KAFLE USŁUG ────────────────────────────────────────────────────────────── */
-.kafle{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+.kafle{display:grid;grid-template-columns:repeat(4,1fr);gap:26px}
 .kafel{display:block;border:1px solid var(--linia-slaba);background:var(--noc-2);
   border-radius:0;overflow:hidden;transition:border-color .2s ease}
 .kafel:hover{border-color:var(--linia)}
@@ -186,7 +196,7 @@ a{text-decoration:none}
   transition:transform .55s var(--ease)}
 .kafel:hover img{transform:scale(1.03)}
 .kafel{display:flex;flex-direction:column}
-.kafel .opis{padding:20px 20px 24px;display:flex;flex-direction:column;flex:1}
+.kafel .opis{padding:26px 24px 28px;display:flex;flex-direction:column;flex:1}
 .kafel h3{font-size:1.35rem;margin-bottom:8px}
 /* `spec` i `dalej` MUSZĄ być blokami: jako elementy liniowe sklejały się w jedno zdanie
    („zabudowa i podejścia. Zobacz →") i dolne krawędzie kafli rozjeżdżały się o wiersz. */
@@ -383,7 +393,10 @@ footer{background:var(--noc);border-top:1px solid var(--linia-slaba);padding:70p
      Skalujemy CAŁE zdjęcie, nie kadrujemy - kadry pionowe bez kadrowania to sens
      tego kierunku (DESIGN.md). Ramka `::before` idzie za figurą dzięki `width:fit-content`. */
   .kadr-scena{width:fit-content;max-width:100%;margin-inline:auto;order:-1}
-  .kadr-scena img{max-height:44vh;width:auto}
+  /* 🔴 `max-width:min(44vw,560px)` z widoku szerokiego MUSI tu zostać skasowane:
+     44 % z 390 px to 172 px, czyli kadr hero kurczy się na telefonie do znaczka.
+     Wpadka 07.09.2026 - limit dobrany pod laptopa przeciekł na telefon. */
+  .kadr-scena img{max-height:44vh;max-width:100%;width:auto}
   .kadr-scena::before{inset:-12px}
   .kadr-scena figcaption{text-align:left}
   .kafle{grid-template-columns:1fr 1fr;gap:16px}
@@ -419,3 +432,36 @@ footer{background:var(--noc);border-top:1px solid var(--linia-slaba);padding:70p
 
 /* odstęp między tekstem sekcji a ramką wezwania na stronie głównej */
 .odstep-domkniecie{margin-top:clamp(2.5rem,5vw,4.5rem)}
+
+
+/* ── DYMKI SOCIAL (prawy dolny róg) ──────────────────────────────────────────
+   Jedyne miejsce, gdzie strona wychodzi poza swoją siatkę - dlatego trzyma się
+   reszty języka: ostra krawędź (`border-radius: 0`, polecenie K.), cienka linia,
+   jeden akcent na najechanie. ⛔ Zero kolorów Facebooka i Instagrama na tle -
+   dwa obce fiolety obok jednego pomarańczu to dokładnie ten „zestaw z szablonu”.
+   Na telefonie siedzą NAD przyklejonym paskiem kontaktu, żeby go nie zasłonić. */
+.social-dymki{position:fixed;right:22px;bottom:22px;z-index:110;
+  display:flex;flex-direction:column;gap:10px}
+.social-dymki a{display:grid;place-items:center;width:46px;height:46px;
+  color:var(--biel);background:rgba(24,22,26,.78);border:1px solid var(--linia);
+  backdrop-filter:saturate(160%) blur(14px);
+  transition:background .2s ease,border-color .2s ease,transform .2s ease}
+.social-dymki a:hover{background:var(--akcent-btn);border-color:var(--akcent);
+  transform:translateY(-2px)}
+.social-dymki svg{width:20px;height:20px;display:block}
+/* 🔴 NA TELEFONIE DYMKÓW NIE MA. Dolny róg należy do „Zadzwoń” i „WhatsApp” - one
+   przynoszą telefony, social nie. Przy `bottom:84px` dymki zasłaniały H1 o 37 px
+   (złapane przez bramkę 07.09.2026), a niżej wchodziły na przyklejony pasek.
+   Zamiast kombinować z pozycją: na telefonie social siedzi w STOPCE, tam gdzie
+   człowiek go szuka i gdzie niczego nie przykrywa. */
+@media (max-width:900px){
+  .social-dymki{display:none}
+}
+
+/* Ikony social w stopce - na telefonie jedyne, na laptopie drugie obok dymków. */
+.stopka-social{display:flex;gap:10px;margin-top:18px}
+.stopka-social a{display:grid;place-items:center;width:40px;height:40px;color:var(--przyg);
+  border:1px solid var(--linia-slaba);transition:color .2s ease,border-color .2s ease}
+.stopka-social a:hover{color:var(--akcent-jasny);border-color:var(--linia)}
+.stopka-social svg{width:18px;height:18px;display:block}
+@media print{.social-dymki{display:none}}
