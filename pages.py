@@ -563,7 +563,7 @@ def kontakt(naglowek):
         <tr><th>E-mail</th><td><a href="mailto:a.s-tchorzewski@wp.pl">a.s-tchorzewski@wp.pl</a></td></tr>
         <tr><th>Godziny</th><td>8:00-20:00</td></tr>
         <tr><th>Obszar</th><td>województwo wielkopolskie i lubuskie</td></tr>
-        <tr><th>Adres</th><td>Błońsko 46, 64-308 Błońsko</td></tr>
+        <tr><th>Adres</th><td>Błońsko 46, 64-308 Jabłonna</td></tr>
         <tr><th>Dane firmy</th><td>Firma Ogólnobudowlana Artur Tchórzewski<br>
           NIP 995 004 44 65 · REGON 363138510</td></tr>
       </table>
@@ -620,7 +620,7 @@ def polityka(naglowek):
 <section class="sekcja jasna">
   <div class="wrap tekst-dlugi">
     <p><strong>Administrator danych:</strong> Firma Ogólnobudowlana Artur Tchórzewski,
-      Błońsko 46, 64-308 Błońsko, NIP 995 004 44 65.</p>
+      Błońsko 46, 64-308 Jabłonna, NIP 995 004 44 65.</p>
     <p><strong>Kontakt:</strong> telefon {TEL}, WhatsApp {WA}, e-mail a.s-tchorzewski@wp.pl.</p>
     <p><strong>Formularze:</strong> na tej stronie nie ma formularza kontaktowego. Kontakt
       odbywa się telefonicznie, przez WhatsAppa albo mailem, a dane podane w rozmowie służą

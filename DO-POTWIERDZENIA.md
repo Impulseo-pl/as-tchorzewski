@@ -28,6 +28,18 @@
 | 10 | ⛔ **nie ma plakietki „opinie w Google"** | potwierdzenia, że wizytówka z 6 opiniami to ICH wizytówka (pod tym samym adresem jest druga firma o tym nazwisku) | potwierdzone → wkleić plakietkę wg wzoru ze `SKILL.md` (przy 6 opiniach: ocena i gwiazdki, bez liczby osób) |
 | 11 | nigdzie nie podajemy **liczby osób w ekipie** | ilu ich jest | jedna prawdziwa liczba wchodzi do `o-nas.html` |
 
+## 🆕 CO PRZYSZŁO OD ADAMA 07.09.2026 20:16 (WhatsApp) - i co z tego wynika
+
+| co | stan |
+|---|---|
+| **logo** | 🔴 Adam przysłał **STARE** logo (domki, młotek, kielnia), zwykły PNG na białym - **nie ten znak, na którym stoi strona** i nie plik od grafika. Rozstrzygające: **ich własny znak wodny na zdjęciach to NOWE logo** (monogram A+S), więc nowe jest aktualne, a Adam wysłał to, co miał pod ręką (awatar z Instagrama). ⏳ **Pytanie 2 dalej otwarte** - potrzebny wektor NOWEGO znaku |
+| **„Darmowa wycena"** | ✅ stoi w opisie **ich własnego Facebooka**. Zdejmuje mój blok na to zdanie (bałem się go, bo klient go nie wypowiedział). ⏳ Zostaje tylko zakres: do ilu km oględziny są darmowe |
+| **adres** | ✅ **ROZSTRZYGNIĘTE BEZ KLIENTA.** `64-308` to poczta **Jabłonna**, obejmująca m.in. Błońsko. Poprawnie: **`Błońsko 46, 64-308 Jabłonna`** - wpisane w `build.py`, kartę danych, politykę i dane strukturalne. ⛔ Nasze poprzednie „64-308 Błońsko" było błędne |
+| **„20 lat doświadczenia"** | ✅ zgodne z tym, co mówił klient („ponad 20 lat"). Na FB jest też 🇩🇪🇵🇱 - potwierdza wątek niemiecki |
+| ich hasła z FB | „Budujemy jakość na lata" · „Zawsze na czas" · „Nowoczesny sprzęt" - **ich własne słowa**, więc wolno ich użyć. ⚠️ Ale to są dokładnie te ogólniki, których unikamy; „Zawsze na czas" warto zamienić na nasze twarde „wycena do 5 dni roboczych" |
+| **Instagram** | 🔴 profil ma teraz **9 postów**, a my ściągnęliśmy materiał z **8**. Sprawdzić, czy doszedł nowy - zdjęcia są dziś wąskim gardłem |
+| zasięgi | FB 86 polubień, IG 54 obserwujących - ⛔ za mało, żeby to gdziekolwiek pokazywać |
+
 ## ✅ Świadome decyzje budowy (nie pytania - do wiadomości)
 
 - 🔴 **Firma mówi o sobie w liczbie MNOGIEJ („robimy”), do czytelnika mówimy

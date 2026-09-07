@@ -28,7 +28,12 @@ WA_LINK = pages.WA_LINK
 MAIL = "a.s-tchorzewski@wp.pl"          # ⚠️ trzy zapisy w ich materiałach - pytanie 9
 ULICA = "Błońsko 46"
 KOD = "64-308"
-MIASTO = "Błońsko"                       # ⚠️ na fakturze piszą „Jabłonna" - pytanie 9
+# ✅ ROZSTRZYGNIĘTE 07.09.2026 (nie pytanie do klienta - sprawdzony fakt):
+# kod 64-308 to POCZTA Jabłonna, obejmująca m.in. Błońsko. Rejestr VAT zapisuje
+# miejscowość (Błońsko), faktura zapisuje pocztę (Jabłonna) - oba są prawdziwe,
+# a poprawna forma adresowa łączy jedno z drugim: „Błońsko 46, 64-308 Jabłonna".
+# ⛔ „64-308 Błońsko" (nasz poprzedni zapis) jest po prostu błędne.
+MIASTO = "Jabłonna"
 NIP = "995 004 44 65"
 REGON = "363138510"
 
