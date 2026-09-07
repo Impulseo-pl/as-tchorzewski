@@ -32,7 +32,7 @@
 
 | co | stan |
 |---|---|
-| **logo** | 🔴 Adam przysłał **STARE** logo (domki, młotek, kielnia), zwykły PNG na białym - **nie ten znak, na którym stoi strona** i nie plik od grafika. Rozstrzygające: **ich własny znak wodny na zdjęciach to NOWE logo** (monogram A+S), więc nowe jest aktualne, a Adam wysłał to, co miał pod ręką (awatar z Instagrama). ⏳ **Pytanie 2 dalej otwarte** - potrzebny wektor NOWEGO znaku |
+| **logo** | ✅ **ROZSTRZYGNIĘTE 07.09 21:05 - klient potwierdził Adamowi, że aktualne jest STARE logo** (domki, młotek, kielnia), a nie monogram A+S z banera FB. ⛔ To NIE jest podmiana pliku: stare logo ma CZARNY napis i czarne wieżowce, więc na tle `#0F0F12` znika. Cały ciemny kierunek „Scena" wybraliśmy dlatego, że biały monogram żył na czerni. **Rozwidlenie do decyzji K. - opisane w `DESIGN.md`.** Plik mamy u siebie, czysty i przezroczysty: `materialy/logo/logo-stare-przezroczyste.png` (1018×753) - lepszy niż ten z WhatsAppa, Adam nic nie musi dosyłać |
 | **„Darmowa wycena"** | ✅ stoi w opisie **ich własnego Facebooka**. Zdejmuje mój blok na to zdanie (bałem się go, bo klient go nie wypowiedział). ⏳ Zostaje tylko zakres: do ilu km oględziny są darmowe |
 | **adres** | ✅ **ROZSTRZYGNIĘTE BEZ KLIENTA.** `64-308` to poczta **Jabłonna**, obejmująca m.in. Błońsko. Poprawnie: **`Błońsko 46, 64-308 Jabłonna`** - wpisane w `build.py`, kartę danych, politykę i dane strukturalne. ⛔ Nasze poprzednie „64-308 Błońsko" było błędne |
 | **„20 lat doświadczenia"** | ✅ zgodne z tym, co mówił klient („ponad 20 lat"). Na FB jest też 🇩🇪🇵🇱 - potwierdza wątek niemiecki |

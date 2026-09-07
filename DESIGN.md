@@ -148,7 +148,33 @@ z obcym serwerem i nie potrzebuje banera cookies (reguła silnika stron docelowy
 
 ---
 
-## Logo klienta
+## 🔴 LOGO — ROZSTRZYGNIĘTE 07.09.2026 21:05 i to WYWRACA ZAŁOŻENIE TEGO KIERUNKU
+
+**Klient potwierdził Adamowi, że aktualne jest STARE logo** (domki, młotek, klucz, pędzel,
+kielnia, czarny napis „TCHÓRZEWSKI"), a nie monogram A+S z banera na Facebooku.
+
+⚠️ **To nie jest podmiana pliku.** Ten kierunek („Scena", ciemny) został wybrany **dlatego**,
+że nowe logo jest białe i żyje na czerni — to jest dosłownie zapisane wyżej w tym pliku jako
+powód nr 1. Stare logo ma czarny napis i czarne wieżowce: **na tle `#0F0F12` znika.**
+
+**Cztery drogi — decyzja K., ⛔ nie wybierać samemu:**
+
+| | droga | co kosztuje | ryzyko |
+|---|---|---|---|
+| **A** | **Strona przechodzi na JASNĄ** (`#F3F1ED` jako tło główne, ciemne jako akcent sekcji) | przepisanie palety i kontrastów, ~pół dnia; teksty i zdjęcia zostają | traci się „drogi" nastrój, dla którego kierunek B wygrał; ciemne zdjęcia z budowy wyglądają na jasnym inaczej |
+| **B** | Zostaje ciemna, logo dostaje **jasną płytkę** w nagłówku | godzina | prawie zawsze wygląda jak naklejka; to jest ten wygląd, którego unikamy |
+| **C** | Prosimy klienta o **wersję na ciemne tło** (biały napis) | jeden telefon + czekanie | najlepszy efekt, ale znów stoimy na kliencie |
+| **D** | **Przemalowujemy** czarne elementy na białe u siebie | godzina | ⛔ wymaga jego wyraźnej zgody — to ingerencja w znak |
+
+🔵 **Moja rekomendacja: C, a jeśli nie chce czekać — A.** Płytka (B) psuje to, za co zapłacił,
+a przemalowanie (D) bez zgody jest poza naszą rolą.
+
+**Plik jest u nas i nie trzeba nic dosyłać:** `materialy/logo/logo-stare-przezroczyste.png`
+(1018×753, przezroczyste tło) — lepszy niż kopia, która przyszła WhatsAppem.
+
+---
+
+## Logo klienta (⚠️ poniżej opis NIEAKTUALNY od 07.09 21:05 — zostawiony jako zapis, dlaczego kierunek wygląda tak, jak wygląda)
 
 **Idzie NOWE logo** (monogram A+S, cienka biała kreska + pomarańczowa esica, wordmark
 `A.S_TCHORZEWSKI` / `USŁUGI OGÓLNOBUDOWLANE`) — nie stare, rysunkowe z domkami i narzędziami.
