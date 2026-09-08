@@ -384,6 +384,28 @@ gwarancja (ile lat, na co) · czas reakcji na telefon · liczba osób w ekipie �
 
 ---
 
+## FILMY Z BUDOWY (K. 08.09.2026)
+
+Klient ma **dwa** filmy i tylko dwa: malowanie agregatem (37 s) i robota przy elewacji (39 s).
+Oba są pionowe i oba realnie **nie mają ścieżki dźwiękowej**.
+
+- 🔴 **Oba stoją na STRONIE GŁÓWNEJ**, obok siebie, w sekcji „Z budowy". To najlepsze, co
+  klient ma z ruchu — nie chowamy tego na podstronie. Powtórka na `realizacje` zostaje.
+- 🔴 **Kadr ożywa pod kursorem i pod przytrzymanym palcem** (rdzeń, blok 7), tak jak na stronach
+  premium. Klik zostaje dla klawiatury i dla obejrzenia do końca; palec ma 120 ms zwłoki, żeby
+  przewijanie strony nie budziło filmu przy każdym machnięciu.
+- ⛔ **Nigdzie nie piszemy „film bez dźwięku"** — informowanie o braku brzmi jak tłumaczenie się
+  z wady. Podpis mówi, co widać, nie czego nie słychać.
+- 🔴 **Jeden kadr 4:5 dla wszystkich filmów** (`.reel-media{aspect-ratio:4/5}`, `object-fit:cover`).
+  Filmy mają różne proporcje (9:16 i 3:4); puszczone „jak są" dawały dwa kafle różnej wysokości
+  i pod niższym zostawała martwa dziura — dokładnie to, co K. wytknął w układzie `film-obok`.
+- ⛔ Układ `.film-obok` (film z lewej, sam tekst z prawej) **skasowany**: przy krótkim tekście
+  zostawiał pół ekranu pustki.
+
+⚠️ **Rozszerzenie Claude-in-Chrome blokuje ładowanie wideo** — w karcie sterowanej przez
+rozszerzenie film stoi na `readyState=0` i w sieci nie widać nawet zapytania o `.mp4`.
+To NIE jest błąd strony. Sprawdzaj odtwarzanie w czystym Chromie (headless przez `cdp.mjs`).
+
 ## Kontrola przed każdym pokazaniem i każdym wypchnięciem
 
 ```bash

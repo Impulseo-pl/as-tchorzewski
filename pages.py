@@ -272,12 +272,15 @@ IKONA_PLAY = ('<svg class="ikona-play" width="16" height="16" viewBox="0 0 16 16
 
 
 def film(plik, plakat, tytul, podpis, alt, lazy=True):
-    """Film rusza dopiero po kliknięciu (rdzeń, blok 7) - nie zjada transferu na telefonie.
-    Filmy są bez dźwięku: to hałas budowy."""
+    """Kadr ożywa POD KURSOREM i pod przytrzymanym palcem (rdzeń, blok 7) - tak robią to
+    strony premium. Klik zostaje dla klawiatury i dla tego, kto chce obejrzeć do końca.
+    `preload="none"` nadal nie zjada transferu na telefonie.
+    ⛔ Nigdzie nie piszemy „film bez dźwięku" (K. 08.09.2026): filmy z budowy dźwięku
+       nie mają, ale informowanie o braku brzmi jak tłumaczenie się z wady."""
     return f"""<figure class="reel">
         <div class="reel-media">
           <img class="plakat" src="img/{plakat}" alt="{alt}"{" loading=\"lazy\"" if lazy else ""} decoding="async">
-          <video preload="none" playsinline muted poster="img/{plakat}">
+          <video preload="none" playsinline muted loop poster="img/{plakat}">
             <source src="video/{plik}" type="video/mp4">
           </video>
           <button class="reel-btn" type="button"><span>{IKONA_PLAY}{tytul}</span></button>
@@ -383,17 +386,22 @@ def index(naglowek):
 </figure>
 
 <section class="sekcja">
-  <div class="wrap film-obok rv">
-    {film("agregat.mp4", "plakat-agregat.jpg", "Zobacz film (37 s)",
-          "Malowanie agregatem natryskowym. Film bez dźwięku.",
-          "Pracownik w kombinezonie i masce maluje ścianę agregatem natryskowym")}
-    <div>
-      <span class="etykieta">Kadr z roboty</span>
+  <div class="wrap">
+    <div class="naglowek-sekcji rv">
+      <span class="etykieta">Z budowy</span>
       <h2>Tak to wygląda od naszej strony</h2>
-      <p class="pod">Malowanie agregatem - trzydzieści siedem sekund prosto z budowy, bez montażu i bez komentarza.
-</p>
-      <a class="duch" href="co-robimy.html#u-02">Zobacz, jak malujemy</a>
+      <p class="pod">Dwa kadry prosto z roboty, bez montażu i bez pozowania.
+        Najedź na kadr albo przytrzymaj go palcem.</p>
     </div>
+    <div class="para rv">
+      {film("agregat.mp4", "plakat-agregat.jpg", "Malowanie agregatem (37 s)",
+            "Malowanie agregatem natryskowym - duża powierzchnia, powłoka bez śladów po wałku.",
+            "Pracownik w kombinezonie i masce maluje ścianę agregatem natryskowym")}
+      {film("ekipa.mp4", "plakat-ekipa.jpg", "Robota przy elewacji (39 s)",
+            "Dzień na rusztowaniu przy elewacji - nasza ekipa, nie zdjęcie z katalogu.",
+            "Ekipa przy elewacji budynku, rusztowanie ustawione wzdłuż ściany")}
+    </div>
+    <p class="pod-para rv"><a class="duch" href="realizacje.html">Zobacz realizacje</a></p>
   </div>
 </section>
 
@@ -550,7 +558,7 @@ def realizacje(naglowek):
     <div class="naglowek-sekcji rv">
       <span class="etykieta">Filmy z budowy</span>
       <h2>Minuta i szesnaście sekund roboty</h2>
-      <p class="pod">Oba z budowy, oba bez dźwięku - ruszają dopiero, gdy je włączysz.</p>
+      <p class="pod">Najedź na kadr albo przytrzymaj go palcem - film ruszy sam.</p>
     </div>
     <div class="para rv">
       {film("agregat.mp4", "plakat-agregat.jpg", "Malowanie agregatem (37 s)",
@@ -622,19 +630,6 @@ def o_nas(naglowek):
   </div>
 </section>
 
-<section class="sekcja">
-  <div class="wrap film-obok rv">
-    {film("ekipa.mp4", "plakat-ekipa.jpg", "Zobacz film (39 s)",
-          "Robota przy elewacji. Film bez dźwięku.",
-          "Ekipa przy elewacji budynku, rusztowanie ustawione wzdłuż ściany", lazy=False)}
-    <div>
-      <span class="etykieta">Z budowy</span>
-      <h2>Nasza ekipa przy robocie</h2>
-      <p class="pod">Film z budowy przy elewacji. Nikt tu nie pozuje - tak po prostu wygląda dzień na rusztowaniu.</p>
-      <a class="duch" href="realizacje.html">Zobacz realizacje</a>
-    </div>
-  </div>
-</section>
 
 {domkniecie("Teraz wiesz, kto przyjedzie",
             "Zadzwoń albo napisz - umawiamy oględziny na miejscu.")}"""

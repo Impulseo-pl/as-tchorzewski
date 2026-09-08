@@ -427,3 +427,38 @@ Wybór zapisać TUTAJ (z uzasadnieniem), a wybranego kandydata przepisać na **`
   - `research-odrzucone.md` — 9 rzeczy obalonych przez weryfikatora.
 - 🎁 **Wizytówka Google ma źle ustawiony obszar** — pinezka wypada w Barczyźnie k. Nekli, ~130 km
   od Błońska, i nie ma podpiętej strony. Darmowy zysk do zgłoszenia przy oddaniu (pytanie 10).
+
+### 🎬 FILMY 08.09 13:50 - polecenie K. „za dużo dziwnej pustej przestrzeni"
+K. wskazał sekcję „Nasza ekipa przy robocie" na `o-nas`: film z lewej, cztery linijki tekstu
+z prawej i pół ekranu pustki. Ta sama choroba siedziała na stronie głównej.
+
+Zrobione:
+- **Oba filmy (i tylko tyle klient ma) przeniesione na STRONĘ GŁÓWNĄ**, obok siebie w sekcji
+  „Z budowy". Przechylony układ `.film-obok` skasowany z CSS i z obu podstron.
+- **Kadr 4:5 dla obu** - filmy mają różne proporcje (9:16 i 3:4), więc bez tego kafle miały
+  różną wysokość i pod niższym znowu robiła się dziura.
+- **Odtwarzanie na najechaniu kursorem i na przytrzymaniu palca** (`rdzen.js`, blok 7 przepisany;
+  zmiana poszła do ŹRÓDŁA w `~/.claude/skills/strona-docelowa/rdzen/`, nie tylko tutaj).
+  Klik zostaje - dla klawiatury i dla obejrzenia do końca.
+- **Zdanie „film bez dźwięku" wycięte wszędzie** (K.: nie tłumaczymy się z braku).
+- `V_CSS` 9→10, `V_RDZEN` 10→11.
+
+⚠️ **Pułapka, która kosztowała pół godziny:** w karcie sterowanej przez rozszerzenie
+Claude-in-Chrome wideo NIGDY się nie ładuje (`readyState=0`, w sieci brak zapytania o `.mp4`).
+Wygląda jak zepsuty odtwarzacz. W czystym headless Chromie film gra bez zarzutu (sprawdzone:
+`currentTime` 3,87 s po 4 s najechania). Nie diagnozuj wideo przez rozszerzenie.
+
+⚠️ **Druga pułapka:** pełnostronicowy zrzut (`captureBeyondViewport`) NIE domalowuje zdjęć
+spoza pierwszego ekranu - na obrazku zostają czarne i białe dziury nie do odróżnienia od
+prawdziwej pustki w układzie. Zrzut do OCENY WYGLĄDU rób z oknem ustawionym na całą wysokość
+strony: `cdp.mjs <url> --tylko-zrzut --szerokosc 1440 --wysokosc <wysokość strony>`.
+
+### ⏳ HERO - czeka na wybór K. (08.09 14:15)
+K. i Marceli: pierwszy ekran „kompletnie się nie podoba". Przygotowane **trzy propozycje**
+pełnoekranowego hero (zdjęcie na całą szerokość + tekst na przyciemnieniu, zamiast kadru
+w ramce obok tekstu). Wszystkie ze ZDJĘĆ KLIENTA, żadnego stocku:
+1. **Beton architektoniczny** (`beton-arch-ciemny-01`) - kadr natywny 1440 px, bez rozszerzania.
+2. **Schody i gładź** (`schody-beton-11`) - podciągnięty z 1200 px, do rozszerzenia w Flow.
+3. **Poddasze w świetle** (`poddasze2-okna-01`) - podciągnięty z 1200 px, do rozszerzenia w Flow.
+Makiety: `/private/tmp/.../scratchpad/hero-makiety/` (robocze, poza repo). Po wyborze K.:
+wdrożyć w `pages.py` + `app.css`, hero podstron też, `V_CSS` w górę.

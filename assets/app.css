@@ -237,7 +237,7 @@ a{text-decoration:none}
 .naglowek-sekcji .pod{margin-bottom:0}
 
 /* ── PRZED I PO ─────────────────────────────────────────────────────────────── */
-.para{display:grid;grid-template-columns:1fr 1fr;gap:34px}
+.para{display:grid;grid-template-columns:1fr 1fr;gap:34px;align-items:stretch}
 /* Zdjęcia „przed i po" to najmocniejszy dowód na stronie - dostają szerszy
    kontener niż tekst. 1500 px daje ~735 px na kadr przy źródle 1100 px (1,5×);
    ⛔ szerzej NIE - pełna szerokość na ekranie 1920 zeszłaby do 1,15× i zmiękła. */
@@ -276,22 +276,37 @@ a{text-decoration:none}
 .wiersz-usluga .dalej{margin-left:auto;color:var(--akcent-na-jasnym);font:500 13px/1 Inter;
   letter-spacing:.06em}
 
-/* ── FILM (rdzeń, blok 7: ładuje się dopiero po kliknięciu) ─────────────────── */
-.reel{max-width:420px;margin:0;border:1px solid var(--linia-slaba)}
-.reel-media{position:relative;line-height:0;background:#000}
-.reel video{width:100%;height:auto;background:#000;display:none}
-.reel .plakat{display:block;width:100%}
-.reel.gra .plakat{display:none}
-.reel.gra video{display:block}
+/* ── FILM (rdzeń, blok 7: rusza pod kursorem i pod przytrzymanym palcem) ─────
+   Plakat stoi zawsze; film wjeżdża NAD niego, więc przy starcie nie ma mrugnięcia
+   na czarne tło (przy `display:none` na plakacie kadr gasł na jedną klatkę). */
+/* Oba filmy klienta mają RÓŻNE proporcje (9:16 i 3:4). Puszczone „jak są" dawały
+   dwa kafle różnej wysokości i pod niższym zostawała martwa dziura — dlatego jeden
+   kadr 4:5 dla wszystkich, przycięty od środka. */
+.reel{max-width:420px;margin:0;border:1px solid var(--linia-slaba);cursor:pointer;
+  display:flex;flex-direction:column}
+.reel-media{position:relative;line-height:0;background:#000;aspect-ratio:4/5;overflow:hidden}
+.reel .plakat{display:block;width:100%;height:100%;object-fit:cover}
+.reel video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  background:#000;opacity:0;transition:opacity .18s ease}
+.reel.gra video{opacity:1}
 .reel-btn{position:absolute;inset:0;width:100%;display:flex;align-items:flex-end;
   justify-content:flex-start;gap:12px;padding:22px;background:transparent;border:0;
   color:#fff;font:500 15px/1 Inter;cursor:pointer;border-radius:0}
-.reel.gra .reel-btn{align-items:flex-start;justify-content:flex-end;padding:14px}
 .reel-btn span{display:inline-flex;align-items:center;gap:10px;background:rgba(15,15,18,.72);
-  padding:12px 18px;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
-.reel figcaption{padding:16px 18px;font-size:14px;color:var(--przyg-jasny);
+  padding:12px 18px;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+  transition:opacity .18s ease}
+/* gra = kadr ma mówić sam za siebie, napis schodzi z drogi */
+.reel.gra .reel-btn span{opacity:0}
+.reel.gra:hover .reel-btn span{opacity:.45}
+.reel-btn:focus-visible span{outline:2px solid var(--biel);outline-offset:3px;opacity:1}
+/* dotyk: „najedź" nie istnieje, więc mówimy palcem */
+@media (hover:none){
+  .reel-btn span::after{content:" · przytrzymaj";opacity:.7}
+  .reel.gra .reel-btn span{opacity:0}
+}
+.reel figcaption{flex:1;padding:16px 18px;font-size:14px;color:var(--przyg-jasny);
   border-top:1px solid var(--linia-slaba)}
-.film-obok{display:grid;grid-template-columns:420px 1fr;gap:60px;align-items:center}
+.pod-para{margin-top:34px;text-align:center}
 
 /* ── ZYGZAK (podstrona „Co robimy") ─────────────────────────────────────────── */
 .zygzak{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;
@@ -490,7 +505,7 @@ footer{background:var(--papier-3);border-top:1px solid var(--linia-slaba);paddin
   .kafle{grid-template-columns:1fr 1fr;gap:16px}
   .galeria{columns:2;column-gap:16px}
   .galeria figure{margin-bottom:16px}
-  .zygzak,.dwie-kolumny,.film-obok{grid-template-columns:1fr;gap:32px}
+  .zygzak,.dwie-kolumny{grid-template-columns:1fr;gap:32px}
   .kadr-o-nas{max-width:none}
   .zygzak{padding:38px 0}
   .zygzak--odwrocony .zygzak-obraz{order:0}
@@ -498,7 +513,7 @@ footer{background:var(--papier-3);border-top:1px solid var(--linia-slaba);paddin
   .domkniecie{grid-template-columns:1fr;gap:26px}
   .domkniecie .kontakt-linia{justify-content:flex-start}
   .stopka{grid-template-columns:1fr;gap:36px}
-  .reel,.film-obok .reel{max-width:none}
+  .reel{max-width:none}
   .pasek-dolny{display:flex}
   body{padding-bottom:70px}
 }

@@ -235,24 +235,87 @@
     });
   });
 
-  /* ── 7. WIDEO: bez pobierania, dopóki nikt nie kliknie ────────────────────
-     `preload="none"` oszczędza transfer klienta na telefonie, ale wtedy
-     przeglądarka wymaga jawnego load() przed play(). */
+  /* ── 7. WIDEO: rusza pod kursorem i pod przytrzymanym palcem ─────────────
+     Tak robią to strony premium: kadr ożywa sam, gdy się na niego patrzy, a nie
+     dopiero po kliknięciu w przycisk. `preload="none"` nadal oszczędza transfer
+     — przeglądarka wymaga wtedy jawnego load() przed play().
+     ⚠️ Klik ZOSTAJE: najechanie nie istnieje dla klawiatury ani dla czytnika
+        ekranu, a na telefonie zamiast niego jest przytrzymanie palca.
+     ⚠️ Film leci BEZ dźwięku (`muted`) — inaczej przeglądarka zablokuje
+        samo uruchomienie i kadr zostałby martwy. */
   qa('.reel').forEach(function (fig) {
     var v = q('video', fig);
     var btn = q('.reel-btn', fig);
-    if (!v || !btn) return;
-    btn.addEventListener('click', function () {
-      if (fig.classList.contains('gra') && !v.paused) { v.pause(); return; }
+    if (!v) return;
+    var trzymane = false;      /* palec/kursor trzyma film */
+    var przypiete = false;     /* obejrzenie po kliknięciu - nie gaśnie po zjechaniu */
+    var licznik = null;
+
+    function inne_stop() {
       qa('.reel.gra video').forEach(function (inne) {        /* nigdy dwa naraz */
-        if (inne !== v) { inne.pause(); inne.closest('.reel').classList.remove('gra'); }
+        if (inne !== v) {
+          inne.pause();
+          var f = inne.closest('.reel');
+          f.classList.remove('gra');
+          f.dataset.przypiete = '';
+        }
       });
+    }
+    function graj() {
+      inne_stop();
       fig.classList.add('gra');
       if (v.readyState === 0) v.load();
       var p = v.play();
       if (p && p.catch) p.catch(function () { fig.classList.remove('gra'); });
+    }
+    function stop() {
+      v.pause();
+      fig.classList.remove('gra');
+    }
+
+    /* ── kursor myszy ─────────────────────────────────────────────────────── */
+    fig.addEventListener('pointerenter', function (e) {
+      if (e.pointerType !== 'mouse') return;
+      trzymane = true;
+      graj();
     });
-    v.addEventListener('ended', function () { fig.classList.remove('gra'); });
+    fig.addEventListener('pointerleave', function (e) {
+      if (e.pointerType !== 'mouse') return;
+      trzymane = false;
+      if (!przypiete) stop();
+    });
+
+    /* ── palec: przytrzymanie ─────────────────────────────────────────────
+       Odpalamy po 120 ms, żeby zwykłe przewijanie strony palcem po kadrze
+       nie budziło filmu przy każdym machnięciu. */
+    fig.addEventListener('pointerdown', function (e) {
+      if (e.pointerType === 'mouse') return;
+      clearTimeout(licznik);
+      licznik = setTimeout(function () { trzymane = true; graj(); }, 120);
+    });
+    ['pointerup', 'pointercancel', 'pointerleave'].forEach(function (nazwa) {
+      fig.addEventListener(nazwa, function (e) {
+        if (e.pointerType === 'mouse') return;
+        clearTimeout(licznik);
+        if (trzymane && !przypiete) stop();
+        trzymane = false;
+      });
+    });
+
+    /* ── klik / klawiatura: film zostaje włączony ─────────────────────────── */
+    if (btn) {
+      btn.addEventListener('click', function () {
+        przypiete = !przypiete;
+        fig.dataset.przypiete = przypiete ? '1' : '';
+        if (przypiete) graj(); else if (!trzymane) stop();
+      });
+    }
+
+    v.addEventListener('ended', function () {
+      przypiete = false;
+      fig.dataset.przypiete = '';
+      fig.classList.remove('gra');
+    });
   });
 
   /* ── 8. FORMULARZ: telefon ALBO e-mail ───────────────────────────────────
