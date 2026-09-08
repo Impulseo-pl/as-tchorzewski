@@ -38,7 +38,7 @@ NIP = "995 004 44 65"
 REGON = "363138510"
 
 # 🔄 Podbij przy KAŻDEJ zmianie pliku, inaczej klient zostanie na starej wersji.
-V_CSS = 6  # 6 = odwrócenie palety na jasną (07.09.2026, droga A)
+V_CSS = 9  # 9 = wejscie z logo + okragle znaczki social (08.09.2026)
 V_RDZEN = 10
 
 # 🔴 PODGLĄD ROBOCZY. Strona stoi na zdjęciach klienta, na które NIE MAMY jeszcze
@@ -82,6 +82,11 @@ JS_FLAGA = """<script>document.documentElement.classList.add('js')</script>"""
 
 
 def naglowek(biezaca):
+    # 🔴 Skrypt wejścia idzie TUŻ ZA `</header>`, nie na koniec dokumentu i nie do
+    # `rdzen.js`: rdzeń rusza ~300 ms później, a przy budżecie 1,5 s to jest różnica
+    # między „płynnie" a „ospale". Wcześniej się nie da - pomiar potrzebuje <header>.
+    # ⛔ Tylko strona główna; na podstronach wejścia nie ma.
+    wejscie_js = ("\n" + WEJSCIE_JS) if biezaca == "index.html" else ""
     # 🔴 `nav` obok `nawigacja`: pod klasą `.nav` szuka jej wspólny `rdzen.js`
     # (rozwijanie menu na telefonie, Escape, zamknięcie po kliknięciu w pozycję).
     # Bez niej przycisk jest martwy. Napis „Menu" przy kreskach jest CELOWY -
@@ -101,7 +106,7 @@ def naglowek(biezaca):
     </nav>
     <a class="tel-gora" href="tel:{TEL_E164}">{TEL}</a>
   </div>
-</header>"""
+</header>{wejscie_js}"""
 
 
 def stopka():
@@ -158,6 +163,98 @@ DANE_FIRMY = f"""<script type="application/ld+json">
 </script>"""
 
 
+# ══════════════════════════════════════════════════════════════════════════════
+#  WEJŚCIE NA STRONĘ (kurtyna z logo) — TYLKO strona główna.
+#  Wygląd i uzasadnienie: `assets/app.css`, sekcja „WEJŚCIE NA STRONĘ".
+#  Procedura i pułapki: skill `wejscie-na-strone`.
+# ══════════════════════════════════════════════════════════════════════════════
+
+# Zapalarka klasy. 🔴 Siedzi w <head> BEZ `defer` i celowo NIE robi pomiaru:
+# z `defer` przez ułamek sekundy widać stronę, a dopiero potem kurtynę - wygląda
+# jak błąd. Pomiaru tu nie da się zrobić, bo <header> jeszcze nie istnieje.
+WEJSCIE_ZAPALARKA = """<script>(function(){
+ try{
+  var h=document.documentElement, a=location.search.indexOf('intro')>-1;
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if(!a && sessionStorage.getItem('as-wejscie')) return;
+  sessionStorage.setItem('as-wejscie','1');
+  h.classList.add('intro-on','bez-wejscia-tla');
+ }catch(e){}
+})();</script>"""
+
+WEJSCIE_HTML = """<div class="wejscie" aria-hidden="true">
+  <div class="wejscie-plyta"></div>
+  <div class="wejscie-znak-box">
+    <img class="wejscie-znak" src="img/logo-duze.png" width="640" height="472" alt="">
+    <i class="wejscie-kreska"></i>
+  </div>
+</div>"""
+
+# 🔴 Ten skrypt MUSI stać tuż za </header>, nie w rdzen.js z końca strony:
+# rdzeń rusza ~300 ms później, a przy budżecie 1,5 s to jest różnica między
+# „płynnie" a „ospale". Pomiar potrzebuje <header>, więc wcześniej się nie da.
+WEJSCIE_JS = """<script>(function(){
+ var h=document.documentElement;
+ if(!h.classList.contains('intro-on')) return;
+ var obraz=document.querySelector('.znak img');
+ var lecacy=document.querySelector('.wejscie-znak');
+ if(!obraz||!lecacy){h.classList.remove('intro-on');return;}
+
+ /* 🔴 SKALUJEMY W DÓŁ, NIGDY W GÓRĘ. Znak dostaje na kurtynie swój docelowy
+    rozmiar naprawdę (width/height), a do paska wraca `scale()` mniejszym od 1.
+    Powiększanie `transform`em rasteryzuje warstwę w rozmiarze bazowym i na
+    telefonie (DPR 3) daje rozmyty znak - zrzut na Macu tego nie pokaże.
+    Sufit liczy się z PIKSELI PLIKU podzielonych przez gęstość ekranu. */
+ var PLIK_W=640, PLIK_H=472;
+ var r=obraz.getBoundingClientRect();
+ var sufit=PLIK_W/Math.min(window.devicePixelRatio||1,3);
+ var cel=(innerWidth<680)?Math.min(innerWidth*0.72,320):Math.min(innerWidth*0.42,480);
+ cel=Math.max(r.width, Math.min(cel, sufit));
+ h.style.setProperty('--i-w', Math.round(cel)+'px');
+ h.style.setProperty('--i-h', Math.round(cel*PLIK_H/PLIK_W)+'px');
+ h.style.setProperty('--i-zmniejsz', (r.width/cel).toFixed(4));
+ h.style.setProperty('--i-px', Math.round(r.left+r.width/2-innerWidth/2)+'px');
+ h.style.setProperty('--i-py', Math.round(r.top+r.height/2-innerHeight/2)+'px');
+
+ /* Po dodaniu stanu startowego potrzebne są DWIE klatki, inaczej przeglądarka
+    sklei start z końcem i przejścia w ogóle nie widać. */
+ requestAnimationFrame(function(){requestAnimationFrame(function(){
+   h.classList.add('intro-gra');
+ });});
+
+ var start=Date.now(), MIN=560, SUFIT=900, zaladowane=false, zrobione=false;
+
+ /* Zasłona schodzi, gdy gotowe jest HERO - nie po sztywnym timerze i NIE po
+    `window.load`. Sztywny timer zasłania treść, która już się narysowała;
+    `load` czeka na WSZYSTKIE zdjęcia strony i trzyma kurtynę dwa razy za długo.
+    Pod zasłoną liczy się jedna rzecz: kadr hero. */
+ function heroGotowe(){
+   var im=document.querySelector('.kadr-scena img');
+   return !!(im && im.complete && im.naturalWidth>0);
+ }
+ function koniec(){
+   if(zrobione) return; zrobione=true;
+   h.classList.add('intro-out');
+   /* Znak w pasku odsłaniamy DOKŁADNIE gdy lecący ląduje na jego miejscu -
+      oba rysują to samo w tym samym rozmiarze, więc podmiany nie widać. */
+   setTimeout(function(){ h.classList.remove('intro-on','intro-gra','intro-out'); }, 1100);
+ }
+ function moze(){
+   if(Date.now()-start>=MIN && (heroGotowe()||zaladowane)) koniec();
+   else setTimeout(moze,70);
+ }
+ window.addEventListener('load',function(){zaladowane=true;moze();});
+ moze();
+ setTimeout(koniec, SUFIT);                                  /* sufit z budżetu */
+ setTimeout(function(){                                      /* twardy bezpiecznik */
+   h.classList.remove('intro-on','intro-gra','intro-out');
+ }, 3000);
+ ['click','wheel','touchstart','keydown','scroll'].forEach(function(z){
+   window.addEventListener(z, koniec, {once:true, passive:true});
+ });
+})();</script>"""
+
+
 def szkielet(strona):
     plik = strona["plik"]
     kanon = adres_publiczny(plik)
@@ -166,6 +263,13 @@ def szkielet(strona):
         wstepne = '\n<link rel="preload" as="image" href="img/hero.jpg" fetchpriority="high">'
     noindex = ('\n<meta name="robots" content="noindex, nofollow">'
                if PODGLAD_ROBOCZY or strona.get("noindex") else "")
+    # ⛔ Wejście TYLKO na stronie głównej - nigdy na podstronach (reguła skilla).
+    wejscie = strona.get("hero") == "scena"
+    zapalarka = ("\n" + WEJSCIE_ZAPALARKA) if wejscie else ""
+    kurtyna = ("\n" + WEJSCIE_HTML) if wejscie else ""
+    if wejscie:
+        wstepne += ('\n<link rel="preload" as="image" href="img/logo-duze.png" '
+                    'fetchpriority="high">')
     return f"""<!doctype html>
 <html lang="pl">
 <head>
@@ -192,9 +296,9 @@ def szkielet(strona):
       href="assets/fonty/inter-latin-400-normal.woff2">{wstepne}
 <link rel="stylesheet" href="assets/rdzen.css?v={V_RDZEN}">
 <link rel="stylesheet" href="assets/app.css?v={V_CSS}">
-{DANE_FIRMY}{JS_FLAGA}
+{DANE_FIRMY}{JS_FLAGA}{zapalarka}
 </head>
-<body>
+<body>{kurtyna}
 <a class="skip" href="#tresc">Przejdź do treści</a>
 {strona['tresc']}
 {stopka()}

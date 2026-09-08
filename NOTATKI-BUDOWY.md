@@ -131,6 +131,40 @@ słabszy niż w makiecie `kierunek-B-scena.html`. Nie zniknął — kadry pionow
 czerni w scenie i w otwarciach podstron — ale strona czyta się jaśniej i lżej. To był świadomy
 koszt drogi A, nie wpadka.
 
+### 🎬 PIERWSZY EKRAN 08.09 — trzy polecenia K.
+
+K.: „pierwsze co widać nie powala, dużo tekstu" · „jest świetne logo od klienta, zróbmy
+zajebiste wejście" · „linki social w okrągłych dymkach, bez tego białego, tylko same logo,
+podświetlone, z hoverem".
+
+**1. Hero odchudzony.** Zdjęte: podpis pod kadrem (8 słów — treść siedzi w `alt`), trzeci
+przycisk „Zobacz realizacje", połowa leadu. Z ~54 słów zostało ~38, z trzech wezwań jedno:
+zadzwonić. Zwolnione miejsce poszło w kadr — **624 → 708 px wysokości** na laptopie
+(górny odstęp sceny 76 → 56, suma odjęta od widoku 276 → 192 px).
+
+**2. Wejście z logo** (skill `wejscie-na-strone`). Ekran jest świeżo wykończoną ścianą
+w kolorze papieru; spod pociągnięcia wychodzi znak, pod nim ślad w kolorze akcentu, znak
+odlatuje do paska, a dopiero potem ściana schodzi i odsłania gotowe wnętrze. To opowiada
+robotę klienta, a nie jest „fade z logo", który umie zrobić każdy szablon.
+
+🔴 **Realny błąd złapany na stopklatce (nie okiem, nie zrzutem):** przy jednoczesnym starcie
+ściana wygrywała wyścig ze znakiem (0,62 s kontra 0,72 s), odsłaniała ciemną scenę pod
+lecącym logo i **czarny napis „TCHÓRZEWSKI" znikał w czerni jak naklejka**. Sama krzywa
+z wolnym startem, którą zaleca skill, tego NIE ratowała. Naprawa: `transition-delay: .42s`
+na ścianie — najpierw leci znak, ściana rusza, gdy on jest już prawie w pasku.
+⚠️ Zwykłym zrzutem tego nie widać — zrzut robi się wolniej niż animacja.
+
+Osobny plik `img/logo-duze.png` (640×472, 58 kB), tylko na stronie głównej: znak w pasku ma
+240 px i na kurtynie byłby miękki. Znak dostaje na kurtynie swój rozmiar naprawdę, a do paska
+wraca `scale()` mniejszym od 1 — powiększanie `transform`em rozmywa na telefonie.
+
+**3. Znaczki social bez kafelka.** Same znaki, okrągłe, w barwach marek, z poświatą
+i podniesieniem na najechanie. 🔴 Okrągłość robi SAM ZNAK — Facebook jest kołem z natury,
+Instagram dostał koło w swoim gradiencie z białym aparatem. Dzięki temu zasada
+`border-radius: 0` została nienaruszona: nie ma płytki, więc nie ma czego zaokrąglać.
+Poświata jest funkcją, nie ozdobą — znak bez tła przejeżdża i po papierze, i po ciemnej
+scenie, więc ma dwie słabe poświaty naraz.
+
 **⏳ ZOSTAJE Z BLOKU E:**
 - ⚠️ `polityka-prywatnosci` dostaje ostrzeżenie o ścianie tekstu = **fałszywy alarm bramki**;
   na stronie prawnej ściana tekstu jest poprawna. Do pominięcia w `sciana_tekstu`.

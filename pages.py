@@ -55,17 +55,21 @@ IG_LINK = "https://www.instagram.com/a.s_tchorzewski/"
 
 
 def dymki_social(sufiks=""):
-    """Dwa dymki w prawym dolnym rogu: Facebook i Instagram.
+    """Dwa okrągłe znaczki w prawym dolnym rogu: Facebook i Instagram.
+
+    🔴 BEZ KAFELKA (polecenie K. 08.09.2026: „w okrągłych dymkach, bez tego białego,
+    tylko same logo i ładnie podświetlone"). Wcześniej znaki siedziały w kwadratowych
+    płytkach z obrysem - na papierze czytało się to jak baner doklejony do strony.
+
+    ⚠️ OKRĄGŁOŚĆ ROBI SAM ZNAK, nie `border-radius`. Facebook jest z natury wypełnionym
+    kołem; Instagram dostał koło w swoim gradiencie z białym aparatem w środku, zamiast
+    dotychczasowego obrysu na przezroczystym tle. Dzięki temu zasada `border-radius: 0`
+    z `DESIGN.md` zostaje NIENARUSZONA - nie ma czego zaokrąglać, bo nie ma płytki.
 
     🔴 KOLORY MAREK SĄ TU ŚWIADOME, mimo zasady „jeden akcent" z `DESIGN.md`.
     Ta zasada dotyczy koloru DEKORACYJNEGO; tutaj kolor niesie znaczenie - dokładnie
-    tak samo jak zieleń `#25A63F` na przycisku WhatsAppa, opisana w `DESIGN.md`
-    jako „znaczeniowa, nie dekoracyjna". Człowiek skanuje wzrokiem za niebieskim „f",
-    nie za pomarańczowym kwadratem. (Decyzja K. 07.09.2026.)
-
-    ⚠️ W SPOCZYNKU kolor siedzi w samej ikonie, nie w całym kafelku - dwa duże
-    kolorowe kwadraty przeciągałyby uwagę z hero. Kafelek wypełnia się kolorem
-    dopiero na najechanie, a ikona wtedy bieleje.
+    tak samo jak zieleń `#25A63F` na przycisku WhatsAppa. Człowiek skanuje wzrokiem
+    za niebieskim „f", nie za pomarańczowym kwadratem. (Decyzja K. 07.09.2026.)
     """
     return f'''<div class="social-dymki">
   <a class="s-fb" href="{FB_LINK}" rel="noopener" target="_blank" aria-label="A.S Tchórzewski na Facebooku">
@@ -77,7 +81,10 @@ def dymki_social(sufiks=""):
         <stop offset="0%" stop-color="#FFD521"/><stop offset="25%" stop-color="#F50000"/>
         <stop offset="60%" stop-color="#B900B4"/><stop offset="100%" stop-color="#4C68D7"/>
       </linearGradient></defs>
-      <path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41-.56-.22-.96-.48-1.38-.9-.42-.42-.68-.82-.9-1.38-.16-.42-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16M12 0C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.14.63c-.79.3-1.46.72-2.13 1.38S.93 3.35.63 4.14C.33 4.9.13 5.78.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.26 2.15.56 2.91.3.79.72 1.46 1.38 2.13.67.66 1.34 1.08 2.13 1.38.76.3 1.64.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.27-.06 2.15-.26 2.91-.56.79-.3 1.46-.72 2.13-1.38.66-.67 1.08-1.34 1.38-2.13.3-.76.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.27-.26-2.15-.56-2.91-.3-.79-.72-1.46-1.38-2.13C21.32 1.35 20.65.93 19.86.63c-.76-.3-1.64-.5-2.91-.56C15.67.01 15.26 0 12 0m0 5.84a6.16 6.16 0 1 0 0 12.32 6.16 6.16 0 0 0 0-12.32M12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8m7.85-10.4a1.44 1.44 0 1 1-2.88 0 1.44 1.44 0 0 1 2.88 0"/>
+      <circle class="ig-kolo" cx="12" cy="12" r="10"/>
+      <g class="ig-aparat" transform="translate(12 12) scale(.46) translate(-12 -12)">
+        <path fill="#fff" d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41-.56-.22-.96-.48-1.38-.9-.42-.42-.68-.82-.9-1.38-.16-.42-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16M12 0C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.14.63c-.79.3-1.46.72-2.13 1.38S.93 3.35.63 4.14C.33 4.9.13 5.78.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.26 2.15.56 2.91.3.79.72 1.46 1.38 2.13.67.66 1.34 1.08 2.13 1.38.76.3 1.64.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.27-.06 2.15-.26 2.91-.56.79-.3 1.46-.72 2.13-1.38.66-.67 1.08-1.34 1.38-2.13.3-.76.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.27-.26-2.15-.56-2.91-.3-.79-.72-1.46-1.38-2.13C21.32 1.35 20.65.93 19.86.63c-.76-.3-1.64-.5-2.91-.56C15.67.01 15.26 0 12 0m0 5.84a6.16 6.16 0 1 0 0 12.32 6.16 6.16 0 0 0 0-12.32M12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8m7.85-10.4a1.44 1.44 0 1 1-2.88 0 1.44 1.44 0 0 1 2.88 0"/>
+      </g>
     </svg>
   </a>
 </div>'''
@@ -95,11 +102,20 @@ def ikony_social_stopka():
     return d.replace('class="social-dymki"', 'class="stopka-social"')
 
 
-def przyciski_kontakt(duch_link="realizacje.html", duch_tekst="Zobacz realizacje"):
+def przyciski_kontakt(duch_link="realizacje.html", duch_tekst="Zobacz realizacje",
+                      trzeci=True):
+    """Linia kontaktu. `trzeci=False` zdejmuje przycisk „Zobacz realizacje".
+
+    🔴 W HERO idzie WERSJA DWUPRZYCISKOWA (K. 08.09.2026: pierwszy ekran „nie powala,
+    dużo tekstu"). Trzeci przycisk konkurował z telefonem o to samo kliknięcie, a do
+    realizacji i tak prowadzi menu na górze i zamknięcie strony na dole. Na pierwszym
+    ekranie ma być JEDNA rzecz do zrobienia: zadzwonić.
+    """
+    trzeci_html = (f'\n      <a class="duch" href="{duch_link}">{duch_tekst}</a>'
+                   if trzeci else "")
     return f"""<div class="kontakt-linia">
       <a class="btn" href="tel:{TEL_E164}">Zadzwoń {TEL}</a>
-      <a class="duch" href="{WA_LINK}" rel="noopener">{ikona_wa()}WhatsApp {WA}</a>
-      <a class="duch" href="{duch_link}">{duch_tekst}</a>
+      <a class="duch" href="{WA_LINK}" rel="noopener">{ikona_wa()}WhatsApp {WA}</a>{trzeci_html}
       <span class="godziny">Odbieramy 8:00-20:00</span>
     </div>"""
 
@@ -283,15 +299,14 @@ def index(naglowek):
     <div class="rv">
       <span class="etykieta">Wykończenia wnętrz · wielkopolskie i lubuskie</span>
       <h1>Zostawiamy wnętrze gotowe do wprowadzenia.</h1>
-      <p class="lead">Szpachlowanie, malowanie, łazienki i sucha zabudowa. Jesteśmy firmą
-        rodzinną - na budowach od ponad 20 lat, w Polsce pracujemy od 2015 roku.</p>
+      <p class="lead">Szpachlowanie, malowanie, łazienki i sucha zabudowa.
+        Na budowach od ponad 20 lat.</p>
       <div class="obietnica"><b>Wycena do 5 dni roboczych</b><span>od oględzin na miejscu</span></div>
-      {przyciski_kontakt()}
+      {przyciski_kontakt(trzeci=False)}
     </div>
     <figure class="kadr-scena">
       <img src="img/hero.jpg" width="1200" height="1600" fetchpriority="high"
         alt="Wykończone poddasze z drewnianymi belkami, dwoma oknami i podłogą z płytek wielkoformatowych">
-      <figcaption>Poddasze pod klucz - gładzie, malowanie, płytki wielkoformatowe</figcaption>
     </figure>
   </div>
 </header>

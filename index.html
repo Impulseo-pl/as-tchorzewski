@@ -24,8 +24,9 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin
       href="assets/fonty/inter-latin-400-normal.woff2">
 <link rel="preload" as="image" href="img/hero.jpg" fetchpriority="high">
+<link rel="preload" as="image" href="img/logo-duze.png" fetchpriority="high">
 <link rel="stylesheet" href="assets/rdzen.css?v=10">
-<link rel="stylesheet" href="assets/app.css?v=6">
+<link rel="stylesheet" href="assets/app.css?v=9">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"HomeAndConstructionBusiness",
 "name":"Firma Ogólnobudowlana Artur Tchórzewski","alternateName":"A.S Tchórzewski","url":"https://as-tchorzewski.pl/",
@@ -35,8 +36,24 @@
 "areaServed":["województwo wielkopolskie","województwo lubuskie"],
 "vatID":"PL9950044465","foundingDate":"2015"}
 </script><script>document.documentElement.classList.add('js')</script>
+<script>(function(){
+ try{
+  var h=document.documentElement, a=location.search.indexOf('intro')>-1;
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if(!a && sessionStorage.getItem('as-wejscie')) return;
+  sessionStorage.setItem('as-wejscie','1');
+  h.classList.add('intro-on','bez-wejscia-tla');
+ }catch(e){}
+})();</script>
 </head>
 <body>
+<div class="wejscie" aria-hidden="true">
+  <div class="wejscie-plyta"></div>
+  <div class="wejscie-znak-box">
+    <img class="wejscie-znak" src="img/logo-duze.png" width="640" height="472" alt="">
+    <i class="wejscie-kreska"></i>
+  </div>
+</div>
 <a class="skip" href="#tresc">Przejdź do treści</a>
 <header class="top">
   <div class="wrap">
@@ -57,26 +74,84 @@
     <a class="tel-gora" href="tel:+48667434222">667 434 222</a>
   </div>
 </header>
+<script>(function(){
+ var h=document.documentElement;
+ if(!h.classList.contains('intro-on')) return;
+ var obraz=document.querySelector('.znak img');
+ var lecacy=document.querySelector('.wejscie-znak');
+ if(!obraz||!lecacy){h.classList.remove('intro-on');return;}
+
+ /* 🔴 SKALUJEMY W DÓŁ, NIGDY W GÓRĘ. Znak dostaje na kurtynie swój docelowy
+    rozmiar naprawdę (width/height), a do paska wraca `scale()` mniejszym od 1.
+    Powiększanie `transform`em rasteryzuje warstwę w rozmiarze bazowym i na
+    telefonie (DPR 3) daje rozmyty znak - zrzut na Macu tego nie pokaże.
+    Sufit liczy się z PIKSELI PLIKU podzielonych przez gęstość ekranu. */
+ var PLIK_W=640, PLIK_H=472;
+ var r=obraz.getBoundingClientRect();
+ var sufit=PLIK_W/Math.min(window.devicePixelRatio||1,3);
+ var cel=(innerWidth<680)?Math.min(innerWidth*0.72,320):Math.min(innerWidth*0.42,480);
+ cel=Math.max(r.width, Math.min(cel, sufit));
+ h.style.setProperty('--i-w', Math.round(cel)+'px');
+ h.style.setProperty('--i-h', Math.round(cel*PLIK_H/PLIK_W)+'px');
+ h.style.setProperty('--i-zmniejsz', (r.width/cel).toFixed(4));
+ h.style.setProperty('--i-px', Math.round(r.left+r.width/2-innerWidth/2)+'px');
+ h.style.setProperty('--i-py', Math.round(r.top+r.height/2-innerHeight/2)+'px');
+
+ /* Po dodaniu stanu startowego potrzebne są DWIE klatki, inaczej przeglądarka
+    sklei start z końcem i przejścia w ogóle nie widać. */
+ requestAnimationFrame(function(){requestAnimationFrame(function(){
+   h.classList.add('intro-gra');
+ });});
+
+ var start=Date.now(), MIN=560, SUFIT=900, zaladowane=false, zrobione=false;
+
+ /* Zasłona schodzi, gdy gotowe jest HERO - nie po sztywnym timerze i NIE po
+    `window.load`. Sztywny timer zasłania treść, która już się narysowała;
+    `load` czeka na WSZYSTKIE zdjęcia strony i trzyma kurtynę dwa razy za długo.
+    Pod zasłoną liczy się jedna rzecz: kadr hero. */
+ function heroGotowe(){
+   var im=document.querySelector('.kadr-scena img');
+   return !!(im && im.complete && im.naturalWidth>0);
+ }
+ function koniec(){
+   if(zrobione) return; zrobione=true;
+   h.classList.add('intro-out');
+   /* Znak w pasku odsłaniamy DOKŁADNIE gdy lecący ląduje na jego miejscu -
+      oba rysują to samo w tym samym rozmiarze, więc podmiany nie widać. */
+   setTimeout(function(){ h.classList.remove('intro-on','intro-gra','intro-out'); }, 1100);
+ }
+ function moze(){
+   if(Date.now()-start>=MIN && (heroGotowe()||zaladowane)) koniec();
+   else setTimeout(moze,70);
+ }
+ window.addEventListener('load',function(){zaladowane=true;moze();});
+ moze();
+ setTimeout(koniec, SUFIT);                                  /* sufit z budżetu */
+ setTimeout(function(){                                      /* twardy bezpiecznik */
+   h.classList.remove('intro-on','intro-gra','intro-out');
+ }, 3000);
+ ['click','wheel','touchstart','keydown','scroll'].forEach(function(z){
+   window.addEventListener(z, koniec, {once:true, passive:true});
+ });
+})();</script>
 
 <header class="scena">
   <div class="wrap" id="tresc">
     <div class="rv">
       <span class="etykieta">Wykończenia wnętrz · wielkopolskie i lubuskie</span>
       <h1>Zostawiamy wnętrze gotowe do wprowadzenia.</h1>
-      <p class="lead">Szpachlowanie, malowanie, łazienki i sucha zabudowa. Jesteśmy firmą
-        rodzinną - na budowach od ponad 20 lat, w Polsce pracujemy od 2015 roku.</p>
+      <p class="lead">Szpachlowanie, malowanie, łazienki i sucha zabudowa.
+        Na budowach od ponad 20 lat.</p>
       <div class="obietnica"><b>Wycena do 5 dni roboczych</b><span>od oględzin na miejscu</span></div>
       <div class="kontakt-linia">
       <a class="btn" href="tel:+48667434222">Zadzwoń 667 434 222</a>
       <a class="duch" href="https://wa.me/48882832244" rel="noopener"><svg class="ikona-wa" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M17.47 14.38c-.3-.15-1.74-.86-2-.96-.27-.1-.47-.15-.66.15-.2.3-.76.96-.93 1.15-.17.2-.34.22-.63.08-.3-.15-1.25-.46-2.38-1.47-.88-.78-1.47-1.75-1.64-2.05-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.53.15-.18.2-.3.3-.5.1-.2.05-.38-.02-.53-.08-.15-.66-1.6-.9-2.19-.24-.57-.48-.5-.66-.5h-.57c-.2 0-.52.07-.79.37-.27.3-1.03 1.01-1.03 2.46s1.06 2.86 1.2 3.06c.15.2 2.08 3.18 5.04 4.46.7.3 1.25.48 1.68.62.71.22 1.35.19 1.86.12.57-.09 1.74-.71 1.99-1.4.25-.69.25-1.28.17-1.4-.07-.13-.27-.2-.57-.35M12.05 21.8h-.02a9.8 9.8 0 0 1-4.99-1.37l-.36-.21-3.71.97.99-3.62-.23-.37a9.8 9.8 0 0 1-1.5-5.23c0-5.41 4.4-9.81 9.82-9.81a9.75 9.75 0 0 1 6.94 2.88 9.74 9.74 0 0 1 2.87 6.94c0 5.41-4.4 9.82-9.81 9.82M20.5 3.49A11.75 11.75 0 0 0 12.05 0C5.54 0 .25 5.29.25 11.79c0 2.08.54 4.11 1.58 5.9L.15 24l6.45-1.69a11.8 11.8 0 0 0 5.45 1.39h.01c6.5 0 11.79-5.29 11.79-11.79 0-3.15-1.23-6.11-3.46-8.34"/></svg>WhatsApp 882 832 244</a>
-      <a class="duch" href="realizacje.html">Zobacz realizacje</a>
       <span class="godziny">Odbieramy 8:00-20:00</span>
     </div>
     </div>
     <figure class="kadr-scena">
       <img src="img/hero.jpg" width="1200" height="1600" fetchpriority="high"
         alt="Wykończone poddasze z drewnianymi belkami, dwoma oknami i podłogą z płytek wielkoformatowych">
-      <figcaption>Poddasze pod klucz - gładzie, malowanie, płytki wielkoformatowe</figcaption>
     </figure>
   </div>
 </header>
@@ -240,7 +315,10 @@
         <stop offset="0%" stop-color="#FFD521"/><stop offset="25%" stop-color="#F50000"/>
         <stop offset="60%" stop-color="#B900B4"/><stop offset="100%" stop-color="#4C68D7"/>
       </linearGradient></defs>
-      <path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41-.56-.22-.96-.48-1.38-.9-.42-.42-.68-.82-.9-1.38-.16-.42-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16M12 0C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.14.63c-.79.3-1.46.72-2.13 1.38S.93 3.35.63 4.14C.33 4.9.13 5.78.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.26 2.15.56 2.91.3.79.72 1.46 1.38 2.13.67.66 1.34 1.08 2.13 1.38.76.3 1.64.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.27-.06 2.15-.26 2.91-.56.79-.3 1.46-.72 2.13-1.38.66-.67 1.08-1.34 1.38-2.13.3-.76.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.27-.26-2.15-.56-2.91-.3-.79-.72-1.46-1.38-2.13C21.32 1.35 20.65.93 19.86.63c-.76-.3-1.64-.5-2.91-.56C15.67.01 15.26 0 12 0m0 5.84a6.16 6.16 0 1 0 0 12.32 6.16 6.16 0 0 0 0-12.32M12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8m7.85-10.4a1.44 1.44 0 1 1-2.88 0 1.44 1.44 0 0 1 2.88 0"/>
+      <circle class="ig-kolo" cx="12" cy="12" r="10"/>
+      <g class="ig-aparat" transform="translate(12 12) scale(.46) translate(-12 -12)">
+        <path fill="#fff" d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41-.56-.22-.96-.48-1.38-.9-.42-.42-.68-.82-.9-1.38-.16-.42-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16M12 0C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.14.63c-.79.3-1.46.72-2.13 1.38S.93 3.35.63 4.14C.33 4.9.13 5.78.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.26 2.15.56 2.91.3.79.72 1.46 1.38 2.13.67.66 1.34 1.08 2.13 1.38.76.3 1.64.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.27-.06 2.15-.26 2.91-.56.79-.3 1.46-.72 2.13-1.38.66-.67 1.08-1.34 1.38-2.13.3-.76.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.27-.26-2.15-.56-2.91-.3-.79-.72-1.46-1.38-2.13C21.32 1.35 20.65.93 19.86.63c-.76-.3-1.64-.5-2.91-.56C15.67.01 15.26 0 12 0m0 5.84a6.16 6.16 0 1 0 0 12.32 6.16 6.16 0 0 0 0-12.32M12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8m7.85-10.4a1.44 1.44 0 1 1-2.88 0 1.44 1.44 0 0 1 2.88 0"/>
+      </g>
     </svg>
   </a>
 </div>
@@ -267,7 +345,10 @@
         <stop offset="0%" stop-color="#FFD521"/><stop offset="25%" stop-color="#F50000"/>
         <stop offset="60%" stop-color="#B900B4"/><stop offset="100%" stop-color="#4C68D7"/>
       </linearGradient></defs>
-      <path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41-.56-.22-.96-.48-1.38-.9-.42-.42-.68-.82-.9-1.38-.16-.42-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16M12 0C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.14.63c-.79.3-1.46.72-2.13 1.38S.93 3.35.63 4.14C.33 4.9.13 5.78.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.26 2.15.56 2.91.3.79.72 1.46 1.38 2.13.67.66 1.34 1.08 2.13 1.38.76.3 1.64.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.27-.06 2.15-.26 2.91-.56.79-.3 1.46-.72 2.13-1.38.66-.67 1.08-1.34 1.38-2.13.3-.76.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.27-.26-2.15-.56-2.91-.3-.79-.72-1.46-1.38-2.13C21.32 1.35 20.65.93 19.86.63c-.76-.3-1.64-.5-2.91-.56C15.67.01 15.26 0 12 0m0 5.84a6.16 6.16 0 1 0 0 12.32 6.16 6.16 0 0 0 0-12.32M12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8m7.85-10.4a1.44 1.44 0 1 1-2.88 0 1.44 1.44 0 0 1 2.88 0"/>
+      <circle class="ig-kolo" cx="12" cy="12" r="10"/>
+      <g class="ig-aparat" transform="translate(12 12) scale(.46) translate(-12 -12)">
+        <path fill="#fff" d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41-.56-.22-.96-.48-1.38-.9-.42-.42-.68-.82-.9-1.38-.16-.42-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16M12 0C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.14.63c-.79.3-1.46.72-2.13 1.38S.93 3.35.63 4.14C.33 4.9.13 5.78.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.26 2.15.56 2.91.3.79.72 1.46 1.38 2.13.67.66 1.34 1.08 2.13 1.38.76.3 1.64.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.27-.06 2.15-.26 2.91-.56.79-.3 1.46-.72 2.13-1.38.66-.67 1.08-1.34 1.38-2.13.3-.76.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.27-.26-2.15-.56-2.91-.3-.79-.72-1.46-1.38-2.13C21.32 1.35 20.65.93 19.86.63c-.76-.3-1.64-.5-2.91-.56C15.67.01 15.26 0 12 0m0 5.84a6.16 6.16 0 1 0 0 12.32 6.16 6.16 0 0 0 0-12.32M12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8m7.85-10.4a1.44 1.44 0 1 1-2.88 0 1.44 1.44 0 0 1 2.88 0"/>
+      </g>
     </svg>
   </a>
 </div>

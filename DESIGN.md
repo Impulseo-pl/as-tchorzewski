@@ -116,12 +116,23 @@ z obcym serwerem i nie potrzebuje banera cookies (reguła silnika stron docelowy
 - ⛔ Zero `h-screen` — `min-h:100dvh`.
 - Telefon: **przycisk „Menu"**, nie pasek pozycji + **przyklejony na dole pasek**
   „Zadzwoń 667 434 222" / „WhatsApp".
+- 🔴 **PIERWSZY EKRAN JEST ODCHUDZONY** (K. 08.09.2026: „nie powala, dużo tekstu").
+  Zdjęte: podpis pod kadrem hero (8 słów — treść siedzi w `alt`), trzeci przycisk
+  „Zobacz realizacje" (konkurował z telefonem o to samo kliknięcie; do realizacji prowadzi
+  menu i zamknięcie strony), połowa leadu. Z ~54 słów zostało ~38, z trzech wezwań — jedno:
+  **zadzwonić**. Zwolnione miejsce poszło na kadr: 624 → 708 px wysokości na laptopie.
+  ⛔ Nie dokładać tu nic bez przeliczenia sumy w `.kadr-scena img`.
 - 🔴 **Kadr hero MIEŚCI SIĘ W PIERWSZYM EKRANIE, zawsze i wszędzie** (reguła K. 07.09.2026).
-  Na laptopie `max-height: calc(100dvh - 256px)`, na telefonie `44vh`. ⚠️ Limit szerokości
+  Na laptopie `max-height: calc(100dvh - 192px)`, na telefonie `44vh`. ⚠️ Limit szerokości
   `min(44vw,560px)` obowiązuje TYLKO na dużym ekranie - na telefonie musi być skasowany,
   bo 44 % z 390 px to 172 px. Bramka: `hero_poza_ekranem`.
-- 🔴 **Dymki social (FB, IG) w prawym dolnym rogu - tylko na dużym ekranie.** Na telefonie
+- 🔴 **Znaczki social (FB, IG) w prawym dolnym rogu - tylko na dużym ekranie.** Na telefonie
   ikony idą do stopki; dolny róg należy do „Zadzwoń” i „WhatsApp”.
+  🔴 **BEZ KAFELKA** (K. 08.09.2026): same znaki, okrągłe, w barwach marek, z poświatą
+  i podniesieniem na najechanie. Okrągłość robi SAM ZNAK (Facebook jest kołem z natury,
+  Instagram dostał koło w swoim gradiencie) — **nie `border-radius`**, więc zasada
+  „zero zaokrągleń" zostaje nienaruszona. Poświata jest funkcją, nie ozdobą: znak bez tła
+  przejeżdża i po papierze, i po ciemnej scenie, więc ma dwie słabe poświaty naraz.
 - 🔴 **Kadr hero na telefonie ma limit wysokości: `max-height: 44vh`.** Bez niego zdjęcie
   1200×1600 zjadało 531 z 844 px pierwszego ekranu i spychało H1 pod przyklejony pasek -
   nagłówek był przecięty na 60 px (zmierzone 07.09.2026). Skalujemy CAŁE zdjęcie, **nie
@@ -278,6 +289,48 @@ POD całym tekstem i nie przerwie niczego — kolejność w HTML jest tu treści
 i z leniwym ładowaniem zostawiał przy przewijaniu pustą dziurę (bramka, 07.09.2026).
 
 Kod: `pages.py`, funkcja `kadr_o_nas()`. Wygląd: `.kadr-o-nas` w `assets/app.css`.
+
+---
+
+## 🎬 WEJŚCIE NA STRONĘ — kurtyna z logo (08.09.2026, polecenie K.)
+
+**Tylko strona główna.** Kod: `build.py` (`WEJSCIE_ZAPALARKA` / `WEJSCIE_HTML` / `WEJSCIE_JS`),
+wygląd: `assets/app.css`, sekcja „WEJŚCIE NA STRONĘ". Procedura: skill `wejscie-na-strone`.
+
+**Co opowiada:** ekran jest świeżo wykończoną ŚCIANĄ w kolorze papieru. Spod pociągnięcia
+wychodzi znak firmy (maska w prawo + z rozmycia do ostrości), pod nim zostaje ślad w kolorze
+akcentu, znak odlatuje na swoje miejsce w pasku, a dopiero potem ściana schodzi i odsłania
+gotowe wnętrze. To jest dosłownie to, co ta firma robi — a nie „fade z logo", który umie
+zrobić każdy szablon.
+
+**Takty:** znak 0,52 s → ślad 0,46 s (opóźnienie 0,14 s) → przelot znaku 0,72 s →
+ściana 0,62 s **z opóźnieniem 0,42 s**. Zasłona rusza najwcześniej w 560 ms, najpóźniej
+w 900 ms; twardy bezpiecznik zdejmuje wszystko po 3 s.
+
+### 🔴 Dwie rzeczy, których nie wolno tu ruszyć
+1. **NAJPIERW LECI ZNAK, DOPIERO POTEM SCHODZI ŚCIANA** (`transition-delay: .42s` na
+   `.wejscie-plyta`). Zmierzone na stopklatce: przy jednoczesnym starcie ściana wygrywa
+   wyścig (0,62 s kontra 0,72 s znaku), odsłania ciemną scenę pod lecącym znakiem
+   i **czarny napis „TCHÓRZEWSKI" znika w czerni jak naklejka**. Sama krzywa z wolnym
+   startem tego nie ratowała. ⛔ Nie skracać poniżej ~0,4 s bez ponownego sprawdzenia.
+2. **Znak dostaje na kurtynie swój rozmiar naprawdę** (`width`/`height` z pomiaru),
+   a do paska wraca `scale()` **mniejszym od 1**. Powiększanie `transform`em rasteryzuje
+   warstwę w rozmiarze bazowym i na telefonie (DPR 3) daje rozmyty znak — zrzut na Macu
+   tego nie pokaże. Sufit = 640 px pliku ÷ gęstość ekranu.
+
+**Plik:** `img/logo-duze.png` (640×472, 58 kB) — osobny od `img/logo.png`, bo znak w pasku
+ma 240 px i na kurtynie byłby miękki. Ładuje się TYLKO na stronie głównej.
+
+**Jak to obejrzeć:** zwykły zrzut pokazuje już gotową stronę — animacja jest szybsza niż
+zrzut. Zrób stopklatkę: kopia `index.html` w `_makiety/wejscie/` (katalogi `_*` bramki
+pomijają) z `MIN`/`SUFIT` ustawionymi na `999000`, wyciętymi twardymi timerami i pustą listą
+zdarzeń przerywających, plus dowiązania do `assets/`, `img/`, `video/`. Do adresu dopisz
+`?intro`, żeby zagrać ponownie. ⛔ Po obejrzeniu skasuj `_makiety` — to kopia, która rdzewieje.
+
+**Bezpieczniki (wszystkie obowiązkowe):** zasłona jest `display:none`, dopóki nie włączy jej
+skrypt · twardy limit 3 s zdejmuje ją niezależnie od wszystkiego · klik/scroll/dotyk/klawisz
+przerywa natychmiast · `prefers-reduced-motion` pomija całość · gra RAZ NA WIZYTĘ
+(`sessionStorage`), powrót z podstrony jej nie odtwarza.
 
 ---
 

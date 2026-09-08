@@ -171,7 +171,7 @@ a{text-decoration:none}
    na czerni jak przedmiot w witrynie - to był drugi (i nadal ważny) powód wyboru
    tego kierunku. Zmieniło się tylko to, że czerń nie jest już tłem CAŁEJ strony,
    więc logo w pasku nad nią siedzi na papierze i jest widoczne. */
-.scena{position:relative;overflow:hidden;padding:76px 0 104px;
+.scena{position:relative;overflow:hidden;padding:56px 0 92px;
   background:var(--noc);color:var(--biel)}
 /* ⚠️ Świadome złamanie zakazu gradientów (`DESIGN.md`, odstępstwo 6): płaska czerń
    przy zdjęciach z budowy robi się martwa. Do skasowania, jeśli będzie widać. */
@@ -183,6 +183,8 @@ a{text-decoration:none}
   color:var(--biel)}
 .scena .etykieta{color:var(--akcent-jasny)}
 .lead{color:var(--przyg-jasny);font-size:19px;max-width:46ch;margin-bottom:34px}
+/* Hero ma krótszy wiersz niż otwarcia podstron - dwa wiersze zamiast trzech. */
+.scena .lead{max-width:34ch;margin-bottom:30px}
 .scena .lead{color:var(--przyg)}
 .obietnica{display:inline-flex;align-items:baseline;gap:14px;flex-wrap:wrap;
   border:1px solid var(--linia-na-ciemnym);border-radius:0;padding:14px 24px;margin-bottom:32px}
@@ -201,17 +203,24 @@ a{text-decoration:none}
    zawsze musi się mieścić na każdym urządzeniu”. Pierwsza wersja miała samą szerokość
    i na laptopie 1440×900 kadr wychodził poza pierwszy ekran.
    Dlatego wysokość jest odjęta od WIDOKU, nie wpisana na sztywno:
-   nawigacja 96 + górny odstęp sceny 76 + podpis ~64 + oddech 40 = 276 px.
-   ⚠️ 96, nie 76 - pasek urósł, gdy logo poszło z 34 na 60 px. Zmieniasz `--gora`,
-   zmieniasz i tę liczbę, inaczej hero wyjdzie poza pierwszy ekran.
+   nawigacja 96 + górny odstęp sceny 56 + oddech 40 = 192 px.
+   ⚠️ Każdy składnik tej sumy jest z czegoś, co widać na ekranie. Zmieniasz `--gora`
+   albo górny odstęp `.scena` - poprawiasz i tę liczbę, inaczej hero wyjdzie poza
+   pierwszy ekran i złamie regułę K.
+
+   🔴 08.09.2026 kadr URÓSŁ, bo z tej sumy zniknęły dwie rzeczy (K.: pierwszy ekran
+   „nie powala, dużo tekstu"): podpis pod zdjęciem (~64 px, i przy okazji 8 słów
+   z pierwszego ekranu - treść siedzi w `alt`) oraz 20 px górnego odstępu sceny.
+   Na laptopie 1440×900 daje to kadr 708 px zamiast 624 px wysokości.
+   ⛔ Nie dokładać tu nic z powrotem bez przeliczenia tej sumy.
+
    Figura ma `fit-content`, więc ramka `::before` idzie za zdjęciem, cokolwiek wyjdzie.
    Bramka pilnuje tego testem `hero_poza_ekranem`. */
 .kadr-scena{position:relative;width:fit-content;flex:none}
-.kadr-scena img{width:auto;max-width:min(44vw,560px);
-  max-height:calc(100dvh - 276px);border-radius:0}
+.kadr-scena img{width:auto;max-width:min(48vw,620px);
+  max-height:calc(100dvh - 192px);border-radius:0}
 .kadr-scena::before{content:"";position:absolute;inset:-26px;
   border:1px solid var(--linia-slaba-na-ciemnym);pointer-events:none}
-.kadr-scena figcaption{margin-top:20px;font-size:13.5px;color:var(--przyg);text-align:right}
 
 /* ── SEKCJE ─────────────────────────────────────────────────────────────────── */
 .sekcja{padding:var(--rytm) 0}
@@ -478,7 +487,6 @@ footer{background:var(--papier-3);border-top:1px solid var(--linia-slaba);paddin
      Wpadka 07.09.2026 - limit dobrany pod laptopa przeciekł na telefon. */
   .kadr-scena img{max-height:44vh;max-width:100%;width:auto}
   .kadr-scena::before{inset:-12px}
-  .kadr-scena figcaption{text-align:left}
   .kafle{grid-template-columns:1fr 1fr;gap:16px}
   .galeria{columns:2;column-gap:16px}
   .galeria figure{margin-bottom:16px}
@@ -519,37 +527,40 @@ footer{background:var(--papier-3);border-top:1px solid var(--linia-slaba);paddin
 .odstep-domkniecie{margin-top:clamp(2.5rem,5vw,4.5rem)}
 
 
-/* ── DYMKI SOCIAL (prawy dolny róg) ──────────────────────────────────────────
-   Jedyne miejsce, gdzie strona wychodzi poza swoją siatkę - dlatego trzyma się
-   reszty języka: ostra krawędź (`border-radius: 0`, polecenie K.), cienka linia,
-   jeden akcent na najechanie.
-   ⚠️ Po przejściu na jasną stronę dymki mają JASNE tło - na papierze ciemne
-   kwadraty w rogu czytały się jak baner reklamowy doklejony do strony.
-   Na telefonie siedzą w stopce, nie w rogu (nota niżej). */
-.social-dymki{position:fixed;right:22px;bottom:22px;z-index:110;
-  display:flex;flex-direction:column;gap:10px}
-.social-dymki a{display:grid;place-items:center;width:46px;height:46px;
-  color:var(--atrament);background:rgba(255,255,255,.86);border:1px solid var(--linia);
-  backdrop-filter:saturate(160%) blur(14px);
-  transition:background .2s ease,border-color .2s ease,transform .2s ease}
-.social-dymki a:hover{background:var(--akcent-btn);border-color:var(--akcent);
-  transform:translateY(-2px)}
-.social-dymki svg{width:21px;height:21px;display:block}
+/* ── ZNACZKI SOCIAL (prawy dolny róg) ────────────────────────────────────────
+   🔴 BEZ KAFELKA - polecenie K. z 08.09.2026: „w okrągłych dymkach, bez tego
+   białego, tylko same logo i ładnie podświetlone, z efektem hovera".
+   Wcześniej znaki siedziały w kwadratowych płytkach z obrysem; na papierze
+   czytało się to jak baner doklejony do strony.
 
-/* 🔴 KOLORY MAREK - świadome odstępstwo od „jednego akcentu”, bo kolor jest tu
-   ZNACZENIOWY, nie dekoracyjny (ten sam wyjątek co zieleń WhatsAppa).
-   W spoczynku kolor siedzi w samej ikonie; kafelek wypełnia się dopiero na najechanie,
-   żeby dwa kolorowe kwadraty nie przeciągały uwagi z hero przez cały czas. */
+   ⚠️ OKRĄGŁOŚĆ ROBI SAM ZNAK, nie `border-radius`. Facebook jest wypełnionym
+   kołem z natury, Instagram dostał koło w swoim gradiencie (`pages.py`).
+   Dzięki temu zasada `border-radius: 0` z `DESIGN.md` zostaje nienaruszona -
+   nie ma płytki, więc nie ma czego zaokrąglać. ⛔ Nie wracać tu do `border-radius`.
+
+   🔴 PODŚWIETLENIE JEST FUNKCJĄ, NIE OZDOBĄ. Znak bez tła leży wprost na tym,
+   co akurat jest pod spodem - a przewijając stronę przejeżdża i po papierze,
+   i po ciemnej scenie, i po zdjęciach. Biała poświata trzyma go czytelnym na
+   ciemnym, ciemna - na jasnym. Dlatego są DWIE, obie słabe; razem dają obrys
+   widoczny na każdym tle, którego samo się nie widzi jako ramki. */
+.social-dymki{position:fixed;right:24px;bottom:24px;z-index:110;
+  display:flex;flex-direction:column;gap:14px}
+.social-dymki a{display:grid;place-items:center;width:48px;height:48px;
+  background:none;border:0;
+  filter:drop-shadow(0 0 0 rgba(255,255,255,0)) drop-shadow(0 3px 8px rgba(15,15,18,.28));
+  transition:transform .22s var(--ease),filter .22s ease}
+.social-dymki svg{width:48px;height:48px;display:block}
 .social-dymki .s-fb svg path{fill:#1877F2}
-.social-dymki .s-ig svg path{fill:url(#ig-grad)}
-.social-dymki .s-fb:hover{background:#1877F2;border-color:#1877F2}
-.social-dymki .s-ig:hover{background:linear-gradient(45deg,#FFD521,#F50000 25%,#B900B4 60%,#4C68D7);
-  border-color:#B900B4}
-.social-dymki .s-fb:hover svg path,
-.social-dymki .s-ig:hover svg path{fill:#fff}
-/* ⛔ NIE ruszamy tu `transform` - unoszenie o 2 px jest już w regule wspólnej wyżej. */
-/* 🔴 NA TELEFONIE DYMKÓW NIE MA. Dolny róg należy do „Zadzwoń” i „WhatsApp” - one
-   przynoszą telefony, social nie. Przy `bottom:84px` dymki zasłaniały H1 o 37 px
+.social-dymki .ig-kolo{fill:url(#ig-grad)}
+/* ⚠️ Lista filtrów MUSI mieć te same funkcje w obu stanach, inaczej przejście
+   nie animuje się, tylko przeskakuje. Dlatego stan spoczynku ma poświatę
+   o zerowym promieniu i zerowej alfie, a nie brak poświaty. */
+.social-dymki a:hover,.social-dymki a:focus-visible{transform:translateY(-3px) scale(1.06);
+  filter:drop-shadow(0 0 12px rgba(255,255,255,.55)) drop-shadow(0 6px 14px rgba(15,15,18,.4))}
+.social-dymki a:active{transform:translateY(-1px) scale(1.02)}
+
+/* 🔴 NA TELEFONIE ZNACZKÓW W ROGU NIE MA. Dolny róg należy do „Zadzwoń” i „WhatsApp” -
+   one przynoszą telefony, social nie. Przy `bottom:84px` zasłaniały H1 o 37 px
    (złapane przez bramkę 07.09.2026), a niżej wchodziły na przyklejony pasek.
    Zamiast kombinować z pozycją: na telefonie social siedzi w STOPCE, tam gdzie
    człowiek go szuka i gdzie niczego nie przykrywa. */
@@ -557,16 +568,116 @@ footer{background:var(--papier-3);border-top:1px solid var(--linia-slaba);paddin
   .social-dymki{display:none}
 }
 
-/* Ikony social w stopce - na telefonie jedyne, na laptopie drugie obok dymków. */
-.stopka-social{display:flex;gap:10px;margin-top:18px}
+/* Te same znaczki w stopce - na telefonie jedyne, na laptopie drugie obok rogu.
+   Stopka jest jasna, więc poświata jest tu ciemniejsza niż w rogu. */
+.stopka-social{display:flex;gap:14px;margin-top:20px}
 .stopka-social a{display:grid;place-items:center;width:40px;height:40px;
-  color:var(--przyg-jasny);
-  border:1px solid var(--linia-slaba);transition:color .2s ease,border-color .2s ease}
+  background:none;border:0;
+  filter:drop-shadow(0 0 0 rgba(27,27,30,0)) drop-shadow(0 2px 5px rgba(27,27,30,.18));
+  transition:transform .22s var(--ease),filter .22s ease}
+.stopka-social svg{width:40px;height:40px;display:block}
 .stopka-social .s-fb svg path{fill:#1877F2}
-.stopka-social .s-ig svg path{fill:url(#ig-grad-stopka)}
-.stopka-social a:hover{border-color:var(--linia)}
-.stopka-social .s-fb:hover{background:#1877F2}
-.stopka-social .s-ig:hover{background:linear-gradient(45deg,#FFD521,#F50000 25%,#B900B4 60%,#4C68D7)}
-.stopka-social a:hover svg path{fill:#fff}
-.stopka-social svg{width:18px;height:18px;display:block}
+.stopka-social .ig-kolo{fill:url(#ig-grad-stopka)}
+.stopka-social a:hover,.stopka-social a:focus-visible{transform:translateY(-3px) scale(1.06);
+  filter:drop-shadow(0 0 10px rgba(27,27,30,.28)) drop-shadow(0 5px 12px rgba(27,27,30,.3))}
 @media print{.social-dymki{display:none}}
+
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   WEJŚCIE NA STRONĘ — kurtyna z logo         (skill `wejscie-na-strone`, 08.09.2026)
+   ══════════════════════════════════════════════════════════════════════════════
+   CO OPOWIADA (reguła 1 skilla: wejście ma opowiadać PRODUKT klienta, bo zwykły
+   fade z logo umie zrobić każdy szablon): ekran jest świeżo wykończoną ŚCIANĄ
+   w kolorze papieru. Spod pociągnięcia wychodzi znak firmy, pod nim zostaje ślad
+   w kolorze akcentu, a potem ściana odsłania gotowe wnętrze. To jest dosłownie to,
+   co ta firma robi: gładź, malowanie, wnętrze pod klucz.
+
+   🔴 DLACZEGO KURTYNA JEST JASNA, A NIE CIEMNA: cały efekt to KONTRAST między
+   zasłoną a tym, co spod niej wychodzi. Nasza scena jest ciemna (`#0F0F12`),
+   więc zasłona musi być papierowa - to jest ten sam układ, który K. ocenił jako
+   najlepszy przy MEBLE FRONT. ⛔ Ciemna zasłona na ciemnej scenie nie odsłania
+   niczego: obie warstwy mają ten sam kolor i widz nie widzi ruchu.
+
+   🔴 ZASŁONA SCHODZI W DÓŁ, nie w górę. Znak leci do paska NA GÓRZE, a pasek jest
+   jasny - musi być odsłonięty PIERWSZY, żeby znak wylądował na papierze.
+
+   🔴🔴 NAJPIERW LECI ZNAK, DOPIERO POTEM SCHODZI ŚCIANA (opóźnienie .42s).
+   Zmierzone 08.09.2026 na stopklatce: przy jednoczesnym starcie ściana wygrywa
+   wyścig (0,62 s kontra 0,72 s znaku), odsłania ciemną scenę pod lecącym znakiem
+   i czarny napis „TCHÓRZEWSKI" ZNIKA w czerni jak naklejka - dokładnie pułapka
+   z reguły 7 skilla. Sama krzywa z wolnym startem tego NIE ratowała.
+   Przy tym opóźnieniu znak jedzie po papierze aż do paska, a ściana rusza dopiero,
+   gdy on jest już prawie na miejscu. ⛔ Nie zdejmować tego opóźnienia i nie skracać
+   go poniżej ~0,4 s bez ponownego sprawdzenia na stopklatce (`_makiety/wejscie/`).
+
+   ⛔ ZERO zwykłego `opacity`+`scale` na logo - to jest znamię taniej roboty.
+   Znak wchodzi MASKĄ (`clip-path`) z rozmycia do ostrości, jak spod wałka.
+
+   Bezpieczniki (wszystkie obowiązkowe): zasłona jest `display:none`, dopóki nie
+   włączy jej skrypt · twardy limit czasu ją zdejmuje niezależnie od wszystkiego ·
+   klik/scroll/dotyk/klawisz przerywa · `prefers-reduced-motion` pomija całość. */
+
+.wejscie{display:none}
+.intro-on .wejscie{display:block;position:fixed;inset:0;z-index:200;pointer-events:none}
+
+/* PŁYTA — to ona zasłania i to ona ma `clip-path`. Znak jest jej RODZEŃSTWEM,
+   nie dzieckiem: dziecko zostałoby przycięte razem z nią i zniknęłoby w trakcie
+   odsłony, zamiast lecieć do paska. */
+.wejscie-plyta{position:absolute;inset:0;background:var(--papier);
+  clip-path:inset(0 0 0 0)}
+.intro-on.intro-out .wejscie-plyta{clip-path:inset(100% 0 0 0);
+  transition:clip-path .62s cubic-bezier(.66,0,.24,1) .42s}
+
+.wejscie-znak-box{position:fixed;left:50%;top:50%;z-index:201;
+  transform:translate(-50%,-50%);display:grid;justify-items:center;gap:18px}
+.intro-on.intro-out .wejscie-znak-box{
+  transform:translate(calc(-50% + var(--i-px)),calc(-50% + var(--i-py)))
+            scale(var(--i-zmniejsz));
+  transition:transform .72s cubic-bezier(.16,.84,.44,1)}
+
+/* TAKT 1 — znak wychodzi spod pociągnięcia: maska w prawo + z rozmycia do ostrości.
+   ⚠️ Skala idzie 1,045 → 1, a NIE „mały → duży": docelowy rozmiar znaku robi
+   `width`/`height` z pomiaru (reguła 8 skilla), bo powiększanie `transform`em
+   rasteryzuje warstwę w rozmiarze bazowym i na telefonie daje rozmyty znak. */
+/* ⚠️ Lista filtrów MUSI mieć te same funkcje we wszystkich trzech stanach (z alfą 0
+   na starcie), inaczej przeglądarka nie animuje przejścia, tylko przeskakuje.
+   Poświata w kolorze papieru to UBEZPIECZENIE na wypadek, gdyby przy nietypowej
+   wysokości okna krawędź ściany jednak dogoniła znak: na papierze jest niewidoczna,
+   na ciemnym tle odkleja od niego znak zamiast pozwolić mu zniknąć. */
+.wejscie-znak{display:block;width:var(--i-w);height:var(--i-h);max-width:none;
+  clip-path:inset(0 100% 0 0);transform:scale(1.045);
+  filter:blur(14px) drop-shadow(0 0 0 rgba(243,241,237,0))}
+.intro-on.intro-gra .wejscie-znak{clip-path:inset(0 0 0 0);transform:scale(1);
+  filter:blur(0) drop-shadow(0 0 0 rgba(243,241,237,0));
+  transition:clip-path .52s cubic-bezier(.16,1,.3,1),
+             filter .52s cubic-bezier(.16,1,.3,1),
+             transform .52s cubic-bezier(.16,1,.3,1)}
+.intro-on.intro-out .wejscie-znak{
+  filter:blur(0) drop-shadow(0 0 16px rgba(243,241,237,.9));
+  transition:filter .3s ease}
+
+/* TAKT 2 — ślad po pociągnięciu. Rusza 0,14 s PO znaku; bez tego opóźnienia
+   wszystko startuje naraz i czyta się jak jeden płaski fade (reguła 4 skilla). */
+.wejscie-kreska{display:block;width:var(--i-w);height:2px;background:var(--akcent);
+  transform:scaleX(0);transform-origin:left center}
+.intro-on.intro-gra .wejscie-kreska{transform:scaleX(1);
+  transition:transform .46s cubic-bezier(.16,1,.3,1) .14s}
+.intro-on.intro-out .wejscie-kreska{opacity:0;transition:opacity .3s ease}
+
+/* Znak w pasku czeka schowany i odsłania się dokładnie wtedy, gdy lecący znak
+   ląduje na jego miejscu. Bez tego przez pół sekundy widać DWA loga naraz.
+   ⚠️ `visibility`, nie `display` - miejsce w nagłówku ma zostać zajęte, inaczej
+   pasek zapada się na czas wejścia i podskakuje po zdjęciu kurtyny. */
+.intro-on .znak img{visibility:hidden}
+
+/* 🔴 Reguła 5b skilla: animacje wejściowe pierwszego ekranu grają POD zasłoną
+   i kończą się już PO odsłonie - hero wychodzi spod kurtyny wyblakłe. Gasimy je
+   klasą TRWAŁĄ, której nigdy nie zdejmujemy; gdyby wisiała na `intro-on`,
+   zdjęcie tamtej klasy puściłoby je drugi raz, tym razem na widoku. */
+.bez-wejscia-tla .scena .rv{opacity:1;transform:none;transition:none}
+
+@media (prefers-reduced-motion:reduce){
+  .wejscie,.intro-on .wejscie{display:none}
+  .intro-on .znak img{visibility:visible}
+}
+@media print{.wejscie{display:none!important}}
