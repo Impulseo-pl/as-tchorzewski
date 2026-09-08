@@ -242,6 +242,14 @@ a{text-decoration:none}
    kontener niż tekst. 1500 px daje ~735 px na kadr przy źródle 1100 px (1,5×);
    ⛔ szerzej NIE - pełna szerokość na ekranie 1920 zeszłaby do 1,15× i zmiękła. */
 .wrap--szeroki{max-width:1500px}
+/* 🔴 PARA FILMÓW (blok E, 08.09.2026). `.reel` ma sufit 420 px (źródła to 540 i 720 px
+   szerokości - szerzej zaczyna się rozmywać), więc w rzędzie 1fr 1fr dwa kafle stawały
+   po LEWEJ, a po prawej zostawało 300 px pustki. Słupki dostają twardą szerokość
+   i cała para idzie na środek. ⛔ Nie podnosić 520 px - przy 540 px źródła to już
+   skala 1:1, a wyżej film mięknie. Poniżej 980 px `.reel` traci sufit (media query)
+   i kafle wypełniają połówki same. */
+.para--filmy{max-width:1074px;margin-inline:auto}   /* 520 + 34 przerwy + 520 */
+.para--filmy .reel{max-width:none}
 .klatka{position:relative}
 .klatka img{width:100%;border-radius:0;box-shadow:0 2px 8px rgba(0,0,0,.08)}
 .klatka p{margin-top:16px;font-size:15px;color:var(--przyg-jasny)}
@@ -323,6 +331,10 @@ a{text-decoration:none}
 
 /* ── GALERIA (naturalne proporcje, bez kadrowania) ──────────────────────────── */
 .galeria{columns:3;column-gap:22px}
+/* 🔴 Grupa 2- i 4-zdjęciowa idzie na DWA słupki (blok E, 08.09.2026). Przy `columns:3`
+   dwa kadry zostawiały pusty trzeci słupek, a cztery - dziurę na całą wysokość rzędu
+   po prawej. Liczbę słupków wybiera `grupa()` w `pages.py`, nie oko. */
+.galeria--2{columns:2}
 .galeria figure{break-inside:avoid;margin:0 0 22px;cursor:zoom-in;position:relative}
 .galeria img{width:100%;border-radius:0;display:block}
 .galeria figcaption{margin-top:10px;font-size:13.5px;color:var(--przyg-jasny);line-height:1.45}
@@ -437,8 +449,24 @@ a{text-decoration:none}
 .domkniecie .duch:hover{border-color:var(--biel)}
 
 /* ── MAPA PO KLIKNIĘCIU (rdzeń, blok 6) ─────────────────────────────────────── */
-[data-po-kliknieciu]{border:1px solid var(--linia-slaba);background:var(--papier-2);
-  min-height:320px}
+/* 🔴 08.09.2026, blok E. Zasłona była BIAŁYM prostokątem (`--papier-2`) na papierze
+   `#F3F1ED` z włoskową ramką - czytała się jak element, który się nie wczytał, a nie
+   jak część strony (rdzeń wprost tego zabrania: „ma wyglądać jak część strony, nie jak
+   błąd"). Teraz to ciemny panel w tonie pasa wezwania, z siatką w tle udającą plan
+   miasta i adresem złożonym typograficznie. ⛔ Nie wracać na biel i nie zdejmować
+   siatki - to ona odróżnia „miejsce na mapę" od „dziury". */
+[data-po-kliknieciu]{border:0;background:var(--noc);color:var(--biel);min-height:380px;
+  position:relative;overflow:hidden;gap:6px}
+[data-po-kliknieciu]::before{content:"";position:absolute;inset:0;opacity:.16;
+  background-image:
+    repeating-linear-gradient(0deg,transparent 0 47px,rgba(255,255,255,.55) 47px 48px),
+    repeating-linear-gradient(90deg,transparent 0 47px,rgba(255,255,255,.55) 47px 48px),
+    linear-gradient(112deg,transparent 0 calc(50% - 3px),rgba(255,255,255,.9) calc(50% - 3px) calc(50% + 3px),transparent calc(50% + 3px));
+  pointer-events:none}
+[data-po-kliknieciu]>*{position:relative}
+.mapa-adres{font:500 12px/1 Inter;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--akcent-jasny)}
+[data-po-kliknieciu] p{font-size:1.35rem;color:var(--biel);margin:0 0 12px}
 .pk-btn{background:var(--akcent-btn);color:#fff;font:500 15px/1 Inter;padding:15px 24px;
   border-radius:0}
 .pk-btn:hover{background:var(--akcent-btn-hover)}

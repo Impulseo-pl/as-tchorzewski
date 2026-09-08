@@ -509,3 +509,61 @@ pod krótszą zostawało ok. 400 px pustki, a im szerszy ekran, tym więcej.
 Bramki: **sekcja wyglądu czysta na 1440 i na 390 px**. Zostają ✗ celowe (noindex, Disallow,
 brak zdalnego repo) i near-duplikat `logo.png ≈ logo-duze.png` - to ten sam znak w dwóch
 rozmiarach, z założenia.
+
+### ✅ BLOK E ZAMKNIĘTY 08.09 19:40 - „realizacje" i „kontakt" przez test topowej firmy
+Ostatnie dwie podstrony po nowych otwarciach ze zdjęciami. Pięć rzeczy nie przeszłoby
+u topowego wykonawcy; wszystkie naprawione, bramki przemierzone po każdej.
+
+**1. Realizacje powtarzały stronę główną - na obu końcach.** Podstrona OTWIERAŁA się grupą
+„Rozbudowa - przed i po" (`przed.jpg` + `po.jpg`) i KOŃCZYŁA sekcją z oboma filmami - a jedno
+i drugie stoi na głównej. Kto wchodził główna → realizacje, dostawał te same dwa zdjęcia
+i te same dwa filmy, z tymi samymi podpisami. Filmy były pozostałością po przeprowadzce
+z 08.09 („oba na głównej") - wtedy dołożono je na główną, ale nie zdjęto stąd.
+🔴 Reguła „jeden kadr nie stoi w dwóch miejscach" dotyczy TAK SAMO zdjęć z galerii
+i filmów, jak kadrów w otwarciach. Oba zostają na głównej, z realizacji zeszły.
+
+**2. Dziury w siatce grup.** `.galeria` to `columns:3`, a grupy miały 2, 5, 4, 3, 1, 2, 4 kadry:
+„Schody" (JEDNO zdjęcie) zostawiały 2/3 pustego rzędu, „Beton" i „Rozbudowa" (po dwa) - 1/3,
+a czterozdjęciowe „Łazienki" i „Elewacja" - dziurę na całą wysokość rzędu po prawej.
+- Liczbę słupków wybiera teraz `grupa()` w `pages.py`, nie oko: **2 i 4 kadry → dwa słupki**
+  (`.galeria--2`), 3 i więcej → trzy. Dwa i cztery wypełniają rząd co do słupka.
+- ⛔ Grupa JEDNOZDJĘCIOWA nie ma dobrego układu (samotny kadr przy 2/3 pustki, a rozciągnięty
+  na całą szerokość mięknie - źródła to kadry z telefonu). Taką grupę **scalamy z sąsiednią**:
+  „Schody" weszły do „Beton architektoniczny i schody" - ten sam rodzaj wykończenia.
+- ⚖️ Koszt, świadomy: „Łazienki" stoją teraz w miejscu 577 px zamiast 377 px, a trzy z czterech
+  źródeł mają 900 px (oryginały od klienta: 739-924 px). Bramka liczy gęstość 0,78 potrzebnej
+  na Retinie i klasyfikuje to jako „za mały materiał od klienta - nie do naprawienia u nas",
+  czyli nie blokuje. Dla porównania KAŻDE otwarcie podstrony stoi dziś na 0,42-0,50.
+  Wypełniony rząd wygrywa z 1,5× zamiast 2× gęstości - ⛔ nie cofać tego bez nowych zdjęć.
+
+**3. Para filmów na głównej stała po lewej.** `.reel` ma sufit 420 px (źródła: 540 i 720 px
+szerokości), więc w rzędzie `1fr 1fr` dwa kafle zajmowały 874 z 1176 px i po prawej zostawało
+300 px pustki - dokładnie to, na co K. narzekał 08.09 przy `.film-obok`. `.para--filmy` daje
+parze twardą szerokość **1074 px** (520 + 34 + 520) i stawia ją na środku. ⛔ Nie podnosić
+520 px - przy 540 px źródła to już skala 1:1, wyżej film mięknie. Poniżej 980 px `.reel`
+traci sufit (media query) i kafle wypełniają połówki same.
+
+**4. Zasłona mapy wyglądała jak element, który się nie wczytał.** Biały prostokąt (`--papier-2`)
+na papierze `#F3F1ED`, z włoskową ramką i przyciskiem na środku - rdzeń wprost tego zabrania
+(„zasłona ma wyglądać jak część strony, nie jak błąd"). Teraz ciemny panel w tonie ramki
+wezwania: siatka ulic z `repeating-linear-gradient` przy `opacity:.16`, ukośna „droga",
+adres `Błońsko 46 · 64-308 Jabłonna` akcentem, wysokość 380 px. ⛔ Nie wracać na biel
+i nie zdejmować siatki - to ona odróżnia „miejsce na mapę" od dziury.
+
+**5. Kontakt recytował godziny CZTERY razy.** „8:00-20:00" stało w leadzie, w wierszu „Godziny"
+w karcie, w ramce wezwania i w stopce; obszar „wielkopolskie i lubuskie" - trzy razy.
+Z ramki wezwania wyleciały oba: została sama treść, której nie ma nigdzie indziej
+(„Nie odbieramy tylko wtedy, gdy jesteśmy na rusztowaniu - wtedy oddzwaniamy").
+
+**Sprawdzone i ZOSTAWIONE bez zmiany:**
+- Prawa kolumna kontaktu („Trzy kroki do ceny") kończy się ~180 px wyżej niż karta z danymi.
+  Przy rytmie sekcji 5-10 rem czyta się to jak powietrze, nie jak dziura - inaczej niż 400 px
+  w „o nas". ⛔ Nie zapychać zdjęciem: wszystkie 38 kadrów klienta już gdzieś stoją.
+- „Poddasze pod klucz" (5 kadrów) zostaje na trzech słupkach - jedna komórka u dołu pusta,
+  ale tak wygląda każda porządna mozaika; przy dwóch słupkach dziura byłaby większa.
+- ⚠️ `o-nas.html: podstrona bez treści` (1673 znaki) w sekcji 1 bramek - to zastane, sprzed
+  bloku E, i wisi na odpowiedziach klienta (liczba osób w ekipie, lata, miejscowości).
+  Domyka je blok F, nie E.
+
+Bramki po zmianach: **sekcja wyglądu czysta na 1440 i na 390 px, język 0/0**. Zostają ✗ celowe
+(noindex, Disallow, brak zdalnego repo) - stan sprzed publikacji, nie usterki.

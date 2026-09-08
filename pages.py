@@ -257,10 +257,21 @@ def kadr_galerii(klucz, lazy=True):
 
 
 def grupa(tytul, licznik, klucze, lazy=True):
+    """Grupa kadrów w realizacjach.
+
+    🔴 LICZBA KOLUMN IDZIE ZA LICZBĄ ZDJĘĆ (08.09.2026, blok E - test „czy topowa
+    firma dałaby to u siebie"). `.galeria` to `columns:3`, więc grupa 2- i 4-zdjęciowa
+    zostawiała pusty trzeci słupek: przy 2 kadrach znikała 1/3 rzędu, przy 4 - cały
+    dół prawej strony. Dwa i cztery zdjęcia idą więc na DWA słupki (2 i 2+2), trzy
+    i więcej na trzy.
+    ⛔ Grupa JEDNOZDJĘCIOWA nie ma dobrego układu - zdjęcie zostaje samo przy 2/3
+       pustki, a rozciągnięte na całą szerokość rozmywa się (źródła to kadry z telefonu).
+       Taką grupę SCALAMY z sąsiednią zamiast szukać CSS-u."""
     kadry = "\n      ".join(kadr_galerii(k, lazy) for k in klucze)
+    klasa = "galeria galeria--2" if len(klucze) in (2, 4) else "galeria"
     return f"""    <div class="grupa rv">
       <div class="grupa-tyt"><h2>{tytul}</h2><span class="licznik">{licznik}</span></div>
-      <div class="galeria">
+      <div class="{klasa}">
       {kadry}
       </div>
     </div>"""
@@ -390,7 +401,7 @@ def index(naglowek):
       <p class="pod">Dwa kadry prosto z roboty, bez montażu i bez pozowania.
         Najedź na kadr albo przytrzymaj go palcem.</p>
     </div>
-    <div class="para rv">
+    <div class="para para--filmy rv">
       {film("agregat.mp4", "plakat-agregat.jpg", "Malowanie agregatem (37 s)",
             "Malowanie agregatem natryskowym - duża powierzchnia, powłoka bez śladów po wałku.",
             "Pracownik w kombinezonie i masce maluje ścianę agregatem natryskowym")}
@@ -526,6 +537,21 @@ def co_robimy(naglowek):
 
 # ══════════════════════════════════════════════════════════════════════════════
 #  REALIZACJE - układ INDEKS: grupy budów, w każdej kadry w naturalnych proporcjach.
+#
+#  🔴 08.09.2026, blok E - test „czy topowa firma dałaby to u siebie" wyciął DWA
+#     POWTÓRZENIA ze strony głównej. Podstrona była nimi zaklamrowana: otwierała się
+#     tym samym, czym główna się chwali, i kończyła tym samym, czym główna się kończy.
+#     ⛔ Grupa „Rozbudowa - przed i po" (`przed.jpg` + `po.jpg`) - te dwa kadry stoją
+#        na GŁÓWNEJ, w sekcji „Ten sam dom. Dwa zdjęcia.", i to tam mają zostać:
+#        mają tam znaczniki „Przed"/„Po" i szerszy kontener, a główna dostaje ruch
+#        z wyszukiwarki. Reguła „jeden kadr nie stoi w dwóch miejscach" obowiązuje
+#        tak samo dla zdjęć z galerii, jak dla kadrów w otwarciach.
+#     ⛔ Sekcja „Minuta i szesnaście sekund roboty" - OBA filmy klienta (a ma tylko
+#        dwa) stoją na głównej od decyzji K. z 08.09 („oba na głównej"). Tutaj zostały
+#        przeoczone przy tamtej przeprowadzce - to była pozostałość, nie decyzja.
+#     ⛔ Grupa „Schody" miała JEDNO zdjęcie i zostawiała 2/3 rzędu pustki. Scalona
+#        z „Betonem architektonicznym" (ten sam rodzaj wykończenia, ten sam materiał)
+#        w trzykadrową grupę, która wypełnia rząd co do słupka.
 # ══════════════════════════════════════════════════════════════════════════════
 def realizacje(naglowek):
     return f"""{naglowek("realizacje.html")}
@@ -538,39 +564,17 @@ def realizacje(naglowek):
 
 <section class="sekcja">
   <div class="wrap">
-{grupa("Rozbudowa - przed i po", "01", ["przed", "po"], lazy=False)}
-
-{grupa("Poddasze pod klucz", "02", ["poddasze-01", "poddasze-02", "poddasze-03",
+{grupa("Poddasze pod klucz", "01", ["poddasze-01", "poddasze-02", "poddasze-03",
                                     "poddasze-04", "poddasze-05"], lazy=False)}
 
-{grupa("Łazienki", "03", ["lazienka-01", "lazienka-02", "lazienka-03", "lazienka-04"])}
+{grupa("Łazienki", "02", ["lazienka-01", "lazienka-02", "lazienka-03", "lazienka-04"])}
 
-{grupa("Poddasze z wnęką na wannę", "04", ["poddasze2-01", "poddasze2-02", "poddasze2-03"])}
+{grupa("Poddasze z wnęką na wannę", "03", ["poddasze2-01", "poddasze2-02", "poddasze2-03"])}
 
-{grupa("Schody", "05", ["schody-01"])}
+{grupa("Beton architektoniczny i schody", "04", ["beton-02", "beton-03", "schody-01"])}
 
-{grupa("Beton architektoniczny", "06", ["beton-02", "beton-03"])}
-
-{grupa("Elewacja i podbitka", "07", ["elewacja-01", "elewacja-02", "elewacja-03",
+{grupa("Elewacja i podbitka", "05", ["elewacja-01", "elewacja-02", "elewacja-03",
                                      "elewacja-04"])}
-  </div>
-</section>
-
-<section class="sekcja">
-  <div class="wrap">
-    <div class="naglowek-sekcji rv">
-      <span class="etykieta">Filmy z budowy</span>
-      <h2>Minuta i szesnaście sekund roboty</h2>
-      <p class="pod">Najedź na kadr albo przytrzymaj go palcem - film ruszy sam.</p>
-    </div>
-    <div class="para rv">
-      {film("agregat.mp4", "plakat-agregat.jpg", "Malowanie agregatem (37 s)",
-            "Malowanie agregatem natryskowym.",
-            "Pracownik w kombinezonie i masce maluje ścianę agregatem natryskowym")}
-      {film("ekipa.mp4", "plakat-ekipa.jpg", "Robota przy elewacji (39 s)",
-            "Robota przy elewacji budynku.",
-            "Ekipa przy elewacji budynku, rusztowanie ustawione wzdłuż ściany")}
-    </div>
   </div>
 </section>
 
@@ -650,6 +654,22 @@ def o_nas(naglowek):
 #  KONTAKT - układ DOKUMENT: karta danych, droga do wyceny, mapa po kliknięciu.
 # ══════════════════════════════════════════════════════════════════════════════
 def kontakt(naglowek):
+    """Podstrona kontaktu.
+
+    🔴 08.09.2026, blok E - test „czy topowa firma dałaby to u siebie":
+    ⛔ Z ramki wezwania wyleciało „8:00-20:00, wielkopolskie i lubuskie". Godziny
+       stały na tej JEDNEJ podstronie cztery razy (lead, wiersz „Godziny" w karcie,
+       ramka, stopka), a obszar trzy. Ramka ma dokładać powód, żeby zadzwonić,
+       nie recytować po raz czwarty to, co czytelnik ma dwa ekrany wyżej w tabelce.
+    🔴 Zasłona mapy dostała adres (`.mapa-adres`) i ciemny panel z siatką w tle -
+       wcześniej był to biały prostokąt na papierze, czyli coś, co czyta się jak
+       element, który się nie wczytał. Wygląd siedzi w `app.css`.
+    ⚠️ Prawa kolumna („Trzy kroki do ceny") kończy się ~180 px wyżej niż karta
+       z danymi. Sprawdzone i ZOSTAWIONE: przy rytmie sekcji 5-10 rem to czyta się
+       jak powietrze, nie jak dziura (inaczej niż 400 px pustki w „o nas").
+       ⛔ Nie zapychać tego zdjęciem - wszystkie 38 kadrów klienta już gdzieś stoją,
+          a jeden kadr nie może stać w dwóch miejscach.
+    """
     return f"""{naglowek("kontakt.html")}
 
 {otwarcie("Kontakt", "Zadzwoń albo napisz",
@@ -699,9 +719,10 @@ def kontakt(naglowek):
       <h2>Błońsko, powiat grodziski</h2>
       <p class="pod">Błońsko leży pod Rakoniewicami, w powiecie grodziskim - stąd wyjeżdżamy na budowy. Mapa włącza się dopiero po kliknięciu.</p>
     </div>
-    <div data-po-kliknieciu
+    <div class="rv" data-po-kliknieciu
          data-src="https://www.google.com/maps?q=B%C5%82o%C5%84sko%2046%2C%2064-308&amp;output=embed"
          data-tytul="Mapa: Błońsko 46">
+      <span class="mapa-adres">Błońsko 46 · 64-308 Jabłonna</span>
       <p>Mapa Google - włącza się po kliknięciu.</p>
       <button class="pk-btn" type="button">Pokaż mapę</button>
     </div>
@@ -709,8 +730,7 @@ def kontakt(naglowek):
 </section>
 
 {domkniecie("Najszybciej - telefonem",
-            "8:00-20:00, wielkopolskie i lubuskie. Nie odbieramy tylko wtedy, "
-            "gdy jesteśmy na rusztowaniu - oddzwaniamy.")}"""
+            "Nie odbieramy tylko wtedy, gdy jesteśmy na rusztowaniu - wtedy oddzwaniamy.")}"""
 
 
 # ══════════════════════════════════════════════════════════════════════════════
