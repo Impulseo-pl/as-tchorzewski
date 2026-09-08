@@ -490,3 +490,22 @@ przełącza widok na 390 px, więc trafia między dwa kadry pomiaru. Zmierzone z
 telefonu 08.09: najjaśniejsze tło pod tekstem (41,41,43) → **13,3:1 z bielą, 5,3:1 z szarością**
 drugiego planu. Próg to 4,5. Jak przemierzyć: zrzut `--telefon`, potem luminancja WCAG z pasów
 tekstu (skrypt w scratchpadzie sesji).
+
+### 🧱 „O NAS" 08.09 19:00 - uwaga K. „popraw tę pustą przestrzeń"
+Pionowy kadr stał w LEWEJ kolumnie i rozpychał ją do 760 px przy 398 px kolumny obok -
+pod krótszą zostawało ok. 400 px pustki, a im szerszy ekran, tym więcej.
+
+- Sekcja ma teraz własną siatkę `.uklad-o-nas`: oś lat i narracja w PIERWSZYM wierszu,
+  **kadr przez obie kolumny w drugim**. Kolejność w HTML (`oś → kadr → narracja`) ZOSTAJE -
+  na telefonie kadr musi przerywać ścianę tekstu w połowie (bramka `sciana_tekstu`).
+  🔴 Reguły telefonu muszą mieć TĘ SAMĄ szczegółowość co reguły laptopa, inaczej
+  `grid-row:2` wygrywa mimo media query i kadr ląduje pod tekstem (złapane bramką).
+- **Zdjęcia podmienione**: otwarcie = poddasze z belkami (ciepłe wnętrze), pas = rusztowanie
+  przy skończonej elewacji — jedyny kadr, na którym widać CZŁOWIEKA przy robocie.
+  Oba zwolnione z innych miejsc; `z-elewacja-05` wypadło z galerii (⛔ jeden kadr = jedno miejsce).
+- Przyciemnienie sceny na telefonie wróciło na .85/.70/.56 - przy .80/.64/.50 etykieta nad
+  nagłówkiem dawała 4,49:1 przy progu 4,5.
+
+Bramki: **sekcja wyglądu czysta na 1440 i na 390 px**. Zostają ✗ celowe (noindex, Disallow,
+brak zdalnego repo) i near-duplikat `logo.png ≈ logo-duze.png` - to ten sam znak w dwóch
+rozmiarach, z założenia.

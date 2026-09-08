@@ -43,7 +43,7 @@ PLAN = [
     #    płaskim czarnym paskiem. Pas jest niski, więc źródło tnie się do 16:7. ────
     ("otw-co-robimy.jpg",     "poddasze-belka-swiatlo-05.jpg",   1440, 16/7, 0.34, 78),
     ("otw-realizacje.jpg",    "poddasze2-okna-01.jpg",           1440, 16/7, 0.30, 78),
-    ("otw-o-nas.jpg",         "elewacja-rusztowanie-08.jpg",     1800, 16/7, 0.44, 76),
+    ("otw-o-nas.jpg",         "poddasze-belki-01.jpg",           1200, 16/7, 0.34, 80),
     ("otw-kontakt.jpg",       "schody-beton-11.jpg",             1440, 16/7, 0.22, 78),
 
     # ── przed i po: u źródła kwadraty, więc kwadrat nie jest kadrowaniem ─────────
@@ -70,6 +70,11 @@ PLAN = [
     #    u dołu kostka brukowa.
     ("pas-elewacja.jpg",      "elewacja-po-taras-04.jpg",        2400, 21/9, 0.46, 80),
 
+    # ── kadr na „O nas": rusztowanie ekipy, SZEROKI. Wchodzi 08.09.2026 w miejsce
+    #    kadru pionowego - to on rozpychał lewą kolumnę i zostawiał 400 px pustki
+    #    pod krótszą prawą (uwaga K.). Szeroki kadr idzie przez obie kolumny.
+    ("kadr-o-nas.jpg",        "elewacja-rusztowanie-09.jpg",     2000, 2.2,  0.34, 80),
+
     # ── galeria realizacji: naturalne proporcje, bez kadrowania ─────────────────
     ("z-poddasze-01.jpg",     "poddasze-belki-02.jpg",           1100, None, 0.5, 78),
     ("z-poddasze-02.jpg",     "poddasze-belki-03.jpg",           1100, None, 0.5, 78),
@@ -91,7 +96,6 @@ PLAN = [
     ("z-elewacja-02.jpg",     "elewacja-po-01.jpg",              1200, None, 0.5, 72),
     ("z-elewacja-03.jpg",     "elewacja-po-03.jpg",              1200, None, 0.5, 72),
     ("z-elewacja-04.jpg",     "elewacja-wtrakcie-06.jpg",        1200, None, 0.5, 72),
-    ("z-elewacja-05.jpg",     "elewacja-rusztowanie-09.jpg",     1200, None, 0.5, 72),
 ]
 
 # Filmy: `preload="none"` + odtwarzanie po kliknięciu (rdzeń, blok 7). Dźwięku nie ma —

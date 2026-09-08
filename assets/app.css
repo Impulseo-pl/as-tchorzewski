@@ -408,7 +408,16 @@ a{text-decoration:none}
    zamiast wyrównać kolumny, przechylał je w drugą stronę. Zawężamy SZEROKOŚĆ,
    nie przycinamy wysokości: kadry pionowe idą bez kadrowania (`DESIGN.md`).
    Na telefonie limit jest kasowany - tam kadr ma być pełnej szerokości. */
-.kadr-o-nas{margin-top:34px;max-width:320px}
+/* ── „O nas": oś lat | narracja, a POD nimi szeroki kadr przez obie kolumny ────
+   🔴 Kolejność w HTML to `oś → kadr → narracja` i MA TAKA ZOSTAĆ: na telefonie
+   siatka się zwija i kadr przerywa ścianę tekstu w połowie (bramka `sciana_tekstu`).
+   Na laptopie kadr wskakuje do drugiego wiersza przez `grid-row` - dlatego położenie
+   robi tu SIATKA, a nie kolejność elementów. */
+.uklad-o-nas{display:grid;grid-template-columns:1fr 1fr;gap:60px 70px;align-items:start}
+.uklad-o-nas>.o-nas-lata{grid-column:1;grid-row:1}
+.uklad-o-nas>.tekst-dlugi{grid-column:2;grid-row:1}
+.uklad-o-nas>.kadr-o-nas{grid-column:1/-1;grid-row:2}
+.kadr-o-nas{margin:0}
 .kadr-o-nas img{width:100%;height:auto;display:block;border-radius:0}
 .kadr-o-nas figcaption{margin-top:12px;font-size:13.5px;color:var(--przyg-jasny);
   line-height:1.45}
@@ -491,15 +500,22 @@ footer{background:var(--papier-3);border-top:1px solid var(--linia-slaba);paddin
      Numery i tak są pod kciukiem, na przyklejonym pasku przy dolnej krawędzi. */
   /* Na telefonie scena zostaje pełnoekranowa: przyciemnienie idzie z góry na dół,
      bo tekst leży NAD zdjęciem, a nie obok niego. */
-  .scena::after{background:linear-gradient(180deg,rgba(10,10,12,.80) 0%,
-    rgba(10,10,12,.64) 46%,rgba(10,10,12,.50) 100%)}
+  /* ⚠️ .80/.64/.50 dawało etykiecie nad nagłówkiem 4,49:1 przy progu 4,5 — bramka
+     to złapała. Nie rozjaśniać poniżej tych wartości bez ponownego pomiaru. */
+  .scena::after{background:linear-gradient(180deg,rgba(10,10,12,.85) 0%,
+    rgba(10,10,12,.70) 46%,rgba(10,10,12,.56) 100%)}
   .otwarcie--kadr::after{background:linear-gradient(180deg,rgba(10,10,12,.90) 0%,
     rgba(10,10,12,.86) 100%)}
   .kafle{grid-template-columns:1fr 1fr;gap:16px}
   .galeria{columns:2;column-gap:16px}
   .galeria figure{margin-bottom:16px}
   .zygzak,.dwie-kolumny{grid-template-columns:1fr;gap:32px}
-  .kadr-o-nas{max-width:none}
+  /* 🔴 Te selektory MUSZĄ być tak samo szczegółowe jak reguły z laptopa
+     (`.uklad-o-nas>.kadr-o-nas`), inaczej `grid-row:2` wygrywa mimo media query,
+     kadr ląduje POD tekstem i bramka znów zgłasza `sciana_tekstu`. */
+  .uklad-o-nas{grid-template-columns:1fr;gap:32px}
+  .uklad-o-nas>.o-nas-lata,.uklad-o-nas>.kadr-o-nas,
+  .uklad-o-nas>.tekst-dlugi{grid-column:1;grid-row:auto}
   .zygzak{padding:38px 0}
   .zygzak--odwrocony .zygzak-obraz{order:0}
   .trzy-kolumny{grid-template-columns:1fr;gap:26px}

@@ -237,9 +237,6 @@ KADRY = {
     "elewacja-04": ("z-elewacja-04.jpg", 1200, 1600,
                     "Drewniana podbitka pod okapem dachu widziana od dołu",
                     "Podbitka pod okapem"),
-    "elewacja-05": ("z-elewacja-05.jpg", 1200, 1600,
-                    "Rusztowanie ustawione przy ścianie budynku w trakcie robót elewacyjnych",
-                    "W trakcie: rusztowanie przy ścianie"),
 
     # ten sam plik co w sekcji „przed i po" na stronie głównej - jeden kadr, jeden plik
     "przed": ("przed.jpg", 1100, 1100,
@@ -555,7 +552,7 @@ def realizacje(naglowek):
 {grupa("Beton architektoniczny", "06", ["beton-02", "beton-03"])}
 
 {grupa("Elewacja i podbitka", "07", ["elewacja-01", "elewacja-02", "elewacja-03",
-                                     "elewacja-04", "elewacja-05"])}
+                                     "elewacja-04"])}
   </div>
 </section>
 
@@ -591,20 +588,25 @@ def kadr_o_nas():
     🔴 DECYZJA K. z 07.09.2026. Powód: na telefonie kolumny `oś lat | narracja`
     zwijają się w jedną i człowiek dostaje 104 słowa bez ani jednego obrazu -
     bramka zgłaszała to jako `sciana_tekstu`. Kadr wchodzi MIĘDZY oś a narrację,
-    więc na telefonie przerywa ścianę tekstu w połowie, a na laptopie wypełnia
-    pustkę pod krótką osią (trzy pozycje kontra pięć akapitów obok).
+    więc na telefonie przerywa ścianę tekstu w połowie.
 
-    ⛔ Nie przenosić go do prawej kolumny ani na koniec sekcji - wtedy na telefonie
-    ląduje POD całym tekstem i nie przerywa niczego. Kolejność w HTML jest tu treścią.
-    Podpis mówi, co widać w kadrze (reguła 8), nie dopowiada faktów o firmie.
+    ⛔ NIE PRZENOSIĆ GO W HTML - ani do prawej kolumny, ani na koniec sekcji.
+    Na telefonie wylądowałby POD całym tekstem i nie przerywał niczego.
+    Kolejność w HTML jest tu treścią; położenie na laptopie robi SIATKA (CSS).
+
+    🔴 08.09.2026 kadr jest SZEROKI i idzie przez OBIE kolumny (uwaga K.: „popraw tę
+    pustą przestrzeń"). Wcześniej stał pionowo w lewej kolumnie i rozpychał ją do
+    760 px przy 398 px kolumny obok - pod krótszą zostawało 400 px pustki, a im
+    szerszy ekran, tym większej.
     """
-    plik, w, h, alt, podpis = KADRY["schody-01"]
-    return (f'<figure class="kadr-o-nas rv">'
-            # ⛔ BEZ `loading="lazy"`: kadr stoi 1023 px od góry, czyli tuż nad drugim
-            # ekranem, i przy przewijaniu zostawiał pustą dziurę (bramka 07.09.2026).
-            f'<img src="img/{plik}" width="{w}" height="{h}" alt="{alt}" '
-            f'decoding="async">'
-            f'<figcaption>{podpis}</figcaption></figure>')
+    return ('<figure class="kadr-o-nas rv">'
+            # ⛔ BEZ `loading="lazy"`: kadr stoi tuż nad drugim ekranem i przy
+            # przewijaniu zostawiał pustą dziurę (bramka 07.09.2026).
+            '<img src="img/kadr-o-nas.jpg" width="2000" height="909" '
+            'alt="Rusztowanie ustawione wzdłuż ściany domu w trakcie robót elewacyjnych" '
+            'decoding="async">'
+            '<figcaption>Rusztowanie przy elewacji - tak wygląda nasz dzień na budowie.</figcaption>'
+            '</figure>')
 
 
 def o_nas(naglowek):
@@ -618,16 +620,16 @@ def o_nas(naglowek):
           "pod własnym szyldem w Polsce. Pracujemy w wielkopolskiem i lubuskiem.")}
 
 <section class="sekcja">
-  <div class="wrap dwie-kolumny">
-    <div>
+  <div class="wrap uklad-o-nas">
+    <div class="o-nas-lata">
       <ol class="lata rv">
         <li><b>2005</b><p>Zaczynamy pracę na budowach w Niemczech.</p></li>
         <li><b>2015</b><p>Rejestrujemy własną firmę w Polsce, w Błońsku pod Rakoniewicami.</p></li>
         <li><b>Dziś</b><p>Wykończenia wnętrz pod klucz - od gładzi i malowania
           po łazienki, poddasza i montaż drzwi.</p></li>
       </ol>
-      {kadr_o_nas()}
     </div>
+    {kadr_o_nas()}
     <div class="tekst-dlugi rv">
       <h3>Co znaczy „rodzinna”</h3>
       <p>Tyle, że nazwisko na fakturze i ludzie na budowie to ta sama historia - i że nie znikamy po odbiorze.</p>
