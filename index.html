@@ -26,7 +26,7 @@
 <link rel="preload" as="image" href="img/hero.jpg" fetchpriority="high">
 <link rel="preload" as="image" href="img/logo-duze.png" fetchpriority="high">
 <link rel="stylesheet" href="assets/rdzen.css?v=11">
-<link rel="stylesheet" href="assets/app.css?v=10">
+<link rel="stylesheet" href="assets/app.css?v=11">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"HomeAndConstructionBusiness",
 "name":"Firma Ogólnobudowlana Artur Tchórzewski","alternateName":"A.S Tchórzewski","url":"https://as-tchorzewski.pl/",
@@ -110,7 +110,7 @@
     `load` czeka na WSZYSTKIE zdjęcia strony i trzyma kurtynę dwa razy za długo.
     Pod zasłoną liczy się jedna rzecz: kadr hero. */
  function heroGotowe(){
-   var im=document.querySelector('.kadr-scena img');
+   var im=document.querySelector('.scena-tlo');
    return !!(im && im.complete && im.naturalWidth>0);
  }
  function koniec(){
@@ -136,6 +136,8 @@
 })();</script>
 
 <header class="scena">
+  <img class="scena-tlo" src="img/hero.jpg" width="1440" height="1300" fetchpriority="high"
+    alt="Ściana z betonu architektonicznego z czarnymi liniami - z naszych realizacji">
   <div class="wrap" id="tresc">
     <div class="rv">
       <span class="etykieta">Wykończenia wnętrz · wielkopolskie i lubuskie</span>
@@ -149,10 +151,6 @@
       <span class="godziny">Odbieramy 8:00-20:00</span>
     </div>
     </div>
-    <figure class="kadr-scena">
-      <img src="img/hero.jpg" width="1200" height="1600" fetchpriority="high"
-        alt="Wykończone poddasze z drewnianymi belkami, dwoma oknami i podłogą z płytek wielkoformatowych">
-    </figure>
   </div>
 </header>
 
@@ -262,9 +260,9 @@
 </section>
 
 <figure class="pas">
-  <img src="img/pas-beton.jpg" width="1440" height="617" loading="lazy" decoding="async"
-    alt="Ciemna ściana z betonu architektonicznego z cienkimi liniami podziału">
-  <figcaption>Ściana w betonie architektonicznym - z naszych realizacji.</figcaption>
+  <img src="img/pas-zielen.jpg" width="1440" height="617" loading="lazy" decoding="async"
+    alt="Ściana w betonie dekoracyjnym w odcieniu zieleni pod odsłoniętymi belkami poddasza">
+  <figcaption>Beton dekoracyjny w zieleni, pod starymi belkami - z naszych realizacji.</figcaption>
 </figure>
 
 <section class="sekcja">

@@ -31,8 +31,20 @@ VIDEO = os.path.join(ROOT, "video")
 
 # slot                     źródło                              szer.  proporcja  pion  jakość
 PLAN = [
-    # ── hero: jedyny duży kadr na scenie. Wnętrze SKOŃCZONE (DESIGN.md) ──────────
-    ("hero.jpg",              "poddasze-belki-01.jpg",           1200, None, 0.5, 80),
+    # ── hero: PEŁNOEKRANOWY kadr sceny (decyzja K. 08.09.2026). Ściana z betonu
+    #    architektonicznego - najmocniejsza rzecz w jego portfolio i jedyne zdjęcie
+    #    wnętrza, które niesie tekst na sobie. Kadr NIE jest cięty do proporcji
+    #    ekranu: oddajemy 1440×1300, a wycinek dobiera `object-fit:cover` - inaczej
+    #    na telefonie (kadr pionowy) zostałby pasek. Bierzemy GÓRĘ, bo u dołu stoją
+    #    wiadra i deska.
+    ("hero.jpg",              "beton-arch-ciemny-01.jpg",        1440, 1440/1300, 0.10, 82),
+
+    # ── otwarcia podstron: każde ma SWÓJ kadr, żeby podstrona nie zaczynała się
+    #    płaskim czarnym paskiem. Pas jest niski, więc źródło tnie się do 16:7. ────
+    ("otw-co-robimy.jpg",     "poddasze-belka-swiatlo-05.jpg",   1440, 16/7, 0.34, 78),
+    ("otw-realizacje.jpg",    "poddasze2-okna-01.jpg",           1440, 16/7, 0.30, 78),
+    ("otw-o-nas.jpg",         "elewacja-rusztowanie-08.jpg",     1800, 16/7, 0.44, 76),
+    ("otw-kontakt.jpg",       "schody-beton-11.jpg",             1440, 16/7, 0.22, 78),
 
     # ── przed i po: u źródła kwadraty, więc kwadrat nie jest kadrowaniem ─────────
     ("przed.jpg",             "PRZED-rozbudowa.jpg",             1100, 1/1,  0.5, 80),
@@ -46,9 +58,10 @@ PLAN = [
     ("u-sucha-zabudowa.jpg",  "poddasze-skos-09.jpg",            1000, 3/4,  0.5, 78),
     ("u-drzwi-okna.jpg",      "hol-drzwi-12.jpg",                1000, 3/4,  0.5, 78),
 
-    # ── pas 21:9: jedyny poziomy materiał w komplecie. Kadr bierze GÓRNĄ część,
-    #    bo u dołu stoją wiadra i pace (bałagan budowlany) ────────────────────────
-    ("pas-beton.jpg",         "beton-arch-ciemny-01.jpg",        1440, 21/9, 0.30, 78),
+    # ── pas 21:9. 🔴 08.09.2026 ŹRÓDŁO ZMIENIONE: beton architektoniczny poszedł
+    #    na hero, a ten sam kadr dwa razy na jednej stronie zdradza, że materiału
+    #    jest mało. Zieleń pod belkami wnosi przy okazji jedyny kolor na stronie.
+    ("pas-zielen.jpg",        "poddasze2-belki-zielen-04.jpg",   1440, 21/9, 0.26, 78),
 
     # ── DRUGI pas 21:9, tym razem SZEROKI I OSTRY. Elewacja to jedyny materiał
     #    z pełnych oryginałów (3072×4096), więc jako jedyna wytrzymuje wycięcie
@@ -71,8 +84,6 @@ PLAN = [
     ("z-poddasze2-02.jpg",    "poddasze2-wanna-wneka-05.jpg",    1100, None, 0.5, 78),
     ("z-poddasze2-03.jpg",    "poddasze2-sciana-zielen-02.jpg",  1100, None, 0.5, 78),
     ("z-schody-01.jpg",       "schody-beton-10.jpg",             1100, None, 0.5, 78),
-    ("z-schody-02.jpg",       "schody-beton-11.jpg",             1100, None, 0.5, 78),
-    ("z-beton-01.jpg",        "beton-arch-ciemny-01.jpg",        1100, None, 0.5, 78),
     ("z-beton-02.jpg",        "beton-arch-jasny-02.jpg",         1200, None, 0.5, 78),
     ("z-beton-03.jpg",        "beton-arch-jasny-04.jpg",         1200, None, 0.5, 78),
     # elewacja: jedyne pełne oryginały z telefonu (3072×4096) — stąd większa szerokość
@@ -118,12 +129,28 @@ def zdjecia():
 
 
 def logo():
-    """Logo do `img/`: plik odzyskany z banera (704×154, biały znak na przezroczystym).
-    ⚠️ Podmienić na oryginał od grafika, gdy przyjdzie (pytanie 2)."""
-    src = os.path.join(ROOT, "materialy", "logo", "logo-nowe-przezroczyste.png")
-    cel = os.path.join(IMG, "logo.png")
-    Image.open(src).save(cel, "PNG", optimize=True)
-    print(f"  ✓ img/logo.png             ← materialy/logo/logo-nowe-przezroczyste.png")
+    """Logo do `img/` — w DWÓCH rozmiarach: pasek (240 px) i kurtyna wejścia (640 px).
+
+    🔴 ŹRÓDŁEM JEST LOGO **STARE** (`logo-stare-przezroczyste.png`, czarny napis
+       „TCHÓRZEWSKI"). Klient potwierdził je 07.09.2026 i to ono wywróciło całą stronę
+       na jasną — patrz `DESIGN.md`, droga A.
+    ⛔ NIE podstawiać `logo-nowe-przezroczyste.png`: nowy znak ma BIAŁY napis, a na
+       jasnym pasku znika. Do 08.09.2026 ta funkcja robiła dokładnie to i po każdym
+       uruchomieniu `przygotuj-media.py` logo w pasku stawało się niewidzialne
+       (a plik puchł z 14 kB do 109 kB, bo szedł w oryginalnym rozmiarze).
+    🔴 Paleta zamiast pełnego koloru: 558 kB → 14 kB przy tym samym wyglądzie.
+    """
+    src = os.path.join(ROOT, "materialy", "logo", "logo-stare-przezroczyste.png")
+    im = Image.open(src).convert("RGBA")
+    # ⚠️ Wysokości są WPISANE, nie liczone: `build.py` podaje je w atrybutach
+    #    width/height (240×177, 640×472). Zaokrąglenie dawało 178 i 473, czyli obrazek
+    #    o innych proporcjach niż deklaruje HTML — przeglądarka rezerwuje wtedy złe
+    #    miejsce i znak drga przy ładowaniu.
+    for cel, szer, wys in (("logo.png", 240, 177), ("logo-duze.png", 640, 472)):
+        maly = im.resize((szer, wys), Image.LANCZOS).quantize(colors=255, method=Image.FASTOCTREE)
+        p = os.path.join(IMG, cel)
+        maly.save(p, "PNG", optimize=True)
+        print(f"  ✓ img/{cel:24s} {szer}×{wys}  {os.path.getsize(p)//1024} KB  ← logo STARE")
 
 
 def filmy():

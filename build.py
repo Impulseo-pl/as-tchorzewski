@@ -38,7 +38,7 @@ NIP = "995 004 44 65"
 REGON = "363138510"
 
 # 🔄 Podbij przy KAŻDEJ zmianie pliku, inaczej klient zostanie na starej wersji.
-V_CSS = 10  # 10 = filmy na najechaniu/przytrzymaniu, oba na glownej (08.09.2026)
+V_CSS = 11  # 11 = scena pelnoekranowa + kadry w otwarciach podstron (08.09.2026)
 V_RDZEN = 11
 
 # 🔴 PODGLĄD ROBOCZY. Strona stoi na zdjęciach klienta, na które NIE MAMY jeszcze
@@ -229,7 +229,7 @@ WEJSCIE_JS = """<script>(function(){
     `load` czeka na WSZYSTKIE zdjęcia strony i trzyma kurtynę dwa razy za długo.
     Pod zasłoną liczy się jedna rzecz: kadr hero. */
  function heroGotowe(){
-   var im=document.querySelector('.kadr-scena img');
+   var im=document.querySelector('.scena-tlo');
    return !!(im && im.complete && im.naturalWidth>0);
  }
  function koniec(){

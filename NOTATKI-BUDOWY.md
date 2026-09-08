@@ -462,3 +462,31 @@ w ramce obok tekstu). Wszystkie ze ZDJĘĆ KLIENTA, żadnego stocku:
 3. **Poddasze w świetle** (`poddasze2-okna-01`) - podciągnięty z 1200 px, do rozszerzenia w Flow.
 Makiety: `/private/tmp/.../scratchpad/hero-makiety/` (robocze, poza repo). Po wyborze K.:
 wdrożyć w `pages.py` + `app.css`, hero podstron też, `V_CSS` w górę.
+
+### 🖼️ HERO PEŁNOEKRANOWY 08.09 17:00 - decyzja K. „beton architektoniczny"
+K. wybrał propozycję 1. Wdrożone:
+- **Scena strony głównej pełnoekranowa**: `img/hero.jpg` = ściana z betonu architektonicznego
+  (`beton-arch-ciemny-01`), 1440×1300, `object-fit:cover`. ⛔ Układ `.kadr-scena` (pionowy kadr
+  w ramce OBOK tekstu) SKASOWANY - nie wracać bez decyzji K.
+- **Każda podstrona ma własny kadr w otwarciu** (`otwarcie(kadr=…)`): `co-robimy` = belka
+  i światło, `realizacje` = poddasze z oknami, `o-nas` = rusztowanie przy elewacji,
+  `kontakt` = betonowe schody. Polityka prywatności i 404 zostają bez zdjęcia - przy błahej
+  treści zdjęcie robi hałas.
+- **Pas na głównej zmieniony** na zieleń pod belkami (`pas-zielen.jpg`): beton poszedł na hero,
+  a ten sam kadr dwa razy na jednej stronie zdradza, że materiału jest mało.
+- Z galerii wypadły `z-beton-01` i `z-schody-02` - oba niosą teraz hero/otwarcie.
+- `V_CSS` 10→11.
+
+🔴 **WPADKA, KTÓRĄ TRZEBA ZNAĆ:** `przygotuj-media.py` funkcja `logo()` brała
+`logo-nowe-przezroczyste.png` (BIAŁY napis) i zapisywała go w oryginalnym rozmiarze.
+Każde uruchomienie skryptu kasowało poprawne, stare logo (14 kB, czarny napis) i podmieniało
+je na niewidoczne na jasnym pasku (109 kB). Naprawione: źródłem jest `logo-stare-przezroczyste.png`,
+oba rozmiary (240×177 i 640×472) robi jedna funkcja, paleta zamiast pełnego koloru.
+⚠️ Wysokości są WPISANE, nie liczone - `build.py` deklaruje je w atrybutach.
+
+⚠️ **Bramka na telefonie potrafi zgłosić „pomiar kontrastu pominięty" na `index.html`** -
+to migotliwy artefakt, nie wada. Zdjęcie `object-fit:cover` rasteryzuje się od nowa, gdy bramka
+przełącza widok na 390 px, więc trafia między dwa kadry pomiaru. Zmierzone z pikseli zrzutu
+telefonu 08.09: najjaśniejsze tło pod tekstem (41,41,43) → **13,3:1 z bielą, 5,3:1 z szarością**
+drugiego planu. Próg to 4,5. Jak przemierzyć: zrzut `--telefon`, potem luminancja WCAG z pasów
+tekstu (skrypt w scratchpadzie sesji).

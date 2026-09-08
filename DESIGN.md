@@ -384,6 +384,24 @@ gwarancja (ile lat, na co) · czas reakcji na telefon · liczba osób w ekipie �
 
 ---
 
+## HERO I OTWARCIA PODSTRON (K. + Marceli, 08.09.2026)
+
+🔴 **Scena strony głównej jest PEŁNOEKRANOWA**: zdjęcie na całą szerokość, tekst na
+przyciemnieniu. Poprzedni układ - pionowy kadr w odsuniętej ramce OBOK tekstu - został
+odrzucony wprost („kompletnie mi się nie podoba"). ⛔ Nie wracać do `.kadr-scena`.
+
+- Zdjęcie hero: **ściana z betonu architektonicznego**, jedyny kadr w portfolio, który
+  niesie tekst na sobie. Plik jest WYSOKI (1440×1300), nie docięty do proporcji ekranu -
+  wycinek dobiera `object-fit:cover`, więc ten sam plik działa na laptopie i na telefonie.
+- **Każda podstrona ma własny kadr w otwarciu.** Bez zdjęcia podstrona zaczynała się
+  płaskim czarnym paskiem. Strony prawne i 404 zostają bez zdjęcia.
+- 🔴 **Przyciemnienie jest liczone, nie dobrane na oko.** Na 1440 px idzie ukośnie
+  (ciemniej tam, gdzie stoi tekst), na telefonie pionowo. Zmieniasz zdjęcie w scenie albo
+  w otwarciu → **przemierz bramką**: lead na jasnym niebie w oknach dachowych dał 4,20:1
+  przy progu 4,5 i bramka to złapała.
+- ⛔ Ten sam kadr nie może stać w dwóch miejscach naraz (hero + pas, otwarcie + galeria) -
+  przy 39 zdjęciach powtórka od razu widać. Wchodzi na hero → wypada z galerii.
+
 ## FILMY Z BUDOWY (K. 08.09.2026)
 
 Klient ma **dwa** filmy i tylko dwa: malowanie agregatem (37 s) i robota przy elewacji (39 s).

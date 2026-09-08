@@ -171,14 +171,25 @@ a{text-decoration:none}
    na czerni jak przedmiot w witrynie - to był drugi (i nadal ważny) powód wyboru
    tego kierunku. Zmieniło się tylko to, że czerń nie jest już tłem CAŁEJ strony,
    więc logo w pasku nad nią siedzi na papierze i jest widoczne. */
-.scena{position:relative;overflow:hidden;padding:56px 0 92px;
-  background:var(--noc);color:var(--biel)}
-/* ⚠️ Świadome złamanie zakazu gradientów (`DESIGN.md`, odstępstwo 6): płaska czerń
-   przy zdjęciach z budowy robi się martwa. Do skasowania, jeśli będzie widać. */
+/* 🔴 08.09.2026 (decyzja K. + Marceli: pierwszy ekran „kompletnie mi się nie podoba"):
+   scena jest PEŁNOEKRANOWA. Zdjęcie idzie na całą szerokość, tekst leży na nim.
+   Wcześniej kadr stał w ramce OBOK tekstu - z pionowych zdjęć telefonem robiło to
+   przypis, a nie pierwsze wrażenie.
+   ⚠️ Zdjęcie ma być WYSOKIE (1440×1300), nie docięte do proporcji ekranu: wycinek
+      dobiera `object-fit:cover`, więc ten sam plik działa i na laptopie, i na telefonie.
+   🔴 Reguła K. z 07.09 („hero zawsze mieści się na każdym urządzeniu") jest tu
+      spełniona z definicji - scena MA wysokość ekranu, nic z niej nie wystaje. */
+.scena{position:relative;overflow:hidden;min-height:calc(100dvh - var(--gora,96px));
+  display:grid;align-items:center;padding:72px 0;background:var(--noc);color:var(--biel)}
+.scena-tlo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  object-position:center 34%}
+/* ⚠️ Świadome złamanie zakazu gradientów (`DESIGN.md`, odstępstwo 6): bez przyciemnienia
+   biały nagłówek nie utrzyma kontrastu na zdjęciu. Ciemniej po LEWEJ, gdzie stoi tekst,
+   jaśniej po prawej, żeby zdjęcia nie zabić. Bramka mierzy kontrast z pikseli. */
 .scena::after{content:"";position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(120% 80% at 50% 30%,rgba(200,92,19,.10),transparent 62%)}
-.scena>.wrap{position:relative;z-index:2;display:grid;grid-template-columns:1fr auto;
-  gap:70px;align-items:center}
+  background:linear-gradient(100deg,rgba(10,10,12,.90) 0%,rgba(10,10,12,.76) 34%,
+    rgba(10,10,12,.34) 64%,rgba(10,10,12,.14) 100%)}
+.scena>.wrap{position:relative;z-index:2}
 .scena h1{font-size:clamp(2.9rem,5.4vw,4.6rem);margin-bottom:26px;max-width:16ch;
   color:var(--biel)}
 .scena .etykieta{color:var(--akcent-jasny)}
@@ -196,31 +207,9 @@ a{text-decoration:none}
 .godziny{font-size:14px;color:var(--przyg-jasny)}
 .scena .godziny{color:var(--przyg)}
 
-/* kadr pionowy jako obiekt na scenie — bez kadrowania, w odsuniętej ramce */
-/* Kadr hero: 430 px robiło ze zdjęcia przypis do tekstu; 560 px daje nadal 2,1×
-   na ekran Retina (źródło 1200 px), więc powiększenie jest darmowe.
-   🔴 ALE MA SIĘ MIEŚCIĆ W EKRANIE - reguła K. z 07.09.2026: „zdjęcie hero na landingu
-   zawsze musi się mieścić na każdym urządzeniu”. Pierwsza wersja miała samą szerokość
-   i na laptopie 1440×900 kadr wychodził poza pierwszy ekran.
-   Dlatego wysokość jest odjęta od WIDOKU, nie wpisana na sztywno:
-   nawigacja 96 + górny odstęp sceny 56 + oddech 40 = 192 px.
-   ⚠️ Każdy składnik tej sumy jest z czegoś, co widać na ekranie. Zmieniasz `--gora`
-   albo górny odstęp `.scena` - poprawiasz i tę liczbę, inaczej hero wyjdzie poza
-   pierwszy ekran i złamie regułę K.
-
-   🔴 08.09.2026 kadr URÓSŁ, bo z tej sumy zniknęły dwie rzeczy (K.: pierwszy ekran
-   „nie powala, dużo tekstu"): podpis pod zdjęciem (~64 px, i przy okazji 8 słów
-   z pierwszego ekranu - treść siedzi w `alt`) oraz 20 px górnego odstępu sceny.
-   Na laptopie 1440×900 daje to kadr 708 px zamiast 624 px wysokości.
-   ⛔ Nie dokładać tu nic z powrotem bez przeliczenia tej sumy.
-
-   Figura ma `fit-content`, więc ramka `::before` idzie za zdjęciem, cokolwiek wyjdzie.
-   Bramka pilnuje tego testem `hero_poza_ekranem`. */
-.kadr-scena{position:relative;width:fit-content;flex:none}
-.kadr-scena img{width:auto;max-width:min(48vw,620px);
-  max-height:calc(100dvh - 192px);border-radius:0}
-.kadr-scena::before{content:"";position:absolute;inset:-26px;
-  border:1px solid var(--linia-slaba-na-ciemnym);pointer-events:none}
+/* ⛔ `.kadr-scena` (pionowy kadr w odsuniętej ramce OBOK tekstu) skasowany 08.09.2026
+   razem z przejściem sceny na pełny ekran. Nie wracać bez decyzji K. - to był układ,
+   który odrzucił. Historia i wyliczenie wysokości: `NOTATKI-BUDOWY.md`, blok E. */
 
 /* ── SEKCJE ─────────────────────────────────────────────────────────────────── */
 .sekcja{padding:var(--rytm) 0}
@@ -230,6 +219,17 @@ a{text-decoration:none}
    przy 24 px z ciemnego zostawał wąski pasek doklejony pod paskiem nawigacji,
    a nie blok. Przy jasnej sekcji tego nie było widać - granicy koloru nie było. */
 .otwarcie{padding:clamp(3.5rem,7vw,6rem) 0 clamp(3.5rem,6vw,5rem)}
+/* Otwarcie z własnym kadrem — ta sama mechanika, co na scenie, tylko niżej i płycej. */
+.otwarcie--kadr{position:relative;overflow:hidden}
+.otwarcie-tlo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  object-position:center 42%}
+/* 🔴 Wartości podniesione po pomiarze bramki 08.09.2026: przy .78 na 38 % lead
+   „Wszystkie z naszych budów…" leżał na niebie w oknach dachowych i dawał 4,20:1
+   (próg 4,5). Zmieniasz zdjęcie w otwarciu → PRZEMIERZ bramką, nie na oko. */
+.otwarcie--kadr::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(100deg,rgba(10,10,12,.93) 0%,rgba(10,10,12,.88) 44%,
+    rgba(10,10,12,.52) 74%,rgba(10,10,12,.24) 100%)}
+.otwarcie--kadr>.wrap{position:relative;z-index:2}
 .otwarcie h1{font-size:clamp(2.3rem,4.4vw,3.6rem);margin-bottom:20px;max-width:18ch}
 .sekcja h2{font-size:clamp(2rem,3.6vw,2.9rem);margin-bottom:18px}
 .pod{color:var(--przyg-jasny);font-size:16.5px;max-width:52ch;margin-bottom:46px}
@@ -484,24 +484,17 @@ footer{background:var(--papier-3);border-top:1px solid var(--linia-slaba);paddin
   .nawigacja .strzalka-poz{display:inline;color:var(--akcent-na-jasnym);font-size:18px}
   .nawigacja a[aria-current="page"]{color:var(--akcent-na-jasnym)}
 
-  .scena{padding:48px 0 60px}
-  .scena>.wrap{grid-template-columns:1fr;gap:40px}
+  .scena{padding:56px 0;min-height:calc(100dvh - var(--gora,96px))}
   .scena h1{font-size:clamp(2.2rem,8vw,2.9rem);max-width:none}
   /* 🔴 Na telefonie kadr idzie PRZED tekstem: decyzja z etapu 2 - pierwszy ekran ma
      rozstrzygnąć jednym zdjęciem prawdziwej roboty, a nie samym nagłówkiem.
      Numery i tak są pod kciukiem, na przyklejonym pasku przy dolnej krawędzi. */
-  /* 🔴 Wysokość kadru na telefonie MA LIMIT. Bez niego zdjęcie 1200x1600 zjadało 531 px
-     z 844 px pierwszego ekranu i spychało H1 na 736-850, czyli POD przyklejony pasek
-     kontaktu (fixed, 790-844) - nagłówek był przecięty na 60 px. Bramka tego nie łapie:
-     mierzy kontrast i odstępy, nie kolizję z elementem `fixed`. (Zmierzone 07.09.2026.)
-     Skalujemy CAŁE zdjęcie, nie kadrujemy - kadry pionowe bez kadrowania to sens
-     tego kierunku (DESIGN.md). Ramka `::before` idzie za figurą dzięki `width:fit-content`. */
-  .kadr-scena{width:fit-content;max-width:100%;margin-inline:auto;order:-1}
-  /* 🔴 `max-width:min(44vw,560px)` z widoku szerokiego MUSI tu zostać skasowane:
-     44 % z 390 px to 172 px, czyli kadr hero kurczy się na telefonie do znaczka.
-     Wpadka 07.09.2026 - limit dobrany pod laptopa przeciekł na telefon. */
-  .kadr-scena img{max-height:44vh;max-width:100%;width:auto}
-  .kadr-scena::before{inset:-12px}
+  /* Na telefonie scena zostaje pełnoekranowa: przyciemnienie idzie z góry na dół,
+     bo tekst leży NAD zdjęciem, a nie obok niego. */
+  .scena::after{background:linear-gradient(180deg,rgba(10,10,12,.80) 0%,
+    rgba(10,10,12,.64) 46%,rgba(10,10,12,.50) 100%)}
+  .otwarcie--kadr::after{background:linear-gradient(180deg,rgba(10,10,12,.90) 0%,
+    rgba(10,10,12,.86) 100%)}
   .kafle{grid-template-columns:1fr 1fr;gap:16px}
   .galeria{columns:2;column-gap:16px}
   .galeria figure{margin-bottom:16px}

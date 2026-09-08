@@ -143,15 +143,23 @@ def domkniecie(naglowek_txt, zdanie):
 </section>"""
 
 
-def otwarcie(etykieta, tytul, lead):
+def otwarcie(etykieta, tytul, lead, kadr=None, opis=""):
     """Otwarcie podstrony - CIEMNE, jedna rzecz na ekran (fundament „Scena").
 
     🔴 Po przejściu strony na jasną (droga A, 07.09.2026) to otwarcie jest na
     podstronach tym, czym scena na stronie głównej: jedynym ciemnym blokiem u góry.
     Bez niego podstrona robiła się płaskim papierem od paska do stopki. Znaku
     firmowego tu nie ma - zasada „logo tylko na jasnym" zostaje nienaruszona.
+
+    🔴 08.09.2026 (decyzja K.): każde otwarcie dostaje WŁASNY kadr pod tekstem -
+    ta sama zmiana, co na scenie strony głównej. Bez zdjęcia podstrona zaczynała
+    się płaskim czarnym paskiem. `kadr=None` zostawia sam kolor (strony prawne,
+    404 - tam zdjęcie robi za dużo hałasu przy błahej treści).
     """
-    return f"""<section class="sekcja otwarcie ciemna" id="tresc">
+    tlo = (f'\n  <img class="otwarcie-tlo" src="img/{kadr}" alt="{opis}" '
+           f'decoding="async">' if kadr else "")
+    klasa = "sekcja otwarcie ciemna" + (" otwarcie--kadr" if kadr else "")
+    return f"""<section class="{klasa}" id="tresc">{tlo}
   <div class="wrap">
     <span class="etykieta">{etykieta}</span>
     <h1>{tytul}</h1>
@@ -209,13 +217,7 @@ KADRY = {
     "schody-01": ("z-schody-01.jpg", 1100, 1467,
                   "Wykończone schody betonowe z barierką w jasnym holu",
                   "Schody po wykończeniu"),
-    "schody-02": ("z-schody-02.jpg", 1100, 1467,
-                  "Bieg schodów przy gładkiej białej ścianie",
-                  "Bieg schodów przy gotowej ścianie"),
 
-    "beton-01": ("z-beton-01.jpg", 1100, 1463,
-                 "Ciemna ściana z betonu architektonicznego z cienkimi liniami podziału",
-                 "Beton architektoniczny z liniami podziału"),
     "beton-02": ("z-beton-02.jpg", 1200, 900,
                  "Jasna ściana z betonu architektonicznego w pokoju w trakcie robót",
                  "W trakcie: jasny beton architektoniczny na ścianie"),
@@ -298,6 +300,8 @@ def index(naglowek):
     return f"""{naglowek("index.html")}
 
 <header class="scena">
+  <img class="scena-tlo" src="img/hero.jpg" width="1440" height="1300" fetchpriority="high"
+    alt="Ściana z betonu architektonicznego z czarnymi liniami - z naszych realizacji">
   <div class="wrap" id="tresc">
     <div class="rv">
       <span class="etykieta">Wykończenia wnętrz · wielkopolskie i lubuskie</span>
@@ -307,10 +311,6 @@ def index(naglowek):
       <div class="obietnica"><b>Wycena do 5 dni roboczych</b><span>od oględzin na miejscu</span></div>
       {przyciski_kontakt(trzeci=False)}
     </div>
-    <figure class="kadr-scena">
-      <img src="img/hero.jpg" width="1200" height="1600" fetchpriority="high"
-        alt="Wykończone poddasze z drewnianymi belkami, dwoma oknami i podłogą z płytek wielkoformatowych">
-    </figure>
   </div>
 </header>
 
@@ -406,9 +406,9 @@ def index(naglowek):
 </section>
 
 <figure class="pas">
-  <img src="img/pas-beton.jpg" width="1440" height="617" loading="lazy" decoding="async"
-    alt="Ciemna ściana z betonu architektonicznego z cienkimi liniami podziału">
-  <figcaption>Ściana w betonie architektonicznym - z naszych realizacji.</figcaption>
+  <img src="img/pas-zielen.jpg" width="1440" height="617" loading="lazy" decoding="async"
+    alt="Ściana w betonie dekoracyjnym w odcieniu zieleni pod odsłoniętymi belkami poddasza">
+  <figcaption>Beton dekoracyjny w zieleni, pod starymi belkami - z naszych realizacji.</figcaption>
 </figure>
 
 <section class="sekcja">
@@ -456,6 +456,9 @@ def co_robimy(naglowek):
     return f"""{naglowek("co-robimy.html")}
 
 {otwarcie("Zakres robót", "Wykończenia wnętrz od gładzi po drzwi",
+          kadr="otw-co-robimy.jpg",
+          opis="Światło z okna dachowego na gotowej gładzi, przy odsłoniętej belce",
+          lead=
           "Pięć robót, które bierzemy najczęściej - i to, co przy każdej z nich decyduje o efekcie. Ceny nie podajemy z góry - zależy od zakresu i od tego, co zastaniemy na ścianie.")}
 
 <section class="sekcja">
@@ -531,6 +534,9 @@ def realizacje(naglowek):
     return f"""{naglowek("realizacje.html")}
 
 {otwarcie("Realizacje", "Nasze budowy, nasze zdjęcia",
+          kadr="otw-realizacje.jpg",
+          opis="Poddasze z dwoma oknami dachowymi i zabudowaną wanną",
+          lead=
           "Wszystkie z naszych budów - żadnego kupionego w banku zdjęć. Na gotowej łazience nie widać już, jak wyprowadzono podejścia wodne ani co siedzi pod płytką, więc obok skończonych wnętrz pokazujemy kadry z samej roboty, podpisane „w trakcie”.")}
 
 <section class="sekcja">
@@ -544,9 +550,9 @@ def realizacje(naglowek):
 
 {grupa("Poddasze z wnęką na wannę", "04", ["poddasze2-01", "poddasze2-02", "poddasze2-03"])}
 
-{grupa("Schody", "05", ["schody-01", "schody-02"])}
+{grupa("Schody", "05", ["schody-01"])}
 
-{grupa("Beton architektoniczny", "06", ["beton-01", "beton-02", "beton-03"])}
+{grupa("Beton architektoniczny", "06", ["beton-02", "beton-03"])}
 
 {grupa("Elewacja i podbitka", "07", ["elewacja-01", "elewacja-02", "elewacja-03",
                                      "elewacja-04", "elewacja-05"])}
@@ -605,6 +611,9 @@ def o_nas(naglowek):
     return f"""{naglowek("o-nas.html")}
 
 {otwarcie("O nas", "Firma rodzinna z Błońska",
+          kadr="otw-o-nas.jpg",
+          opis="Rusztowanie ustawione wzdłuż ściany domu w trakcie robót elewacyjnych",
+          lead=
           "Na budowach jesteśmy od ponad 20 lat - najpierw w Niemczech, od 2015 roku "
           "pod własnym szyldem w Polsce. Pracujemy w wielkopolskiem i lubuskiem.")}
 
@@ -642,6 +651,9 @@ def kontakt(naglowek):
     return f"""{naglowek("kontakt.html")}
 
 {otwarcie("Kontakt", "Zadzwoń albo napisz",
+          kadr="otw-kontakt.jpg",
+          opis="Bieg betonowych schodów przy gotowej, gładkiej ścianie",
+          lead=
           "Telefon odbieramy od 8:00 do 20:00. Na WhatsAppie możesz od razu wrzucić "
           "zdjęcia wnętrza - to najszybszy sposób, żebyśmy wiedzieli, o czym mowa.")}
 
