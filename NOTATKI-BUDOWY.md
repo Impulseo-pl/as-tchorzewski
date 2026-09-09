@@ -616,3 +616,32 @@ jako CZARNY PROSTOKĄT i wyglądało to na zepsute zdjęcie. Pomiar w przegląda
 `naturalWidth`, `getBoundingClientRect`) pokazał, że obraz jest wczytany i na miejscu -
 to niedomalowany kadr z `captureBeyondViewport`. ⛔ Nie wyciągaj wniosku o usterce z samego
 zrzutu całej strony; potwierdź pomiarem albo `--sam-ekran`.
+
+### 🔧 Paralaksa — kalibracja po uwagach K. (09.09, wieczór)
+
+Pierwsza wersja (40/34/24 px) była **niewidoczna** — K.: „nie widzę tak szczerze". 40 px na kadrze
+924 px to ~4 % rozjazdu, poniżej progu, na którym oko cokolwiek łapie.
+
+🔴 **Znak był odwrócony.** `srodek * sila` daje obrazowi przesunięcie w TĘ SAMĄ stronę, w którą
+ucieka strona — obraz UCIEKAŁ szybciej niż strona i czytało się to jak usterka. Poprawne jest
+`-srodek * sila`: obraz **zostaje w tyle**. Naprawione w `rdzen.js` tej strony i w źródle rdzenia
+(`~/.claude/skills/strona-docelowa/rdzen/rdzen.js`).
+⚠️ **PEC STAL ma tę wadę dalej na ŻYWEJ stronie** — własna kopia rdzenia sprzed poprawki.
+Nie ruszane bez decyzji K. (lekcja 2026-09-09-007).
+
+**Siła liczona PER ZDJĘCIE, nie jedna dla wszystkich.** Każde źródło ma inny próg, powyżej
+którego `object-fit:cover` musi je powiększać:
+bez rozmycia gdy `wysokość_ramy + 2*zapas <= wysokość_źródła`, przy `zapas = 1,5 * siła`.
+
+| kadr | źródło | rama | próg bez rozmycia | ustawione |
+|---|---|---|---|---|
+| hero | 1440×1300 | 924 | 125 px | **220** |
+| pas elewacji | 2400×1029 | 620 | 136 px | **170** |
+| pas zieleni | 1440×617 | 420 | 65 px | **130** |
+| otwarcia podstron | 1440×630 | 492-617 | 4-46 px | **150** |
+
+⛔ Progi są przekroczone ŚWIADOMIE — te zdjęcia i tak stoją na gęstości 0,42-0,50 potrzebnej
+na Retinie (bramka: „za mały materiał od klienta"), więc dodatkowe powiększenie kosztuje mniej,
+niż wygląda w tabeli. Pas zieleni dostał najmniej, bo ma najsłabsze źródło i zmiękłby jako
+pierwszy — **to jest powód, dla którego zapas jest zmienną `--zapas` per pas, a nie liczbą
+w jednej regule.** Zmieniasz siłę → zmień zapas w tej samej linijce.
