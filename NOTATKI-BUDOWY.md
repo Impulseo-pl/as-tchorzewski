@@ -567,3 +567,9 @@ Z ramki wezwania wyleciały oba: została sama treść, której nie ma nigdzie i
 
 Bramki po zmianach: **sekcja wyglądu czysta na 1440 i na 390 px, język 0/0**. Zostają ✗ celowe
 (noindex, Disallow, brak zdalnego repo) - stan sprzed publikacji, nie usterki.
+
+### WARSTWA RUCHU
+
+- Dodano paralaksę gotowym silnikiem rdzenia do kadru hero, obu pasów zdjęć i otwarć czterech podstron; każda rama przycina obraz, a obraz ma zapas odpowiedni do amplitudy ruchu.
+- Para „Przed” / „Po”, kadry w każdej grupie realizacji oraz obie osie lat wchodzą sekwencyjnie przez istniejący obserwator `.rv` i animację kaskadową; obrazy zygzaka wjeżdżają ze swojej strony po tekście, a na telefonie zostaje wyłącznie wspólny fade.
+- Nie zmieniano treści, kolejności sekcji, zdjęć, gradientów kontrastowych ani wysokości hero i pasów; rdzeń zmieniono wyłącznie o brakujący hover dla `figure` w galerii.

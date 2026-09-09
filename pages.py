@@ -156,7 +156,7 @@ def otwarcie(etykieta, tytul, lead, kadr=None, opis=""):
     się płaskim czarnym paskiem. `kadr=None` zostawia sam kolor (strony prawne,
     404 - tam zdjęcie robi za dużo hałasu przy błahej treści).
     """
-    tlo = (f'\n  <img class="otwarcie-tlo" src="img/{kadr}" alt="{opis}" '
+    tlo = (f'\n  <img class="otwarcie-tlo" data-paralaksa="24" src="img/{kadr}" alt="{opis}" '
            f'decoding="async">' if kadr else "")
     klasa = "sekcja otwarcie ciemna" + (" otwarcie--kadr" if kadr else "")
     return f"""<section class="{klasa}" id="tresc">{tlo}
@@ -248,10 +248,11 @@ KADRY = {
 }
 
 
-def kadr_galerii(klucz, lazy=True):
+def kadr_galerii(klucz, lazy=True, i=0):
     plik, w, h, alt, podpis = KADRY[klucz]
     l = ' loading="lazy" decoding="async"' if lazy else ""
-    return (f'<figure data-zoom="img/{plik}" data-alt="{alt}" data-cap="{podpis}" tabindex="0">'
+    return (f'<figure data-zoom="img/{plik}" data-alt="{alt}" data-cap="{podpis}" tabindex="0" '
+            f'style="--i:{min(i, 4)}">'
             f'<img src="img/{plik}" alt="{alt}" width="{w}" height="{h}"{l}>'
             f'<figcaption>{podpis}</figcaption></figure>')
 
@@ -267,11 +268,11 @@ def grupa(tytul, licznik, klucze, lazy=True):
     ⛔ Grupa JEDNOZDJĘCIOWA nie ma dobrego układu - zdjęcie zostaje samo przy 2/3
        pustki, a rozciągnięte na całą szerokość rozmywa się (źródła to kadry z telefonu).
        Taką grupę SCALAMY z sąsiednią zamiast szukać CSS-u."""
-    kadry = "\n      ".join(kadr_galerii(k, lazy) for k in klucze)
+    kadry = "\n      ".join(kadr_galerii(k, lazy, i) for i, k in enumerate(klucze))
     klasa = "galeria galeria--2" if len(klucze) in (2, 4) else "galeria"
     return f"""    <div class="grupa rv">
       <div class="grupa-tyt"><h2>{tytul}</h2><span class="licznik">{licznik}</span></div>
-      <div class="{klasa}">
+      <div class="{klasa} kaskada">
       {kadry}
       </div>
     </div>"""
@@ -308,7 +309,7 @@ def index(naglowek):
     return f"""{naglowek("index.html")}
 
 <header class="scena">
-  <img class="scena-tlo" src="img/hero.jpg" width="1440" height="1300" fetchpriority="high"
+  <img class="scena-tlo" data-paralaksa="40" src="img/hero.jpg" width="1440" height="1300" fetchpriority="high"
     alt="Ściana z betonu architektonicznego z czarnymi liniami - z naszych realizacji">
   <div class="wrap" id="tresc">
     <div class="rv">
@@ -329,14 +330,14 @@ def index(naglowek):
       <h2>Ten sam dom. Dwa zdjęcia.</h2>
       <p class="pod">Na gotowym zdjęciu nie widać już, od czego się zaczynało.</p>
     </div>
-    <div class="para rv">
-      <figure class="klatka">
+    <div class="para rv kaskada">
+      <figure class="klatka" style="--i:0">
         <span class="znacznik">Przed</span>
         <img src="img/przed.jpg" width="1100" height="1100" decoding="async"
           alt="Rozbudowa w stanie surowym: mury z bloczków, stemple i otwarty otwór okienny">
         <p>Stan surowy: mury z bloczków, stemple, otwarty otwór okienny.</p>
       </figure>
-      <figure class="klatka">
+      <figure class="klatka" style="--i:1">
         <span class="znacznik po">Po</span>
         <img src="img/po.jpg" width="1100" height="1100" decoding="async"
           alt="Ta sama rozbudowa po wykończeniu: biała elewacja, duże okno tarasowe, trawnik">
@@ -388,7 +389,7 @@ def index(naglowek):
 </section>
 
 <figure class="pas pas--duzy">
-  <img src="img/pas-elewacja.jpg" width="2400" height="1029" loading="lazy" decoding="async"
+  <img data-paralaksa="34" src="img/pas-elewacja.jpg" width="2400" height="1029" loading="lazy" decoding="async"
     alt="Skończona elewacja domu z wejściem od strony tarasu, biały tynk i ciemne obróbki">
   <figcaption>Elewacja z podbitką - po naszej robocie.</figcaption>
 </figure>
@@ -414,7 +415,7 @@ def index(naglowek):
 </section>
 
 <figure class="pas">
-  <img src="img/pas-zielen.jpg" width="1440" height="617" loading="lazy" decoding="async"
+  <img data-paralaksa="34" src="img/pas-zielen.jpg" width="1440" height="617" loading="lazy" decoding="async"
     alt="Ściana w betonie dekoracyjnym w odcieniu zieleni pod odsłoniętymi belkami poddasza">
   <figcaption>Beton dekoracyjny w zieleni, pod starymi belkami - z naszych realizacji.</figcaption>
 </figure>
@@ -626,10 +627,10 @@ def o_nas(naglowek):
 <section class="sekcja">
   <div class="wrap uklad-o-nas">
     <div class="o-nas-lata">
-      <ol class="lata rv">
-        <li><b>2005</b><p>Zaczynamy pracę na budowach w Niemczech.</p></li>
-        <li><b>2015</b><p>Rejestrujemy własną firmę w Polsce, w Błońsku pod Rakoniewicami.</p></li>
-        <li><b>Dziś</b><p>Wykończenia wnętrz pod klucz - od gładzi i malowania
+      <ol class="lata lata--ruch rv">
+        <li style="--i:0"><b>2005</b><p>Zaczynamy pracę na budowach w Niemczech.</p></li>
+        <li style="--i:1"><b>2015</b><p>Rejestrujemy własną firmę w Polsce, w Błońsku pod Rakoniewicami.</p></li>
+        <li style="--i:2"><b>Dziś</b><p>Wykończenia wnętrz pod klucz - od gładzi i malowania
           po łazienki, poddasza i montaż drzwi.</p></li>
       </ol>
     </div>
@@ -702,11 +703,11 @@ def kontakt(naglowek):
     <div class="tekst-dlugi rv">
       <span class="etykieta">Jak wygląda wycena</span>
       <h2>Trzy kroki do ceny</h2>
-      <ol class="lata">
-        <li><b>1</b><p>Dzwonisz albo piszesz na WhatsAppie i mówisz, co ma być zrobione.</p></li>
-        <li><b>2</b><p>Umawiamy się na oględziny - cenę robi zakres i stan wnętrza,
+      <ol class="lata lata--ruch rv">
+        <li style="--i:0"><b>1</b><p>Dzwonisz albo piszesz na WhatsAppie i mówisz, co ma być zrobione.</p></li>
+        <li style="--i:1"><b>2</b><p>Umawiamy się na oględziny - cenę robi zakres i stan wnętrza,
           a tego nie da się ocenić przez telefon.</p></li>
-        <li><b>3</b><p>Wracamy z wyceną do 5 dni roboczych od oględzin.</p></li>
+        <li style="--i:2"><b>3</b><p>Wracamy z wyceną do 5 dni roboczych od oględzin.</p></li>
       </ol>
     </div>
   </div>

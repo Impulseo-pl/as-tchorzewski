@@ -181,7 +181,7 @@ a{text-decoration:none}
       spełniona z definicji - scena MA wysokość ekranu, nic z niej nie wystaje. */
 .scena{position:relative;overflow:hidden;min-height:calc(100dvh - var(--gora,96px));
   display:grid;align-items:center;padding:72px 0;background:var(--noc);color:var(--biel)}
-.scena-tlo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+.scena-tlo{position:absolute;inset:-60px 0;width:100%;height:calc(100% + 120px);object-fit:cover;
   object-position:center 34%}
 /* ⚠️ Świadome złamanie zakazu gradientów (`DESIGN.md`, odstępstwo 6): bez przyciemnienia
    biały nagłówek nie utrzyma kontrastu na zdjęciu. Ciemniej po LEWEJ, gdzie stoi tekst,
@@ -221,7 +221,7 @@ a{text-decoration:none}
 .otwarcie{padding:clamp(3.5rem,7vw,6rem) 0 clamp(3.5rem,6vw,5rem)}
 /* Otwarcie z własnym kadrem — ta sama mechanika, co na scenie, tylko niżej i płycej. */
 .otwarcie--kadr{position:relative;overflow:hidden}
-.otwarcie-tlo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+.otwarcie-tlo{position:absolute;inset:-36px 0;width:100%;height:calc(100% + 72px);object-fit:cover;
   object-position:center 42%}
 /* 🔴 Wartości podniesione po pomiarze bramki 08.09.2026: przy .78 na 38 % lead
    „Wszystkie z naszych budów…" leżał na niebie w oknach dachowych i dawał 4,20:1
@@ -257,6 +257,43 @@ a{text-decoration:none}
   font:500 12px/1 Inter;letter-spacing:.16em;text-transform:uppercase;padding:9px 14px;
   border-radius:0}
 .znacznik.po{background:var(--akcent-btn)}
+
+/* ── WARSTWA RUCHU ────────────────────────────────────────────────────────── */
+/* Sekwencje korzystają z obserwatora `.rv` i animacji `kaskada-wjazd` rdzenia.
+   Opóźnienia należą do animacji, więc nie zostają na późniejszym hoverze. */
+.para.kaskada.is-in>.klatka{animation-delay:calc(var(--i,0) * 140ms)}
+
+/* Zygzak zaczyna się tekstem; obraz dochodzi z jego własnej strony po 120 ms. */
+.zygzak.rv>.zygzak-obraz{opacity:0;transform:translateX(-24px)}
+.zygzak--odwrocony.rv>.zygzak-obraz{transform:translateX(24px)}
+.zygzak.rv.is-in>.zygzak-obraz{opacity:1;transform:none;
+  animation:zygzak-obraz-z-lewej .55s var(--ease) backwards;animation-delay:120ms}
+.zygzak--odwrocony.rv.is-in>.zygzak-obraz{animation-name:zygzak-obraz-z-prawej}
+@keyframes zygzak-obraz-z-lewej{from{opacity:0;transform:translateX(-24px)}}
+@keyframes zygzak-obraz-z-prawej{from{opacity:0;transform:translateX(24px)}}
+
+/* Kadry realizacji zaczynają się od zera w każdej grupie i kończą na 240 ms. */
+.grupa.rv.is-in .galeria.kaskada>figure{opacity:1;transform:none;
+  animation:kaskada-wjazd .55s var(--ease) backwards;animation-delay:calc(var(--i,0) * 60ms)}
+
+/* Liczba prowadzi opis o 80 ms; wiersze ruszają co 90 ms bez zmiany siatki. */
+.lata--ruch>li b,.lata--ruch>li p{opacity:0;transform:translateY(16px)}
+.lata--ruch.rv.is-in>li b,.lata--ruch.rv.is-in>li p{opacity:1;transform:none;
+  animation:kaskada-wjazd .55s var(--ease) backwards;animation-delay:calc(var(--i,0) * 90ms)}
+.lata--ruch.rv.is-in>li p{animation-delay:calc(var(--i,0) * 90ms + 80ms)}
+
+/* Bez rdzenia treść i kadry zostają widoczne w swoim docelowym miejscu. */
+html:not(.js) .scena-tlo[data-paralaksa],html:not(.js) .otwarcie-tlo[data-paralaksa],
+html:not(.js) .pas img[data-paralaksa],html:not(.js) .para.kaskada>.klatka,
+html:not(.js) .zygzak.rv>.zygzak-obraz,html:not(.js) .galeria.kaskada>figure,
+html:not(.js) .lata--ruch>li b,html:not(.js) .lata--ruch>li p{
+  opacity:1!important;transform:none!important;animation:none!important}
+
+@media (prefers-reduced-motion:reduce){
+  .scena-tlo[data-paralaksa],.otwarcie-tlo[data-paralaksa],.pas img[data-paralaksa],
+  .para.kaskada>.klatka,.zygzak.rv>.zygzak-obraz,.galeria.kaskada>figure,
+  .lata--ruch>li b,.lata--ruch>li p{opacity:1!important;transform:none!important;animation:none!important}
+}
 
 /* ── KAFLE USŁUG ────────────────────────────────────────────────────────────── */
 .kafle{display:grid;grid-template-columns:repeat(4,1fr);gap:26px}
@@ -318,7 +355,7 @@ a{text-decoration:none}
 
 /* ── ZYGZAK (podstrona „Co robimy") ─────────────────────────────────────────── */
 .zygzak{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;
-  padding:56px 0;border-top:1px solid var(--linia-slaba)}
+  overflow:hidden;padding:56px 0;border-top:1px solid var(--linia-slaba)}
 .zygzak:first-of-type{border-top:0;padding-top:0}
 .zygzak--odwrocony .zygzak-obraz{order:-1}
 .zygzak-obraz img{width:100%;border-radius:0}
@@ -366,12 +403,15 @@ a{text-decoration:none}
 /* ── PAS ZDJĘCIA NA CAŁĄ SZEROKOŚĆ ──────────────────────────────────────────── */
 /* Pas na pełną szerokość dostaje własne powietrze - bez tego sąsiaduje z sekcją
    krawędź w krawędź i czyta się jak ściana zdjęć (uwaga K. 07.09.2026). */
-.pas{position:relative;line-height:0;margin:clamp(2rem,4vw,4rem) 0}
-.pas img{width:100%;height:clamp(240px,34vw,420px);object-fit:cover;border-radius:0}
+.pas{--pas-wys:clamp(240px,34vw,420px);position:relative;line-height:0;
+  height:var(--pas-wys);overflow:hidden;margin:clamp(2rem,4vw,4rem) 0}
+.pas img{width:100%;height:var(--pas-wys);object-fit:cover;border-radius:0}
 /* ⚠️ Wyższy pas TYLKO dla kadru z pełnego oryginału (2400 px). Pas z betonu ma
    źródło 1440 px i przy tej wysokości by zmiękł - dlatego to osobna klasa, a nie
    podniesienie wartości dla wszystkich. */
-.pas--duzy img{height:clamp(320px,46vw,620px)}
+.pas--duzy{--pas-wys:clamp(320px,46vw,620px)}
+.pas img[data-paralaksa]{position:absolute;inset:-51px 0;width:100%;
+  height:calc(100% + 102px)}
 /* 🔴 Gradient policzony pod CIEMNE zdjęcia nie wystarcza pod jasne. Pas z elewacji
    (biały tynk + niebo) dał kontrast 3,76:1 przy progu 4,5 - złapane przez bramkę
    na telefonie 07.09.2026. Mocniejszy gradient z przystankiem w połowie + cień
@@ -546,6 +586,9 @@ footer{background:var(--papier-3);border-top:1px solid var(--linia-slaba);paddin
   .uklad-o-nas>.tekst-dlugi{grid-column:1;grid-row:auto}
   .zygzak{padding:38px 0}
   .zygzak--odwrocony .zygzak-obraz{order:0}
+  /* Jedna kolumna nie czyta się już jak zygzak — zostaje wspólny fade `.rv`. */
+  .zygzak.rv>.zygzak-obraz,.zygzak.rv.is-in>.zygzak-obraz{
+    opacity:1;transform:none;animation:none}
   .trzy-kolumny{grid-template-columns:1fr;gap:26px}
   .domkniecie{grid-template-columns:1fr;gap:26px}
   .domkniecie .kontakt-linia{justify-content:flex-start}
@@ -568,6 +611,9 @@ footer{background:var(--papier-3);border-top:1px solid var(--linia-slaba);paddin
 @media print{
   body{background:#fff;color:#000}
   .pasek-dolny,.reel-btn,.lb{display:none!important}
+  .scena-tlo[data-paralaksa],.otwarcie-tlo[data-paralaksa],.pas img[data-paralaksa],
+  .para.kaskada>.klatka,.zygzak.rv>.zygzak-obraz,.galeria.kaskada>figure,
+  .lata--ruch>li b,.lata--ruch>li p{opacity:1!important;transform:none!important;animation:none!important}
   .karta{background:#fff;color:#000}
   /* Ciemne akcenty na papierze zjadają toner i wychodzą szarą plamą. */
   .scena,.domkniecie,.ciemna{background:#fff!important;color:#000!important}

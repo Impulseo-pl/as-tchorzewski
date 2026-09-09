@@ -71,7 +71,7 @@ html:not(.js) .rv,html:not(.js) .kaskada>*,html:not(.js) .proces-line > li{opaci
   transition:transform var(--img-dur) var(--ease),filter var(--img-dur) var(--ease)}
 @media (hover:hover){
   .tile img,.mosaic img,.gateway img,.m-tile img,.galeria img{filter:var(--img-rest)}
-  .tile:hover img,.mosaic a:hover img,.gateway:hover img,.m-tile:hover img,.galeria a:hover img{
+  .tile:hover img,.mosaic a:hover img,.gateway:hover img,.m-tile:hover img,.galeria a:hover img,.galeria figure:hover img{
     transform:scale(var(--img-zoom));filter:var(--img-hot)}
 }
 
