@@ -181,7 +181,7 @@ a{text-decoration:none}
       spełniona z definicji - scena MA wysokość ekranu, nic z niej nie wystaje. */
 .scena{position:relative;overflow:hidden;min-height:calc(100dvh - var(--gora,96px));
   display:grid;align-items:center;padding:72px 0;background:var(--noc);color:var(--biel)}
-.scena-tlo{position:absolute;inset:-60px 0;width:100%;height:calc(100% + 120px);object-fit:cover;
+.scena-tlo{position:absolute;inset:-150px 0;width:100%;height:calc(100% + 300px);object-fit:cover;
   object-position:center 34%}
 /* ⚠️ Świadome złamanie zakazu gradientów (`DESIGN.md`, odstępstwo 6): bez przyciemnienia
    biały nagłówek nie utrzyma kontrastu na zdjęciu. Ciemniej po LEWEJ, gdzie stoi tekst,
@@ -221,7 +221,7 @@ a{text-decoration:none}
 .otwarcie{padding:clamp(3.5rem,7vw,6rem) 0 clamp(3.5rem,6vw,5rem)}
 /* Otwarcie z własnym kadrem — ta sama mechanika, co na scenie, tylko niżej i płycej. */
 .otwarcie--kadr{position:relative;overflow:hidden}
-.otwarcie-tlo{position:absolute;inset:-36px 0;width:100%;height:calc(100% + 72px);object-fit:cover;
+.otwarcie-tlo{position:absolute;inset:-90px 0;width:100%;height:calc(100% + 180px);object-fit:cover;
   object-position:center 42%}
 /* 🔴 Wartości podniesione po pomiarze bramki 08.09.2026: przy .78 na 38 % lead
    „Wszystkie z naszych budów…" leżał na niebie w oknach dachowych i dawał 4,20:1
@@ -410,8 +410,8 @@ html:not(.js) .lata--ruch>li b,html:not(.js) .lata--ruch>li p{
    źródło 1440 px i przy tej wysokości by zmiękł - dlatego to osobna klasa, a nie
    podniesienie wartości dla wszystkich. */
 .pas--duzy{--pas-wys:clamp(320px,46vw,620px)}
-.pas img[data-paralaksa]{position:absolute;inset:-51px 0;width:100%;
-  height:calc(100% + 102px)}
+.pas img[data-paralaksa]{position:absolute;inset:-120px 0;width:100%;
+  height:calc(100% + 240px)}
 /* 🔴 Gradient policzony pod CIEMNE zdjęcia nie wystarcza pod jasne. Pas z elewacji
    (biały tynk + niebo) dał kontrast 3,76:1 przy progu 4,5 - złapane przez bramkę
    na telefonie 07.09.2026. Mocniejszy gradient z przystankiem w połowie + cień
