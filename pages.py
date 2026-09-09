@@ -156,7 +156,7 @@ def otwarcie(etykieta, tytul, lead, kadr=None, opis=""):
     się płaskim czarnym paskiem. `kadr=None` zostawia sam kolor (strony prawne,
     404 - tam zdjęcie robi za dużo hałasu przy błahej treści).
     """
-    tlo = (f'\n  <img class="otwarcie-tlo" data-paralaksa="100" src="img/{kadr}" alt="{opis}" '
+    tlo = (f'\n  <img class="otwarcie-tlo" data-paralaksa="150" src="img/{kadr}" alt="{opis}" '
            f'decoding="async">' if kadr else "")
     klasa = "sekcja otwarcie ciemna" + (" otwarcie--kadr" if kadr else "")
     return f"""<section class="{klasa}" id="tresc">{tlo}
@@ -309,7 +309,7 @@ def index(naglowek):
     return f"""{naglowek("index.html")}
 
 <header class="scena">
-  <img class="scena-tlo" data-paralaksa="160" src="img/hero.jpg" width="1440" height="1300" fetchpriority="high"
+  <img class="scena-tlo" data-paralaksa="220" src="img/hero.jpg" width="1440" height="1300" fetchpriority="high"
     alt="Ściana z betonu architektonicznego z czarnymi liniami - z naszych realizacji">
   <div class="wrap" id="tresc">
     <div class="rv">
@@ -389,7 +389,7 @@ def index(naglowek):
 </section>
 
 <figure class="pas pas--duzy">
-  <img data-paralaksa="110" src="img/pas-elewacja.jpg" width="2400" height="1029" loading="lazy" decoding="async"
+  <img data-paralaksa="170" src="img/pas-elewacja.jpg" width="2400" height="1029" loading="lazy" decoding="async"
     alt="Skończona elewacja domu z wejściem od strony tarasu, biały tynk i ciemne obróbki">
   <figcaption>Elewacja z podbitką - po naszej robocie.</figcaption>
 </figure>
@@ -415,7 +415,7 @@ def index(naglowek):
 </section>
 
 <figure class="pas">
-  <img data-paralaksa="110" src="img/pas-zielen.jpg" width="1440" height="617" loading="lazy" decoding="async"
+  <img data-paralaksa="130" src="img/pas-zielen.jpg" width="1440" height="617" loading="lazy" decoding="async"
     alt="Ściana w betonie dekoracyjnym w odcieniu zieleni pod odsłoniętymi belkami poddasza">
   <figcaption>Beton dekoracyjny w zieleni, pod starymi belkami - z naszych realizacji.</figcaption>
 </figure>

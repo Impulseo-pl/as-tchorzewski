@@ -181,7 +181,7 @@ a{text-decoration:none}
       spełniona z definicji - scena MA wysokość ekranu, nic z niej nie wystaje. */
 .scena{position:relative;overflow:hidden;min-height:calc(100dvh - var(--gora,96px));
   display:grid;align-items:center;padding:72px 0;background:var(--noc);color:var(--biel)}
-.scena-tlo{position:absolute;inset:-240px 0;width:100%;height:calc(100% + 480px);object-fit:cover;
+.scena-tlo{position:absolute;inset:-330px 0;width:100%;height:calc(100% + 660px);object-fit:cover;
   object-position:center 34%}
 /* ⚠️ Świadome złamanie zakazu gradientów (`DESIGN.md`, odstępstwo 6): bez przyciemnienia
    biały nagłówek nie utrzyma kontrastu na zdjęciu. Ciemniej po LEWEJ, gdzie stoi tekst,
@@ -221,7 +221,7 @@ a{text-decoration:none}
 .otwarcie{padding:clamp(3.5rem,7vw,6rem) 0 clamp(3.5rem,6vw,5rem)}
 /* Otwarcie z własnym kadrem — ta sama mechanika, co na scenie, tylko niżej i płycej. */
 .otwarcie--kadr{position:relative;overflow:hidden}
-.otwarcie-tlo{position:absolute;inset:-150px 0;width:100%;height:calc(100% + 300px);object-fit:cover;
+.otwarcie-tlo{position:absolute;inset:-225px 0;width:100%;height:calc(100% + 450px);object-fit:cover;
   object-position:center 42%}
 /* 🔴 Wartości podniesione po pomiarze bramki 08.09.2026: przy .78 na 38 % lead
    „Wszystkie z naszych budów…" leżał na niebie w oknach dachowych i dawał 4,20:1
@@ -403,15 +403,15 @@ html:not(.js) .lata--ruch>li b,html:not(.js) .lata--ruch>li p{
 /* ── PAS ZDJĘCIA NA CAŁĄ SZEROKOŚĆ ──────────────────────────────────────────── */
 /* Pas na pełną szerokość dostaje własne powietrze - bez tego sąsiaduje z sekcją
    krawędź w krawędź i czyta się jak ściana zdjęć (uwaga K. 07.09.2026). */
-.pas{--pas-wys:clamp(240px,34vw,420px);position:relative;line-height:0;
+.pas{--pas-wys:clamp(240px,34vw,420px);--zapas:195px;position:relative;line-height:0;
   height:var(--pas-wys);overflow:hidden;margin:clamp(2rem,4vw,4rem) 0}
 .pas img{width:100%;height:var(--pas-wys);object-fit:cover;border-radius:0}
 /* ⚠️ Wyższy pas TYLKO dla kadru z pełnego oryginału (2400 px). Pas z betonu ma
    źródło 1440 px i przy tej wysokości by zmiękł - dlatego to osobna klasa, a nie
    podniesienie wartości dla wszystkich. */
-.pas--duzy{--pas-wys:clamp(320px,46vw,620px)}
-.pas img[data-paralaksa]{position:absolute;inset:-165px 0;width:100%;
-  height:calc(100% + 330px)}
+.pas--duzy{--pas-wys:clamp(320px,46vw,620px);--zapas:255px}
+.pas img[data-paralaksa]{position:absolute;inset:calc(-1 * var(--zapas)) 0;width:100%;
+  height:calc(100% + 2 * var(--zapas))}
 /* 🔴 Gradient policzony pod CIEMNE zdjęcia nie wystarcza pod jasne. Pas z elewacji
    (biały tynk + niebo) dał kontrast 3,76:1 przy progu 4,5 - złapane przez bramkę
    na telefonie 07.09.2026. Mocniejszy gradient z przystankiem w połowie + cień
