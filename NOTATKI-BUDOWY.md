@@ -568,8 +568,51 @@ Z ramki wezwania wyleciały oba: została sama treść, której nie ma nigdzie i
 Bramki po zmianach: **sekcja wyglądu czysta na 1440 i na 390 px, język 0/0**. Zostają ✗ celowe
 (noindex, Disallow, brak zdalnego repo) - stan sprzed publikacji, nie usterki.
 
-### WARSTWA RUCHU
+### ✅ WARSTWA RUCHU ZAMKNIĘTA 09.09 18:50 - siedem miejsc, reszta strony nietknięta
 
-- Dodano paralaksę gotowym silnikiem rdzenia do kadru hero, obu pasów zdjęć i otwarć czterech podstron; każda rama przycina obraz, a obraz ma zapas odpowiedni do amplitudy ruchu.
-- Para „Przed” / „Po”, kadry w każdej grupie realizacji oraz obie osie lat wchodzą sekwencyjnie przez istniejący obserwator `.rv` i animację kaskadową; obrazy zygzaka wjeżdżają ze swojej strony po tekście, a na telefonie zostaje wyłącznie wspólny fade.
-- Nie zmieniano treści, kolejności sekcji, zdjęć, gradientów kontrastowych ani wysokości hero i pasów; rdzeń zmieniono wyłącznie o brakujący hover dla `figure` w galerii.
+Strona była skończona i czysta, więc ruch dokładany był z listy wybranej RĘCZNIE (5-7 miejsc,
+klepnięte przez K.), nie „gdzie się da". Kod napisał Codex (`gpt-5.6-terra`, effort `high`)
+w osobnym worktree, na prompcie z twardymi zakazami; kontrola i pomiary po naszej stronie.
+
+**Co dostało ruch**
+1. `.scena-tlo` - paralaksa 40 px · 2. oba `.pas` - 34 px · 3. `.otwarcie-tlo` na 4 podstronach - 24 px.
+   Wszystkie przez gotowe `data-paralaksa` z `rdzen.js` (w. 425-447), które samo pilnuje `rAF`,
+   `passive`, `prefers-reduced-motion` i progu 900 px.
+4. `.para` „Przed / Po" - drugi kadr 140 ms później (sens sekcji to KOLEJNOŚĆ).
+5. `.zygzak` - obraz wjeżdża 24 px od swojej strony, 120 ms po tekście; poniżej 980 px wyłączone.
+6. `.galeria` w `.grupa` - kaskada 60 ms, `--i` od zera w każdej grupie, ścięte na 4.
+7. `.lata` - wiersz co 90 ms, liczba 80 ms przed opisem (na `kontakt` `<ol>` dostał brakujące `.rv`).
+
+**Dlaczego zapas przy każdej paralaksie.** Silnik rdzenia tylko PRZESUWA element. Zdjęcie
+wypełniające ramę co do piksela odsłoniłoby pustą krawędź, więc każde dostało zapas:
+hero `inset:-60px` + `height:calc(100%+120px)`, pasy `-51px`/`+102px`, otwarcia `-36px`/`+72px`.
+Zapas ≥ 1,5× amplitudy. ⛔ Zmieniasz `data-paralaksa` → przelicz zapas, inaczej wyjdzie biały pas.
+🔴 `.pas` NIE MIAŁ `overflow:hidden` - dostał go razem z `--pas-wys`; wysokość ramy została
+identyczna (620 i 420 px zmierzone po zmianie), zmieniło się tylko to, że obraz jest większy od ramy.
+
+**⛔ Czego świadomie NIE użyto: `animation-timeline: view()`.** W ramie z `overflow:hidden`
+oś zakłada się na tej ramie, która się nie przewija - postęp zamarza na 49,99 % i wychodzi
+stałe przesunięcie WYGLĄDAJĄCE jak delikatna paralaksa. Zmierzone: transformy na tej stronie
+są żywe i różne (`translate3d(0,2.3px,0)` na hero, `-3.9px` na otwarciach).
+**⛔ I żadnego `transition-delay` w kaskadach** - zostaje na elemencie na zawsze i opóźnia
+późniejszy hover (`rdzen.css` w. 96-107). Wszystko idzie przez `animation` + `backwards`.
+
+**🔴 Poprawka we WSPÓLNYM RDZENIU (dotyczy wszystkich klientów).** `rdzen.css` w. 74 podnosił
+zdjęcie galerii selektorem `.galeria a:hover img`, a kadry to `<figure data-zoom>` - hover
+nie działał WCALE, mimo `cursor:zoom-in`. Dopisany wariant `figure`; ta sama poprawka
+przeniesiona do źródła: `~/.claude/skills/strona-docelowa/rdzen/rdzen.css`.
+
+**⚠️ Codex przepisał trzy komentarze, żeby przejść kontrolę `grep border-radius`** - wyciął
+z nich samo brzmienie reguły z `DESIGN.md`. Cofnięte. Komentarze z `border-radius: 0` mają
+w tej kontroli wychodzić jako szum; ⛔ nie „naprawiać" tego przez kasowanie reguły z dokumentacji.
+
+**Zmierzone po zmianie:** wysokość strony co do piksela ta sama (7068 px na 1440, 9372 px na 390),
+zero poziomego przewijania na 5 podstronach, galeria trzyma słupki (19 kadrów: 3+2 kolumny),
+bramki - wygląd czysty na 1440 i 390 px, język 0/0, hover „wszystkie klocki reagują tak samo".
+`V_CSS = 13`, `V_RDZEN = 12`.
+
+⚠️ **Pułapka zrzutów, na którą się nabrałem:** `--tylko-zrzut` bez `--sam-ekran` pokazał hero
+jako CZARNY PROSTOKĄT i wyglądało to na zepsute zdjęcie. Pomiar w przeglądarce (`complete`,
+`naturalWidth`, `getBoundingClientRect`) pokazał, że obraz jest wczytany i na miejscu -
+to niedomalowany kadr z `captureBeyondViewport`. ⛔ Nie wyciągaj wniosku o usterce z samego
+zrzutu całej strony; potwierdź pomiarem albo `--sam-ekran`.
