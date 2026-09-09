@@ -437,7 +437,11 @@
         if (r.bottom < -200 || r.top > h + 200) return;
         var sila = parseFloat(el.getAttribute('data-paralaksa')) || 14;
         var srodek = (r.top + r.height / 2 - h / 2) / h;     /* -1 … 1 */
-        el.style.transform = 'translate3d(0,' + (srodek * sila).toFixed(1) + 'px,0)';
+        /* 🔴 ZNAK UJEMNY JEST ISTOTĄ EFEKTU (poprawka K. 09.09.2026). Bez minusa obraz
+           dostaje przesunięcie w TĘ SAMĄ stronę, w którą ucieka strona, więc ucieka
+           SZYBCIEJ niż strona - a to czyta się jak usterka, nie jak głębia. Paralaksa
+           ma ZOSTAWAĆ W TYLE: strona jedzie w górę o Δ, obraz o Δ minus ułamek. */
+        el.style.transform = 'translate3d(0,' + (-srodek * sila).toFixed(1) + 'px,0)';
       });
     };
     var pros = function () { if (!czeka) { czeka = true; requestAnimationFrame(przelicz); } };
