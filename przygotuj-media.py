@@ -266,40 +266,64 @@ def logo():
 #     nowa, inaczej suwak rozjedzie się bardziej niż przed poprawką.
 #  ⛔ Kolejność rogów: lewy górny, prawy górny, prawy dolny, lewy dolny.
 # ══════════════════════════════════════════════════════════════════════════════
-# rogi otworu drzwiowego w skali 0-1000 (zmierzone 10.09.2026)
-ROGI_PRZED = [(300, 253), (800, 250), (800, 672), (300, 693)]
-ROGI_PO = [(377, 367), (719, 400), (719, 757), (377, 800)]
-# Wspólne okno kadru, też w skali 0-1000. 🔴 K. 10.09.2026: „nie ucinaj tak zdjęcia,
-# ma być całe widoczne, tylko dopasowane najlepiej jak się da". Po dopasowaniu zdjęcie
-# „po" pokrywa 92 % kwadratu „przed", a NAJWIĘKSZY wspólny prostokąt to praktycznie
-# pełna szerokość i 85 % wysokości - policzone maską pokrycia, nie na oko. Odpada tylko
-# dolny pas trawnika (tam i tak siedzi znak wodny klienta). Proporcja wychodzi 1,17:1
-# i taka MUSI stać w `aspect-ratio` ramki w `app.css` oraz w atrybutach width/height.
-OKNO_SUWAKA = (4, 4, 994, 850)
+# ── PUNKTY ODNIESIENIA (skala 0-1000, niezależna od rozdzielczości pliku) ──────
+# 🔴 Pierwsze podejście brało WYŁĄCZNIE cztery rogi otworu drzwiowego i to był błąd:
+#    po wykończeniu ościeże jest o kilka centymetrów mniejsze niż surowy otwór
+#    w murze, więc przyklejenie ich do siebie co do piksela rozciągało całe zdjęcie
+#    „po" o ~2 % i wypychało resztę elewacji w pionie (K.: „mam wrażenie, że przed
+#    jest niżej niż po"). Teraz kotwicą są NAROŻNIKI ELEWACJI PRZY GRUNCIE - tych
+#    wykończenie nie rusza - a rogi otworu wchodzą jako wskazówka o mniejszej wadze.
+#    Dopasowanie liczy się najmniejszymi kwadratami, więc błąd rozkłada się po całym
+#    kadrze zamiast siedzieć w jednym miejscu.
+# ⛔ Zmieniasz zdjęcie w parze → mierzysz punkty od nowa na zrzutach z siatką.
+PARY_SUWAKA = [
+    # (punkt na PRZED, ten sam punkt na PO)
+    ((52, 755), (100, 900)),      # lewy narożnik elewacji przy gruncie
+    ((981, 661), (858, 731)),     # prawy narożnik elewacji przy gruncie
+    ((300, 253), (377, 367)),     # otwór: lewy górny
+    ((800, 250), (719, 400)),     # otwór: prawy górny
+    ((800, 672), (719, 757)),     # otwór: prawy dolny
+    ((300, 693), (377, 800)),     # otwór: lewy dolny
+]
+WAGI_SUWAKA = [3.0, 3.0, 1.0, 1.0, 1.0, 1.0]
+
+# Wspólne okno kadru, też w skali 0-1000. 🔴 K.: „nie ucinaj tak zdjęcia, ma być całe
+# widoczne, tylko dopasowane najlepiej jak się da". Po dopasowaniu „po" pokrywa ~90 %
+# kwadratu „przed"; to jest największy prostokąt mieszczący się w OBU - policzony maską
+# pokrycia, nie na oko. Odpada tylko dolny pas trawnika ze znakiem wodnym klienta.
+# Proporcja 998/826 = 1,208 MUSI stać w `aspect-ratio` ramki w `app.css`
+# i w atrybutach width/height w `pages.py`.
+OKNO_SUWAKA = (4, 4, 994, 822)
 SUWAK = [("przed.jpg", 1500, 82), ("przed@2x.jpg", 2400, 76),
          ("po.jpg", 1500, 82), ("po@2x.jpg", 2400, 76)]
 
 
-def _homografia(zrodlo, cel):
-    """Współczynniki dla PIL: piksel WYJŚCIOWY → piksel WEJŚCIOWY."""
+def _homografia(pary, wagi, skala):
+    """Macierz przenosząca PO w układ PRZED, z najmniejszych kwadratów.
+    `skala` przelicza punkty ze skali 0-1000 na piksele przestrzeni roboczej."""
     import numpy as np
-    A, B = [], []
-    for (xc, yc), (xz, yz) in zip(cel, zrodlo):
-        A.append([xc, yc, 1, 0, 0, 0, -xz * xc, -xz * yc]); B.append(xz)
-        A.append([0, 0, 0, xc, yc, 1, -yz * xc, -yz * yc]); B.append(yz)
-    return np.linalg.solve(np.array(A, float), np.array(B, float))
+    A, B, W = [], [], []
+    for ((xd, yd), (xs, ys)), w in zip(pary, wagi):
+        xd, yd, xs, ys = xd * skala, yd * skala, xs * skala, ys * skala
+        A.append([xs, ys, 1, 0, 0, 0, -xd * xs, -xd * ys]); B.append(xd); W.append(w)
+        A.append([0, 0, 0, xs, ys, 1, -yd * xs, -yd * ys]); B.append(yd); W.append(w)
+    W = np.sqrt(np.array(W, float))
+    h, *_ = np.linalg.lstsq(np.array(A, float) * W[:, None], np.array(B, float) * W, rcond=None)
+    M = np.array([[h[0], h[1], h[2]], [h[3], h[4], h[5]], [h[6], h[7], 1.0]])
+    # PIL chce przekształcenia ODWROTNEGO: piksel wyjściowy → piksel wejściowy
+    odw = np.linalg.inv(M).ravel()
+    return (odw / odw[8])[:8]
 
 
 def suwak_przed_po():
     N = 2500                                   # przestrzeń robocza dopasowania
-    skala = lambda pkt: [(x * N / 1000, y * N / 1000) for x, y in pkt]
 
     przed = ImageOps.exif_transpose(Image.open(zrodlo("PRZED-rozbudowa.jpg")))
     przed = przed.convert("RGB").resize((N, N), Image.LANCZOS)
     po = ImageOps.exif_transpose(Image.open(zrodlo("PO-rozbudowa.jpg")))
     po = po.convert("RGB").resize((N, N), Image.LANCZOS)
     po = po.transform((N, N), Image.PERSPECTIVE,
-                      _homografia(skala(ROGI_PO), skala(ROGI_PRZED)), Image.BICUBIC)
+                      _homografia(PARY_SUWAKA, WAGI_SUWAKA, N / 1000), Image.BICUBIC)
 
     box = tuple(int(round(v * N / 1000)) for v in OKNO_SUWAKA)
     prop = (OKNO_SUWAKA[2] - OKNO_SUWAKA[0]) / (OKNO_SUWAKA[3] - OKNO_SUWAKA[1])

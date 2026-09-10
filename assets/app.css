@@ -303,12 +303,12 @@ a{text-decoration:none}
 /* ⛔ Ramka MUSI być osobnym elementem: `overflow:hidden` na <figure> ucinało podpis. */
 /* 🔴 K. 10.09.2026: „żeby to zdjęcie mieściło się w CAŁOŚCI na ekranie bez względu
    na rozmiar ekranu". Dlatego ograniczamy SZEROKOŚĆ ramki wysokością okna
-   (1,17:1 → 78vh × 1,17), a nie wysokość - przy `max-height` obrazek by się przycinał,
+   (1,21:1 → 78vh × 1,208), a nie wysokość - przy `max-height` obrazek by się przycinał,
    czyli zniknęłaby część kadru, o którą chodzi.
    ⛔ `aspect-ratio` MUSI zgadzać się z `OKNO_SUWAKA` w `przygotuj-media.py`. Rozjazd
    uruchamia `object-fit: cover`, czyli dokładnie to przycięcie, którego tu nie chcemy. */
-.suwak-rama{position:relative;overflow:hidden;line-height:0;aspect-ratio:990/846;
-  width:min(100%,calc(78vh * 1.17));margin-inline:auto;
+.suwak-rama{position:relative;overflow:hidden;line-height:0;aspect-ratio:998/826;
+  width:min(100%,calc(78vh * 1.208));margin-inline:auto;
   touch-action:pan-y;cursor:ew-resize;user-select:none;-webkit-user-select:none}
 .suwak-rama img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
   display:block;border-radius:0}
@@ -340,7 +340,7 @@ a{text-decoration:none}
 .suwak-etyk{z-index:2;top:18px}
 .suwak-etyk--przed{left:18px;right:auto}
 .suwak-etyk--po{left:auto;right:18px}
-.suwak figcaption{margin-top:16px;max-width:min(100%,calc(78vh * 1.17));margin-inline:auto;font-size:15px;line-height:1.55;color:var(--przyg-jasny)}
+.suwak figcaption{margin-top:16px;max-width:min(100%,calc(78vh * 1.208));margin-inline:auto;font-size:15px;line-height:1.55;color:var(--przyg-jasny)}
 @media (max-width:700px){
   .suwak-uchwyt>span{width:44px;height:44px}       /* palec potrzebuje >=44 px */
   .suwak-uchwyt{width:52px;margin-left:-26px}

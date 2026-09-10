@@ -481,10 +481,10 @@ K. 10.09.2026: **„nie ucinaj tak zdjęcia — ma być całe widoczne, tylko do
 najlepiej, jak się da"**. Kolejność jest więc odwrotna niż zwykle: najpierw liczymy,
 ile da się pokazać, dopiero potem wychodzi z tego proporcja.
 
-Po dopasowaniu homografią zdjęcie „po" pokrywa **92 %** kwadratu zdjęcia „przed”.
+Po dopasowaniu homografią zdjęcie „po" pokrywa **ok. 90 %** kwadratu zdjęcia „przed”.
 Największy prostokąt mieszczący się w OBU (policzony maską pokrycia w
 `przygotuj-media.py`, nie na oko) to praktycznie pełna szerokość i 85 % wysokości —
-stąd **1,17:1**. Odpada tylko dolny pas trawnika, w którym i tak siedzi znak wodny.
+stąd **1,21:1**. Odpada tylko dolny pas trawnika, w którym i tak siedzi znak wodny.
 
 🔴 Trzy miejsca muszą mówić to samo: `OKNO_SUWAKA` w `przygotuj-media.py`,
 `aspect-ratio` w `.suwak-rama` i atrybuty `width`/`height` w `pages.py`. Rozjazd
@@ -492,3 +492,19 @@ uruchamia `object-fit: cover`, czyli dokładnie to przycięcie, którego tu nie 
 
 Cały kadr mieści się na ekranie, bo ramka ma ograniczoną **szerokość**
 (`min(100%, 78vh × 1,17)`), a nie wysokość — `max-height` przyciąłby obrazek.
+
+
+### Na czym kotwiczymy dopasowanie (poprawka z 10.09.2026 wieczorem)
+
+Pierwsza wersja brała **wyłącznie cztery rogi otworu drzwiowego** i to był błąd:
+po wykończeniu ościeże jest o kilka centymetrów mniejsze niż surowy otwór w murze,
+więc przyklejenie ich do siebie co do piksela rozciągało zdjęcie „po" o ~2 % i wypychało
+resztę elewacji w pionie. K. zobaczył to od razu: *„mam wrażenie, że przed jest niżej niż po"*.
+
+🔴 **Kotwicą są NAROŻNIKI ELEWACJI PRZY GRUNCIE** — ich wykończenie nie rusza. Rogi otworu
+wchodzą jako wskazówka o mniejszej wadze (3 : 1), a całość liczy się **najmniejszymi
+kwadratami**, więc resztkowy błąd rozkłada się po kadrze zamiast siedzieć w jednym miejscu.
+Kontrola po zmianie (profile krawędzi poziomych, pasma po lewej i prawej stronie):
+linia opaski i górna krawędź muru rozjeżdżają się o **1–5 jednostek na 1000** zamiast 18+.
+
+⛔ Nie kotwiczyć na elementach, które zmieniło wykończenie: ościeża, parapety, obróbki.
