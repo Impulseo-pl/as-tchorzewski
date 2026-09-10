@@ -833,3 +833,56 @@ osoby") — zmieniło się tylko brzmienie. ⛔ Do akapitu **nie wraca wyliczank
 „szpachlowanie / malowanie / łazienki / sucha zabudowa" stoi na `index.html` już 3×.
 Nagłówek skrócony do jednego zdania celowo — reszta nagłówków na tej stronie też jest krótka
 („Co robimy najczęściej", „Ten sam dom. Dwa zdjęcia.").
+
+## 10.09.2026 — powiększenie zdjęć klienta (Upscayl, offline, za darmo)
+
+K.: „czy możemy jakoś zupscale'ować jakość tych zdjęć, żeby lepiej wyglądały?".
+
+**Diagnoza.** Zdjęcia wnętrz przyszły przez sociale: EXIF wycięty do zera, 1200-1440 px,
+**61-140 kB** (schody: 61 kB przy 1200 px). Elewacja, która przyszła inną drogą, ma
+3072×4096 i 1,4 MB — to jest dowód, że oryginały istnieją i leżą na telefonie klienta.
+Na Retinie duże kadry stały na gęstości **0,42-0,50**, a interpolacja rozciągała przy okazji
+artefakty kompresji; maska wyostrzająca dokładała do tego obwódki przy krawędziach.
+
+**Narzędzie: `Upscayl.app`** — jest zainstalowany na Macu K. Real-ESRGAN, liczy lokalnie,
+**bez kredytów i bez wysyłania zdjęć klienta na cudzy serwer**. CLI siedzi w bundlu:
+
+```bash
+/Applications/Upscayl.app/Contents/Resources/bin/upscayl-bin \
+  -i <plik> -o <wynik.png> -n high-fidelity-4x \
+  -m /Applications/Upscayl.app/Contents/Resources/models -f png
+```
+
+⛔ Higgsfield odpadł — konto ma **0 kredytów**, plan `free`.
+⛔ Gemini/Flow odpada do TEGO zadania — oddaje ok. 1584 px i przemalowuje kadr.
+
+**Przepis, który stosujemy:** ×4 modelem `high-fidelity-4x`, potem **redukcja do ×2**
+Lanczosem i zapis JPEG q92. Redukcja jest ważna: gubi ślady modelu, a i tak zostaje
+2× więcej materiału, niż dawał oryginał. Skrypt wsadowy: `scratchpad/upscale.sh`
+(~1 min na zdjęcie). Wynik ląduje w **`materialy/upscale/`** — `materialy/realizacje/`
+zostaje NIETKNIĘTE. Skasowanie katalogu `upscale/` cofa całą zmianę.
+
+**Spięcie z potokiem:** `przygotuj-media.py` → `zrodlo(nazwa)` bierze wersję powiększoną,
+jeśli istnieje. 🔴 `kadr` w `PLAN` zapisujemy ZAWSZE w pikselach oryginału — potok
+przeskalowuje go sam (`skala = im.width / oryginał.width`), inaczej wycinek uciekłby
+w lewy górny róg.
+
+**Co z tego weszło na stronę:**
+- `hero@2x.jpg` (2880×2600) i `otw-*@2x.jpg` w `srcset` — opis **`1x`/`2x`**, nie `w`:
+  to ten sam kadr w dwóch gęstościach, więc `sizes` jest niepotrzebne, a zwykły ekran
+  dalej pobiera lekki plik. Sprawdzone w headless przy DPR 2: `currentSrc` = `hero@2x.jpg`.
+  ⚠️ `naturalWidth` pokazuje wtedy **1440**, nie 2880 — przy opisie `x` przeglądarka podaje
+  rozmiar po korekcie gęstości. To NIE znaczy, że wzięła plik 1×; sprawdzaj `currentSrc`.
+- `z-*-duze.jpg` (2000 px) **dla powiększalnika**. Kafel w siatce stoi na ~577 px, ale po
+  kliknięciu ten sam plik szedł na pół ekranu — gęstość ~0,46. Teraz `data-zoom` wskazuje
+  plik `-duze`, ładowany dopiero po kliknięciu, więc siatka nie tyje.
+
+⚠️ **Model dorysowuje mikrodetal.** Na tynku, płycie, kamieniu i stolarce to retusz, nie
+zmyślanie — ale każdy plik był obejrzany w skali 1:1 przed wstawieniem, ze szczególną uwagą
+na kadr z ludźmi (`_klatka-agregat`, malowanie agregatem): twarze i sprzęt wyszły naturalnie,
+bez „plastiku". ⛔ Gdyby kiedyś trafiło się zdjęcie z logo, szyldem albo tekstem — tego
+modelem nie ruszać, przemalowuje litery.
+
+🔴 **To jest proteza, nie rozwiązanie.** Prawdziwe pliki są na telefonie klienta. Jedna
+wiadomość („wyślij przez WeTransfer albo Dysk, nie przez Messengera") daje więcej niż
+każdy upscaler. Pytanie 3 w `PYTANIA-DO-KLIENTA.md`.

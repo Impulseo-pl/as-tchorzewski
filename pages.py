@@ -156,7 +156,12 @@ def otwarcie(etykieta, tytul, lead, kadr=None, opis=""):
     się płaskim czarnym paskiem. `kadr=None` zostawia sam kolor (strony prawne,
     404 - tam zdjęcie robi za dużo hałasu przy błahej treści).
     """
-    tlo = (f'\n  <img class="otwarcie-tlo" data-paralaksa="150" src="img/{kadr}" alt="{opis}" '
+    # `srcset` z opisem „1x/2x", nie „w": to jest dokładnie ten sam kadr w dwóch gęstościach,
+    # a nie różne szerokości układu — przeglądarka wybiera po ekranie i nie potrzebuje `sizes`.
+    # Plik @2x powstaje z `materialy/upscale/` (patrz `przygotuj-media.py`).
+    drugi = kadr.replace(".jpg", "@2x.jpg") if kadr else ""
+    tlo = (f'\n  <img class="otwarcie-tlo" data-paralaksa="150" src="img/{kadr}" '
+           f'srcset="img/{kadr} 1x, img/{drugi} 2x" alt="{opis}" '
            f'decoding="async">' if kadr else "")
     klasa = "sekcja otwarcie ciemna" + (" otwarcie--kadr" if kadr else "")
     return f"""<section class="{klasa}" id="tresc">{tlo}
@@ -251,7 +256,12 @@ KADRY = {
 def kadr_galerii(klucz, lazy=True, i=0):
     plik, w, h, alt, podpis = KADRY[klucz]
     l = ' loading="lazy" decoding="async"' if lazy else ""
-    return (f'<figure data-zoom="img/{plik}" data-alt="{alt}" data-cap="{podpis}" tabindex="0" '
+    # 🔴 Powiększalnik dostaje OSOBNY, większy plik (`-duze.jpg`, 2000 px). W siatce kafel
+    #    stoi na ~577 px, ale po kliknięciu idzie na pół ekranu — ten sam plik co w siatce
+    #    miałby tam gęstość ~0,46. Plik `-duze` ładuje się dopiero po kliknięciu, więc
+    #    siatka nie tyje. Generuje go `przygotuj-media.py` dla każdego slotu `z-*`.
+    duzy = plik.replace(".jpg", "-duze.jpg")
+    return (f'<figure data-zoom="img/{duzy}" data-alt="{alt}" data-cap="{podpis}" tabindex="0" '
             f'style="--i:{min(i, 4)}">'
             f'<img src="img/{plik}" alt="{alt}" width="{w}" height="{h}"{l}>'
             f'<figcaption>{podpis}</figcaption></figure>')
@@ -309,7 +319,8 @@ def index(naglowek):
     return f"""{naglowek("index.html")}
 
 <header class="scena">
-  <img class="scena-tlo" data-paralaksa="220" src="img/hero.jpg" width="1440" height="1300" fetchpriority="high"
+  <img class="scena-tlo" data-paralaksa="220" src="img/hero.jpg"
+    srcset="img/hero.jpg 1x, img/hero@2x.jpg 2x" width="1440" height="1300" fetchpriority="high"
     alt="Ściana z betonu architektonicznego z czarnymi liniami - z naszych realizacji">
   <div class="wrap" id="tresc">
     <div class="rv">

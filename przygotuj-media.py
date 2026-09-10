@@ -25,6 +25,8 @@ from PIL import Image, ImageFilter, ImageOps
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 ZR = os.path.join(ROOT, "materialy", "realizacje")
+# Kopie powiększone Upscaylem (Real-ESRGAN, offline, bez kredytów) — patrz `zrodlo()`.
+UPS = os.path.join(ROOT, "materialy", "upscale")
 WID = os.path.join(ROOT, "materialy", "wideo")
 IMG = os.path.join(ROOT, "img")
 VIDEO = os.path.join(ROOT, "video")
@@ -38,13 +40,22 @@ PLAN = [
     #    na telefonie (kadr pionowy) zostałby pasek. Bierzemy GÓRĘ, bo u dołu stoją
     #    wiadra i deska.
     ("hero.jpg",              "beton-arch-ciemny-01.jpg",        1440, 1440/1300, 0.10, 82),
+    # ── wersje @2x dla kadrów pełnoekranowych. Wchodzą do `srcset`, więc plik 1× zostaje
+    #    lekki dla zwykłych ekranów, a Retina dostaje realny materiał zamiast rozciągania.
+    #    ⚠️ Mają sens dopiero od kiedy `materialy/upscale/` daje źródła 2400-2880 px —
+    #       wcześniej „2×" byłoby tym samym plikiem, tylko cięższym.
+    ("hero@2x.jpg",           "beton-arch-ciemny-01.jpg",        2880, 1440/1300, 0.10, 78),
 
     # ── otwarcia podstron: każde ma SWÓJ kadr, żeby podstrona nie zaczynała się
     #    płaskim czarnym paskiem. Pas jest niski, więc źródło tnie się do 16:7. ────
     ("otw-co-robimy.jpg",     "poddasze-belka-swiatlo-05.jpg",   1440, 16/7, 0.34, 78),
+    ("otw-co-robimy@2x.jpg",     "poddasze-belka-swiatlo-05.jpg",     2880, 16/7, 0.34, 78),
     ("otw-realizacje.jpg",    "poddasze2-okna-01.jpg",           1440, 16/7, 0.30, 78),
+    ("otw-realizacje@2x.jpg",    "poddasze2-okna-01.jpg",             2880, 16/7, 0.30, 78),
     ("otw-o-nas.jpg",         "poddasze-belki-01.jpg",           1200, 16/7, 0.34, 80),
+    ("otw-o-nas@2x.jpg",         "poddasze-belki-01.jpg",             2400, 16/7, 0.34, 78),
     ("otw-kontakt.jpg",       "schody-beton-11.jpg",             1440, 16/7, 0.22, 78),
+    ("otw-kontakt@2x.jpg",       "schody-beton-11.jpg",               2880, 16/7, 0.22, 78),
 
     # ── przed i po: u źródła kwadraty, więc kwadrat nie jest kadrowaniem ─────────
     ("przed.jpg",             "PRZED-rozbudowa.jpg",             1100, 1/1,  0.5, 80),
@@ -102,9 +113,9 @@ PLAN = [
     ("z-poddasze-03.jpg",     "poddasze-pokoj-07.jpg",           1100, None, 0.5, 78),
     ("z-poddasze-04.jpg",     "poddasze-skos-08.jpg",            1100, None, 0.5, 78),
     ("z-poddasze-05.jpg",     "poddasze-lazienka-04.jpg",        1100, None, 0.5, 78),
-    ("z-lazienka-01.jpg",     "lazienka-wanna-03.jpg",            900, None, 0.5, 80),
-    ("z-lazienka-02.jpg",     "lazienka-wanna-02.jpg",           900, None, 0.5, 80),
-    ("z-lazienka-03.jpg",     "lazienka-plytki-04.jpg",           900, None, 0.5, 80),
+    ("z-lazienka-01.jpg",     "lazienka-wanna-03.jpg",           1200, None, 0.5, 80),
+    ("z-lazienka-02.jpg",     "lazienka-wanna-02.jpg",          1200, None, 0.5, 80),
+    ("z-lazienka-03.jpg",     "lazienka-plytki-04.jpg",         1200, None, 0.5, 80),
     ("z-lazienka-04.jpg",     "lazienka-wtrakcie-podejscia-05.jpg", 1100, None, 0.5, 78),
     ("z-poddasze2-01.jpg",    "poddasze2-okna-01.jpg",           1100, None, 0.5, 78),
     ("z-poddasze2-02.jpg",    "poddasze2-wanna-wneka-05.jpg",    1100, None, 0.5, 78),
@@ -150,8 +161,15 @@ def zdjecia():
         # zostawia pełną szerokość źródła — a bywa, że interesuje nas wycinek w środku
         # (np. sama płaszczyzna ściany, bez sufitu, folii i bałaganu przy krawędziach).
         kadr = reszta[1] if len(reszta) > 1 else None
-        im = ImageOps.exif_transpose(Image.open(os.path.join(ZR, src))).convert("RGB")
+        im = ImageOps.exif_transpose(Image.open(zrodlo(src))).convert("RGB")
         if kadr:
+            # 🔴 `kadr` zapisujemy ZAWSZE w pikselach ORYGINAŁU z `materialy/realizacje/`.
+            #    Gdy `zrodlo()` poda kopię powiększoną, współrzędne trzeba przeskalować —
+            #    inaczej wycinek wyląduje w lewym górnym rogu zamiast tam, gdzie go ustawiono.
+            with Image.open(os.path.join(ZR, src)) as _oryg:
+                skala = im.width / _oryg.width
+            if skala != 1:
+                kadr = tuple(int(round(v * skala)) for v in kadr)
             im = im.crop(kadr)
         if prop:
             wys = int(round(szer / prop))
@@ -165,6 +183,44 @@ def zdjecia():
         out.save(p, "JPEG", quality=jakosc, optimize=True, progressive=True)
         print(f"  ✓ img/{slot:24s} {out.width}×{out.height}  "
               f"{os.path.getsize(p)//1024} KB  ← {src}")
+
+    # ── Wersje `-duze.jpg` dla POWIĘKSZALNIKA. ─────────────────────────────────────
+    # Kafel galerii stoi w siatce na ~577 px, ale po kliknięciu ten sam plik idzie na
+    # pół ekranu — i wtedy 1100 px to gęstość ~0,46. Powiększalnik ładuje jeden plik
+    # na żądanie (`data-zoom`, `rdzen.js` blok 5), więc większy rozmiar nie obciąża
+    # siatki. Siatka zostaje przy swoim lekkim pliku.
+    for slot, src, _szer, _prop, _pion, _jak, *_r in PLAN:
+        if not slot.startswith("z-"):
+            continue
+        im = ImageOps.exif_transpose(Image.open(zrodlo(src))).convert("RGB")
+        szer = min(2000, im.width)
+        out = im.resize((szer, int(round(szer * im.height / im.width))), Image.LANCZOS)
+        cel = slot.replace(".jpg", "-duze.jpg")
+        p = os.path.join(IMG, cel)
+        # q72, nie 76: te pliki idą TYLKO po kliknięciu i tylko jeden naraz, ale kadry
+        # elewacji (z prawdziwych 3072 px, faktura tynku) puchły przy 76 do 0,8 MB.
+        out.save(p, "JPEG", quality=72, optimize=True, progressive=True)
+        print(f"  ✓ img/{cel:24s} {out.width}×{out.height}  "
+              f"{os.path.getsize(p)//1024} KB  ← {src}")
+
+
+def zrodlo(nazwa):
+    """Ścieżka do najlepszej wersji zdjęcia: powiększona, jeśli istnieje.
+
+    🔴 Zdjęcia wnętrz przyszły od klienta przez sociale: EXIF wycięty, 1200-1440 px,
+    61-140 kB. Na Retinie stały na gęstości 0,42-0,50 — pas i hero widocznie miękły.
+    Oryginały leżą na telefonie klienta (pytanie 3), ale zanim je przyśle, kopie
+    z `materialy/upscale/` (Upscayl, model `high-fidelity-4x`, ×4 → redukcja do ×2)
+    dają realny materiał zamiast rozciągania interpolacją.
+
+    ⛔ `materialy/realizacje/` zostaje NIETKNIĘTE — to jest materiał od klienta.
+       Kasujesz `upscale/` → wszystko dalej się buduje, tylko miękcej.
+    ⚠️ Model dorysowuje mikrodetal. Na tych zdjęciach (tynk, płyta, kamień, stolarka)
+       to retusz, nie zmyślanie — ale KAŻDY plik obejrzyj, zanim wejdzie na stronę.
+       Skrypt wsadowy: `scratchpad/upscale.sh` (opisany w NOTATKI-BUDOWY.md).
+    """
+    lepsza = os.path.join(UPS, os.path.splitext(nazwa)[0] + ".jpg")
+    return lepsza if os.path.exists(lepsza) else os.path.join(ZR, nazwa)
 
 
 def logo():
