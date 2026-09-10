@@ -473,3 +473,22 @@ grep -rn "border-radius" ~/Developer/impulseo-klienci/as-tchorzewski/*.css | gre
 
 🔴 **Zmieniasz amplitudę → przeliczasz zapas w tej samej pracy.** Silnik paralaksy tylko
 przesuwa obrazek; przy za małym zapasie odsłania pustą krawędź (lekcja `2026-09-09-002`).
+
+
+## Suwak przed/po — dlaczego kadr ma proporcję 1,17:1, a nie 3:2
+
+K. 10.09.2026: **„nie ucinaj tak zdjęcia — ma być całe widoczne, tylko dopasowane
+najlepiej, jak się da"**. Kolejność jest więc odwrotna niż zwykle: najpierw liczymy,
+ile da się pokazać, dopiero potem wychodzi z tego proporcja.
+
+Po dopasowaniu homografią zdjęcie „po" pokrywa **92 %** kwadratu zdjęcia „przed”.
+Największy prostokąt mieszczący się w OBU (policzony maską pokrycia w
+`przygotuj-media.py`, nie na oko) to praktycznie pełna szerokość i 85 % wysokości —
+stąd **1,17:1**. Odpada tylko dolny pas trawnika, w którym i tak siedzi znak wodny.
+
+🔴 Trzy miejsca muszą mówić to samo: `OKNO_SUWAKA` w `przygotuj-media.py`,
+`aspect-ratio` w `.suwak-rama` i atrybuty `width`/`height` w `pages.py`. Rozjazd
+uruchamia `object-fit: cover`, czyli dokładnie to przycięcie, którego tu nie chcemy.
+
+Cały kadr mieści się na ekranie, bo ramka ma ograniczoną **szerokość**
+(`min(100%, 78vh × 1,17)`), a nie wysokość — `max-height` przyciąłby obrazek.

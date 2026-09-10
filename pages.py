@@ -427,11 +427,11 @@ def index(naglowek):
     <figure class="suwak rv">
       <div class="suwak-rama" data-suwak style="--x:50%">
       <img class="suwak-po" src="img/po.jpg" srcset="img/po.jpg 1x, img/po@2x.jpg 2x"
-        width="1600" height="1067" decoding="async"
+        width="1500" height="1282" decoding="async"
         alt="Ta sama rozbudowa po wykończeniu: biała elewacja, duże okno tarasowe, trawnik">
       <div class="suwak-przed">
         <img src="img/przed.jpg" srcset="img/przed.jpg 1x, img/przed@2x.jpg 2x"
-          width="1600" height="1067" decoding="async"
+          width="1500" height="1282" decoding="async"
           alt="Ta sama rozbudowa w stanie surowym: mury z bloczków, stemple i otwarty otwór okienny">
       </div>
       <span class="znacznik suwak-etyk suwak-etyk--przed">Przed</span>

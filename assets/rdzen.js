@@ -18,7 +18,7 @@
 (function () {
   'use strict';
   document.documentElement.classList.add('js');
-  var RDZEN_WERSJA = 12;  // 12: karuzela opinii; 11: suwak przed/po; 10: kaskada na animation (koniec opoznionego hovera); 9: rozwijane menu; 8: plakietka Google
+  var RDZEN_WERSJA = 13;  // 13: suwak nie wraca na srodek po zjechaniu kursora; 12: karuzela opinii; 11: suwak przed/po; 10: kaskada na animation (koniec opoznionego hovera); 9: rozwijane menu; 8: plakietka Google
   document.documentElement.setAttribute('data-rdzen', RDZEN_WERSJA);
 
   var q = function (s, k) { return (k || document).querySelector(s); };
@@ -642,9 +642,11 @@
     };
     suwak.addEventListener('pointerup', koniec);
     suwak.addEventListener('pointercancel', koniec);
+    /* ⛔ Kursor zjechał z kadru → styk ZOSTAJE tam, gdzie go zostawił (K. 10.09.2026:
+       „niech nie wraca na środek, jak przejadę myszką gdzieś indziej"). Powrót na
+       środek wyglądał, jakby strona cofała użytkownikowi jego własny ruch. */
     suwak.addEventListener('pointerleave', function (ev) {
-      if (ciagnie || ev.pointerType !== 'mouse') return;
-      ustaw(50, false);                       /* kursor zjechał - wracamy na środek */
+      if (ev.pointerType === 'mouse') suwak.classList.remove('suwak--zywy');
     });
 
     /* klawiatura: strzałki, Home/End */

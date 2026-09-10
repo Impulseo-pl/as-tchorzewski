@@ -269,11 +269,15 @@ def logo():
 # rogi otworu drzwiowego w skali 0-1000 (zmierzone 10.09.2026)
 ROGI_PRZED = [(300, 253), (800, 250), (800, 672), (300, 693)]
 ROGI_PO = [(377, 367), (719, 400), (719, 757), (377, 800)]
-# wspólne okno kadru, też w skali 0-1000: największy prostokąt 3:2, jaki mieści się
-# w OBU zdjęciach po dopasowaniu (poza nim „po" nie ma już pikseli)
-OKNO_SUWAKA = (84, 165.3, 938, 734.7)
-SUWAK = [("przed.jpg", 1600, 82), ("przed@2x.jpg", 2500, 76),
-         ("po.jpg", 1600, 82), ("po@2x.jpg", 2500, 76)]
+# Wspólne okno kadru, też w skali 0-1000. 🔴 K. 10.09.2026: „nie ucinaj tak zdjęcia,
+# ma być całe widoczne, tylko dopasowane najlepiej jak się da". Po dopasowaniu zdjęcie
+# „po" pokrywa 92 % kwadratu „przed", a NAJWIĘKSZY wspólny prostokąt to praktycznie
+# pełna szerokość i 85 % wysokości - policzone maską pokrycia, nie na oko. Odpada tylko
+# dolny pas trawnika (tam i tak siedzi znak wodny klienta). Proporcja wychodzi 1,17:1
+# i taka MUSI stać w `aspect-ratio` ramki w `app.css` oraz w atrybutach width/height.
+OKNO_SUWAKA = (4, 4, 994, 850)
+SUWAK = [("przed.jpg", 1500, 82), ("przed@2x.jpg", 2400, 76),
+         ("po.jpg", 1500, 82), ("po@2x.jpg", 2400, 76)]
 
 
 def _homografia(zrodlo, cel):
@@ -298,9 +302,10 @@ def suwak_przed_po():
                       _homografia(skala(ROGI_PO), skala(ROGI_PRZED)), Image.BICUBIC)
 
     box = tuple(int(round(v * N / 1000)) for v in OKNO_SUWAKA)
+    prop = (OKNO_SUWAKA[2] - OKNO_SUWAKA[0]) / (OKNO_SUWAKA[3] - OKNO_SUWAKA[1])
     for cel, szer, jakosc in SUWAK:
         zr = przed if cel.startswith("przed") else po
-        wys = int(round(szer * 2 / 3))
+        wys = int(round(szer / prop))
         out = zr.crop(box).resize((szer, wys), Image.LANCZOS)
         out = out.filter(ImageFilter.UnsharpMask(radius=1.2, percent=90, threshold=3))
         sciezka = os.path.join(IMG, cel)
