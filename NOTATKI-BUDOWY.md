@@ -637,7 +637,7 @@ bez rozmycia gdy `wysokość_ramy + 2*zapas <= wysokość_źródła`, przy `zapa
 |---|---|---|---|---|
 | hero | 1440×1300 | 924 | 125 px | **220** |
 | pas elewacji | 2400×1029 | 620 | 136 px | **170** |
-| pas betonu | 2400×1350 | 420 | 65 px | **130** |
+| pas łazienki | 2400×1350 | 420 | 65 px | **130** |
 | otwarcia podstron | 1440×630 | 492-617 | 4-46 px | **150** |
 
 ⛔ Progi są przekroczone ŚWIADOMIE — te zdjęcia i tak stoją na gęstości 0,42-0,50 potrzebnej
@@ -704,6 +704,77 @@ K.: „te teksty trzeba poprawić bo brzmią dziwnie". Wypadło „Za to wiemy, 
 brzmi złowieszczo zamiast pomocnie). Teraz mówi to samo wprost i z konkretem czasu:
 „Nie bierzemy każdej roboty. Mówimy o tym od razu." + „Usłyszysz to w pierwszej rozmowie,
 a nie po tygodniu. Zwykle mamy pod ręką numer do kogoś, kto to zrobi".
+
+## 10.09.2026 — pas na głównej: trzy podejścia i jedna nauka
+
+K. zgłaszał ten sam pas TRZY RAZY: „rozmazane i niewycentrowane" → „wstawiłeś jeszcze gorsze
+zdjęcie" → „dalej zdjęcie wygląda kiepsko — **obejrzyj je sam przed wstawieniem**".
+
+**Dlaczego dwa pierwsze podejścia spudłowały.** Oba naprawiały rzecz mierzalną (proporcję,
+potem gęstość pikseli) i ani razu nie odpowiedziały na pytanie, czy obrazek jest ŁADNY.
+Drugi kadr — sam beton `beton-arch-jasny-04` — był ostry (×1,83) i przeszedł bramkę gęstości,
+a wyglądał jak zawilgocona ściana z przepaloną smugą światła przez środek.
+
+### 🔴 Reguła, której brakowało: pas pokazuje ~52% pliku
+`.pas img[data-paralaksa]` ma wysokość `--pas-wys + 2×--zapas` = 420 + 390 = **810 px**,
+a przez pas widać tylko `--pas-wys` = **420 px**. Czyli **na stronie widać pasek o proporcji
+1440/420 = 3,43:1**, a nie kadr 16:9, który się przygotowuje.
+
+⛔ Oglądanie całego pliku 16:9 KŁAMIE. Przed wstawieniem wytnij ze źródła dokładnie ten pasek
+(pełna szerokość, wysokość `szer / 3,43`) w kilku wysokościach i obejrzyj GO:
+
+```python
+AR = 1440/420
+sh = im.width / AR
+for frac in (0.40, 0.55, 0.70):
+    y0 = int((im.height - sh) * frac)
+    im.crop((0, y0, im.width, y0+sh)).save(f'strip-{frac}.jpg')
+```
+
+### Co odpadło po obejrzeniu paska (nie po liczbach)
+| zdjęcie | pasek pokazuje |
+|---|---|
+| `beton-arch-jasny-04` | ciemną cętkowaną plamę z przepaloną smugą — wygląda jak zawilgocenie |
+| `poddasze2-sciana-zielen-02` | przepalone okno z lewej, pustą płytę w środku, podejścia wodne na zieleni |
+| `lazienka-wanna-03` | sam brzuch wanny i kosz na śmieci |
+| `schody-beton-11` | dobry pasek, ale to nagłówek podstrony „kontakt" — duplikat |
+| `poddasze-belki-03` | ładny, ciepły, ale to pusty pokój — słabszy niż wybrany |
+
+### Wybrane: `poddasze2-wanna-wneka-05` → `img/pas-lazienka.jpg`
+Wanna we wnęce pod skosem, kamień w ciepłym beżu, świetlik z zielenią drzew po prawej.
+Kadr `(0, 338, 1200, 1013)` ustawiony tak, żeby **widoczny pasek trafił w źródłowe y 500-850**
+(liczone od środka: `y0_kadru = y0_paska - (675-350)/2`). Plik 2400×1350, 201 kB.
+Powiększenie ×2,0 z 1200 px — obejrzane na żywej stronie przy DPR 2 w trzech pozycjach
+przewinięcia, trzyma się; krawędzie okna i fugi są czytelne.
+
+⚠️ W kadrze została czerwona zaślepka podejścia wodnego. Zostawiona świadomie — `pages.py`
+reguła 8 dopuszcza detale „w trakcie", a podpis mówi wprost, co widać.
+
+### Ślepe zaułki, żeby do nich nie wracać
+| droga | dlaczego odpada |
+|---|---|
+| Google Flow / Gemini | oddaje ok. **1584 px** szerokości (`hero_kolejka.py`, krok 3) |
+| powiększenie AI (Higgsfield) | konto ma **0 kredytów**, plan `free` |
+| elewacja (3072×4096) | jedyny szeroki materiał, ale to **ten sam dom** co pas niżej |
+| stock | ⛔ `DESIGN.md`: „Zero stocku" — i niepotrzebny, materiał klienta wystarczył |
+
+`przygotuj-media.py` dostał **ósme pole `PLAN`: `kadr` = `(x0, y0, x1, y1)`** — wycinek ze
+źródła przed `ImageOps.fit` (sam `fit` przesuwa kadr tylko w jednej osi).
+
+## 10.09.2026 — sekcja „Uczciwie", trzecia redakcja: „teksty całkowicie zamień"
+
+Dwie poprzednie wersje zaczynały się od „Nie bierzemy każdej roboty" i K. za każdym razem
+czytał je jako brak zmiany. Trzecia zmienia punkt widzenia z **naszego na czytelnika**:
+
+- było: „Nie bierzemy każdej roboty." + „Jeśli czegoś nie robimy, mówimy to w pierwszej
+  rozmowie. Podajemy wtedy numer do kogoś, kto się tym zajmuje."
+- jest: **„Robimy to, na czym się znamy."** + „Po pierwszej rozmowie **wiesz**, czy to coś
+  dla nas. Jeśli nie - **dostajesz** numer do kogoś, kto się tym zajmuje."
+
+Fakt bez zmian (brief, GŁOS KLIENTA: „pytają o usługi, których nie robią → poleca sprawdzone
+osoby"). ⛔ Wyliczanka usług do tego akapitu NIE wraca — stoi na `index.html` już 3×.
+⛔ Słowo „robota/robocie" też nie — jest na tej stronie 4×, dlatego „czy to **coś** dla nas",
+nie „czy to robota dla nas".
 
 ## 10.09.2026 — pas na głównej, druga poprawka: zieleń wypada, wchodzi beton
 

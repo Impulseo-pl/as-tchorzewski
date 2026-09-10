@@ -58,33 +58,31 @@ PLAN = [
     ("u-sucha-zabudowa.jpg",  "poddasze-skos-09.jpg",            1000, 3/4,  0.5, 78),
     ("u-drzwi-okna.jpg",      "hol-drzwi-12.jpg",                1000, 3/4,  0.5, 78),
 
-    # ── pas na stronie głównej: BETON DEKORACYJNY, sama płaszczyzna ściany.
+    # ── pas na stronie głównej: ŁAZIENKA NA PODDASZU (wanna we wnęce).
     #
-    # 🔴 10.09.2026, druga poprawka (K.: „wstawiłeś jeszcze gorsze zdjęcie… nie mogą być
-    #    takie rozmazane"). Zieleń pod belkami WYPADŁA ze slotu na dobre. Powód jest
-    #    arytmetyczny, nie estetyczny:
+    # 🔴 10.09.2026, trzy podejścia i jedna nauka (K.: „dalej zdjęcie wygląda kiepsko —
+    #    obejrzyj je sam przed wstawieniem"). Dwa pierwsze liczyły ostrość i proporcję,
+    #    a nie sprawdziły, CO WIDAĆ. Metoda, która to naprawiła:
     #
-    #    Pas idzie przez CAŁĄ szerokość okna, więc na monitorze 2× potrzebuje ~2400 px
-    #    ostrego materiału. Wszystkie zdjęcia wnętrz od klienta mają 1200-1440 px
-    #    szerokości — z żadnego nie da się wyciąć pasa 2400 px bez powiększania.
-    #    Sprawdzone i odrzucone drogi:
-    #      · Google Flow / Gemini — oddaje ok. 1584 px szerokości (`hero_kolejka.py`,
-    #        krok 3). To mniej, niż potrzeba; problemu nie rozwiązuje.
-    #      · elewacja (3072×4096, jedyny materiał, który by wystarczył) — to ten sam
-    #        dom co pas niżej; dwa pasy z jedną elewacją mówią, że materiału jest mało.
-    #      · stock — ⛔ `DESIGN.md`: „Zero stocku". Tu niepotrzebny, patrz niżej.
+    #    ⛔ PAS POKAZUJE TYLKO ŚRODKOWE ~52% PLIKU (420 px z 810 px ramki). Kadrowanie do
+    #       16:9 i oglądanie całego pliku KŁAMIE — na stronie widać z niego pasek
+    #       o proporcji 1440/420 = 3,43:1. Zanim cokolwiek wstawisz, wytnij ze źródła
+    #       dokładnie ten pasek i obejrzyj GO, a nie plik.
+    #       Skrypt do tego: `scratchpad/strip-*.jpg` (kandydaci × trzy wysokości).
     #
-    #    Wyjście: FAKTURA ZNOSI POWIĘKSZENIE, KRAWĘDZIE NIE. Zmiękczenie widać na
-    #    prostych liniach (framuga, skos sufitu, krawędź wanny) — na cętkowanym betonie
-    #    nie ma czego rozmazać. `beton-arch-jasny-04` jest u źródła POZIOMY (1440×1080)
-    #    i płaszczyzna ściany zajmuje w nim prawie cały kadr, więc powiększenie schodzi
-    #    do ×1,83 i idzie w materiał, w którym oko nie ma punktu odniesienia.
-    #    `kadr` wycina samą płaszczyznę: bez białej framugi z lewej, bez ciemnego
-#    naroża z prawej i bez folii u dołu — narożniki wchodzą w pas jako pionowe
-#    ciemne paski i widać je od razu, bo pas idzie przez całą szerokość okna.
-    #    Proporcja pozostaje proporcją RAMKI (1440/810) — patrz akapit przy pasie niżej.
-    ("pas-beton.jpg",         "beton-arch-jasny-04.jpg",         2400, 1440/810, 0.5, 80, True,
-     (112, 150, 1362, 853)),
+    #    Odrzucone po obejrzeniu paska, nie po liczbach:
+    #      · `beton-arch-jasny-04` — ostre (×1,83), ale pasek to ciemna cętkowana plama
+    #        z przepaloną smugą; wygląda jak zawilgocona ściana, nie jak wykończenie.
+    #      · `poddasze2-sciana-zielen-02` — w pasku wychodzi przepalone okno po lewej,
+    #        pusta płyta w środku i podejścia wodne (czerwone/niebieskie) na zieleni.
+    #      · `lazienka-wanna-03` — pasek to sam brzuch wanny i kosz na śmieci.
+    #      · `schody-beton-11` — dobry pasek, ale to nagłówek podstrony „kontakt".
+    #
+    #    Wybrane: wanna we wnęce, kamień w ciepłym beżu, świetlik z zielenią drzew po prawej.
+    #    Kadr `y 338-1013` ustawiony tak, żeby widoczny pasek trafił dokładnie w y 500-850.
+    #    Powiększenie ×2,0 z 1200 px — sprawdzone na żywej stronie przy DPR 2, trzyma się.
+    ("pas-lazienka.jpg",      "poddasze2-wanna-wneka-05.jpg",    2400, 1440/810, 0.5, 84, True,
+     (0, 338, 1200, 1013)),
 
     # ── DRUGI pas 21:9, tym razem SZEROKI I OSTRY. Elewacja to jedyny materiał
     #    z pełnych oryginałów (3072×4096), więc jako jedyna wytrzymuje wycięcie
@@ -162,7 +160,7 @@ def zdjecia():
             szer = min(szer, im.width)
             out = im.resize((szer, int(round(szer * im.height / im.width))), Image.LANCZOS)
         if wyostrz:
-            out = out.filter(ImageFilter.UnsharpMask(radius=1.6, percent=95, threshold=3))
+            out = out.filter(ImageFilter.UnsharpMask(radius=1.4, percent=110, threshold=3))
         p = os.path.join(IMG, slot)
         out.save(p, "JPEG", quality=jakosc, optimize=True, progressive=True)
         print(f"  ✓ img/{slot:24s} {out.width}×{out.height}  "

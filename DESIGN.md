@@ -353,11 +353,14 @@ przerywa natychmiast · `prefers-reduced-motion` pomija całość · gra RAZ NA 
 - Kadry pionowe stawiamy **bez kadrowania**, jako obiekt na scenie. To jest sens tego kierunku.
 - ⚠️ Elewacja jest w pełnych 3072×4096; łazienka, poddasze i schody tylko w ~1200 px — te ostatnie
   **nie nadają się na duży kadr**, dopóki klient nie przyśle oryginałów (pytanie 3).
-- 🔴 **Pas przez całą szerokość okna chce ~2400 px pliku.** Żadne zdjęcie wnętrza od klienta
-  tyle nie ma, a Google Flow oddaje ok. 1584 px — więc taki pas budujemy z **faktury, nie
-  z pomieszczenia**: powiększenie widać na prostych liniach (skos sufitu, framuga), na cętkowanym
-  betonie nie ma go gdzie zobaczyć. Wyjątek: elewacja, która ma pełne oryginały.
-  ⛔ Do pasa nie wchodzą narożniki ścian — na krawędzi ekranu robią pionowy ciemny pasek.
+- 🔴 **Pas z paralaksą pokazuje tylko ~52% pliku** — na stronie widać pasek 1440/420 = **3,43:1**,
+  nie kadr 16:9, który się przygotowuje. ⛔ Zanim wstawisz zdjęcie w pas, wytnij ze źródła
+  dokładnie ten pasek w kilku wysokościach i **obejrzyj go jak obrazek** — czy jest ŁADNY,
+  zanim policzysz mu piksele. Ostry brzydki kadr przegrywa z lekko miększym ładnym
+  (K. zgłaszał ten pas trzy razy; przepis i odrzuceni kandydaci w `NOTATKI-BUDOWY.md`).
+- Pas przez całą szerokość okna chce ~2400 px pliku; zdjęcia wnętrz od klienta mają 1200-1440 px,
+  więc idą w górę o ×2. Przy gładkich powierzchniach (tynk, płyta, niebo) to się trzyma —
+  sprawdzaj na żywej stronie przy DPR 2, nie w podglądzie pliku.
 - ⛔ Do czasu pisemnej zgody klienta (pytanie 3) **żadne zdjęcie nie idzie na produkcję**.
 - Zdjęcia mają własny znak wodny klienta — zostaje, to jego znak.
 
