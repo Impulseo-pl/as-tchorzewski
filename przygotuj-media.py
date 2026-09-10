@@ -21,7 +21,7 @@ import os
 import subprocess
 import sys
 
-from PIL import Image, ImageOps
+from PIL import Image, ImageFilter, ImageOps
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 ZR = os.path.join(ROOT, "materialy", "realizacje")
@@ -58,10 +58,26 @@ PLAN = [
     ("u-sucha-zabudowa.jpg",  "poddasze-skos-09.jpg",            1000, 3/4,  0.5, 78),
     ("u-drzwi-okna.jpg",      "hol-drzwi-12.jpg",                1000, 3/4,  0.5, 78),
 
-    # ── pas 21:9. 🔴 08.09.2026 ŹRÓDŁO ZMIENIONE: beton architektoniczny poszedł
+    # ── pas z zielenią. 🔴 08.09.2026 ŹRÓDŁO ZMIENIONE: beton architektoniczny poszedł
     #    na hero, a ten sam kadr dwa razy na jednej stronie zdradza, że materiału
     #    jest mało. Zieleń pod belkami wnosi przy okazji jedyny kolor na stronie.
-    ("pas-zielen.jpg",        "poddasze2-belki-zielen-04.jpg",   1440, 21/9, 0.26, 78),
+    #
+    # 🔴 10.09.2026 (K.: „rozmazane i niewycentrowane") — DWIE naprawy naraz:
+    #
+    #  1. PROPORCJA 16:9, NIE 21:9. Ten pas ma paralaksę, więc `.pas img[data-paralaksa]`
+    #     rozciąga obrazek na wysokość pasa + 2×`--zapas` = 420 + 390 = 810 px. Plik
+    #     w 21:9 (1440×617) musiał więc zostać ROZCIĄGNIĘTY przez `object-fit:cover`
+    #     jeszcze raz, ×1,31 — a że sam powstał z pionowego źródła 1200 px (×1,20),
+    #     łącznie oglądaliśmy powiększenie ×1,58. Stąd „rozmazane". Plik w proporcji
+    #     RAMKI (1440×810) znosi to drugie rozciągnięcie do 1,0.
+    #     ⚠️ Zmieniasz `--pas-wys` albo `--zapas` w `app.css` → przelicz tu wysokość
+    #        i popraw `width`/`height` przy tym `<img>` w `pages.py`.
+    #
+    #  2. KADR NA ŚCIANIE, NIE NA SUFICIE. Przy 0.26 pas brał belki i biały sufit,
+    #     a betonu z podpisu („beton dekoracyjny w zieleni") w ogóle nie było widać.
+    #     Paralaksa pokazuje ŚRODKOWE ~52% obrazka, więc liczy się, co siedzi w środku:
+    #     przy 0.69 to źródłowe y≈800-1150, czyli sama zielona ściana.
+    ("pas-zielen.jpg",        "poddasze2-belki-zielen-04.jpg",   1440, 1440/810, 0.69, 82, True),
 
     # ── DRUGI pas 21:9, tym razem SZEROKI I OSTRY. Elewacja to jedyny materiał
     #    z pełnych oryginałów (3072×4096), więc jako jedyna wytrzymuje wycięcie
@@ -118,7 +134,12 @@ def zdjecia():
     klatka = os.path.join(ZR, "_klatka-agregat.jpg")
     if not os.path.exists(klatka):
         klatka_z_filmu(os.path.join(WID, "malowanie-agregatem.mp4"), klatka, "00:00:06")
-    for slot, src, szer, prop, pion, jakosc in PLAN:
+    for slot, src, szer, prop, pion, jakosc, *reszta in PLAN:
+        # 7. pole (nieobowiązkowe): wyostrzenie po powiększeniu. Włączaj TYLKO tam, gdzie
+        # plik wychodzi szerszy niż źródło — LANCZOS przy powiększaniu zawsze zmiękcza,
+        # a maska wyostrzająca oddaje krawędziom kontrast, którego interpolacja nie ma
+        # skąd wziąć. ⛔ Nie włączaj przy pomniejszaniu: tam robi obwódki wokół krawędzi.
+        wyostrz = bool(reszta and reszta[0])
         im = ImageOps.exif_transpose(Image.open(os.path.join(ZR, src))).convert("RGB")
         if prop:
             wys = int(round(szer / prop))
@@ -126,6 +147,8 @@ def zdjecia():
         else:                                   # bez kadrowania — samo przeskalowanie
             szer = min(szer, im.width)
             out = im.resize((szer, int(round(szer * im.height / im.width))), Image.LANCZOS)
+        if wyostrz:
+            out = out.filter(ImageFilter.UnsharpMask(radius=1.6, percent=95, threshold=3))
         p = os.path.join(IMG, slot)
         out.save(p, "JPEG", quality=jakosc, optimize=True, progressive=True)
         print(f"  ✓ img/{slot:24s} {out.width}×{out.height}  "

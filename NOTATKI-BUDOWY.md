@@ -670,3 +670,35 @@ Sprawdzone na żywej przeglądarce (zrzuty klatka po klatce, 120/300/520/1200 ms
 głównym w scenie, na duchu WhatsApp i na przycisku z numerem w pasku. Bramki: wygląd i „reakcja
 na kursor" przechodzą; błędy w raporcie (noindex, brak zdalnego repo, cienkie `o-nas`) są sprzed
 tej zmiany — strona dalej stoi w trybie podglądu.
+
+## 10.09.2026 — pas z zielenią: rozmyty i źle wykadrowany
+
+K.: „poprawisz to zdjęcie? rozmazane i niewycentrowane". Dwie osobne przyczyny, obie policzone,
+nie oceniane na oko:
+
+1. **Rozmycie ×1,58.** `.pas img[data-paralaksa]` rozciąga obrazek na wysokość pasa + 2×`--zapas`
+   = 420 + 390 = **810 px**. Plik był robiony w 21:9 (1440×617), więc `object-fit:cover` musiał go
+   powiększyć jeszcze raz ×1,31 — a sam powstał z pionowego źródła 1200 px, czyli już był
+   powiększony ×1,20. Plik w proporcji RAMKI (1440×810) znosi to drugie powiększenie do 1,0;
+   zmierzone na żywej stronie: `naturalWidth/Height` = `1440×810`, `getBoundingClientRect` = to samo.
+   Dołożona maska wyostrzająca (siódme pole w `PLAN`, `przygotuj-media.py`) — włączać TYLKO tam,
+   gdzie plik wychodzi szerszy niż źródło.
+2. **Kadr na suficie.** Przy `pion=0.26` pas brał belki i biały sufit, a betonu z podpisu nie było
+   widać wcale. Paralaksa pokazuje ŚRODKOWE ~52% obrazka, więc liczy się środek: `0.69` trafia
+   w źródłowe y≈800–1150, czyli w samą zieloną ścianę.
+
+⚠️ Skutek uboczny: belki wypadły z kadru, więc podpis „pod starymi belkami" zaczął kłamać —
+poprawiony na „Beton dekoracyjny w zieleni - ściana na poddaszu, z naszych realizacji.",
+`alt` razem z nim.
+
+**Reguła na przyszłość:** pas z paralaksą buduj w proporcji RAMKI (`--pas-wys` + 2×`--zapas`),
+nigdy w proporcji, w jakiej pas wygląda na ekranie. Zmieniasz te zmienne w `app.css` →
+przelicz wysokość w `przygotuj-media.py` i w `width`/`height` przy `<img>` w `pages.py`.
+
+## 10.09.2026 — sekcja „Uczciwie": teksty brzmiały dziwnie
+
+K.: „te teksty trzeba poprawić bo brzmią dziwnie". Wypadło „Za to wiemy, kto ją zrobi"
+(konstrukcja jak z tłumaczenia) i „Nikt nie odchodzi od nas z niczym" (zdanie przez zaprzeczenie,
+brzmi złowieszczo zamiast pomocnie). Teraz mówi to samo wprost i z konkretem czasu:
+„Nie bierzemy każdej roboty. Mówimy o tym od razu." + „Usłyszysz to w pierwszej rozmowie,
+a nie po tygodniu. Zwykle mamy pod ręką numer do kogoś, kto to zrobi".
