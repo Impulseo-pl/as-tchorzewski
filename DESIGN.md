@@ -50,6 +50,20 @@ w jego logo i do branży budowlanej lepiej niż zaokrąglenia Apple'a.
 nie decyzja. Kontrola: `grep -n "border-radius" assets/app.css | grep -v ":0"` musi zwrócić pustkę.
 (Arkusz strony leży w `assets/`, nie w korzeniu — `*.css` w korzeniu nie sprawdza niczego.)
 
+### 🟡 JEDEN wyjątek: sekcja opinii Google (decyzja K., 10.09.2026)
+Plakietka Google (`.g-badge`, pigułka `999px`) i karty opinii (`.opinia`, `18px`) są zaokrąglone.
+Powód nie jest estetyczny, tylko rozpoznawczy: **ten klocek ma wyglądać dokładnie tak, jak
+w naszych demach** — człowiek, który widział go u konkurencji, ma go poznać w ułamku sekundy.
+Zaokrąglenie kończy się na tej sekcji.
+
+Poza nią zaokrąglony jest jeszcze **uchwyt suwaka przed/po** (`.suwak-uchwyt>span`, koło 50%).
+To nie jest płytka ani karta, tylko gałka do chwycenia — okrągła, bo tak wygląda każdy suwak,
+którego człowiek dotykał wcześniej. Ta sama logika, co przy ikonach social: kształt niesie
+znaczenie, nie ozdobę.
+
+🔴 Kontrola grepem daje więc **dokładnie trzy** trafienia: `.sekcja--opinie .g-badge`,
+`.opinia`, `.suwak-uchwyt>span`. Czwarte = błąd.
+
 ---
 
 ## Kolory
@@ -447,3 +461,15 @@ To NIE jest błąd strony. Sprawdzaj odtwarzanie w czystym Chromie (headless prz
 python3 ~/.claude/skills/bramki/sprawdz.py ~/Developer/impulseo-klienci/as-tchorzewski
 grep -rn "border-radius" ~/Developer/impulseo-klienci/as-tchorzewski/*.css | grep -v ":0"   # musi być pusto
 ```
+
+
+## Paralaksa — amplitudy po podbiciu 10.09.2026 (K.: „zwiększyłbym jeszcze bardziej")
+
+| element | amplituda `data-paralaksa` | zapas w CSS | zasada |
+|---|---|---|---|
+| `.scena-tlo` (hero) | 280 px | `inset:-420px` | zapas ≥ 1,5 × amplitudy |
+| `.otwarcie-tlo` (nagłówki podstron) | 200 px | `inset:-300px` | j.w. |
+| `.pas--duzy` (oba pasy na głównej) | 220 px | `--zapas:330px` | j.w. |
+
+🔴 **Zmieniasz amplitudę → przeliczasz zapas w tej samej pracy.** Silnik paralaksy tylko
+przesuwa obrazek; przy za małym zapasie odsłania pustą krawędź (lekcja `2026-09-09-002`).

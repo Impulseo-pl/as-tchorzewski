@@ -58,12 +58,7 @@ PLAN = [
     ("otw-kontakt@2x.jpg",       "schody-beton-11.jpg",               2880, 16/7, 0.22, 78),
 
     # ── przed i po: u źródła kwadraty, więc kwadrat nie jest kadrowaniem ─────────
-    # 🔴 SUWAK PRZED/PO (K. 10.09.2026) - jeden szeroki kadr zamiast dwóch kwadratów.
-    #    Oba pliki MUSZĄ mieć identyczne `prop` i `pion`, inaczej zdjęcia rozjadą się przy zsuwaniu.
-    ("przed.jpg",             "PRZED-rozbudowa.jpg",             1600, 3/2,  0.5, 82),
-    ("przed@2x.jpg",          "PRZED-rozbudowa.jpg",             2500, 3/2,  0.5, 76),
-    ("po.jpg",                "PO-rozbudowa.jpg",                1600, 3/2,  0.5, 82),
-    ("po@2x.jpg",             "PO-rozbudowa.jpg",                2500, 3/2,  0.5, 76),
+    # przed.jpg / po.jpg robi osobny krok `suwak_przed_po()` - patrz niżej.
 
     # ── kafle usług (kolejność z briefu: szpachlowanie, malowanie, łazienki,
     #    sucha zabudowa; drzwi i okna niżej) ──────────────────────────────────────
@@ -252,6 +247,68 @@ def logo():
         print(f"  ✓ img/{cel:24s} {szer}×{wys}  {os.path.getsize(p)//1024} KB  ← logo STARE")
 
 
+# ══════════════════════════════════════════════════════════════════════════════
+#  SUWAK PRZED/PO — dopasowanie kadrów homografią
+#  ──────────────────────────────────────────────────────────────────────────────
+#  K. 10.09.2026: „zdjęcia muszą być dopasowane PERFEKCYJNIE, tak żeby przy
+#  przesuwaniu użytkownik miał wrażenie, że to dosłownie IDENTYCZNY kadr".
+#
+#  Obie fotki są z ręki, z innego miejsca i pod innym kątem, więc samo przycięcie
+#  i przesunięcie NIE WYSTARCZY - pokrywa się wtedy albo dół, albo góra, nigdy oba.
+#  Rozwiązanie: elewacja z otworem drzwiowym leży w JEDNEJ PŁASZCZYŹNIE, więc
+#  wystarczy homografia z czterech rogów tego otworu, żeby ustawić zdjęcie „po"
+#  dokładnie w układzie zdjęcia „przed". Płaszczyzna elewacji (mur, parapet, linia
+#  opaski) pokrywa się wtedy co do piksela; rzeczy poza nią (żywopłot, boczna
+#  ściana) lekko się przesuwają - to niewidoczne, bo i tak ich nie ma na „przed".
+#
+#  ⛔ Rogi są mierzone RĘCZNIE na zdjęciach z siatką współrzędnych (skala 0-1000
+#     niezależna od rozdzielczości pliku). Zmieniasz zdjęcie w parze → mierzysz od
+#     nowa, inaczej suwak rozjedzie się bardziej niż przed poprawką.
+#  ⛔ Kolejność rogów: lewy górny, prawy górny, prawy dolny, lewy dolny.
+# ══════════════════════════════════════════════════════════════════════════════
+# rogi otworu drzwiowego w skali 0-1000 (zmierzone 10.09.2026)
+ROGI_PRZED = [(300, 253), (800, 250), (800, 672), (300, 693)]
+ROGI_PO = [(377, 367), (719, 400), (719, 757), (377, 800)]
+# wspólne okno kadru, też w skali 0-1000: największy prostokąt 3:2, jaki mieści się
+# w OBU zdjęciach po dopasowaniu (poza nim „po" nie ma już pikseli)
+OKNO_SUWAKA = (84, 165.3, 938, 734.7)
+SUWAK = [("przed.jpg", 1600, 82), ("przed@2x.jpg", 2500, 76),
+         ("po.jpg", 1600, 82), ("po@2x.jpg", 2500, 76)]
+
+
+def _homografia(zrodlo, cel):
+    """Współczynniki dla PIL: piksel WYJŚCIOWY → piksel WEJŚCIOWY."""
+    import numpy as np
+    A, B = [], []
+    for (xc, yc), (xz, yz) in zip(cel, zrodlo):
+        A.append([xc, yc, 1, 0, 0, 0, -xz * xc, -xz * yc]); B.append(xz)
+        A.append([0, 0, 0, xc, yc, 1, -yz * xc, -yz * yc]); B.append(yz)
+    return np.linalg.solve(np.array(A, float), np.array(B, float))
+
+
+def suwak_przed_po():
+    N = 2500                                   # przestrzeń robocza dopasowania
+    skala = lambda pkt: [(x * N / 1000, y * N / 1000) for x, y in pkt]
+
+    przed = ImageOps.exif_transpose(Image.open(zrodlo("PRZED-rozbudowa.jpg")))
+    przed = przed.convert("RGB").resize((N, N), Image.LANCZOS)
+    po = ImageOps.exif_transpose(Image.open(zrodlo("PO-rozbudowa.jpg")))
+    po = po.convert("RGB").resize((N, N), Image.LANCZOS)
+    po = po.transform((N, N), Image.PERSPECTIVE,
+                      _homografia(skala(ROGI_PO), skala(ROGI_PRZED)), Image.BICUBIC)
+
+    box = tuple(int(round(v * N / 1000)) for v in OKNO_SUWAKA)
+    for cel, szer, jakosc in SUWAK:
+        zr = przed if cel.startswith("przed") else po
+        wys = int(round(szer * 2 / 3))
+        out = zr.crop(box).resize((szer, wys), Image.LANCZOS)
+        out = out.filter(ImageFilter.UnsharpMask(radius=1.2, percent=90, threshold=3))
+        sciezka = os.path.join(IMG, cel)
+        out.save(sciezka, "JPEG", quality=jakosc, optimize=True, progressive=True)
+        print(f"  ✓ img/{cel:24s} {szer}×{wys}  {os.path.getsize(sciezka)//1024} KB  "
+              f"← dopasowane homografią")
+
+
 def filmy():
     os.makedirs(VIDEO, exist_ok=True)
     for cel, src, plakat, czas in FILMY:
@@ -269,6 +326,7 @@ def filmy():
 if __name__ == "__main__":
     co = sys.argv[1] if len(sys.argv) > 1 else "wszystko"
     zdjecia()
+    suwak_przed_po()
     logo()
     if co != "zdjecia":
         filmy()

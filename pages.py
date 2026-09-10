@@ -160,7 +160,7 @@ def otwarcie(etykieta, tytul, lead, kadr=None, opis=""):
     # a nie różne szerokości układu — przeglądarka wybiera po ekranie i nie potrzebuje `sizes`.
     # Plik @2x powstaje z `materialy/upscale/` (patrz `przygotuj-media.py`).
     drugi = kadr.replace(".jpg", "@2x.jpg") if kadr else ""
-    tlo = (f'\n  <img class="otwarcie-tlo" data-paralaksa="150" src="img/{kadr}" '
+    tlo = (f'\n  <img class="otwarcie-tlo" data-paralaksa="200" src="img/{kadr}" '
            f'srcset="img/{kadr} 1x, img/{drugi} 2x" alt="{opis}" '
            f'decoding="async">' if kadr else "")
     klasa = "sekcja otwarcie ciemna" + (" otwarcie--kadr" if kadr else "")
@@ -385,10 +385,8 @@ def sekcja_opinie():
     return f"""<section class="sekcja sekcja--opinie">
   <div class="wrap">
     <div class="naglowek-opinie rv">
-      <div>
-        <span class="etykieta">Opinie</span>
-        <h2>Co mówią ci, u których byliśmy</h2>
-      </div>
+      <span class="etykieta">Opinie</span>
+      <h2>Co mówią ci, u których byliśmy</h2>
       {plakietka_google()}
     </div>
   </div>
@@ -404,7 +402,7 @@ def index(naglowek):
     return f"""{naglowek("index.html")}
 
 <header class="scena">
-  <img class="scena-tlo" data-paralaksa="220" src="img/hero.jpg"
+  <img class="scena-tlo" data-paralaksa="280" src="img/hero.jpg"
     srcset="img/hero.jpg 1x, img/hero@2x.jpg 2x" width="1440" height="1300" fetchpriority="high"
     alt="Ściana z betonu architektonicznego z czarnymi liniami - z naszych realizacji">
   <div class="wrap" id="tresc">
@@ -490,7 +488,7 @@ def index(naglowek):
 </section>
 
 <figure class="pas pas--duzy">
-  <img data-paralaksa="170" src="img/pas-elewacja.jpg" width="2400" height="1029" loading="lazy" decoding="async"
+  <img data-paralaksa="220" src="img/pas-elewacja.jpg" width="2400" height="1029" loading="lazy" decoding="async"
     alt="Skończona elewacja domu z wejściem od strony tarasu, biały tynk i ciemne obróbki">
   <figcaption>Elewacja z podbitką - po naszej robocie.</figcaption>
 </figure>
@@ -516,7 +514,7 @@ def index(naglowek):
 </section>
 
 <figure class="pas pas--duzy">
-  <img data-paralaksa="130" src="img/pas-lazienka.jpg" width="2400" height="1350" loading="lazy" decoding="async"
+  <img data-paralaksa="220" src="img/pas-lazienka.jpg" width="2400" height="1350" loading="lazy" decoding="async"
     alt="Wanna obudowana płytami w ciepłym beżu, we wnęce pod skosem poddasza, obok okno dachowe">
   <figcaption>Łazienka na poddaszu - wanna we wnęce pod skosem, z naszych realizacji.</figcaption>
 </figure>
@@ -817,7 +815,7 @@ def kontakt(naglowek):
   </div>
 </section>
 
-<section class="sekcja">
+<section class="sekcja sekcja--mapa">
   <div class="wrap">
     <div class="naglowek-sekcji rv">
       <span class="etykieta">Gdzie nas znaleźć</span>

@@ -216,7 +216,7 @@ a{text-decoration:none}
       spełniona z definicji - scena MA wysokość ekranu, nic z niej nie wystaje. */
 .scena{position:relative;overflow:hidden;min-height:calc(100dvh - var(--gora,96px));
   display:grid;align-items:center;padding:72px 0;background:var(--noc);color:var(--biel)}
-.scena-tlo{position:absolute;inset:-330px 0;width:100%;height:calc(100% + 660px);object-fit:cover;
+.scena-tlo{position:absolute;inset:-420px 0;width:100%;height:calc(100% + 840px);object-fit:cover;
   object-position:center 34%}
 /* ⚠️ Świadome złamanie zakazu gradientów (`DESIGN.md`, odstępstwo 6): bez przyciemnienia
    biały nagłówek nie utrzyma kontrastu na zdjęciu. Ciemniej po LEWEJ, gdzie stoi tekst,
@@ -256,7 +256,7 @@ a{text-decoration:none}
 .otwarcie{padding:clamp(3.5rem,7vw,6rem) 0 clamp(3.5rem,6vw,5rem)}
 /* Otwarcie z własnym kadrem — ta sama mechanika, co na scenie, tylko niżej i płycej. */
 .otwarcie--kadr{position:relative;overflow:hidden}
-.otwarcie-tlo{position:absolute;inset:-225px 0;width:100%;height:calc(100% + 450px);object-fit:cover;
+.otwarcie-tlo{position:absolute;inset:-300px 0;width:100%;height:calc(100% + 600px);object-fit:cover;
   object-position:center 42%}
 /* 🔴 Wartości podniesione po pomiarze bramki 08.09.2026: przy .78 na 38 % lead
    „Wszystkie z naszych budów…" leżał na niebie w oknach dachowych i dawał 4,20:1
@@ -301,20 +301,27 @@ a{text-decoration:none}
    `pion` w przygotuj-media.py) - inaczej przy zsuwaniu obraz skacze. */
 .suwak{margin:0}
 /* ⛔ Ramka MUSI być osobnym elementem: `overflow:hidden` na <figure> ucinało podpis. */
-.suwak-rama{position:relative;overflow:hidden;line-height:0;
+/* 🔴 K. 10.09.2026: „żeby to zdjęcie mieściło się w CAŁOŚCI na ekranie bez względu
+   na rozmiar ekranu". Dlatego ograniczamy SZEROKOŚĆ ramki wysokością okna
+   (3:2 → 72vh × 1,5), a nie wysokość - przy `max-height` obrazek by się przycinał,
+   czyli zniknęłaby część kadru, o którą chodzi. */
+.suwak-rama{position:relative;overflow:hidden;line-height:0;aspect-ratio:3/2;
+  width:min(100%,calc(72vh * 1.5));margin-inline:auto;
   touch-action:pan-y;cursor:ew-resize;user-select:none;-webkit-user-select:none}
-.suwak-rama img{width:100%;height:auto;display:block;border-radius:0;
-  box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.suwak-rama img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  display:block;border-radius:0}
 .suwak-przed{position:absolute;inset:0;
   clip-path:inset(0 calc(100% - var(--x)) 0 0);
   transition:clip-path .5s var(--ease)}
-.suwak-przed img{height:100%;object-fit:cover}
+
 .suwak-uchwyt{position:absolute;top:0;bottom:0;left:var(--x);width:44px;margin-left:-22px;
   padding:0;border:0;background:transparent;cursor:ew-resize;z-index:3;
   transition:left .5s var(--ease)}
 .suwak-uchwyt::before{content:"";position:absolute;top:0;bottom:0;left:21px;width:2px;
   background:rgba(255,255,255,.92);box-shadow:0 0 0 1px rgba(15,15,18,.18)}
 .suwak-uchwyt>span{position:absolute;top:50%;left:50%;width:52px;height:52px;
+  /* ⚠️ Jedno z trzech zaokrągleń dopuszczonych w DESIGN.md: gałka suwaka. Okrągła,
+     bo tak wygląda każdy suwak, którego użytkownik dotykał wcześniej. */
   transform:translate(-50%,-50%);border-radius:50%;background:rgba(255,255,255,.94);
   box-shadow:0 6px 20px rgba(15,15,18,.28);
   transition:transform .25s var(--ease),background-color .25s var(--ease)}
@@ -331,12 +338,16 @@ a{text-decoration:none}
 .suwak-etyk{z-index:2;top:18px}
 .suwak-etyk--przed{left:18px;right:auto}
 .suwak-etyk--po{left:auto;right:18px}
-.suwak figcaption{margin-top:16px;font-size:15px;line-height:1.55;color:var(--przyg-jasny)}
+.suwak figcaption{margin-top:16px;max-width:min(100%,calc(72vh * 1.5));margin-inline:auto;font-size:15px;line-height:1.55;color:var(--przyg-jasny)}
 @media (max-width:700px){
-  .suwak-uchwyt>span{width:44px;height:44px}
-  .suwak-etyk{top:12px}
-  .suwak-etyk--przed{left:12px}
-  .suwak-etyk--po{right:12px}
+  .suwak-uchwyt>span{width:44px;height:44px}       /* palec potrzebuje >=44 px */
+  .suwak-uchwyt{width:52px;margin-left:-26px}
+  .suwak-uchwyt::before{left:25px}
+  /* etykiety na telefonie mniejsze - przy kadrze 390 px pełnowymiarowe zjadały pół zdjęcia */
+  .suwak-etyk{top:10px;font-size:10px;padding:6px 9px;letter-spacing:.12em}
+  .suwak-etyk--przed{left:10px}
+  .suwak-etyk--po{right:10px}
+  .suwak figcaption{font-size:14px}
 }
 @media (prefers-reduced-motion:reduce){
   .suwak-przed,.suwak-uchwyt{transition:none}
@@ -348,9 +359,13 @@ a{text-decoration:none}
    sześć to za mało, żeby liczba pomagała (standard ze skilla `strona-docelowa`). */
 .sekcja--opinie{overflow:hidden}
 .sekcja--opinie .g-badge{--gb-tlo:var(--papier-2);--gb-obwodka:var(--linia-slaba)}
-.naglowek-opinie{display:flex;align-items:flex-end;justify-content:space-between;
-  gap:24px;flex-wrap:wrap;margin-bottom:38px}
-.naglowek-opinie h2{margin:0}
+/* ⚠️ Jedyne miejsce na stronie z zaokrągleniami - `DESIGN.md` każe wszędzie
+   `border-radius: 0`. Decyzja K. z 10.09.2026: plakietka Google i karty opinii mają
+   wyglądać jak w silniku dem, bo tam ten klocek jest rozpoznawalny. Plakietka stoi
+   POD nagłówkiem, nie obok - też jego decyzja. */
+.naglowek-opinie{margin-bottom:38px}
+.naglowek-opinie h2{margin:0 0 18px}
+.sekcja--opinie .g-badge{border-radius:999px;padding:.55em 1.05em}
 
 /* Taśma jedzie sama i nigdy się nie zatrzymuje na dobre - pauza tylko pod kursorem,
    żeby dało się skończyć czytanie. Długość jednego przebiegu (`--tasma`) i czas
@@ -368,7 +383,7 @@ a{text-decoration:none}
 .karuzela--stoi{overflow-x:auto;-webkit-overflow-scrolling:touch}
 
 .opinia{flex:0 0 clamp(280px,32vw,420px);margin:0;background:var(--papier-2);
-  border:1px solid var(--linia-slaba);padding:30px 30px 26px;
+  border:1px solid var(--linia-slaba);border-radius:18px;padding:30px 30px 26px;
   display:flex;flex-direction:column;gap:16px;line-height:1.6}
 .opinia-gw{flex:none;fill:var(--gb-gwiazdka,#F5A623)}
 .opinia blockquote{margin:0;font-size:1.02rem;color:var(--tekst)}
@@ -541,7 +556,7 @@ html:not(.js) .lata--ruch>li b,html:not(.js) .lata--ruch>li p{
 /* ⚠️ Wyższy pas TYLKO dla kadru z pełnego oryginału (2400 px). Pas z betonu ma
    źródło 1440 px i przy tej wysokości by zmiękł - dlatego to osobna klasa, a nie
    podniesienie wartości dla wszystkich. */
-.pas--duzy{--pas-wys:clamp(320px,46vw,620px);--zapas:255px}
+.pas--duzy{--pas-wys:clamp(320px,46vw,620px);--zapas:330px}
 .pas img[data-paralaksa]{position:absolute;inset:calc(-1 * var(--zapas)) 0;width:100%;
   height:calc(100% + 2 * var(--zapas))}
 /* 🔴 Gradient policzony pod CIEMNE zdjęcia nie wystarcza pod jasne. Pas z elewacji
@@ -644,6 +659,11 @@ html:not(.js) .lata--ruch>li b,html:not(.js) .lata--ruch>li p{
 .pk-btn:hover{background:var(--akcent-btn-hover)}
 [data-po-kliknieciu]+iframe,iframe{width:100%;min-height:320px;border:0}
 .mapa{min-height:440px;display:block}
+/* 🔴 K. 10.09.2026: „zmniejsz puste przestrzenie pod i nad mapką". Mapa to blok
+   informacyjny, nie osobny rozdział - pełny rytm sekcji robił wokół niej dziurę
+   na pół ekranu. ⛔ Nie zmieniać globalnego `--rytm`, bo rozjedzie się cała strona. */
+.sekcja--mapa{padding-block:calc(var(--rytm) * .42)}
+.sekcja--mapa .naglowek-sekcji{margin-bottom:32px}
 @media (max-width:700px){.mapa{min-height:320px}}
 
 /* ── STOPKA ─────────────────────────────────────────────────────────────────── */
