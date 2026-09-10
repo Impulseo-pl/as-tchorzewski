@@ -637,14 +637,16 @@ bez rozmycia gdy `wysokość_ramy + 2*zapas <= wysokość_źródła`, przy `zapa
 |---|---|---|---|---|
 | hero | 1440×1300 | 924 | 125 px | **220** |
 | pas elewacji | 2400×1029 | 620 | 136 px | **170** |
-| pas zieleni | 1440×617 | 420 | 65 px | **130** |
+| pas betonu | 2400×1350 | 420 | 65 px | **130** |
 | otwarcia podstron | 1440×630 | 492-617 | 4-46 px | **150** |
 
 ⛔ Progi są przekroczone ŚWIADOMIE — te zdjęcia i tak stoją na gęstości 0,42-0,50 potrzebnej
 na Retinie (bramka: „za mały materiał od klienta"), więc dodatkowe powiększenie kosztuje mniej,
-niż wygląda w tabeli. Pas zieleni dostał najmniej, bo ma najsłabsze źródło i zmiękłby jako
+niż wygląda w tabeli. Pas na głównej dostał najmniej, bo miał najsłabsze źródło i zmiękłby jako
 pierwszy — **to jest powód, dla którego zapas jest zmienną `--zapas` per pas, a nie liczbą
 w jednej regule.** Zmieniasz siłę → zmień zapas w tej samej linijce.
+⚠️ 10.09.2026 ten pas ma już plik 2400×1350 (patrz niżej), więc jako jedyny NIE stoi
+poniżej progu — kolumna „ustawione" została, bo zapas 130 dobrze wygląda przy tej wysokości.
 
 ## 10.09.2026 — podświetlenie przycisków jak w demie
 
@@ -702,3 +704,61 @@ K.: „te teksty trzeba poprawić bo brzmią dziwnie". Wypadło „Za to wiemy, 
 brzmi złowieszczo zamiast pomocnie). Teraz mówi to samo wprost i z konkretem czasu:
 „Nie bierzemy każdej roboty. Mówimy o tym od razu." + „Usłyszysz to w pierwszej rozmowie,
 a nie po tygodniu. Zwykle mamy pod ręką numer do kogoś, kto to zrobi".
+
+## 10.09.2026 — pas na głównej, druga poprawka: zieleń wypada, wchodzi beton
+
+K.: „wstawiłeś jeszcze gorsze zdjęcie — jeśli nie mają takich szerokich, to trzeba to poszerzyć
+w Google Flow albo wziąć coś obiektywnego ze stocka, bo nie mogą być takie rozmazane".
+
+**Pierwsza poprawka (wyżej) naprawiła proporcję, ale nie szerokość** — i to szerokość była
+prawdziwym problemem. Pas idzie przez CAŁE okno, więc na Retinie chce ~2880 px. Plik miał
+1440 px, czyli gęstość 0,5. Sąsiedni pas elewacji ma 2400 px i stoi dwa ekrany dalej na tej
+samej stronie — porównanie robi się samo.
+
+**Czego nie da się z tym zrobić** (sprawdzone, żeby nie wracać):
+
+| droga | dlaczego odpada |
+|---|---|
+| Google Flow / Gemini | oddaje ok. **1584 px** szerokości (`hero_kolejka.py`, krok 3) — mniej, niż potrzeba |
+| powiększenie AI (Higgsfield `upscale_image`) | konto ma **0 kredytów**, plan `free` |
+| inne zdjęcie wnętrza od klienta | wszystkie mają 1200-1440 px szerokości, żadne nie da pasa 2400 px |
+| elewacja (3072×4096) | jedyny materiał, który by wystarczył, ale to **ten sam dom** co pas niżej |
+| stock | ⛔ `DESIGN.md`: „Zero stocku" — i niepotrzebny, patrz niżej |
+
+**Co zadziałało: faktura znosi powiększenie, krawędzie nie.** Zmiękczenie widać na prostych
+liniach (skos sufitu, framuga, krawędź wanny) — na cętkowanym betonie oko nie ma punktu
+odniesienia. `beton-arch-jasny-04.jpg` jest u źródła **poziomy (1440×1080)** i płaszczyzna
+ściany zajmuje prawie cały kadr, więc:
+- powiększenie schodzi z ×2,4 (gdyby z pionowego 1200 px) do **×1,83**,
+- idzie w materiał, w którym go nie widać,
+- kadr `(112, 150, 1362, 853)` bierze samą płaszczyznę — **bez narożników**. To nie ozdobnik:
+  narożnik ściany wchodzi w pas jako pionowy ciemny pasek na krawędzi ekranu i widać go od razu.
+- proporcja dalej jest proporcją RAMKI (1440/810), zgodnie z regułą z poprzedniej sekcji.
+
+`przygotuj-media.py` dostał **ósme pole w `PLAN`: `kadr` = `(x0, y0, x1, y1)`** — wycinek ze
+źródła przed `ImageOps.fit`. Potrzebny, bo `fit` przesuwa kadr tylko w jednej osi i zawsze
+zostawia pełną szerokość źródła.
+
+Plik: `img/pas-zielen.jpg` → **`img/pas-beton.jpg`**, 2400×1350, 294 kB. Podpis:
+„Beton dekoracyjny - ściana z naszych realizacji.", `alt` razem z nim.
+⚠️ Strona traci przy tym jedyny kolorowy akcent na zdjęciach (zieleń) — świadomie: ostry beton
+bije rozmytą zieleń, a akcent kolorystyczny i tak niesie miedź w etykietach.
+Zmierzone na żywej stronie: `naturalWidth/Height` = 2400×1350, ramka 1440×810, DPR 2.
+
+## 10.09.2026 — sekcja „Uczciwie", druga redakcja
+
+K.: „nie widzę, żebyś zmienił te teksty poniżej". Zmiana z pierwszej redakcji **była** wdrożona
+(widać ją na jego zrzucie), ale zaczynała się tym samym zdaniem co poprzednia wersja, więc
+przeszła niezauważona — i słusznie, bo dalej brzmiała jak tłumaczenie:
+- „Mówimy o tym od razu" — „o tym", czyli o czym?
+- „Usłyszysz to w pierwszej rozmowie, a **nie po tygodniu**" — ton tłumaczenia się.
+- „spotykamy się z tymi ludźmi na budowach" — dopowiedzenie, o które nikt nie pytał.
+
+Teraz: **„Nie bierzemy każdej roboty."** + „Jeśli czegoś nie robimy, mówimy to w pierwszej
+rozmowie. Podajemy wtedy numer do kogoś, kto się tym zajmuje."
+
+Fakt jest z briefu (GŁOS KLIENTA: „pytają o usługi, których nie robią → poleca sprawdzone
+osoby") — zmieniło się tylko brzmienie. ⛔ Do akapitu **nie wraca wyliczanka usług**:
+„szpachlowanie / malowanie / łazienki / sucha zabudowa" stoi na `index.html` już 3×.
+Nagłówek skrócony do jednego zdania celowo — reszta nagłówków na tej stronie też jest krótka
+(„Co robimy najczęściej", „Ten sam dom. Dwa zdjęcia.").

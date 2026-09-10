@@ -58,26 +58,33 @@ PLAN = [
     ("u-sucha-zabudowa.jpg",  "poddasze-skos-09.jpg",            1000, 3/4,  0.5, 78),
     ("u-drzwi-okna.jpg",      "hol-drzwi-12.jpg",                1000, 3/4,  0.5, 78),
 
-    # ── pas z zielenią. 🔴 08.09.2026 ŹRÓDŁO ZMIENIONE: beton architektoniczny poszedł
-    #    na hero, a ten sam kadr dwa razy na jednej stronie zdradza, że materiału
-    #    jest mało. Zieleń pod belkami wnosi przy okazji jedyny kolor na stronie.
+    # ── pas na stronie głównej: BETON DEKORACYJNY, sama płaszczyzna ściany.
     #
-    # 🔴 10.09.2026 (K.: „rozmazane i niewycentrowane") — DWIE naprawy naraz:
+    # 🔴 10.09.2026, druga poprawka (K.: „wstawiłeś jeszcze gorsze zdjęcie… nie mogą być
+    #    takie rozmazane"). Zieleń pod belkami WYPADŁA ze slotu na dobre. Powód jest
+    #    arytmetyczny, nie estetyczny:
     #
-    #  1. PROPORCJA 16:9, NIE 21:9. Ten pas ma paralaksę, więc `.pas img[data-paralaksa]`
-    #     rozciąga obrazek na wysokość pasa + 2×`--zapas` = 420 + 390 = 810 px. Plik
-    #     w 21:9 (1440×617) musiał więc zostać ROZCIĄGNIĘTY przez `object-fit:cover`
-    #     jeszcze raz, ×1,31 — a że sam powstał z pionowego źródła 1200 px (×1,20),
-    #     łącznie oglądaliśmy powiększenie ×1,58. Stąd „rozmazane". Plik w proporcji
-    #     RAMKI (1440×810) znosi to drugie rozciągnięcie do 1,0.
-    #     ⚠️ Zmieniasz `--pas-wys` albo `--zapas` w `app.css` → przelicz tu wysokość
-    #        i popraw `width`/`height` przy tym `<img>` w `pages.py`.
+    #    Pas idzie przez CAŁĄ szerokość okna, więc na monitorze 2× potrzebuje ~2400 px
+    #    ostrego materiału. Wszystkie zdjęcia wnętrz od klienta mają 1200-1440 px
+    #    szerokości — z żadnego nie da się wyciąć pasa 2400 px bez powiększania.
+    #    Sprawdzone i odrzucone drogi:
+    #      · Google Flow / Gemini — oddaje ok. 1584 px szerokości (`hero_kolejka.py`,
+    #        krok 3). To mniej, niż potrzeba; problemu nie rozwiązuje.
+    #      · elewacja (3072×4096, jedyny materiał, który by wystarczył) — to ten sam
+    #        dom co pas niżej; dwa pasy z jedną elewacją mówią, że materiału jest mało.
+    #      · stock — ⛔ `DESIGN.md`: „Zero stocku". Tu niepotrzebny, patrz niżej.
     #
-    #  2. KADR NA ŚCIANIE, NIE NA SUFICIE. Przy 0.26 pas brał belki i biały sufit,
-    #     a betonu z podpisu („beton dekoracyjny w zieleni") w ogóle nie było widać.
-    #     Paralaksa pokazuje ŚRODKOWE ~52% obrazka, więc liczy się, co siedzi w środku:
-    #     przy 0.69 to źródłowe y≈800-1150, czyli sama zielona ściana.
-    ("pas-zielen.jpg",        "poddasze2-belki-zielen-04.jpg",   1440, 1440/810, 0.69, 82, True),
+    #    Wyjście: FAKTURA ZNOSI POWIĘKSZENIE, KRAWĘDZIE NIE. Zmiękczenie widać na
+    #    prostych liniach (framuga, skos sufitu, krawędź wanny) — na cętkowanym betonie
+    #    nie ma czego rozmazać. `beton-arch-jasny-04` jest u źródła POZIOMY (1440×1080)
+    #    i płaszczyzna ściany zajmuje w nim prawie cały kadr, więc powiększenie schodzi
+    #    do ×1,83 i idzie w materiał, w którym oko nie ma punktu odniesienia.
+    #    `kadr` wycina samą płaszczyznę: bez białej framugi z lewej, bez ciemnego
+#    naroża z prawej i bez folii u dołu — narożniki wchodzą w pas jako pionowe
+#    ciemne paski i widać je od razu, bo pas idzie przez całą szerokość okna.
+    #    Proporcja pozostaje proporcją RAMKI (1440/810) — patrz akapit przy pasie niżej.
+    ("pas-beton.jpg",         "beton-arch-jasny-04.jpg",         2400, 1440/810, 0.5, 80, True,
+     (112, 150, 1362, 853)),
 
     # ── DRUGI pas 21:9, tym razem SZEROKI I OSTRY. Elewacja to jedyny materiał
     #    z pełnych oryginałów (3072×4096), więc jako jedyna wytrzymuje wycięcie
@@ -140,7 +147,14 @@ def zdjecia():
         # a maska wyostrzająca oddaje krawędziom kontrast, którego interpolacja nie ma
         # skąd wziąć. ⛔ Nie włączaj przy pomniejszaniu: tam robi obwódki wokół krawędzi.
         wyostrz = bool(reszta and reszta[0])
+        # 8. pole (nieobowiązkowe): KADR ZE ŹRÓDŁA `(x0, y0, x1, y1)` wycinany PRZED
+        # dopasowaniem. `ImageOps.fit` umie przesuwać kadr tylko w jednej osi i zawsze
+        # zostawia pełną szerokość źródła — a bywa, że interesuje nas wycinek w środku
+        # (np. sama płaszczyzna ściany, bez sufitu, folii i bałaganu przy krawędziach).
+        kadr = reszta[1] if len(reszta) > 1 else None
         im = ImageOps.exif_transpose(Image.open(os.path.join(ZR, src))).convert("RGB")
+        if kadr:
+            im = im.crop(kadr)
         if prop:
             wys = int(round(szer / prop))
             out = ImageOps.fit(im, (szer, wys), method=Image.LANCZOS, centering=(0.5, pion))

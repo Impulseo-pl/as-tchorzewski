@@ -415,9 +415,9 @@ def index(naglowek):
 </section>
 
 <figure class="pas">
-  <img data-paralaksa="130" src="img/pas-zielen.jpg" width="1440" height="810" loading="lazy" decoding="async"
-    alt="Ściana wykończona betonem dekoracyjnym w odcieniu zieleni, obok obudowana wanna na poddaszu">
-  <figcaption>Beton dekoracyjny w zieleni - ściana na poddaszu, z naszych realizacji.</figcaption>
+  <img data-paralaksa="130" src="img/pas-beton.jpg" width="2400" height="1350" loading="lazy" decoding="async"
+    alt="Ściana z betonu dekoracyjnego - szara powierzchnia z ciemniejszymi przetarciami">
+  <figcaption>Beton dekoracyjny - ściana z naszych realizacji.</figcaption>
 </figure>
 
 <section class="sekcja">
@@ -425,12 +425,11 @@ def index(naglowek):
     <div class="dwie-kolumny rv">
       <div>
         <span class="etykieta">Uczciwie</span>
-        <h2>Nie bierzemy każdej roboty. Mówimy o tym od razu.</h2>
+        <h2>Nie bierzemy każdej roboty.</h2>
       </div>
       <div class="tekst-dlugi">
-        <p>Pytasz o coś, czego nie robimy? Usłyszysz to w pierwszej rozmowie, a nie po tygodniu.
-          Zwykle mamy pod ręką numer do kogoś, kto to zrobi - spotykamy się z tymi ludźmi
-          na budowach.</p>
+        <p>Jeśli czegoś nie robimy, mówimy to w pierwszej rozmowie. Podajemy wtedy numer
+          do kogoś, kto się tym zajmuje.</p>
       </div>
     </div>
     <div class="odstep-domkniecie">

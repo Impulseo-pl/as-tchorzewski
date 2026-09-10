@@ -353,6 +353,11 @@ przerywa natychmiast · `prefers-reduced-motion` pomija całość · gra RAZ NA 
 - Kadry pionowe stawiamy **bez kadrowania**, jako obiekt na scenie. To jest sens tego kierunku.
 - ⚠️ Elewacja jest w pełnych 3072×4096; łazienka, poddasze i schody tylko w ~1200 px — te ostatnie
   **nie nadają się na duży kadr**, dopóki klient nie przyśle oryginałów (pytanie 3).
+- 🔴 **Pas przez całą szerokość okna chce ~2400 px pliku.** Żadne zdjęcie wnętrza od klienta
+  tyle nie ma, a Google Flow oddaje ok. 1584 px — więc taki pas budujemy z **faktury, nie
+  z pomieszczenia**: powiększenie widać na prostych liniach (skos sufitu, framuga), na cętkowanym
+  betonie nie ma go gdzie zobaczyć. Wyjątek: elewacja, która ma pełne oryginały.
+  ⛔ Do pasa nie wchodzą narożniki ścian — na krawędzi ekranu robią pionowy ciemny pasek.
 - ⛔ Do czasu pisemnej zgody klienta (pytanie 3) **żadne zdjęcie nie idzie na produkcję**.
 - Zdjęcia mają własny znak wodny klienta — zostaje, to jego znak.
 
