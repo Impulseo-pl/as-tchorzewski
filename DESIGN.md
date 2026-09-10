@@ -150,10 +150,19 @@ z obcym serwerem i nie potrzebuje banera cookies (reguła silnika stron docelowy
 
 ## Komponenty
 
-- **Przycisk główny:** prostokąt, tło `#C85C13`, tekst biały, waga 500, hover ciemniej o 8%,
-  active `translateY(-1px)`. Zero poświat.
+- **Przycisk główny:** prostokąt, tło `#C85C13`, tekst biały, waga 500. Hover: tło ciemniej
+  o 8% **+ ukośna smuga światła przelatująca przez przycisk w 0,75 s + uniesienie o 2 px
+  i cień pod spodem**; `active` wraca na `translateY(0)`.
+  🔴 10.09.2026, prośba K.: „hover ma wyglądać jak na demie, tam ładniej się podświetla".
+  Sama zmiana tła czytała się jak przełącznik, nie jak reakcja. Efekt jest przeniesiony
+  1:1 z silnika dem (`~/.claude/skills/strona-klienta/recipes/multipage/motion.css`).
+  To dalej **zero poświat** — żadnej łuny dookoła krawędzi; smuga leci WEWNĄTRZ prostokąta,
+  jest przezroczysta i nie rusza kontrastu napisu (5,89). Krawędź zostaje ostra.
 - **Przycisk drugi („duch"):** obrys 1,5px, tło przezroczyste. Na papierze `rgba(27,27,30,.3)`,
-  wewnątrz bloku ciemnego `rgba(255,255,255,.22)`.
+  wewnątrz bloku ciemnego `rgba(255,255,255,.22)`. Hover: obrys pełny + delikatne wypełnienie
+  (4,5% czerni na papierze / 9% bieli na ciemnym) + ta sama smuga i uniesienie co wyżej.
+  ⚠️ Smuga bierze kolor z `currentColor` — na papierze jest ciemna, w bloku ciemnym jasna.
+  Biała smuga na przezroczystym przycisku na papierze byłaby niewidoczna.
 - **Kafel/karta:** obrys 1px, tło `#FFFFFF` na papierze (`#18161A` w bloku ciemnym),
   **krawędź ostra**, cień nie cięższy niż `0 2px 8px rgba(0,0,0,.08)`.
 - **Pole formularza:** etykieta NAD polem, obrys 1px, focus ring 2px w kolorze akcentu z offsetem 2px,

@@ -645,3 +645,28 @@ na Retinie (bramka: „za mały materiał od klienta"), więc dodatkowe powięks
 niż wygląda w tabeli. Pas zieleni dostał najmniej, bo ma najsłabsze źródło i zmiękłby jako
 pierwszy — **to jest powód, dla którego zapas jest zmienną `--zapas` per pas, a nie liczbą
 w jednej regule.** Zmieniasz siłę → zmień zapas w tej samej linijce.
+
+## 10.09.2026 — podświetlenie przycisków jak w demie
+
+K.: „możesz zrobić tak, żeby hover przycisków wyglądał bardziej jak na demo? tam się ładniej
+podświetlało". Porównanie: demo (`recipes/multipage/motion.css` + `base.css`) ma przy najechaniu
+ukośną smugę światła przelatującą przez przycisk (0,75 s) plus uniesienie o 2 px i cień;
+tu była wyłącznie zmiana tła o 8% — czytało się jak przełącznik, nie jak reakcja.
+
+Przeniesione 1:1 do `assets/app.css` (sekcja „PODŚWIETLENIE PRZYCISKU"), na `.btn`, `.duch`,
+`.tel-gora` (przycisk z numerem w pasku) i `.pk-btn` (belka ciasteczek). `V_CSS` 16 → 17.
+
+Trzy rzeczy, o które łatwo się potknąć przy kolejnej zmianie:
+- `isolation:isolate` jest obowiązkowe. Smuga siedzi w `::after` z `z-index:-1`; bez własnego
+  kontekstu układania wypada POD tło przycisku i nie widać jej wcale.
+- `.duch` jest przezroczysty, więc jego smuga idzie z `currentColor` (`color-mix` 18%), nie z bieli
+  — inaczej na papierze byłaby niewidoczna. Wypełnienie na hover też ma dwa warianty:
+  4,5% czerni na papierze, 9% bieli w blokach `.ciemna` / `.scena` / `.domkniecie`.
+- `active` wraca na `translateY(0)`. Wcześniej podnosił o 1 px, co po dodaniu uniesienia na hover
+  czytałoby się odwrotnie (wciśnięcie unosiłoby przycisk jeszcze wyżej).
+
+Cały ruch siedzi w `@media (prefers-reduced-motion:no-preference)`.
+Sprawdzone na żywej przeglądarce (zrzuty klatka po klatce, 120/300/520/1200 ms) na przycisku
+głównym w scenie, na duchu WhatsApp i na przycisku z numerem w pasku. Bramki: wygląd i „reakcja
+na kursor" przechodzą; błędy w raporcie (noindex, brak zdalnego repo, cienkie `o-nas`) są sprzed
+tej zmiany — strona dalej stoi w trybie podglądu.

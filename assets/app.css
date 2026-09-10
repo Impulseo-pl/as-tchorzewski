@@ -122,7 +122,7 @@ a{text-decoration:none}
 .ciemna .wiersz-usluga,.ciemna .obietnica,.ciemna .kafel{
   border-color:var(--linia-slaba-na-ciemnym)}
 .ciemna .duch{border-color:rgba(255,255,255,.22);color:var(--biel)}
-.ciemna .duch:hover{border-color:var(--biel)}
+.ciemna .duch:hover{border-color:var(--biel);background:rgba(255,255,255,.09)}
 
 /* etykieta nad nagłówkiem — jedyne miejsce na wersaliki (`DESIGN.md`) */
 .etykieta{display:block;font:500 12px/1 Inter;letter-spacing:.2em;text-transform:uppercase;
@@ -131,15 +131,49 @@ a{text-decoration:none}
 /* ── PRZYCISKI ──────────────────────────────────────────────────────────────── */
 .btn,.duch{display:inline-flex;align-items:center;gap:10px;border-radius:0;
   font:500 15px/1 Inter;padding:15px 24px;border:1.5px solid transparent;
-  transition:background .2s ease,border-color .2s ease,transform .2s ease}
+  transition:background .2s ease,border-color .2s ease,transform .2s ease,box-shadow .2s ease}
 .btn{background:var(--akcent-btn);color:#fff}
 .btn:hover{background:var(--akcent-btn-hover)}
-.btn:active,.duch:active{transform:translateY(-1px)}
 .duch{border-color:rgba(27,27,30,.3);color:var(--atrament);background:transparent}
-.duch:hover{border-color:var(--atrament)}
+.duch:hover{border-color:var(--atrament);background:rgba(27,27,30,.045)}
 .btn-wa{background:var(--wa)}
 .btn-wa:hover{background:#1E8A33}
 .ikona-wa{flex:none}
+
+/* ── PODŚWIETLENIE PRZYCISKU — przelot światła ───────────────────────────────
+   🔴 08→10.09.2026, prośba K.: „hover ma wyglądać jak na demie, tam ładniej się
+   podświetla". Sama zmiana tła o 8% czyta się jak przełącznik, nie jak reakcja.
+   Bierzemy dokładnie ten sam ruch, co silnik dem (`recipes/multipage/motion.css`):
+   ukośna smuga światła przelatuje przez przycisk w 0,75 s + przycisk unosi się
+   o 2 px i dostaje cień pod spodem. To NIE jest „poświata" z zakazu w DESIGN.md
+   (żadnej łuny dookoła krawędzi) — smuga leci WEWNĄTRZ prostokąta i jest
+   przezroczysta, więc kontrast napisu (5,89 na przycisku głównym) zostaje
+   nietknięty. Krawędź dalej ostra, `border-radius:0` bez zmian.
+   ⚠️ `isolation:isolate` jest obowiązkowe: bez niego `z-index:-1` wypycha smugę
+   POD tło przycisku i efektu nie widać wcale. */
+.btn,.duch,.tel-gora,.pk-btn{position:relative;overflow:hidden;isolation:isolate}
+.btn::after,.duch::after,.tel-gora::after,.pk-btn::after{
+  content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:linear-gradient(100deg,transparent 32%,rgba(255,255,255,.24) 50%,transparent 68%);
+  translate:-120% 0}
+/* przycisk-duch stoi na papierze i jest przezroczysty — biała smuga byłaby na nim
+   niewidoczna, więc bierze światło w kolorze własnego napisu (ciemne na papierze,
+   jasne w bloku ciemnym, bez osobnych reguł na każdy blok) */
+.duch::after{background:linear-gradient(100deg,transparent 32%,
+  color-mix(in srgb,currentColor 18%,transparent) 50%,transparent 68%)}
+@media (prefers-reduced-motion:no-preference){
+  .btn:hover::after,.btn:focus-visible::after,
+  .duch:hover::after,.duch:focus-visible::after,
+  .tel-gora:hover::after,.tel-gora:focus-visible::after,
+  .pk-btn:hover::after,.pk-btn:focus-visible::after{
+    translate:120% 0;transition:translate .75s cubic-bezier(.16,.84,.44,1)}
+  .btn:hover,.btn:focus-visible,.duch:hover,.duch:focus-visible,
+  .tel-gora:hover,.tel-gora:focus-visible{
+    transform:translateY(-2px);box-shadow:0 8px 20px -12px rgba(27,27,30,.55)}
+  /* wciśnięcie = przycisk wraca na swoje miejsce (wcześniej `active` unosił go
+     o 1 px, co po dodaniu uniesienia na hover czytałoby się odwrotnie) */
+  .btn:active,.duch:active,.tel-gora:active{transform:translateY(0);box-shadow:none}
+}
 
 /* ── GÓRNY PASEK ────────────────────────────────────────────────────────────── */
 /* 🔴 Pasek jest JASNY i to nie jest kwestia gustu: stoi w nim logo, a logo ma
@@ -164,6 +198,7 @@ a{text-decoration:none}
 .tel-gora{flex:none;display:inline-flex;align-items:center;gap:9px;background:var(--akcent-btn);
   color:#fff;font:500 15px/1 Inter;padding:13px 22px;border-radius:0}
 .tel-gora:hover{background:var(--akcent-btn-hover)}
+.tel-gora{transition:background .2s ease,transform .2s ease,box-shadow .2s ease}
 .burger{display:none}
 
 /* ── SCENA (nagłówek strony głównej) ────────────────────────────────────────── */
@@ -202,7 +237,7 @@ a{text-decoration:none}
 .obietnica b{font-family:Jost;font-weight:500;font-size:19px;color:var(--biel)}
 .obietnica span{font-size:14px;color:var(--przyg)}
 .scena .duch{border-color:rgba(255,255,255,.22);color:var(--biel)}
-.scena .duch:hover{border-color:var(--biel)}
+.scena .duch:hover{border-color:var(--biel);background:rgba(255,255,255,.09)}
 .kontakt-linia{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
 .godziny{font-size:14px;color:var(--przyg-jasny)}
 .scena .godziny{color:var(--przyg)}
@@ -486,7 +521,7 @@ html:not(.js) .lata--ruch>li b,html:not(.js) .lata--ruch>li p{
 .domkniecie p{color:var(--przyg);max-width:52ch}
 .domkniecie .kontakt-linia{justify-content:flex-end}
 .domkniecie .duch{border-color:rgba(255,255,255,.22);color:var(--biel)}
-.domkniecie .duch:hover{border-color:var(--biel)}
+.domkniecie .duch:hover{border-color:var(--biel);background:rgba(255,255,255,.09)}
 
 /* ── MAPA PO KLIKNIĘCIU (rdzeń, blok 6) ─────────────────────────────────────── */
 /* 🔴 08.09.2026, blok E. Zasłona była BIAŁYM prostokątem (`--papier-2`) na papierze
