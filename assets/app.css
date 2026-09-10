@@ -293,66 +293,91 @@ a{text-decoration:none}
   border-radius:0}
 .znacznik.po{background:var(--akcent-btn)}
 
-/* ── SUWAK PRZED/PO ────────────────────────────────────────────────────────── */
-/* 🔴 Zastąpił dwa kwadraty obok siebie (K. 10.09.2026: „zamiast 2 zdjęć jedno,
-   po najechaniu przeskakuje na efekt po, na większej przestrzeni").
-   Zasada: „po" leży NA DOLE jako pełny obraz, „przed" jest przyklejone na wierzchu
-   i przycinane clip-path do var(--x). Oba <img> mają identyczny kadr (3:2, ten sam
-   `pion` w przygotuj-media.py) - inaczej przy zsuwaniu obraz skacze. */
-.suwak{margin:0}
+/* ── PRZED/PO — PRZENIKANIE CAŁEGO KADRU ──────────────────────────────────── */
+/* 🔴 Zastąpiło suwak z przesuwaną linią (K. 10.09.2026: „po hoverze całe zdjęcie
+   może się zmieniać"). Powód jest merytoryczny, nie estetyczny: zdjęcie „po"
+   zrobiono z ok. 20 % bliżej niż „przed", więc pole widzenia obu kadrów to ich
+   CZĘŚĆ WSPÓLNA i żadne przekształcenie tego nie naprawi. Przesuwana linia
+   sadzała oko dokładnie na styku i pokazywała każdą resztkową różnicę.
+   Przenikanie całego kadru styku nie ma — a rozmycie w połowie przejścia
+   zjada resztę. ⛔ Nie wracać do suwaka bez nowego zdjęcia od klienta
+   (pytanie 11 w PYTANIA-DO-KLIENTA.md). */
+.przedpo{margin:0}
 /* ⛔ Ramka MUSI być osobnym elementem: `overflow:hidden` na <figure> ucinało podpis. */
 /* 🔴 K. 10.09.2026: „żeby to zdjęcie mieściło się w CAŁOŚCI na ekranie bez względu
    na rozmiar ekranu". Dlatego ograniczamy SZEROKOŚĆ ramki wysokością okna
-   (1,21:1 → 78vh × 1,208), a nie wysokość - przy `max-height` obrazek by się przycinał,
-   czyli zniknęłaby część kadru, o którą chodzi.
-   ⛔ `aspect-ratio` MUSI zgadzać się z `OKNO_SUWAKA` w `przygotuj-media.py`. Rozjazd
-   uruchamia `object-fit: cover`, czyli dokładnie to przycięcie, którego tu nie chcemy. */
-.suwak-rama{position:relative;overflow:hidden;line-height:0;aspect-ratio:998/826;
-  width:min(100%,calc(78vh * 1.208));margin-inline:auto;
-  touch-action:pan-y;cursor:ew-resize;user-select:none;-webkit-user-select:none}
-.suwak-rama img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+   (1,21:1 → 78vh × 1,2107), a nie wysokość — przy `max-height` obrazek by się przycinał.
+   ⛔ `aspect-ratio` MUSI zgadzać się z realnymi plikami (1500×1239 = OKNO_SUWAKA
+   w `przygotuj-media.py`). Rozjazd uruchamia `object-fit: cover`, czyli dokładnie
+   to przycięcie, którego tu nie chcemy. */
+.przedpo-rama{position:relative;overflow:hidden;line-height:0;aspect-ratio:1500/1239;
+  width:min(100%,calc(78vh * 1.2107));margin-inline:auto;background:var(--noc)}
+.przedpo-warstwy{position:absolute;inset:0}
+.przedpo-warstwy img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
   display:block;border-radius:0}
-.suwak-przed{position:absolute;inset:0;
-  clip-path:inset(0 calc(100% - var(--x)) 0 0);
-  transition:clip-path .5s var(--ease)}
+/* „przed" leży NA WIERZCHU i to ono znika — dzięki temu stan spoczynku (bez JS,
+   przed pierwszym najazdem) pokazuje stan surowy, czyli początek historii. */
+.przedpo-przed{opacity:1;transition:opacity .75s var(--ease)}
+.przedpo-rama.jest-po .przedpo-przed{opacity:0}
+/* ⛔ `:hover` STERUJE STANEM TYLKO BEZ JS. Z włączonym skryptem reguła hoverowa
+   wygrywała z powrotem do „przed": po kliknięciu klasa `jest-po` schodziła, ale
+   kursor dalej wisiał nad kadrem, więc zdjęcie się nie zmieniało (zmierzone
+   10.09.2026: opacity 0 mimo stanu „przed"). Stanem rządzi wyłącznie `jest-po`. */
+html:not(.js) .przedpo-rama:hover .przedpo-przed{opacity:0}
 
-.suwak-uchwyt{position:absolute;top:0;bottom:0;left:var(--x);width:44px;margin-left:-22px;
-  padding:0;border:0;background:transparent;cursor:ew-resize;z-index:3;
-  transition:left .5s var(--ease)}
-.suwak-uchwyt::before{content:"";position:absolute;top:0;bottom:0;left:21px;width:2px;
-  background:rgba(255,255,255,.92);box-shadow:0 0 0 1px rgba(15,15,18,.18)}
-.suwak-uchwyt>span{position:absolute;top:50%;left:50%;width:52px;height:52px;
-  /* ⚠️ Jedno z trzech zaokrągleń dopuszczonych w DESIGN.md: gałka suwaka. Okrągła,
-     bo tak wygląda każdy suwak, którego użytkownik dotykał wcześniej. */
-  transform:translate(-50%,-50%);border-radius:50%;background:rgba(255,255,255,.94);
-  box-shadow:0 6px 20px rgba(15,15,18,.28);
-  transition:transform .25s var(--ease),background-color .25s var(--ease)}
-/* strzałki w kółku - czysty CSS, bez pliku */
-.suwak-uchwyt>span::before,.suwak-uchwyt>span::after{content:"";position:absolute;top:50%;
-  width:8px;height:8px;border-top:2px solid var(--noc);border-right:2px solid var(--noc)}
-.suwak-uchwyt>span::before{left:15px;transform:translateY(-50%) rotate(-135deg)}
-.suwak-uchwyt>span::after{right:15px;transform:translateY(-50%) rotate(45deg)}
-.suwak-rama:hover .suwak-uchwyt>span{transform:translate(-50%,-50%) scale(1.08)}
-.suwak-uchwyt:focus-visible{outline:none}
-.suwak-uchwyt:focus-visible>span{outline:3px solid var(--akcent-jasny);outline-offset:3px}
-/* podczas ciągnięcia i przy śledzeniu myszy zdejmujemy wygładzanie, żeby nie było opóźnienia */
-.suwak-rama.suwak--zywy .suwak-przed,.suwak-rama.suwak--zywy .suwak-uchwyt{transition:none}
-.suwak-etyk{z-index:2;top:18px}
-.suwak-etyk--przed{left:18px;right:auto}
-.suwak-etyk--po{left:auto;right:18px}
-.suwak figcaption{margin-top:16px;max-width:min(100%,calc(78vh * 1.208));margin-inline:auto;font-size:15px;line-height:1.55;color:var(--przyg-jasny)}
+/* Jeden „oddech" na każdą zmianę: kadr lekko podchodzi i wraca, a rozmycie
+   w połowie przejścia rozmiękcza resztkową różnicę kadrowania obu zdjęć.
+   ⚠️ Skala w szczycie (1.04) MUSI być większa niż zasięg rozmycia, inaczej
+   rozmyta krawędź warstwy odsłoniłaby tło ramki. */
+.przedpo-rama.przedpo--zmiana .przedpo-warstwy{animation:przedpo-oddech .78s var(--ease)}
+@keyframes przedpo-oddech{
+  0%{transform:scale(1);filter:blur(0)}
+  50%{transform:scale(1.04);filter:blur(3px)}
+  100%{transform:scale(1);filter:blur(0)}}
+
+/* Etykiety stoją JEDNA NA DRUGIEJ i przenikają razem z kadrem — widoczna jest
+   zawsze ta, która opisuje aktualny stan. */
+.przedpo-etyk{z-index:2;top:18px;left:18px;right:auto;
+  transition:opacity .5s var(--ease)}
+.przedpo-etyk--po{opacity:0}
+.przedpo-rama.jest-po .przedpo-etyk--przed{opacity:0}
+.przedpo-rama.jest-po .przedpo-etyk--po{opacity:1}
+html:not(.js) .przedpo-rama:hover .przedpo-etyk--przed{opacity:0}
+html:not(.js) .przedpo-rama:hover .przedpo-etyk--po{opacity:1}
+
+/* Przełącznik przykrywa cały kadr: łapie najazd myszy, dotknięcie palcem
+   i tabulację. Widoczna jest z niego tylko podpowiedź na dole. */
+.przedpo-przelacznik{position:absolute;inset:0;width:100%;height:100%;
+  padding:0 0 22px;border:0;background:transparent;cursor:pointer;z-index:3;
+  display:flex;align-items:flex-end;justify-content:center;border-radius:0}
+.przedpo-hint{display:inline-flex;align-items:center;gap:10px;
+  background:rgba(15,15,18,.72);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+  color:#fff;font:500 14px/1 Inter;letter-spacing:.02em;padding:12px 18px;
+  transition:opacity .45s var(--ease)}
+.przedpo-rama.jest-po .przedpo-hint{opacity:0}
+html:not(.js) .przedpo-rama:hover .przedpo-hint{opacity:0}
+.przedpo-przelacznik:focus-visible .przedpo-hint{opacity:1;
+  outline:2px solid var(--biel);outline-offset:3px}
+.hint-dotyk{display:none}
+/* dotyk: „najedź" nie istnieje, więc mówimy palcem */
+@media (hover:none){
+  .hint-mysz{display:none}
+  .hint-dotyk{display:inline}
+}
+
+.przedpo figcaption{margin-top:16px;max-width:min(100%,calc(78vh * 1.2107));
+  margin-inline:auto;font-size:15px;line-height:1.55;color:var(--przyg-jasny)}
 @media (max-width:700px){
-  .suwak-uchwyt>span{width:44px;height:44px}       /* palec potrzebuje >=44 px */
-  .suwak-uchwyt{width:52px;margin-left:-26px}
-  .suwak-uchwyt::before{left:25px}
-  /* etykiety na telefonie mniejsze - przy kadrze 390 px pełnowymiarowe zjadały pół zdjęcia */
-  .suwak-etyk{top:10px;font-size:10px;padding:6px 9px;letter-spacing:.12em}
-  .suwak-etyk--przed{left:10px}
-  .suwak-etyk--po{right:10px}
-  .suwak figcaption{font-size:14px}
+  /* etykiety na telefonie mniejsze — przy kadrze 390 px pełnowymiarowe zjadały pół zdjęcia */
+  .przedpo-etyk{top:10px;left:10px;font-size:10px;padding:6px 9px;letter-spacing:.12em}
+  .przedpo-przelacznik{padding-bottom:14px}
+  .przedpo-hint{font-size:12.5px;padding:10px 14px}
+  .przedpo figcaption{font-size:14px}
 }
 @media (prefers-reduced-motion:reduce){
-  .suwak-przed,.suwak-uchwyt{transition:none}
+  /* bez ruchu: sam przełącznik, żadnego przenikania ani oddechu */
+  .przedpo-przed,.przedpo-etyk,.przedpo-hint{transition:none}
+  .przedpo-rama.przedpo--zmiana .przedpo-warstwy{animation:none}
 }
 
 /* ── OPINIE Z GOOGLE ───────────────────────────────────────────────────────── */

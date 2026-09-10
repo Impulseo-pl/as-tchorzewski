@@ -424,24 +424,28 @@ def index(naglowek):
       <h2>Ten sam dom. Dwa zdjęcia.</h2>
       <p class="pod">Na gotowym zdjęciu nie widać już, od czego się zaczynało.</p>
     </div>
-    <figure class="suwak rv">
-      <div class="suwak-rama" data-suwak style="--x:50%">
-      <img class="suwak-po" src="img/po.jpg" srcset="img/po.jpg 1x, img/po@2x.jpg 2x"
-        width="1500" height="1239" decoding="async"
-        alt="Ta sama rozbudowa po wykończeniu: biała elewacja, duże okno tarasowe, trawnik">
-      <div class="suwak-przed">
-        <img src="img/przed.jpg" srcset="img/przed.jpg 1x, img/przed@2x.jpg 2x"
-          width="1500" height="1239" decoding="async"
-          alt="Ta sama rozbudowa w stanie surowym: mury z bloczków, stemple i otwarty otwór okienny">
+    <figure class="przedpo rv">
+      <div class="przedpo-rama" data-przedpo>
+        <div class="przedpo-warstwy">
+          <img class="przedpo-po" src="img/po.jpg" srcset="img/po.jpg 1x, img/po@2x.jpg 2x"
+            width="1500" height="1239" decoding="async"
+            alt="Ta sama rozbudowa po wykończeniu: biała elewacja, duże okno tarasowe, trawnik">
+          <img class="przedpo-przed" src="img/przed.jpg" srcset="img/przed.jpg 1x, img/przed@2x.jpg 2x"
+            width="1500" height="1239" decoding="async"
+            alt="Ta sama rozbudowa w stanie surowym: mury z bloczków, stemple i otwarty otwór okienny">
+        </div>
+        <span class="znacznik przedpo-etyk przedpo-etyk--przed">Przed</span>
+        <span class="znacznik po przedpo-etyk przedpo-etyk--po">Po</span>
+        <button class="przedpo-przelacznik" type="button" data-przedpo-btn
+          aria-pressed="false" aria-label="Pokaż stan po remoncie">
+          <span class="przedpo-hint" aria-hidden="true">
+            <span class="hint-mysz">Najedź lub kliknij, żeby zobaczyć efekt</span>
+            <span class="hint-dotyk">Dotknij, żeby zobaczyć efekt</span>
+          </span>
+        </button>
       </div>
-      <span class="znacznik suwak-etyk suwak-etyk--przed">Przed</span>
-      <span class="znacznik po suwak-etyk suwak-etyk--po">Po</span>
-      <button class="suwak-uchwyt" type="button" role="slider" tabindex="0"
-        aria-label="Suwak: przesuń, żeby porównać stan przed i po"
-        aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><span></span></button>
-      </div>
-      <figcaption>Z lewej stan surowy: mury z bloczków i stemple. Z prawej po naszej robocie:
-        elewacja, stolarka okienna i opaska. Przesuń, żeby zobaczyć różnicę.</figcaption>
+      <figcaption>Stan surowy: mury z bloczków i stemple. Po naszej robocie: elewacja,
+        stolarka okienna i opaska. To ten sam narożnik, z tego samego miejsca.</figcaption>
     </figure>
   </div>
 </section>

@@ -18,7 +18,7 @@
 (function () {
   'use strict';
   document.documentElement.classList.add('js');
-  var RDZEN_WERSJA = 13;  // 13: suwak nie wraca na srodek po zjechaniu kursora; 12: karuzela opinii; 11: suwak przed/po; 10: kaskada na animation (koniec opoznionego hovera); 9: rozwijane menu; 8: plakietka Google
+  var RDZEN_WERSJA = 15;  // 15: przed/po - pierwsze dotkniecie na telefonie dziala (koniec sztucznego mouseenter); 14: przed/po przez przenikanie calego kadru (koniec suwaka z linia); 13: suwak nie wraca na srodek po zjechaniu kursora; 12: karuzela opinii; 11: suwak przed/po; 10: kaskada na animation (koniec opoznionego hovera); 9: rozwijane menu; 8: plakietka Google
   document.documentElement.setAttribute('data-rdzen', RDZEN_WERSJA);
 
   var q = function (s, k) { return (k || document).querySelector(s); };
@@ -588,93 +588,92 @@
        błąd pomiaru), po 3,5 s wszystkie kroki i tak są widoczne */
     setTimeout(function () { kroki.forEach(function (li) { li.classList.add('os-seen'); }); }, 3500);
   });
-  /* ── 12. SUWAK PRZED/PO ───────────────────────────────────────────────────
-     Znacznik:  <figure class="suwak" data-suwak style="--x:50%">
-                  <img class="suwak-po" …>                 <!-- spód: efekt PO -->
-                  <div class="suwak-przed"><img …></div>   <!-- wierzch, przycinany -->
-                  <button class="suwak-uchwyt" role="slider" …><span></span></button>
-                </figure>
+  /* ── 12. PRZED/PO — PRZENIKANIE CAŁEGO KADRU ──────────────────────────────
+     Znacznik:  <div class="przedpo-rama" data-przedpo>
+                  <div class="przedpo-warstwy">
+                    <img class="przedpo-po" …>       <!-- spód: stan PO -->
+                    <img class="przedpo-przed" …>    <!-- wierzch: stan PRZED -->
+                  </div>
+                  <span class="znacznik przedpo-etyk przedpo-etyk--przed">Przed</span>
+                  <span class="znacznik po przedpo-etyk przedpo-etyk--po">Po</span>
+                  <button class="przedpo-przelacznik" data-przedpo-btn aria-pressed="false">…</button>
+                </div>
 
-     Trzy tryby wejścia, wszystkie zamówione przez K. 10.09.2026:
-     · MYSZ — sam najazd przesuwa styk pod kursorem (bez wciskania), po zjechaniu
-       kursora styk wraca na środek. To jest ta „animacja", nie osobny efekt.
-     · PALEC — ciągnięcie w bok. `touch-action:pan-y` w CSS zostawia pionowe
-       przewijanie strony, więc suwak nie blokuje czytania.
-     · PIERWSZE WEJŚCIE W KADR — suwak sam raz przejeżdża do „po" i wraca,
-       żeby ktoś, kto nie wpadnie na przesuwanie, i tak zobaczył OBA stany.
-       Tylko RAZ na wizytę i nigdy przy `prefers-reduced-motion`.
+     🔴 Zastąpiło suwak z przesuwaną linią (K. 10.09.2026: „nie musi być z tą
+     przesuwaną linią, tylko po hoverze całe zdjęcie może się zmieniać").
+     To NIE jest zmiana ozdoby, tylko rozwiązanie problemu: zdjęcia „przed" i „po"
+     zrobiono z różnej odległości, więc na styku przesuwanej linii oko widzi każdą
+     resztkową różnicę kadru. Przenikanie CAŁEGO kadru tego styku nie ma.
 
-     ⛔ Nie zdejmować klasy `suwak--zywy` przy ciągnięciu - bez niej styk sunie
-        z opóźnieniem 0,5 s i palec „ucieka" obrazkowi. */
-  qa('[data-suwak]').forEach(function (suwak) {
-    var uchwyt = q('.suwak-uchwyt', suwak);
+     · MYSZ — najazd przenika do „po". Zjazd kursora ZOSTAWIA stan „po"
+       (K. 10.09.2026: „niech nie wraca, jak przejadę myszką gdzieś indziej").
+     · KLIK / PALEC / SPACJA — przełącza w obie strony, więc da się wrócić do „przed".
+     · PIERWSZE WEJŚCIE W KADR — jeden pokaz tam i z powrotem, żeby ktoś, kto nie
+       najedzie, i tak zobaczył oba stany. Raz na wizytę, nigdy przy `reduced-motion`.
+
+     ⛔ Klasa `przedpo--zmiana` MUSI schodzić po animacji (`animationend` + zapasowy
+        timer) — bez zdjęcia jej animacja nie odpali się drugi raz. */
+  qa('[data-przedpo]').forEach(function (rama) {
+    var btn = q('[data-przedpo-btn]', rama);
+    var warstwy = q('.przedpo-warstwy', rama);
     var ruchOk = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var ciagnie = false, samoGralo = false;
+    var po = false, samoGralo = false, sprzatacz = null;
 
-    var ustaw = function (proc, zywo) {
-      proc = Math.max(0, Math.min(100, proc));
-      suwak.classList.toggle('suwak--zywy', !!zywo);
-      suwak.style.setProperty('--x', proc.toFixed(2) + '%');
-      if (uchwyt) uchwyt.setAttribute('aria-valuenow', Math.round(proc));
-    };
-    var zEvent = function (ev) {
-      var r = suwak.getBoundingClientRect();
-      return r.width ? ((ev.clientX - r.left) / r.width) * 100 : 50;
+    var oddech = function () {
+      if (!ruchOk || !warstwy) return;
+      rama.classList.remove('przedpo--zmiana');
+      void warstwy.offsetWidth;            /* wymuszony reflow = restart animacji */
+      rama.classList.add('przedpo--zmiana');
+      clearTimeout(sprzatacz);
+      sprzatacz = setTimeout(function () { rama.classList.remove('przedpo--zmiana'); }, 900);
     };
 
-    /* ciągnięcie palcem i myszą */
-    suwak.addEventListener('pointerdown', function (ev) {
-      if (ev.pointerType === 'mouse' && ev.button !== 0) return;
-      ciagnie = true;
-      try { suwak.setPointerCapture(ev.pointerId); } catch (e) {}
-      ustaw(zEvent(ev), true);
-    });
-    suwak.addEventListener('pointermove', function (ev) {
-      if (ciagnie) { ustaw(zEvent(ev), true); return; }
-      /* sam najazd myszy - z wygładzaniem, bo to ma wyglądać jak animacja */
-      if (ev.pointerType === 'mouse') ustaw(zEvent(ev), false);
-    });
-    var koniec = function (ev) {
-      if (!ciagnie) return;
-      ciagnie = false;
-      try { suwak.releasePointerCapture(ev.pointerId); } catch (e) {}
-      suwak.classList.remove('suwak--zywy');
+    var ustaw = function (nowy, zAnimacja) {
+      if (nowy === po) return;
+      po = nowy;
+      rama.classList.toggle('jest-po', po);
+      if (btn) {
+        btn.setAttribute('aria-pressed', po ? 'true' : 'false');
+        btn.setAttribute('aria-label', po ? 'Pokaż stan przed remontem'
+                                          : 'Pokaż stan po remoncie');
+      }
+      if (zAnimacja !== false) oddech();
     };
-    suwak.addEventListener('pointerup', koniec);
-    suwak.addEventListener('pointercancel', koniec);
-    /* ⛔ Kursor zjechał z kadru → styk ZOSTAJE tam, gdzie go zostawił (K. 10.09.2026:
-       „niech nie wraca na środek, jak przejadę myszką gdzieś indziej"). Powrót na
-       środek wyglądał, jakby strona cofała użytkownikowi jego własny ruch. */
-    suwak.addEventListener('pointerleave', function (ev) {
-      if (ev.pointerType === 'mouse') suwak.classList.remove('suwak--zywy');
+
+    /* Mysz: sam najazd przenika do „po" i tam zostaje.
+       ⛔ NIE `mouseenter` — na telefonie przeglądarka dosyła sztuczny najazd myszy
+       PRZED kliknięciem, więc pierwsze dotknięcie włączało „po" i zaraz gasiło je
+       przełącznikiem (zmierzone 10.09.2026: aria-pressed wracało na false, palec
+       nie robił NIC). Bierzemy więc wyłącznie wskaźnik typu „mouse". */
+    rama.addEventListener('pointerenter', function (ev) {
+      if (ev.pointerType && ev.pointerType !== 'mouse') return;
+      ustaw(true);
+    });
+    /* klik i palec: przełącznik w obie strony */
+    if (btn) btn.addEventListener('click', function () { ustaw(!po); });
+    /* klawiatura: tabulacja na przycisk pokazuje „po", spacja/enter przełącza */
+    if (btn) btn.addEventListener('focus', function () {
+      if (btn.matches(':focus-visible')) ustaw(true);
     });
 
-    /* klawiatura: strzałki, Home/End */
-    if (uchwyt) uchwyt.addEventListener('keydown', function (ev) {
-      var teraz = parseFloat(suwak.style.getPropertyValue('--x')) || 50, krok = ev.shiftKey ? 10 : 4;
-      if (ev.key === 'ArrowLeft') ustaw(teraz - krok, false);
-      else if (ev.key === 'ArrowRight') ustaw(teraz + krok, false);
-      else if (ev.key === 'Home') ustaw(0, false);
-      else if (ev.key === 'End') ustaw(100, false);
-      else return;
-      ev.preventDefault();
+    if (warstwy) warstwy.addEventListener('animationend', function () {
+      rama.classList.remove('przedpo--zmiana');
     });
 
-    /* pierwsze wejście w kadr - jeden przejazd pokazowy */
+    /* pierwsze wejście w kadr — jeden pokaz */
     var pokaz = function () {
       if (samoGralo || !ruchOk) return;
       samoGralo = true;
-      setTimeout(function () { ustaw(92, false); }, 420);
-      setTimeout(function () { ustaw(50, false); }, 1650);
+      setTimeout(function () { ustaw(true); }, 420);
+      setTimeout(function () { ustaw(false); }, 2000);
     };
     if ('IntersectionObserver' in window) {
       var obs = new IntersectionObserver(function (wpisy) {
         wpisy.forEach(function (w) { if (w.isIntersecting) { pokaz(); obs.disconnect(); } });
       }, { threshold: 0.45 });
-      obs.observe(suwak);
+      obs.observe(rama);
     } else { pokaz(); }
   });
-
   /* ── 13. KARUZELA OPINII ──────────────────────────────────────────────────
      Znacznik:  <div class="karuzela" data-karuzela>
                   <div class="karuzela-tor"> … karty … </div>

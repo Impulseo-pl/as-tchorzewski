@@ -38,8 +38,8 @@ NIP = "995 004 44 65"
 REGON = "363138510"
 
 # 🔄 Podbij przy KAŻDEJ zmianie pliku, inaczej klient zostanie na starej wersji.
-V_CSS = 25
-V_RDZEN = 16
+V_CSS = 28
+V_RDZEN = 18
 
 # 🔴 PODGLĄD ROBOCZY. Strona stoi na zdjęciach klienta, na które NIE MAMY jeszcze
 # jego pisemnej zgody (pytanie 3 w `PYTANIA-DO-KLIENTA.md`), a domena nie jest
