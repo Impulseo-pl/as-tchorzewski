@@ -903,3 +903,30 @@ odpowiedzialność) — te zostają.
 
 Do rdzenia stron docelowych (wersja 12) weszły dwa nowe klocki, oba wyjęte stąd:
 **suwak przed/po** (blok 12) i **karuzela opinii** (blok 13).
+
+## 10.09.2026 wieczór — przed/po bez przesuwanej linii (rdzeń 15)
+
+Suwak z linią wyleciał, wszedł **efekt przenikania całego kadru** (`.przedpo-*`,
+blok 12 rdzenia). Powód jest merytoryczny, nie estetyczny: zdjęcie „po" zrobiono
+z ok. 20 % bliżej niż „przed", więc pole widzenia to CZĘŚĆ WSPÓLNA obu kadrów
+i żadna homografia tego nie powiększy. Przesuwana linia sadzała oko dokładnie na
+styku i pokazywała każdą resztkową różnicę — przenikanie styku nie ma, a rozmycie
+3 px w połowie przejścia zjada resztę.
+
+Jak działa: najazd myszą przenika do „po" i **tam zostaje** (zasada K. o niewracaniu),
+klik / dotknięcie / spacja przełącza w obie strony, przy pierwszym wejściu w kadr leci
+jeden pokaz tam i z powrotem. `prefers-reduced-motion` → sam przełącznik, bez ruchu.
+
+Trzy pułapki wyłapane pomiarem w przeglądarce, nie z kodu:
+1. **`mouseenter` psuł telefon.** Przeglądarka dosyła sztuczny najazd myszy PRZED
+   kliknięciem, więc pierwsze dotknięcie włączało „po" i zaraz gasiło je przełącznikiem —
+   palec nie robił nic. Jest `pointerenter` + filtr `pointerType === 'mouse'`.
+2. **`:hover` wygrywał z powrotem do „przed".** Po kliknięciu klasa `jest-po` schodziła,
+   ale kursor dalej wisiał nad kadrem i reguła hoverowa trzymała zdjęcie „po". Teraz
+   `:hover` steruje stanem WYŁĄCZNIE bez JS (`html:not(.js)`).
+3. **Zrzut z `Page.captureScreenshot --clip` bierze współrzędne STRONY, nie okna.**
+   Bez dodania `scrollX/scrollY` wycinek trafiał w pustą kartkę u góry dokumentu —
+   wyglądało to jak zniknięty efekt, a było chybionym kadrem zrzutu.
+
+⛔ Nie wracać do suwaka bez nowego zdjęcia „po" od klienta (pytanie 11
+w `PYTANIA-DO-KLIENTA.md`). Pliki `przed.jpg`/`po.jpg` zostają bez zmian.
