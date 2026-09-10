@@ -858,7 +858,7 @@ artefakty kompresji; maska wyostrzająca dokładała do tego obwódki przy kraw�
 
 **Przepis, który stosujemy:** ×4 modelem `high-fidelity-4x`, potem **redukcja do ×2**
 Lanczosem i zapis JPEG q92. Redukcja jest ważna: gubi ślady modelu, a i tak zostaje
-2× więcej materiału, niż dawał oryginał. Skrypt wsadowy: `scratchpad/upscale.sh`
+2× więcej materiału, niż dawał oryginał. Skrypt wsadowy: **`~/.claude/skills/strona-docelowa/upscale.sh <repo>`**
 (~1 min na zdjęcie). Wynik ląduje w **`materialy/upscale/`** — `materialy/realizacje/`
 zostaje NIETKNIĘTE. Skasowanie katalogu `upscale/` cofa całą zmianę.
 

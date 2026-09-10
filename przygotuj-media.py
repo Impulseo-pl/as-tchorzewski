@@ -217,7 +217,7 @@ def zrodlo(nazwa):
        Kasujesz `upscale/` → wszystko dalej się buduje, tylko miękcej.
     ⚠️ Model dorysowuje mikrodetal. Na tych zdjęciach (tynk, płyta, kamień, stolarka)
        to retusz, nie zmyślanie — ale KAŻDY plik obejrzyj, zanim wejdzie na stronę.
-       Skrypt wsadowy: `scratchpad/upscale.sh` (opisany w NOTATKI-BUDOWY.md).
+       Skrypt wsadowy: `~/.claude/skills/strona-docelowa/upscale.sh <repo>`.
     """
     lepsza = os.path.join(UPS, os.path.splitext(nazwa)[0] + ".jpg")
     return lepsza if os.path.exists(lepsza) else os.path.join(ZR, nazwa)
