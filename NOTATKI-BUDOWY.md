@@ -886,3 +886,20 @@ modelem nie ruszać, przemalowuje litery.
 🔴 **To jest proteza, nie rozwiązanie.** Prawdziwe pliki są na telefonie klienta. Jedna
 wiadomość („wyślij przez WeTransfer albo Dysk, nie przez Messengera") daje więcej niż
 każdy upscaler. Pytanie 3 w `PYTANIA-DO-KLIENTA.md`.
+
+
+## 10.09.2026 — runda uwag K. po obejrzeniu podglądu
+
+Trzynaście uwag, pełna tabela „było → jest → dlaczego": **`_dokumentacja/UWAGI-K-10-09.md`**.
+
+Jedna nauka warta zapamiętania poza tym klientem: **strona tłumaczyła się z rzeczy
+oczywistych** — „żadnego kupionego w banku zdjęć", „nie zdjęcie z katalogu", „nie znikamy
+po odbiorze", „bez montażu i bez pozowania". K.: *„to tak jakbym napisał na stronie, że nie
+jestem złodziejem i bandytą"*. Zaprzeczenie zarzutu, którego nikt nie postawił, sam ten
+zarzut podsuwa. Wzorzec do wyłapywania: zdanie zbudowane na „bez X", „żadnego X", „nie X"
+przy cesze, której nikt firmie nie zarzucił. ⛔ Nie dotyczy zdań, gdzie negacja niesie
+realny argument („nie ma komu zrzucić winy za nierówną ścianę" = jedna ekipa, jedna
+odpowiedzialność) — te zostają.
+
+Do rdzenia stron docelowych (wersja 12) weszły dwa nowe klocki, oba wyjęte stąd:
+**suwak przed/po** (blok 12) i **karuzela opinii** (blok 13).
