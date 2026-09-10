@@ -58,8 +58,12 @@ PLAN = [
     ("otw-kontakt@2x.jpg",       "schody-beton-11.jpg",               2880, 16/7, 0.22, 78),
 
     # ── przed i po: u źródła kwadraty, więc kwadrat nie jest kadrowaniem ─────────
-    ("przed.jpg",             "PRZED-rozbudowa.jpg",             1100, 1/1,  0.5, 80),
-    ("po.jpg",                "PO-rozbudowa.jpg",                1100, 1/1,  0.5, 80),
+    # 🔴 SUWAK PRZED/PO (K. 10.09.2026) - jeden szeroki kadr zamiast dwóch kwadratów.
+    #    Oba pliki MUSZĄ mieć identyczne `prop` i `pion`, inaczej zdjęcia rozjadą się przy zsuwaniu.
+    ("przed.jpg",             "PRZED-rozbudowa.jpg",             1600, 3/2,  0.5, 82),
+    ("przed@2x.jpg",          "PRZED-rozbudowa.jpg",             2500, 3/2,  0.5, 76),
+    ("po.jpg",                "PO-rozbudowa.jpg",                1600, 3/2,  0.5, 82),
+    ("po@2x.jpg",             "PO-rozbudowa.jpg",                2500, 3/2,  0.5, 76),
 
     # ── kafle usług (kolejność z briefu: szpachlowanie, malowanie, łazienki,
     #    sucha zabudowa; drzwi i okna niżej) ──────────────────────────────────────
@@ -122,7 +126,7 @@ PLAN = [
     ("z-poddasze2-03.jpg",    "poddasze2-sciana-zielen-02.jpg",  1100, None, 0.5, 78),
     ("z-schody-01.jpg",       "schody-beton-10.jpg",             1100, None, 0.5, 78),
     ("z-beton-02.jpg",        "beton-arch-jasny-02.jpg",         1200, None, 0.5, 78),
-    ("z-beton-03.jpg",        "beton-arch-jasny-04.jpg",         1200, None, 0.5, 78),
+    ("z-beton-ciemny.jpg",    "beton-arch-ciemny-01.jpg",        1200, 4/3, 0.34, 78),
     # elewacja: jedyne pełne oryginały z telefonu (3072×4096) — stąd większa szerokość
     ("z-elewacja-01.jpg",     "elewacja-po-taras-04.jpg",        1200, None, 0.5, 72),
     ("z-elewacja-02.jpg",     "elewacja-po-01.jpg",              1200, None, 0.5, 72),

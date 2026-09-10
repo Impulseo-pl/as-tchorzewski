@@ -18,7 +18,7 @@
 (function () {
   'use strict';
   document.documentElement.classList.add('js');
-  var RDZEN_WERSJA = 10;  // 10: kaskada na animation (koniec opoznionego hovera); 9: rozwijane menu; 8: plakietka Google
+  var RDZEN_WERSJA = 12;  // 12: karuzela opinii; 11: suwak przed/po; 10: kaskada na animation (koniec opoznionego hovera); 9: rozwijane menu; 8: plakietka Google
   document.documentElement.setAttribute('data-rdzen', RDZEN_WERSJA);
 
   var q = function (s, k) { return (k || document).querySelector(s); };
@@ -425,7 +425,11 @@
   /* 10c. PARALAKSA — zdjęcie sunie wolniej niż strona, więc sekcja ma głębię.
      ⚠️ Tylko na dużym ekranie i tylko na elementach W KADRZE: na telefonie to
      kosztuje płynność, a płynność sprzedaje lepiej niż efekt.
-     `<img data-paralaksa="14">` = maksymalne przesunięcie w pikselach. */
+     `<img data-paralaksa="14">` = maksymalne przesunięcie w pikselach.
+     🔴 TEN SILNIK TYLKO PRZESUWA. Zdjęcie wypełniające ramę co do piksela odsłoni po
+     przesunięciu PUSTĄ KRAWĘDŹ. Każda rama z paralaksą musi mieć `overflow:hidden`,
+     a zdjęcie zapas >= 1,5x amplitudy: `inset:-Npx 0` + `height:calc(100% + 2Npx)`.
+     Zmieniasz `data-paralaksa` → przelicz zapas (lekcja 2026-09-09-002, A.S Tchórzewski). */
   var paral = qa('[data-paralaksa]');
   if (paral.length && !spokojnie && window.innerWidth > 900) {
     var czeka = false;
@@ -584,4 +588,139 @@
        błąd pomiaru), po 3,5 s wszystkie kroki i tak są widoczne */
     setTimeout(function () { kroki.forEach(function (li) { li.classList.add('os-seen'); }); }, 3500);
   });
+  /* ── 12. SUWAK PRZED/PO ───────────────────────────────────────────────────
+     Znacznik:  <figure class="suwak" data-suwak style="--x:50%">
+                  <img class="suwak-po" …>                 <!-- spód: efekt PO -->
+                  <div class="suwak-przed"><img …></div>   <!-- wierzch, przycinany -->
+                  <button class="suwak-uchwyt" role="slider" …><span></span></button>
+                </figure>
+
+     Trzy tryby wejścia, wszystkie zamówione przez K. 10.09.2026:
+     · MYSZ — sam najazd przesuwa styk pod kursorem (bez wciskania), po zjechaniu
+       kursora styk wraca na środek. To jest ta „animacja", nie osobny efekt.
+     · PALEC — ciągnięcie w bok. `touch-action:pan-y` w CSS zostawia pionowe
+       przewijanie strony, więc suwak nie blokuje czytania.
+     · PIERWSZE WEJŚCIE W KADR — suwak sam raz przejeżdża do „po" i wraca,
+       żeby ktoś, kto nie wpadnie na przesuwanie, i tak zobaczył OBA stany.
+       Tylko RAZ na wizytę i nigdy przy `prefers-reduced-motion`.
+
+     ⛔ Nie zdejmować klasy `suwak--zywy` przy ciągnięciu - bez niej styk sunie
+        z opóźnieniem 0,5 s i palec „ucieka" obrazkowi. */
+  qa('[data-suwak]').forEach(function (suwak) {
+    var uchwyt = q('.suwak-uchwyt', suwak);
+    var ruchOk = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var ciagnie = false, samoGralo = false;
+
+    var ustaw = function (proc, zywo) {
+      proc = Math.max(0, Math.min(100, proc));
+      suwak.classList.toggle('suwak--zywy', !!zywo);
+      suwak.style.setProperty('--x', proc.toFixed(2) + '%');
+      if (uchwyt) uchwyt.setAttribute('aria-valuenow', Math.round(proc));
+    };
+    var zEvent = function (ev) {
+      var r = suwak.getBoundingClientRect();
+      return r.width ? ((ev.clientX - r.left) / r.width) * 100 : 50;
+    };
+
+    /* ciągnięcie palcem i myszą */
+    suwak.addEventListener('pointerdown', function (ev) {
+      if (ev.pointerType === 'mouse' && ev.button !== 0) return;
+      ciagnie = true;
+      try { suwak.setPointerCapture(ev.pointerId); } catch (e) {}
+      ustaw(zEvent(ev), true);
+    });
+    suwak.addEventListener('pointermove', function (ev) {
+      if (ciagnie) { ustaw(zEvent(ev), true); return; }
+      /* sam najazd myszy - z wygładzaniem, bo to ma wyglądać jak animacja */
+      if (ev.pointerType === 'mouse') ustaw(zEvent(ev), false);
+    });
+    var koniec = function (ev) {
+      if (!ciagnie) return;
+      ciagnie = false;
+      try { suwak.releasePointerCapture(ev.pointerId); } catch (e) {}
+      suwak.classList.remove('suwak--zywy');
+    };
+    suwak.addEventListener('pointerup', koniec);
+    suwak.addEventListener('pointercancel', koniec);
+    suwak.addEventListener('pointerleave', function (ev) {
+      if (ciagnie || ev.pointerType !== 'mouse') return;
+      ustaw(50, false);                       /* kursor zjechał - wracamy na środek */
+    });
+
+    /* klawiatura: strzałki, Home/End */
+    if (uchwyt) uchwyt.addEventListener('keydown', function (ev) {
+      var teraz = parseFloat(suwak.style.getPropertyValue('--x')) || 50, krok = ev.shiftKey ? 10 : 4;
+      if (ev.key === 'ArrowLeft') ustaw(teraz - krok, false);
+      else if (ev.key === 'ArrowRight') ustaw(teraz + krok, false);
+      else if (ev.key === 'Home') ustaw(0, false);
+      else if (ev.key === 'End') ustaw(100, false);
+      else return;
+      ev.preventDefault();
+    });
+
+    /* pierwsze wejście w kadr - jeden przejazd pokazowy */
+    var pokaz = function () {
+      if (samoGralo || !ruchOk) return;
+      samoGralo = true;
+      setTimeout(function () { ustaw(92, false); }, 420);
+      setTimeout(function () { ustaw(50, false); }, 1650);
+    };
+    if ('IntersectionObserver' in window) {
+      var obs = new IntersectionObserver(function (wpisy) {
+        wpisy.forEach(function (w) { if (w.isIntersecting) { pokaz(); obs.disconnect(); } });
+      }, { threshold: 0.45 });
+      obs.observe(suwak);
+    } else { pokaz(); }
+  });
+
+  /* ── 13. KARUZELA OPINII ──────────────────────────────────────────────────
+     Znacznik:  <div class="karuzela" data-karuzela>
+                  <div class="karuzela-tor"> … karty … </div>
+                </div>
+
+     Przesuwa się SAMA, w kółko, bez strzałek i kropek - to jest tło zaufania,
+     nie zadanie do wykonania (K. 10.09.2026). Skrypt robi jedno: DUBLUJE karty,
+     żeby taśma się zapętliła bez skoku, i podaje CSS długość jednego przebiegu.
+     Reszta (sam ruch, pauza pod kursorem) siedzi w `app.css` na `@keyframes`.
+
+     ⛔ Nie dublować, gdy kart jest tyle, że taśma i tak nie mieści się w kadrze
+        dwa razy - inaczej czytnik ekranu przeczyta opinie podwójnie bez sensu.
+        Kopie dostają `aria-hidden`, więc czytnik widzi każdą opinię RAZ.
+     ⛔ `prefers-reduced-motion` wyłącza ruch - karty zostają jako zwykła siatka. */
+  qa('[data-karuzela]').forEach(function (kar) {
+    var tor = q('.karuzela-tor', kar);
+    if (!tor) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      kar.classList.add('karuzela--stoi');
+      return;
+    }
+    var oryginaly = [].slice.call(tor.children);
+    if (!oryginaly.length) return;
+    oryginaly.forEach(function (k) {
+      var kopia = k.cloneNode(true);
+      kopia.setAttribute('aria-hidden', 'true');
+      /* kopie nie mogą łapać tabulatora - to te same treści drugi raz */
+      qa('a,button', kopia).forEach(function (f) { f.setAttribute('tabindex', '-1'); });
+      tor.appendChild(kopia);
+    });
+    var przelicz = function () {
+      var szer = 0;
+      oryginaly.forEach(function (k) {
+        var st = getComputedStyle(k);
+        szer += k.getBoundingClientRect().width +
+                parseFloat(st.marginLeft || 0) + parseFloat(st.marginRight || 0);
+      });
+      var st = getComputedStyle(tor);
+      szer += parseFloat(st.columnGap || st.gap || 0) * oryginaly.length;
+      kar.style.setProperty('--tasma', szer.toFixed(1) + 'px');
+      /* stałe tempo zamiast stałego czasu: dłuższa taśma = dłuższa animacja */
+      kar.style.setProperty('--czas', Math.max(18, szer / 42).toFixed(1) + 's');
+      kar.classList.add('karuzela--gotowa');
+    };
+    przelicz();
+    window.addEventListener('resize', przelicz, { passive: true });
+    /* obrazy dociągają się później i zmieniają szerokość kart */
+    window.addEventListener('load', przelicz);
+  });
+
 })();

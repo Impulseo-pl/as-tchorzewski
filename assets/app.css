@@ -293,6 +293,93 @@ a{text-decoration:none}
   border-radius:0}
 .znacznik.po{background:var(--akcent-btn)}
 
+/* ── SUWAK PRZED/PO ────────────────────────────────────────────────────────── */
+/* 🔴 Zastąpił dwa kwadraty obok siebie (K. 10.09.2026: „zamiast 2 zdjęć jedno,
+   po najechaniu przeskakuje na efekt po, na większej przestrzeni").
+   Zasada: „po" leży NA DOLE jako pełny obraz, „przed" jest przyklejone na wierzchu
+   i przycinane clip-path do var(--x). Oba <img> mają identyczny kadr (3:2, ten sam
+   `pion` w przygotuj-media.py) - inaczej przy zsuwaniu obraz skacze. */
+.suwak{margin:0}
+/* ⛔ Ramka MUSI być osobnym elementem: `overflow:hidden` na <figure> ucinało podpis. */
+.suwak-rama{position:relative;overflow:hidden;line-height:0;
+  touch-action:pan-y;cursor:ew-resize;user-select:none;-webkit-user-select:none}
+.suwak-rama img{width:100%;height:auto;display:block;border-radius:0;
+  box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.suwak-przed{position:absolute;inset:0;
+  clip-path:inset(0 calc(100% - var(--x)) 0 0);
+  transition:clip-path .5s var(--ease)}
+.suwak-przed img{height:100%;object-fit:cover}
+.suwak-uchwyt{position:absolute;top:0;bottom:0;left:var(--x);width:44px;margin-left:-22px;
+  padding:0;border:0;background:transparent;cursor:ew-resize;z-index:3;
+  transition:left .5s var(--ease)}
+.suwak-uchwyt::before{content:"";position:absolute;top:0;bottom:0;left:21px;width:2px;
+  background:rgba(255,255,255,.92);box-shadow:0 0 0 1px rgba(15,15,18,.18)}
+.suwak-uchwyt>span{position:absolute;top:50%;left:50%;width:52px;height:52px;
+  transform:translate(-50%,-50%);border-radius:50%;background:rgba(255,255,255,.94);
+  box-shadow:0 6px 20px rgba(15,15,18,.28);
+  transition:transform .25s var(--ease),background-color .25s var(--ease)}
+/* strzałki w kółku - czysty CSS, bez pliku */
+.suwak-uchwyt>span::before,.suwak-uchwyt>span::after{content:"";position:absolute;top:50%;
+  width:8px;height:8px;border-top:2px solid var(--noc);border-right:2px solid var(--noc)}
+.suwak-uchwyt>span::before{left:15px;transform:translateY(-50%) rotate(-135deg)}
+.suwak-uchwyt>span::after{right:15px;transform:translateY(-50%) rotate(45deg)}
+.suwak-rama:hover .suwak-uchwyt>span{transform:translate(-50%,-50%) scale(1.08)}
+.suwak-uchwyt:focus-visible{outline:none}
+.suwak-uchwyt:focus-visible>span{outline:3px solid var(--akcent-jasny);outline-offset:3px}
+/* podczas ciągnięcia i przy śledzeniu myszy zdejmujemy wygładzanie, żeby nie było opóźnienia */
+.suwak-rama.suwak--zywy .suwak-przed,.suwak-rama.suwak--zywy .suwak-uchwyt{transition:none}
+.suwak-etyk{z-index:2;top:18px}
+.suwak-etyk--przed{left:18px;right:auto}
+.suwak-etyk--po{left:auto;right:18px}
+.suwak figcaption{margin-top:16px;font-size:15px;line-height:1.55;color:var(--przyg-jasny)}
+@media (max-width:700px){
+  .suwak-uchwyt>span{width:44px;height:44px}
+  .suwak-etyk{top:12px}
+  .suwak-etyk--przed{left:12px}
+  .suwak-etyk--po{right:12px}
+}
+@media (prefers-reduced-motion:reduce){
+  .suwak-przed,.suwak-uchwyt{transition:none}
+}
+
+/* ── OPINIE Z GOOGLE ───────────────────────────────────────────────────────── */
+/* 🔴 Plakietka (`.g-badge`) siedzi w rdzeniu i wygląda tak samo na KAŻDEJ naszej
+   stronie - tu tylko dobieramy tło pod papier. Liczby opinii nie ma celowo:
+   sześć to za mało, żeby liczba pomagała (standard ze skilla `strona-docelowa`). */
+.sekcja--opinie{overflow:hidden}
+.sekcja--opinie .g-badge{--gb-tlo:var(--papier-2);--gb-obwodka:var(--linia-slaba)}
+.naglowek-opinie{display:flex;align-items:flex-end;justify-content:space-between;
+  gap:24px;flex-wrap:wrap;margin-bottom:38px}
+.naglowek-opinie h2{margin:0}
+
+/* Taśma jedzie sama i nigdy się nie zatrzymuje na dobre - pauza tylko pod kursorem,
+   żeby dało się skończyć czytanie. Długość jednego przebiegu (`--tasma`) i czas
+   liczy `rdzen.js`, bo zależą od realnej szerokości kart. */
+.karuzela{position:relative;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent)}
+.karuzela-tor{display:flex;gap:26px;width:max-content;padding:4px var(--bok)}
+.karuzela--gotowa .karuzela-tor{animation:jedzie var(--czas,30s) linear infinite}
+.karuzela--gotowa:hover .karuzela-tor,
+.karuzela--gotowa:focus-within .karuzela-tor{animation-play-state:paused}
+@keyframes jedzie{from{transform:translate3d(0,0,0)}
+  to{transform:translate3d(calc(-1 * var(--tasma)),0,0)}}
+/* bez ruchu: zwykły, przewijalny palcem rząd */
+.karuzela--stoi{overflow-x:auto;-webkit-overflow-scrolling:touch}
+
+.opinia{flex:0 0 clamp(280px,32vw,420px);margin:0;background:var(--papier-2);
+  border:1px solid var(--linia-slaba);padding:30px 30px 26px;
+  display:flex;flex-direction:column;gap:16px;line-height:1.6}
+.opinia-gw{flex:none;fill:var(--gb-gwiazdka,#F5A623)}
+.opinia blockquote{margin:0;font-size:1.02rem;color:var(--tekst)}
+.opinia figcaption{margin-top:auto;font:500 15px/1.4 Inter;color:var(--tekst)}
+.opinia figcaption span{display:block;margin-top:4px;font-weight:400;font-size:13px;
+  color:var(--przyg-jasny)}
+@media (max-width:700px){
+  .opinia{flex-basis:min(80vw,320px);padding:24px 22px}
+  .naglowek-opinie{margin-bottom:26px}
+}
+
 /* ── WARSTWA RUCHU ────────────────────────────────────────────────────────── */
 /* Sekwencje korzystają z obserwatora `.rv` i animacji `kaskada-wjazd` rdzenia.
    Opóźnienia należą do animacji, więc nie zostają na późniejszym hoverze. */
@@ -347,6 +434,16 @@ html:not(.js) .lata--ruch>li b,html:not(.js) .lata--ruch>li p{
 .kafel .spec{display:block;font-size:14px;color:var(--przyg-jasny);line-height:1.5}
 .kafel .dalej{display:block;margin-top:auto;padding-top:16px;font:500 13px/1 Inter;
   color:var(--akcent-na-jasnym);letter-spacing:.06em}
+/* 🔴 Hover kafla przewraca DOLNY blok na noc (K. 10.09.2026: „zmien tez kolor bloczku
+   pod spodem… całość dalej bardzo dobrze czytelna"). Kontrast po przewrocie:
+   biel #F5F5F7 na #0F0F12 = 18,3 · opis 72% bieli = 10,4 · akcent #E2762A = 5,9.
+   ⛔ Nie ruszać samego obrazka - powiększenie 1.03 zostaje. */
+.kafel .opis{transition:background-color .28s var(--ease)}
+.kafel h3,.kafel .spec,.kafel .dalej{transition:color .28s var(--ease)}
+.kafel:hover .opis,.kafel:focus-visible .opis{background:var(--noc)}
+.kafel:hover h3,.kafel:focus-visible h3{color:var(--biel)}
+.kafel:hover .spec,.kafel:focus-visible .spec{color:rgba(245,245,247,.74)}
+.kafel:hover .dalej,.kafel:focus-visible .dalej{color:var(--akcent-jasny)}
 
 /* wiersz „mniejsza robota" pod kaflami */
 .wiersz-usluga{display:flex;align-items:center;gap:22px;flex-wrap:wrap;
@@ -546,6 +643,8 @@ html:not(.js) .lata--ruch>li b,html:not(.js) .lata--ruch>li p{
   border-radius:0}
 .pk-btn:hover{background:var(--akcent-btn-hover)}
 [data-po-kliknieciu]+iframe,iframe{width:100%;min-height:320px;border:0}
+.mapa{min-height:440px;display:block}
+@media (max-width:700px){.mapa{min-height:320px}}
 
 /* ── STOPKA ─────────────────────────────────────────────────────────────────── */
 /* 🔴 Stopka jest JASNA, choć na ciemnej stronie była czarna - bo stoi w niej LOGO.

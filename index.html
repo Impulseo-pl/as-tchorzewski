@@ -25,8 +25,8 @@
       href="assets/fonty/inter-latin-400-normal.woff2">
 <link rel="preload" as="image" href="img/hero.jpg" fetchpriority="high">
 <link rel="preload" as="image" href="img/logo-duze.png" fetchpriority="high">
-<link rel="stylesheet" href="assets/rdzen.css?v=13">
-<link rel="stylesheet" href="assets/app.css?v=17">
+<link rel="stylesheet" href="assets/rdzen.css?v=15">
+<link rel="stylesheet" href="assets/app.css?v=21">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"HomeAndConstructionBusiness",
 "name":"Firma Ogólnobudowlana Artur Tchórzewski","alternateName":"A.S Tchórzewski","url":"https://as-tchorzewski.pl/",
@@ -162,20 +162,25 @@
       <h2>Ten sam dom. Dwa zdjęcia.</h2>
       <p class="pod">Na gotowym zdjęciu nie widać już, od czego się zaczynało.</p>
     </div>
-    <div class="para rv kaskada">
-      <figure class="klatka" style="--i:0">
-        <span class="znacznik">Przed</span>
-        <img src="img/przed.jpg" width="1100" height="1100" decoding="async"
-          alt="Rozbudowa w stanie surowym: mury z bloczków, stemple i otwarty otwór okienny">
-        <p>Stan surowy: mury z bloczków, stemple, otwarty otwór okienny.</p>
-      </figure>
-      <figure class="klatka" style="--i:1">
-        <span class="znacznik po">Po</span>
-        <img src="img/po.jpg" width="1100" height="1100" decoding="async"
-          alt="Ta sama rozbudowa po wykończeniu: biała elewacja, duże okno tarasowe, trawnik">
-        <p>Po naszej robocie: elewacja, stolarka okienna, opaska i uporządkowane otoczenie.</p>
-      </figure>
-    </div>
+    <figure class="suwak rv">
+      <div class="suwak-rama" data-suwak style="--x:50%">
+      <img class="suwak-po" src="img/po.jpg" srcset="img/po.jpg 1x, img/po@2x.jpg 2x"
+        width="1600" height="1067" decoding="async"
+        alt="Ta sama rozbudowa po wykończeniu: biała elewacja, duże okno tarasowe, trawnik">
+      <div class="suwak-przed">
+        <img src="img/przed.jpg" srcset="img/przed.jpg 1x, img/przed@2x.jpg 2x"
+          width="1600" height="1067" decoding="async"
+          alt="Ta sama rozbudowa w stanie surowym: mury z bloczków, stemple i otwarty otwór okienny">
+      </div>
+      <span class="znacznik suwak-etyk suwak-etyk--przed">Przed</span>
+      <span class="znacznik po suwak-etyk suwak-etyk--po">Po</span>
+      <button class="suwak-uchwyt" type="button" role="slider" tabindex="0"
+        aria-label="Suwak: przesuń, żeby porównać stan przed i po"
+        aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><span></span></button>
+      </div>
+      <figcaption>Z lewej stan surowy: mury z bloczków i stemple. Z prawej po naszej robocie:
+        elewacja, stolarka okienna i opaska. Przesuń, żeby zobaczyć różnicę.</figcaption>
+    </figure>
   </div>
 </section>
 
@@ -231,7 +236,7 @@
     <div class="naglowek-sekcji rv">
       <span class="etykieta">Z budowy</span>
       <h2>Tak to wygląda od naszej strony</h2>
-      <p class="pod">Dwa kadry prosto z roboty, bez montażu i bez pozowania.
+      <p class="pod">Dwa kadry prosto z roboty.
         Najedź na kadr albo przytrzymaj go palcem.</p>
     </div>
     <div class="para para--filmy rv">
@@ -253,18 +258,69 @@
           </video>
           <button class="reel-btn" type="button"><span><svg class="ikona-play" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 1.6 14 8 3 14.4Z"/></svg>Robota przy elewacji (39 s)</span></button>
         </div>
-        <figcaption>Dzień na rusztowaniu przy elewacji - nasza ekipa, nie zdjęcie z katalogu.</figcaption>
+        <figcaption>Dzień na rusztowaniu przy elewacji - tynk, obróbki i podbitka.</figcaption>
       </figure>
     </div>
     <p class="pod-para rv"><a class="duch" href="realizacje.html">Zobacz realizacje</a></p>
   </div>
 </section>
 
-<figure class="pas">
+<figure class="pas pas--duzy">
   <img data-paralaksa="130" src="img/pas-lazienka.jpg" width="2400" height="1350" loading="lazy" decoding="async"
     alt="Wanna obudowana płytami w ciepłym beżu, we wnęce pod skosem poddasza, obok okno dachowe">
   <figcaption>Łazienka na poddaszu - wanna we wnęce pod skosem, z naszych realizacji.</figcaption>
 </figure>
+
+<section class="sekcja sekcja--opinie">
+  <div class="wrap">
+    <div class="naglowek-opinie rv">
+      <div>
+        <span class="etykieta">Opinie</span>
+        <h2>Co mówią ci, u których byliśmy</h2>
+      </div>
+      <span class="g-badge">
+  <svg class="gb-ico" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+  </svg>
+  <b class="gb-ocena">5,0</b>
+  <svg class="gb-stars" viewBox="0 0 90 18" width="74" height="14.8" aria-hidden="true">
+    <g class="gb-pusta"><path transform="translate(0 0)" d="M9 1.6l2.2 4.46 4.92.72-3.56 3.47.84 4.9L9 12.74l-4.4 2.31.84-4.9L1.88 6.68l4.92-.72L9 1.6Z"/><path transform="translate(18 0)" d="M9 1.6l2.2 4.46 4.92.72-3.56 3.47.84 4.9L9 12.74l-4.4 2.31.84-4.9L1.88 6.68l4.92-.72L9 1.6Z"/><path transform="translate(36 0)" d="M9 1.6l2.2 4.46 4.92.72-3.56 3.47.84 4.9L9 12.74l-4.4 2.31.84-4.9L1.88 6.68l4.92-.72L9 1.6Z"/><path transform="translate(54 0)" d="M9 1.6l2.2 4.46 4.92.72-3.56 3.47.84 4.9L9 12.74l-4.4 2.31.84-4.9L1.88 6.68l4.92-.72L9 1.6Z"/><path transform="translate(72 0)" d="M9 1.6l2.2 4.46 4.92.72-3.56 3.47.84 4.9L9 12.74l-4.4 2.31.84-4.9L1.88 6.68l4.92-.72L9 1.6Z"/></g>
+    <clipPath id="gs1000"><rect x="0" y="0" width="90.0" height="18"/></clipPath>
+    <g class="gb-peln" clip-path="url(#gs1000)"><path transform="translate(0 0)" d="M9 1.6l2.2 4.46 4.92.72-3.56 3.47.84 4.9L9 12.74l-4.4 2.31.84-4.9L1.88 6.68l4.92-.72L9 1.6Z"/><path transform="translate(18 0)" d="M9 1.6l2.2 4.46 4.92.72-3.56 3.47.84 4.9L9 12.74l-4.4 2.31.84-4.9L1.88 6.68l4.92-.72L9 1.6Z"/><path transform="translate(36 0)" d="M9 1.6l2.2 4.46 4.92.72-3.56 3.47.84 4.9L9 12.74l-4.4 2.31.84-4.9L1.88 6.68l4.92-.72L9 1.6Z"/><path transform="translate(54 0)" d="M9 1.6l2.2 4.46 4.92.72-3.56 3.47.84 4.9L9 12.74l-4.4 2.31.84-4.9L1.88 6.68l4.92-.72L9 1.6Z"/><path transform="translate(72 0)" d="M9 1.6l2.2 4.46 4.92.72-3.56 3.47.84 4.9L9 12.74l-4.4 2.31.84-4.9L1.88 6.68l4.92-.72L9 1.6Z"/></g>
+  </svg>
+  <span class="gb-txt">w Google</span>
+</span>
+    </div>
+  </div>
+  <div class="karuzela rv" data-karuzela>
+    <div class="karuzela-tor">
+        <figure class="opinia">
+          <svg class="opinia-gw" viewBox="0 0 90 18" width="82" height="16.4" aria-hidden="true">
+            <g><path transform="translate(0 0)" d="M9 1.6l2.2 4.46 4.92.72-3.56 3.47.84 4.9L9 12.74l-4.4 2.31.84-4.9L1.88 6.68l4.92-.72L9 1.6Z"/><path transform="translate(18 0)" d="M9 1.6l2.2 4.46 4.92.72-3.56 3.47.84 4.9L9 12.74l-4.4 2.31.84-4.9L1.88 6.68l4.92-.72L9 1.6Z"/><path transform="translate(36 0)" d="M9 1.6l2.2 4.46 4.92.72-3.56 3.47.84 4.9L9 12.74l-4.4 2.31.84-4.9L1.88 6.68l4.92-.72L9 1.6Z"/><path transform="translate(54 0)" d="M9 1.6l2.2 4.46 4.92.72-3.56 3.47.84 4.9L9 12.74l-4.4 2.31.84-4.9L1.88 6.68l4.92-.72L9 1.6Z"/><path transform="translate(72 0)" d="M9 1.6l2.2 4.46 4.92.72-3.56 3.47.84 4.9L9 12.74l-4.4 2.31.84-4.9L1.88 6.68l4.92-.72L9 1.6Z"/></g>
+          </svg>
+          <blockquote>Fachowcy pierwsza klasa. Panowie zrobili swoją pracę szybko i dokładnie. Bardzo mili i wszystko zostało ładnie wytłumaczone. Jestem bardzo zadowolona, bo z fachowcami w dzisiejszych czasach jest ciężko, a tutaj znalazłam swoją sprawdzoną ekipę.</blockquote>
+          <figcaption>Kinga Zielonacka<span>opinia w Google</span></figcaption>
+        </figure>
+        <figure class="opinia">
+          <svg class="opinia-gw" viewBox="0 0 90 18" width="82" height="16.4" aria-hidden="true">
+            <g><path transform="translate(0 0)" d="M9 1.6l2.2 4.46 4.92.72-3.56 3.47.84 4.9L9 12.74l-4.4 2.31.84-4.9L1.88 6.68l4.92-.72L9 1.6Z"/><path transform="translate(18 0)" d="M9 1.6l2.2 4.46 4.92.72-3.56 3.47.84 4.9L9 12.74l-4.4 2.31.84-4.9L1.88 6.68l4.92-.72L9 1.6Z"/><path transform="translate(36 0)" d="M9 1.6l2.2 4.46 4.92.72-3.56 3.47.84 4.9L9 12.74l-4.4 2.31.84-4.9L1.88 6.68l4.92-.72L9 1.6Z"/><path transform="translate(54 0)" d="M9 1.6l2.2 4.46 4.92.72-3.56 3.47.84 4.9L9 12.74l-4.4 2.31.84-4.9L1.88 6.68l4.92-.72L9 1.6Z"/><path transform="translate(72 0)" d="M9 1.6l2.2 4.46 4.92.72-3.56 3.47.84 4.9L9 12.74l-4.4 2.31.84-4.9L1.88 6.68l4.92-.72L9 1.6Z"/></g>
+          </svg>
+          <blockquote>Pełen profesjonalizm i najwyższa jakość usług. Ekipa remontowa zrealizowała projekt z dbałością o każdy, nawet najmniejszy detal. Bardzo doceniam ich punktualność, uczciwe podejście do wyceny oraz czystość podczas pracy.</blockquote>
+          <figcaption>Sylwia Nowicka<span>opinia w Google</span></figcaption>
+        </figure>
+        <figure class="opinia">
+          <svg class="opinia-gw" viewBox="0 0 90 18" width="82" height="16.4" aria-hidden="true">
+            <g><path transform="translate(0 0)" d="M9 1.6l2.2 4.46 4.92.72-3.56 3.47.84 4.9L9 12.74l-4.4 2.31.84-4.9L1.88 6.68l4.92-.72L9 1.6Z"/><path transform="translate(18 0)" d="M9 1.6l2.2 4.46 4.92.72-3.56 3.47.84 4.9L9 12.74l-4.4 2.31.84-4.9L1.88 6.68l4.92-.72L9 1.6Z"/><path transform="translate(36 0)" d="M9 1.6l2.2 4.46 4.92.72-3.56 3.47.84 4.9L9 12.74l-4.4 2.31.84-4.9L1.88 6.68l4.92-.72L9 1.6Z"/><path transform="translate(54 0)" d="M9 1.6l2.2 4.46 4.92.72-3.56 3.47.84 4.9L9 12.74l-4.4 2.31.84-4.9L1.88 6.68l4.92-.72L9 1.6Z"/><path transform="translate(72 0)" d="M9 1.6l2.2 4.46 4.92.72-3.56 3.47.84 4.9L9 12.74l-4.4 2.31.84-4.9L1.88 6.68l4.92-.72L9 1.6Z"/></g>
+          </svg>
+          <blockquote>Z całego serca polecam tę firmę remontową. Remont został wykonany na najwyższym poziomie - wszystko dokładnie, estetycznie i z ogromną dbałością o detale. Prace przebiegały sprawnie, zgodnie z ustalonym harmonogramem.</blockquote>
+          <figcaption>Daria Jóźwikowska<span>opinia w Google</span></figcaption>
+        </figure>
+    </div>
+  </div>
+</section>
 
 <section class="sekcja">
   <div class="wrap">
@@ -274,8 +330,8 @@
         <h2>Robimy to, na czym się znamy.</h2>
       </div>
       <div class="tekst-dlugi">
-        <p>Po pierwszej rozmowie wiesz, czy to coś dla nas. Jeśli nie - dostajesz numer
-          do kogoś, kto się tym zajmuje.</p>
+        <p>Wnętrze pod klucz prowadzi u nas jedna ekipa - od gładzi po ostatni silikon.
+          Po pierwszej rozmowie wiesz, czy to coś dla nas.</p>
       </div>
     </div>
     <div class="odstep-domkniecie">
@@ -370,6 +426,6 @@
   <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="">
   <p class="lb-cap"></p>
 </div>
-<script src="assets/rdzen.js?v=13"></script>
+<script src="assets/rdzen.js?v=15"></script>
 </body>
 </html>

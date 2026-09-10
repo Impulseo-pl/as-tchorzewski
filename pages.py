@@ -226,9 +226,9 @@ KADRY = {
     "beton-02": ("z-beton-02.jpg", 1200, 900,
                  "Jasna ściana z betonu architektonicznego w pokoju w trakcie robót",
                  "W trakcie: jasny beton architektoniczny na ścianie"),
-    "beton-03": ("z-beton-03.jpg", 1200, 900,
-                 "Ściana dekoracyjna przy skosie, pokój w trakcie wykończenia",
-                 "W trakcie: ściana dekoracyjna przy skosie"),
+    "beton-ciemny": ("z-beton-ciemny.jpg", 1200, 900,
+                     "Ciemna ściana z betonu architektonicznego z czarnymi listwami w geometrycznym układzie",
+                     "Ciemny beton architektoniczny z czarnymi listwami"),
 
     "elewacja-01": ("z-elewacja-01.jpg", 1200, 1600,
                     "Dom po wykonaniu elewacji, taras z kostki i wejście z zadaszeniem",
@@ -315,6 +315,91 @@ def film(plik, plakat, tytul, podpis, alt, lazy=True):
 #  07.09.2026); ciemne zostały: nagłówek sceny, ramka wezwania i pasy zdjęć.
 #  Główna zapowiada, podstrony niosą treść.
 # ══════════════════════════════════════════════════════════════════════════════
+# ══════════════════════════════════════════════════════════════════════════════
+#  OPINIE Z GOOGLE
+#  🔴 Treści PRZEPISANE Z WIZYTÓWKI 10.09.2026 (CID 0x56cbe6647684bfc8; telefon
+#     667 434 222 sprawdzony, żeby nie wziąć wizytówki Tadeusza Tchórzewskiego
+#     spod tego samego adresu). Ocena 5,0, sześć opinii, z czego TRZY mają treść.
+#  ⛔ Nie dopisywać i nie przerabiać ani słowa. Google ucina długie opinie
+#     w podglądzie - bierzemy dokładnie tyle, ile widać, kończąc na ostatnim
+#     PEŁNYM zdaniu. Emotikony i podwójne spacje zdjęte, reszta bez zmian.
+#  ⚠️ Liczby opinii NIE PODAJEMY (jest ich sześć) - tak każe standard plakietki
+#     ze skilla `strona-docelowa` przy progu poniżej dziesięciu.
+#  ⏳ Zgoda klienta na publikację z imieniem i nazwiskiem: pytanie 7
+#     w `PYTANIA-DO-KLIENTA.md`, wciąż bez odpowiedzi.
+# ══════════════════════════════════════════════════════════════════════════════
+OPINIE = [
+    ("Kinga Zielonacka",
+     "Fachowcy pierwsza klasa. Panowie zrobili swoją pracę szybko i dokładnie. "
+     "Bardzo mili i wszystko zostało ładnie wytłumaczone. Jestem bardzo zadowolona, "
+     "bo z fachowcami w dzisiejszych czasach jest ciężko, a tutaj znalazłam swoją "
+     "sprawdzoną ekipę."),
+    ("Sylwia Nowicka",
+     "Pełen profesjonalizm i najwyższa jakość usług. Ekipa remontowa zrealizowała "
+     "projekt z dbałością o każdy, nawet najmniejszy detal. Bardzo doceniam ich "
+     "punktualność, uczciwe podejście do wyceny oraz czystość podczas pracy."),
+    ("Daria Jóźwikowska",
+     "Z całego serca polecam tę firmę remontową. Remont został wykonany na "
+     "najwyższym poziomie - wszystko dokładnie, estetycznie i z ogromną dbałością "
+     "o detale. Prace przebiegały sprawnie, zgodnie z ustalonym harmonogramem."),
+]
+
+_GW = ("M9 1.6l2.2 4.46 4.92.72-3.56 3.47.84 4.9L9 12.74l-4.4 2.31.84-4.9"
+       "L1.88 6.68l4.92-.72L9 1.6Z")
+
+
+def _gwiazdki():
+    return "".join(f'<path transform="translate({i * 18} 0)" d="{_GW}"/>' for i in range(5))
+
+
+def plakietka_google(ocena="5,0"):
+    """Plakietka ze standardu skilla `strona-docelowa` (rdzeń, `.g-badge`).
+    Poniżej dziesięciu opinii NIE podajemy ich liczby - sama ocena i gwiazdki."""
+    liczba = float(ocena.replace(",", "."))
+    return f"""<span class="g-badge">
+  <svg class="gb-ico" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+  </svg>
+  <b class="gb-ocena">{ocena}</b>
+  <svg class="gb-stars" viewBox="0 0 90 18" width="74" height="14.8" aria-hidden="true">
+    <g class="gb-pusta">{_gwiazdki()}</g>
+    <clipPath id="gs{int(liczba * 200)}"><rect x="0" y="0" width="{liczba / 5 * 90:.1f}" height="18"/></clipPath>
+    <g class="gb-peln" clip-path="url(#gs{int(liczba * 200)})">{_gwiazdki()}</g>
+  </svg>
+  <span class="gb-txt">w Google</span>
+</span>"""
+
+
+def sekcja_opinie():
+    karty = "\n".join(
+        f"""        <figure class="opinia">
+          <svg class="opinia-gw" viewBox="0 0 90 18" width="82" height="16.4" aria-hidden="true">
+            <g>{_gwiazdki()}</g>
+          </svg>
+          <blockquote>{tresc}</blockquote>
+          <figcaption>{autor}<span>opinia w Google</span></figcaption>
+        </figure>""" for autor, tresc in OPINIE)
+    return f"""<section class="sekcja sekcja--opinie">
+  <div class="wrap">
+    <div class="naglowek-opinie rv">
+      <div>
+        <span class="etykieta">Opinie</span>
+        <h2>Co mówią ci, u których byliśmy</h2>
+      </div>
+      {plakietka_google()}
+    </div>
+  </div>
+  <div class="karuzela rv" data-karuzela>
+    <div class="karuzela-tor">
+{karty}
+    </div>
+  </div>
+</section>"""
+
+
 def index(naglowek):
     return f"""{naglowek("index.html")}
 
@@ -341,20 +426,25 @@ def index(naglowek):
       <h2>Ten sam dom. Dwa zdjęcia.</h2>
       <p class="pod">Na gotowym zdjęciu nie widać już, od czego się zaczynało.</p>
     </div>
-    <div class="para rv kaskada">
-      <figure class="klatka" style="--i:0">
-        <span class="znacznik">Przed</span>
-        <img src="img/przed.jpg" width="1100" height="1100" decoding="async"
-          alt="Rozbudowa w stanie surowym: mury z bloczków, stemple i otwarty otwór okienny">
-        <p>Stan surowy: mury z bloczków, stemple, otwarty otwór okienny.</p>
-      </figure>
-      <figure class="klatka" style="--i:1">
-        <span class="znacznik po">Po</span>
-        <img src="img/po.jpg" width="1100" height="1100" decoding="async"
-          alt="Ta sama rozbudowa po wykończeniu: biała elewacja, duże okno tarasowe, trawnik">
-        <p>Po naszej robocie: elewacja, stolarka okienna, opaska i uporządkowane otoczenie.</p>
-      </figure>
-    </div>
+    <figure class="suwak rv">
+      <div class="suwak-rama" data-suwak style="--x:50%">
+      <img class="suwak-po" src="img/po.jpg" srcset="img/po.jpg 1x, img/po@2x.jpg 2x"
+        width="1600" height="1067" decoding="async"
+        alt="Ta sama rozbudowa po wykończeniu: biała elewacja, duże okno tarasowe, trawnik">
+      <div class="suwak-przed">
+        <img src="img/przed.jpg" srcset="img/przed.jpg 1x, img/przed@2x.jpg 2x"
+          width="1600" height="1067" decoding="async"
+          alt="Ta sama rozbudowa w stanie surowym: mury z bloczków, stemple i otwarty otwór okienny">
+      </div>
+      <span class="znacznik suwak-etyk suwak-etyk--przed">Przed</span>
+      <span class="znacznik po suwak-etyk suwak-etyk--po">Po</span>
+      <button class="suwak-uchwyt" type="button" role="slider" tabindex="0"
+        aria-label="Suwak: przesuń, żeby porównać stan przed i po"
+        aria-valuemin="0" aria-valuemax="100" aria-valuenow="50"><span></span></button>
+      </div>
+      <figcaption>Z lewej stan surowy: mury z bloczków i stemple. Z prawej po naszej robocie:
+        elewacja, stolarka okienna i opaska. Przesuń, żeby zobaczyć różnicę.</figcaption>
+    </figure>
   </div>
 </section>
 
@@ -410,7 +500,7 @@ def index(naglowek):
     <div class="naglowek-sekcji rv">
       <span class="etykieta">Z budowy</span>
       <h2>Tak to wygląda od naszej strony</h2>
-      <p class="pod">Dwa kadry prosto z roboty, bez montażu i bez pozowania.
+      <p class="pod">Dwa kadry prosto z roboty.
         Najedź na kadr albo przytrzymaj go palcem.</p>
     </div>
     <div class="para para--filmy rv">
@@ -418,18 +508,20 @@ def index(naglowek):
             "Malowanie agregatem natryskowym - duża powierzchnia, powłoka bez śladów po wałku.",
             "Pracownik w kombinezonie i masce maluje ścianę agregatem natryskowym")}
       {film("ekipa.mp4", "plakat-ekipa.jpg", "Robota przy elewacji (39 s)",
-            "Dzień na rusztowaniu przy elewacji - nasza ekipa, nie zdjęcie z katalogu.",
+            "Dzień na rusztowaniu przy elewacji - tynk, obróbki i podbitka.",
             "Ekipa przy elewacji budynku, rusztowanie ustawione wzdłuż ściany")}
     </div>
     <p class="pod-para rv"><a class="duch" href="realizacje.html">Zobacz realizacje</a></p>
   </div>
 </section>
 
-<figure class="pas">
+<figure class="pas pas--duzy">
   <img data-paralaksa="130" src="img/pas-lazienka.jpg" width="2400" height="1350" loading="lazy" decoding="async"
     alt="Wanna obudowana płytami w ciepłym beżu, we wnęce pod skosem poddasza, obok okno dachowe">
   <figcaption>Łazienka na poddaszu - wanna we wnęce pod skosem, z naszych realizacji.</figcaption>
 </figure>
+
+{sekcja_opinie()}
 
 <section class="sekcja">
   <div class="wrap">
@@ -439,8 +531,8 @@ def index(naglowek):
         <h2>Robimy to, na czym się znamy.</h2>
       </div>
       <div class="tekst-dlugi">
-        <p>Po pierwszej rozmowie wiesz, czy to coś dla nas. Jeśli nie - dostajesz numer
-          do kogoś, kto się tym zajmuje.</p>
+        <p>Wnętrze pod klucz prowadzi u nas jedna ekipa - od gładzi po ostatni silikon.
+          Po pierwszej rozmowie wiesz, czy to coś dla nas.</p>
       </div>
     </div>
     <div class="odstep-domkniecie">
@@ -520,7 +612,7 @@ def co_robimy(naglowek):
 {blok_uslugi("u-05", "05", "Montaż drzwi i okien", [
     "Drzwi i okna montujemy zwykle na końcu wykończenia - wtedy, gdy ściany "
     "są już gotowe i wiadomo, w co się wstawia.",
-    "Po montażu zostaje obróbka ościeży i wykończenie ściany wokół futryny."],
+    "Po montażu sami obrabiamy ościeża i wykańczamy ścianę wokół futryny."],
     "drzwi wewnętrzne i zewnętrzne · okna · obróbka i wykończenie po montażu",
     ("u-drzwi-okna.jpg", 1000, 1333),
     "Hol z zamontowanymi drzwiami wejściowymi z matowym szkłem")}
@@ -537,8 +629,6 @@ def co_robimy(naglowek):
       <p>Wnętrza są naszą główną robotą, ale na koncie mamy też elewacje z podbitką,
         ściany w betonie architektonicznym i wykończenia schodów. Zdjęcia z tych budów
         stoją w <a href="realizacje.html">realizacjach</a>.</p>
-      <p>Czego nie bierzemy - mówimy od razu i polecamy sprawdzone osoby, z którymi
-        pracujemy na budowach.</p>
     </div>
   </div>
 </section>
@@ -568,11 +658,11 @@ def co_robimy(naglowek):
 def realizacje(naglowek):
     return f"""{naglowek("realizacje.html")}
 
-{otwarcie("Realizacje", "Nasze budowy, nasze zdjęcia",
+{otwarcie("Realizacje", "Skończone wnętrza i kadry z budowy",
           kadr="otw-realizacje.jpg",
           opis="Poddasze z dwoma oknami dachowymi i zabudowaną wanną",
           lead=
-          "Wszystkie z naszych budów - żadnego kupionego w banku zdjęć. Na gotowej łazience nie widać już, jak wyprowadzono podejścia wodne ani co siedzi pod płytką, więc obok skończonych wnętrz pokazujemy kadry z samej roboty, podpisane „w trakcie”.")}
+          "Na gotowej łazience nie widać już, jak wyprowadzono podejścia wodne ani co siedzi pod płytką. Dlatego obok skończonych wnętrz pokazujemy kadry z samej roboty, podpisane „w trakcie”.")}
 
 <section class="sekcja">
   <div class="wrap">
@@ -583,7 +673,7 @@ def realizacje(naglowek):
 
 {grupa("Poddasze z wnęką na wannę", "03", ["poddasze2-01", "poddasze2-02", "poddasze2-03"])}
 
-{grupa("Beton architektoniczny i schody", "04", ["beton-02", "beton-03", "schody-01"])}
+{grupa("Beton architektoniczny i schody", "04", ["beton-02", "beton-ciemny", "schody-01"])}
 
 {grupa("Elewacja i podbitka", "05", ["elewacja-01", "elewacja-02", "elewacja-03",
                                      "elewacja-04"])}
@@ -648,17 +738,20 @@ def o_nas(naglowek):
     {kadr_o_nas()}
     <div class="tekst-dlugi rv">
       <h3>Co znaczy „rodzinna”</h3>
-      <p>Tyle, że nazwisko na fakturze i ludzie na budowie to ta sama historia - i że nie znikamy po odbiorze.</p>
+      <p>Że na budowie pracują ci sami ludzie, którzy podpisują fakturę. Firma stoi w Polsce
+        od 2015 roku, a wcześniej przez dziesięć lat robiliśmy to samo na budowach w Niemczech.</p>
+      <h3>Co robimy najczęściej</h3>
+      <p>Szpachlowanie, malowanie, łazienki i sucha zabudowa - te cztery rzeczy wchodzą
+        na niemal każdą budowę. Do tego poddasza pod klucz i montaż drzwi, a poza wnętrzami
+        elewacje z podbitką, beton architektoniczny i wykończenia schodów.</p>
       <h3>Po wyschnięciu widać wszystko</h3>
       <p>Gładź, płytka wielkoformatowa i skos poddasza mają jedną wspólną cechę: efekt widać dopiero wtedy, gdy jest za późno na poprawki. Dlatego zabudowa, gładzie i malowanie idą u nas jedną ręką - nie ma komu zrzucić winy za nierówną ścianę.</p>
-      <p>Przy robocie, której nie bierzemy, polecamy sprawdzone osoby, z którymi
-        spotykamy się na budowach.</p>
     </div>
   </div>
 </section>
 
 
-{domkniecie("Teraz wiesz, kto przyjedzie",
+{domkniecie("Reszty dowiesz się przez telefon",
             "Zadzwoń albo napisz - umawiamy oględziny na miejscu.")}"""
 
 
@@ -729,20 +822,16 @@ def kontakt(naglowek):
     <div class="naglowek-sekcji rv">
       <span class="etykieta">Gdzie nas znaleźć</span>
       <h2>Błońsko, powiat grodziski</h2>
-      <p class="pod">Błońsko leży pod Rakoniewicami, w powiecie grodziskim - stąd wyjeżdżamy na budowy. Mapa włącza się dopiero po kliknięciu.</p>
+      <p class="pod">Błońsko leży pod Rakoniewicami, w powiecie grodziskim - stąd wyjeżdżamy na budowy.</p>
     </div>
-    <div class="rv" data-po-kliknieciu
-         data-src="https://www.google.com/maps?q=B%C5%82o%C5%84sko%2046%2C%2064-308&amp;output=embed"
-         data-tytul="Mapa: Błońsko 46">
-      <span class="mapa-adres">Błońsko 46 · 64-308 Jabłonna</span>
-      <p>Mapa Google - włącza się po kliknięciu.</p>
-      <button class="pk-btn" type="button">Pokaż mapę</button>
-    </div>
+    <iframe class="mapa rv" title="Mapa: Błońsko 46, 64-308"
+      src="https://maps.google.com/maps?q=B%C5%82o%C5%84sko%2046%2C%2064-308%20Jab%C5%82onna&amp;z=15&amp;output=embed"
+      loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
   </div>
 </section>
 
-{domkniecie("Najszybciej - telefonem",
-            "Nie odbieramy tylko wtedy, gdy jesteśmy na rusztowaniu - wtedy oddzwaniamy.")}"""
+{domkniecie("Zadzwoń",
+            "Jesteśmy pod telefonem od 8 do 20. Gdy nie odbierzemy, oddzwaniamy.")}"""
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -765,9 +854,9 @@ def polityka(naglowek):
       wyłącznie do przygotowania wyceny i wykonania robót.</p>
     <p><strong>Ciasteczka i statystyki:</strong> strona nie zapisuje ciasteczek, nie mierzy
       ruchu i nie ma skryptów śledzących ani reklam.</p>
-    <p><strong>Mapa Google:</strong> na stronie „Kontakt” mapa włącza się dopiero po
-      kliknięciu. Dopóki jej nie włączysz, przeglądarka nie łączy się z serwerami Google.
-      Po włączeniu obowiązują zasady Google.</p>
+    <p><strong>Mapa Google:</strong> na stronie „Kontakt” osadzona jest mapa Google.
+      Przy jej wczytaniu przeglądarka łączy się z serwerami Google i obowiązują wtedy
+      zasady prywatności Google.</p>
     <p><strong>Twoje prawa:</strong> dostęp do swoich danych, sprostowanie, usunięcie,
       ograniczenie przetwarzania i sprzeciw. Wystarczy telefon albo mail. Przysługuje też
       skarga do Prezesa Urzędu Ochrony Danych Osobowych.</p>
