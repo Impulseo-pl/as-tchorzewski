@@ -173,3 +173,15 @@ Te rzeczy albo już wiemy, albo klient wprost je rozstrzygnął:
 - **„Ponad 20 lat"** — nie zaokrąglamy w górę i nie piszemy „od 20 lat".
 - **Polecanie sprawdzonych osób** przy usługach, których nie robią — powiedział to sam, wchodzi na stronę.
 - **Dane rejestrowe do stopki** (NIP, REGON, adres) — sprawdzone na białej liście VAT 07.09.
+
+
+### 11. Jeszcze jedno zdjęcie rozbudowy „po" — z tego samego miejsca co „przed"
+> „Na stronie głównej mamy suwak: to samo miejsce przed robotą i po. Zdjęcie »przed«
+> jest zrobione z większej odległości niż »po«, więc przy przesuwaniu widać, że jedno
+> jest bliżej. **Wystarczy jedno zdjęcie skończonej rozbudowy z tego samego miejsca,
+> z którego robiliście zdjęcie stanu surowego** — spod tego samego kąta, z tej samej
+> odległości. Można telefonem, byle nie przez Messengera."
+
+**Po co:** dopasowanie zdjęć da się zrobić przekształceniem tylko do granicy tego, co
+oba kadry OBEJMUJĄ. Reszty nie wyczaruje żaden program — potrzebne są piksele, których
+w tym pliku po prostu nie ma. Jedno zdjęcie zamyka temat.

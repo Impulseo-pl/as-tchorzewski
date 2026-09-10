@@ -508,3 +508,18 @@ Kontrola po zmianie (profile krawędzi poziomych, pasma po lewej i prawej stroni
 linia opaski i górna krawędź muru rozjeżdżają się o **1–5 jednostek na 1000** zamiast 18+.
 
 ⛔ Nie kotwiczyć na elementach, które zmieniło wykończenie: ościeża, parapety, obróbki.
+
+
+### Czego suwak przed/po NIE potrafi — pole widzenia
+
+To, ile widać w kadrze, jest **częścią wspólną obu zdjęć** i nie da się tego powiększyć
+żadnym przekształceniem. U A.S Tchórzewski „po" zrobiono z ok. **20 % bliżej** niż „przed",
+więc żeby budynek się zgadzał, musi zostać powiększone — i pokazuje o tyle mniej otoczenia.
+Oddalenie go rozjechałoby dopasowanie, a poza krawędź tego pliku nie ma czego dołożyć.
+
+⛔ Nie dorysowywać brakującego otoczenia generatorem. Zdjęcie „przed i po" jest dowodem
+na robotę klienta; domalowany trawnik przestaje nim być.
+
+✅ Jedyne prawdziwe rozwiązanie: **poprosić klienta o drugie zdjęcie „po" z tego samego
+miejsca, z którego zrobił „przed"**. Warto dopisać to do listy pytań przy okazji prośby
+o oryginały z telefonu.
