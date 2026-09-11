@@ -411,7 +411,6 @@ def index(naglowek):
       <h1>Zostawiamy wnętrze gotowe do wprowadzenia.</h1>
       <p class="lead">Szpachlowanie, malowanie, łazienki i sucha zabudowa.
         Na budowach od ponad 20 lat.</p>
-      <div class="obietnica"><b>Wycena do 5 dni roboczych</b><span>od oględzin na miejscu</span></div>
       {przyciski_kontakt(trzeci=False)}
     </div>
   </div>
@@ -631,6 +630,27 @@ def co_robimy(naglowek):
       <p>Wnętrza są naszą główną robotą, ale na koncie mamy też elewacje z podbitką,
         ściany w betonie architektonicznym i wykończenia schodów. Zdjęcia z tych budów
         stoją w <a href="realizacje.html">realizacjach</a>.</p>
+    </div>
+  </div>
+  <!-- Dwa kadry na dowód dwóch z trzech robót wymienionych obok. Trzeciej (beton
+       architektoniczny) tu NIE MA: oba kadry betonu są poziome, więc w parze z tymi
+       dwoma pionowymi rozbiłyby rytm, a ciemna ściana z bliska ciągnie wzrok mocniej
+       niż cała reszta sekcji. Beton pokazuje tło pierwszego ekranu strony głównej
+       i grupa 04 w `realizacjach` - tam jest na niego miejsce. -->
+  <div class="wrap">
+    <div class="para para--dowod kaskada rv">
+      <figure class="klatka">
+        <img src="img/z-elewacja-01.jpg" srcset="img/z-elewacja-01.jpg 1x, img/z-elewacja-01-duze.jpg 2x"
+          width="1200" height="1600" loading="lazy" decoding="async"
+          alt="Dom po wykonaniu elewacji: biały tynk, ciemna podbitka pod okapem i wejście od strony tarasu">
+        <figcaption>Elewacja z podbitką - wejście od strony tarasu.</figcaption>
+      </figure>
+      <figure class="klatka">
+        <img src="img/z-schody-01.jpg" srcset="img/z-schody-01.jpg 1x, img/z-schody-01-duze.jpg 2x"
+          width="1100" height="1467" loading="lazy" decoding="async"
+          alt="Wykończone schody betonowe z listwami ze stali i oprawami światła w ścianie">
+        <figcaption>Schody po wykończeniu, z podświetleniem w ścianie.</figcaption>
+      </figure>
     </div>
   </div>
 </section>

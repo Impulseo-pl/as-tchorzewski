@@ -18,7 +18,7 @@
 (function () {
   'use strict';
   document.documentElement.classList.add('js');
-  var RDZEN_WERSJA = 15;  // 15: przed/po - pierwsze dotkniecie na telefonie dziala (koniec sztucznego mouseenter); 14: przed/po przez przenikanie calego kadru (koniec suwaka z linia); 13: suwak nie wraca na srodek po zjechaniu kursora; 12: karuzela opinii; 11: suwak przed/po; 10: kaskada na animation (koniec opoznionego hovera); 9: rozwijane menu; 8: plakietka Google
+  var RDZEN_WERSJA = 16;  // 16: przed/po - plynne przejscie (koniec 'oddechu' ze scale+blur i postoju 0,3 s; ruch wylacznie na transition); 15: przed/po - pierwsze dotkniecie na telefonie dziala (koniec sztucznego mouseenter); 14: przed/po przez przenikanie calego kadru (koniec suwaka z linia); 13: suwak nie wraca na srodek po zjechaniu kursora; 12: karuzela opinii; 11: suwak przed/po; 10: kaskada na animation (koniec opoznionego hovera); 9: rozwijane menu; 8: plakietka Google
   document.documentElement.setAttribute('data-rdzen', RDZEN_WERSJA);
 
   var q = function (s, k) { return (k || document).querySelector(s); };
@@ -611,24 +611,17 @@
      · PIERWSZE WEJŚCIE W KADR — jeden pokaz tam i z powrotem, żeby ktoś, kto nie
        najedzie, i tak zobaczył oba stany. Raz na wizytę, nigdy przy `reduced-motion`.
 
-     ⛔ Klasa `przedpo--zmiana` MUSI schodzić po animacji (`animationend` + zapasowy
-        timer) — bez zdjęcia jej animacja nie odpali się drugi raz. */
+     ⛔ Skrypt PILNUJE STANU, nie animuje. Cały ruch (przenikanie + odjazd kadru)
+        siedzi na `transition` w `app.css`, więc szybkie klikanie tam i z powrotem
+        przeglądarka rozwiązuje sama, w połowie drogi, bez skoku. Stała tu wcześniej
+        klasa `przedpo--zmiana` restartująca `@keyframes` — wypadła 11.09.2026
+        razem z „oddechem", bo to ona zacinała przejście. Nie wracaj do niej. */
   qa('[data-przedpo]').forEach(function (rama) {
     var btn = q('[data-przedpo-btn]', rama);
-    var warstwy = q('.przedpo-warstwy', rama);
     var ruchOk = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var po = false, samoGralo = false, sprzatacz = null;
+    var po = false, samoGralo = false;
 
-    var oddech = function () {
-      if (!ruchOk || !warstwy) return;
-      rama.classList.remove('przedpo--zmiana');
-      void warstwy.offsetWidth;            /* wymuszony reflow = restart animacji */
-      rama.classList.add('przedpo--zmiana');
-      clearTimeout(sprzatacz);
-      sprzatacz = setTimeout(function () { rama.classList.remove('przedpo--zmiana'); }, 900);
-    };
-
-    var ustaw = function (nowy, zAnimacja) {
+    var ustaw = function (nowy) {
       if (nowy === po) return;
       po = nowy;
       rama.classList.toggle('jest-po', po);
@@ -637,7 +630,6 @@
         btn.setAttribute('aria-label', po ? 'Pokaż stan przed remontem'
                                           : 'Pokaż stan po remoncie');
       }
-      if (zAnimacja !== false) oddech();
     };
 
     /* Mysz: sam najazd przenika do „po" i tam zostaje.
@@ -656,16 +648,15 @@
       if (btn.matches(':focus-visible')) ustaw(true);
     });
 
-    if (warstwy) warstwy.addEventListener('animationend', function () {
-      rama.classList.remove('przedpo--zmiana');
-    });
-
     /* pierwsze wejście w kadr — jeden pokaz */
+    /* ⏱️ Odstępy MUSZĄ być dłuższe niż odjazd kadru (1,15 s w `app.css`).
+       Przy starych 420/2000 ms powrót startował, zanim kadr dojechał — wyglądało
+       to jak szarpnięcie w pół drogi. */
     var pokaz = function () {
       if (samoGralo || !ruchOk) return;
       samoGralo = true;
-      setTimeout(function () { ustaw(true); }, 420);
-      setTimeout(function () { ustaw(false); }, 2000);
+      setTimeout(function () { ustaw(true); }, 500);
+      setTimeout(function () { ustaw(false); }, 2900);
     };
     if ('IntersectionObserver' in window) {
       var obs = new IntersectionObserver(function (wpisy) {

@@ -113,13 +113,13 @@ a{text-decoration:none}
 .ciemna .pod,.ciemna .lead,.ciemna .przyciemniony,.ciemna .godziny{color:var(--przyg)}
 .ciemna .etykieta,.ciemna .kod,.ciemna .licznik,.ciemna .dalej{color:var(--akcent-jasny)}
 .ciemna .lata b{color:var(--akcent-jasny)}
-.ciemna .lata p,.ciemna .galeria figcaption,.ciemna .klatka p,
+.ciemna .lata p,.ciemna .galeria figcaption,.ciemna .klatka p,.ciemna .klatka figcaption,
 .ciemna .dane th,.ciemna .spec-linia,.ciemna .spec{color:var(--przyg)}
 .ciemna .karta,.ciemna [data-po-kliknieciu]{background:var(--noc-2);
   border-color:var(--linia-na-ciemnym)}
 .ciemna .zygzak,.ciemna .grupa-tyt,.ciemna .lata li,.ciemna .spec-linia,
 .ciemna .dane th,.ciemna .dane td,.ciemna .reel,.ciemna .reel figcaption,
-.ciemna .wiersz-usluga,.ciemna .obietnica,.ciemna .kafel{
+.ciemna .wiersz-usluga,.ciemna .kafel{
   border-color:var(--linia-slaba-na-ciemnym)}
 .ciemna .duch{border-color:rgba(255,255,255,.22);color:var(--biel)}
 .ciemna .duch:hover{border-color:var(--biel);background:rgba(255,255,255,.09)}
@@ -232,10 +232,6 @@ a{text-decoration:none}
 /* Hero ma krótszy wiersz niż otwarcia podstron - dwa wiersze zamiast trzech. */
 .scena .lead{max-width:34ch;margin-bottom:30px}
 .scena .lead{color:var(--przyg)}
-.obietnica{display:inline-flex;align-items:baseline;gap:14px;flex-wrap:wrap;
-  border:1px solid var(--linia-na-ciemnym);border-radius:0;padding:14px 24px;margin-bottom:32px}
-.obietnica b{font-family:Jost;font-weight:500;font-size:19px;color:var(--biel)}
-.obietnica span{font-size:14px;color:var(--przyg)}
 .scena .duch{border-color:rgba(255,255,255,.22);color:var(--biel)}
 .scena .duch:hover{border-color:var(--biel);background:rgba(255,255,255,.09)}
 .kontakt-linia{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
@@ -287,7 +283,11 @@ a{text-decoration:none}
 .para--filmy .reel{max-width:none}
 .klatka{position:relative}
 .klatka img{width:100%;border-radius:0;box-shadow:0 2px 8px rgba(0,0,0,.08)}
-.klatka p{margin-top:16px;font-size:15px;color:var(--przyg-jasny)}
+.klatka p,.klatka figcaption{margin-top:16px;font-size:15px;color:var(--przyg-jasny)}
+/* Para kadrów pod nagłówkiem sekcji („Poza wnętrzami"). Wężej niż `.wrap` i z własnym
+   odstępem u góry: przy pełnej szerokości dwa PIONOWE kadry rosły do ~935 px wysokości,
+   czyli wyżej niż ekran, i zjadały sekcję, która ma być zajawką, a nie galerią. */
+.para--dowod{max-width:940px;margin-inline:auto;margin-top:clamp(34px,4.5vw,58px)}
 .znacznik{position:absolute;top:18px;left:18px;background:rgba(15,15,18,.86);color:#fff;
   font:500 12px/1 Inter;letter-spacing:.16em;text-transform:uppercase;padding:9px 14px;
   border-radius:0}
@@ -325,7 +325,8 @@ a{text-decoration:none}
   display:block;border-radius:0}
 /* „przed" leży NA WIERZCHU i to ono znika — dzięki temu stan spoczynku (bez JS,
    przed pierwszym najazdem) pokazuje stan surowy, czyli początek historii. */
-.przedpo-przed{opacity:1;transition:opacity .75s var(--ease)}
+.przedpo-przed{opacity:1;transition:opacity .55s cubic-bezier(.4,0,.2,1);
+  will-change:opacity}
 .przedpo-rama.jest-po .przedpo-przed{opacity:0}
 
 /* ODJAZD KADRU „PO". Liczby idą parami z `przygotuj-media.py`:
@@ -334,13 +335,14 @@ a{text-decoration:none}
    W tej pozycji wycinek „po" pokrywa się z „przed" co do piksela; `scale(1)`
    odsłania cały szerszy kadr. ⛔ Ruszasz którekolwiek okno → przelicz OBIE liczby,
    inaczej w momencie przenikania warstwy skoczą względem siebie.
-   ⏱️ Odjazd MUSI mieć opóźnienie i własną krzywą. Przy wspólnym `--ease`
-   (cubic-bezier(.2,.7,.3,1), mocne wyhamowanie) po 200 ms kadr był już prawie
-   cofnięty — zmierzone 11.09.2026 — i cały dowód „ten sam narożnik" przepadał,
-   bo warstwy rozjeżdżały się dokładnie w chwili przenikania. Teraz: 0,3 s postoju
-   w dopasowaniu (przenikanie zdąża się zrobić), potem 0,95 s miękkiego odjazdu. */
+   ⏱️ JEDEN ruch, jedna krzywa, ZERO opóźnienia. Wcześniejsze `.3s` postoju
+   (11.09.2026) czytało się jak zacięcie: kadr stał w miejscu, a potem nagle
+   ruszał. To samo załatwia sama krzywa — `cubic-bezier(.65,0,.35,1)` rusza tak
+   leniwie, że po 350 ms przejechane jest 12% drogi (policzone), czyli przez całe
+   przenikanie warstwy wciąż leżą na sobie i dowód „ten sam narożnik" zostaje,
+   a mimo to nic nie „staje". */
 .przedpo-po{transform:translate(6.597%,-6.509%) scale(1.14);
-  transition:transform .95s cubic-bezier(.55,0,.3,1) .3s}
+  transition:transform 1.15s cubic-bezier(.65,0,.35,1);will-change:transform}
 .przedpo-rama.jest-po .przedpo-po{transform:translate(0,0) scale(1)}
 html:not(.js) .przedpo-rama:hover .przedpo-po{transform:translate(0,0) scale(1)}
 /* ⛔ `:hover` STERUJE STANEM TYLKO BEZ JS. Z włączonym skryptem reguła hoverowa
@@ -349,20 +351,18 @@ html:not(.js) .przedpo-rama:hover .przedpo-po{transform:translate(0,0) scale(1)}
    10.09.2026: opacity 0 mimo stanu „przed"). Stanem rządzi wyłącznie `jest-po`. */
 html:not(.js) .przedpo-rama:hover .przedpo-przed{opacity:0}
 
-/* Jeden „oddech" na każdą zmianę: kadr lekko podchodzi i wraca, a rozmycie
-   w połowie przejścia rozmiękcza resztkową różnicę kadrowania obu zdjęć.
-   ⚠️ Skala w szczycie (1.04) MUSI być większa niż zasięg rozmycia, inaczej
-   rozmyta krawędź warstwy odsłoniłaby tło ramki. */
-.przedpo-rama.przedpo--zmiana .przedpo-warstwy{animation:przedpo-oddech .78s var(--ease)}
-@keyframes przedpo-oddech{
-  0%{transform:scale(1);filter:blur(0)}
-  50%{transform:scale(1.04);filter:blur(3px)}
-  100%{transform:scale(1);filter:blur(0)}}
+/* ⛔ NIE DOKŁADAJ tu trzeciego ruchu. Do 11.09.2026 stał tu „oddech": cała
+   warstwa szła `scale(1.04)` + `blur(3px)`. Dwa powody, dla których zniknął:
+   (1) rozmycie pełnowymiarowego zdjęcia (1500 px) co klatkę gubi klatki i to
+   właśnie wyglądało jak zawieszenie przejścia; (2) skala na RODZICU biła się
+   ze skalą warstwy „po" — dwa transformy na zagnieżdżonych elementach naraz
+   dawały szarpnięcie w połowie drogi. Przejście robią teraz dokładnie dwie
+   rzeczy: przenikanie i odjazd kadru. */
 
 /* Etykiety stoją JEDNA NA DRUGIEJ i przenikają razem z kadrem — widoczna jest
    zawsze ta, która opisuje aktualny stan. */
 .przedpo-etyk{z-index:2;top:18px;left:18px;right:auto;
-  transition:opacity .5s var(--ease)}
+  transition:opacity .45s cubic-bezier(.4,0,.2,1)}
 .przedpo-etyk--po{opacity:0}
 .przedpo-rama.jest-po .przedpo-etyk--przed{opacity:0}
 .przedpo-rama.jest-po .przedpo-etyk--po{opacity:1}
@@ -374,11 +374,18 @@ html:not(.js) .przedpo-rama:hover .przedpo-etyk--po{opacity:1}
 .przedpo-przelacznik{position:absolute;inset:0;width:100%;height:100%;
   padding:0 0 22px;border:0;background:transparent;cursor:pointer;z-index:3;
   display:flex;align-items:flex-end;justify-content:center;border-radius:0}
+/* ⛔ Bez `backdrop-filter`. Rozmycie tła nad RUCHOMYM zdjęciem przeglądarka
+   przelicza co klatkę przez całe przejście — to był drugi hamulec obok
+   „oddechu" (11.09.2026). Nieprzezroczystsze tło (.82) wygląda tak samo,
+   a nie kosztuje nic. */
 .przedpo-hint{display:inline-flex;align-items:center;gap:10px;
-  background:rgba(15,15,18,.72);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+  background:rgba(15,15,18,.82);
   color:#fff;font:500 14px/1 Inter;letter-spacing:.02em;padding:12px 18px;
-  transition:opacity .45s var(--ease)}
-.przedpo-rama.jest-po .przedpo-hint{opacity:0}
+  transition:opacity .35s cubic-bezier(.4,0,.2,1),visibility 0s}
+/* ⛔ Opóźnienie `visibility` TYLKO w stanie „po" — gdyby stało w regule bazowej,
+   przy powrocie do „przed" plakietka czekałaby 0,35 s i wskakiwała gotowa. */
+.przedpo-rama.jest-po .przedpo-hint{opacity:0;visibility:hidden;
+  transition:opacity .35s cubic-bezier(.4,0,.2,1),visibility 0s linear .35s}
 html:not(.js) .przedpo-rama:hover .przedpo-hint{opacity:0}
 .przedpo-przelacznik:focus-visible .przedpo-hint{opacity:1;
   outline:2px solid var(--biel);outline-offset:3px}
@@ -403,7 +410,6 @@ html:not(.js) .przedpo-rama:hover .przedpo-hint{opacity:0}
   .przedpo-po{transform:none;transition:none}
   /* bez ruchu: sam przełącznik, żadnego przenikania ani oddechu */
   .przedpo-przed,.przedpo-etyk,.przedpo-hint{transition:none}
-  .przedpo-rama.przedpo--zmiana .przedpo-warstwy{animation:none}
 }
 
 /* ── OPINIE Z GOOGLE ───────────────────────────────────────────────────────── */

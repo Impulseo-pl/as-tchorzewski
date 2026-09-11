@@ -957,3 +957,45 @@ Dwie rzeczy, których nie dało się zobaczyć z kodu:
    był już prawie cofnięty i warstwy rozjeżdżały się dokładnie w chwili przenikania —
    cały dowód „ten sam narożnik" przepadał. Teraz 0,3 s postoju w dopasowaniu, potem
    0,95 s miękkiego odjazdu (`cubic-bezier(.55,0,.3,1)`).
+
+## 11.09.2026 (po południu) — przejście „przed/po" przestaje się zacinać
+
+K.: „poprawisz tę animację przejścia, bo jakoś dziwnie się zawiesza? ma być prosta
+ale ładna". Zawieszenie było prawdziwe i miało trzy źródła — wszystkie z rzeczy
+dołożonych tego samego dnia rano:
+
+1. **„Oddech"** (`@keyframes przedpo-oddech`: `scale(1.04)` + `blur(3px)` na całej
+   warstwie). Rozmycie pełnowymiarowego zdjęcia co klatkę gubi klatki — to była
+   główna przyczyna. Dodatkowo skala na RODZICU biła się ze skalą warstwy „po":
+   dwa transformy na zagnieżdżonych elementach naraz dawały szarpnięcie w pół drogi.
+   **Usunięty w całości** razem z klasą `przedpo--zmiana` i restartem animacji w JS.
+2. **Postój `0.3s` przed odjazdem kadru.** Zamysł był słuszny (warstwy mają się
+   pokrywać w chwili przenikania), ale oko czyta zatrzymany kadr jako zacięcie.
+   Teraz robi to sama krzywa: `cubic-bezier(.65,0,.35,1)` przy 1,15 s przejeżdża
+   po 350 ms dopiero 12 % drogi (policzone), więc dopasowanie trzyma się przez całe
+   przenikanie, a nic nie stoi.
+3. **`backdrop-filter: blur(6px)` na plakietce „Najedź lub kliknij".** Rozmycie tła
+   nad RUCHOMYM zdjęciem przeglądarka przelicza co klatkę. Zastąpione mocniejszym
+   tłem (`.82`) — wygląda tak samo, kosztuje zero.
+
+Zostały dokładnie dwie rzeczy: przenikanie (0,55 s) i odjazd kadru (1,15 s), oba
+na `transition`, więc szybkie klikanie tam i z powrotem przeglądarka rozwiązuje sama.
+Auto-pokaz przy wjeździe w kadr przesunięty na 500/2900 ms — przy starych 420/2000
+powrót startował, zanim kadr dojechał.
+
+🔴 Poprawka poszła do ŹRÓDŁA rdzenia (`~/.claude/skills/strona-docelowa/rdzen/rdzen.js`,
+wersja **16**) i dopiero stamtąd została wgrana tutaj — inaczej nie doszłaby do
+pozostałych stron.
+
+## 11.09.2026 — hero bez obietnicy „5 dni", sekcja „Poza wnętrzami" z dowodem
+
+- **Blok `.obietnica` zdjęty z pierwszego ekranu** (K.: „jeżeli klient stricte nie
+  poprosił, żeby to było na hero, to wystarczy poniżej albo w opisach"). Samo zdanie
+  pochodzi od klienta (`BRIEF-KLIENTA.md`: wycena do 5 dni roboczych), więc treści
+  nie usuwamy — na stronie głównej zostaje w domknięciu, plus `realizacje` i `kontakt`.
+  Martwy CSS `.obietnica` usunięty razem z blokiem. ⏳ `DO-POTWIERDZENIA.md` poz. 4
+  (czy to ma być publiczna obietnica i od czego liczymy 5 dni) **dalej otwarta**.
+- **Sekcja „Poza wnętrzami" dostała dwa kadry** (`.para .klatka`): elewacja z podbitką
+  i wykończone schody — czyli dowód na dwie z trzech robót wymienionych w tekście.
+  Trzeciej (beton architektoniczny) tam celowo NIE MA: ten sam kadr stoi w tle
+  pierwszego ekranu, a dwa razy to samo zdjęcie czyta się jak brak materiału.
