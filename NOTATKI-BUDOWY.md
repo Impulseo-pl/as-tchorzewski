@@ -999,3 +999,11 @@ pozostałych stron.
   i wykończone schody — czyli dowód na dwie z trzech robót wymienionych w tekście.
   Trzeciej (beton architektoniczny) tam celowo NIE MA: ten sam kadr stoi w tle
   pierwszego ekranu, a dwa razy to samo zdjęcie czyta się jak brak materiału.
+
+## 11.09.2026 — roboczy podgląd online
+
+`Impulseo-pl/as-tchorzewski` → **https://impulseo-pl.github.io/as-tchorzewski/**
+(K.: „wrzuć wszystko na jakiś roboczy link online, to zobaczę na telefonie też").
+To PODGLĄD, nie oddanie: `robots.txt` z `Disallow: /` i `noindex` na każdej podstronie
+zostają — dzięki temu adres roboczy nie wejdzie do Google i nie zacznie konkurować
+z docelową domeną. ⛔ Przed oddaniem zdjąć oba (bramka, sekcja 6, dopilnuje).
