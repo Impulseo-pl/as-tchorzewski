@@ -1142,3 +1142,15 @@ Zmierzone po zmianie: telefon 390 px / DPR 2 → `pas-elewacja-900.jpg` (**57 kB
 odpalany po `zdjecia()`), z gotowego pasa 2400 px — więc kadr jest ten sam i nie
 rozjedzie się przy następnym przygotowaniu mediów. ⛔ Nie twórz ich ręcznie i nie
 wycinaj `srcset` z `pages.py`.
+
+
+### ✅ H1 skrócony do samego rezultatu (11.09.2026)
+Było „Zostawiamy wnętrze gotowe do wprowadzenia.", jest „Wnętrze gotowe do wprowadzenia."
+Decyzja K. — czasownik na starcie tylko opóźniał obietnicę.
+
+Zmierzone po zmianie: okno 1710 px → 2 linijki (481 + 539 px) zamiast 3, telefon 386 px
+→ 2 linijki (230 + 258 px), `scrollWidth == clientWidth` (zero przewijania w bok).
+Bramki: język czysto na 7 podstronach, statyczne bez nowych uwag.
+
+⚠️ H1 żyje TYLKO w `pages.py` (funkcja `index`). Kopia w `design/_kierunki/kierunek-B-scena.html`
+to zamrożony makiet kierunku B z etapu wyboru — celowo zostaje ze starym brzmieniem.

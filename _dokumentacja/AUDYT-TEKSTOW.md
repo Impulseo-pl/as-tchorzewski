@@ -120,7 +120,8 @@ Zawieszony fakt w najważniejszym akapicie strony.
 
 ### ✅ Co jest dobre i czego NIE ruszam
 
-- **H1 „Zostawiamy wnętrze gotowe do wprowadzenia."** — mówi o rezultacie, nie o usłudze.
+- **H1 „Wnętrze gotowe do wprowadzenia."** — mówi o rezultacie, nie o usłudze.
+  (11.09.2026 K. skrócił: bez otwierającego „Zostawiamy" — sam rezultat, dwie linijki zamiast trzech.)
   Żadna z sześciu firm z regionu sprawdzonych w researchu nie ma nagłówka o rezultacie.
 - **„Nie bierzemy każdej roboty. Za to wiemy, kto ją zrobi."** — najlepszy nagłówek w całym
   serwisie. Zamienia „nie robimy tego" (ubytek) w powód do zaufania.

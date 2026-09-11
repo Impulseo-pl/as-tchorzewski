@@ -408,7 +408,7 @@ def index(naglowek):
   <div class="wrap" id="tresc">
     <div class="rv">
       <span class="etykieta">Wykończenia wnętrz · wielkopolskie i lubuskie</span>
-      <h1>Zostawiamy wnętrze gotowe do wprowadzenia.</h1>
+      <h1>Wnętrze gotowe do wprowadzenia.</h1>
       <p class="lead">Szpachlowanie, malowanie, łazienki i sucha zabudowa.
         Na budowach od ponad 20 lat.</p>
       {przyciski_kontakt(trzeci=False)}
