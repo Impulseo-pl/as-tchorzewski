@@ -1042,3 +1042,30 @@ plik. Objaw dostaje klient: wraca na stronę, przeglądarka podaje mu stary arku
 i zgłasza jako błąd rzecz właśnie naprawioną. Teraz `?v=` to skrót MD5 z zawartości
 (`_odcisk()`), więc zmienia się wtedy i tylko wtedy, gdy plik naprawdę się zmienił.
 ⛔ Nie wracać do ręcznej liczby.
+
+## 11.09.2026 — „przy scrollowaniu na telefonie przesuwa się niekontrolowanie"
+
+Najpierw WYKLUCZONE pomiarem (żeby nie naprawiać nie tego):
+- **paralaksa** — wyłączona poniżej 900 px, na telefonie w ogóle nie działa;
+- **przewijanie w bok** — `scrollWidth == clientWidth`; taśma opinii (2714 px)
+  wystaje, ale ucina ją `.sekcja--opinie{overflow:hidden}`, więc nic nie rozpycha;
+- **bramki wyglądu na 390×844** — czysto.
+
+Zostały dwie przyczyny, obie wskazane przez K. z telefonu:
+
+**1. `scroll-behavior:smooth` na `html`.** Na ekranie dotykowym bije się z bezwładnością
+palca: przeglądarka animuje własne przewinięcie, palec prowadzi swoje — strona dojeżdża
+sama albo szarpie po puszczeniu. Pod myszą efekt jest potrzebny (kotwice w menu), więc
+został tam, gdzie nie przeszkadza: `@media (pointer:fine)`.
+
+**2. Wjazd sekcji przesuwał treść w trakcie czytania.** `.rv` (14 px w pionie), zygzak
+(24 px w poziomie), kaskady galerii i oś lat. Na laptopie to czyta się jak głębia, bo
+kadr stoi. Na telefonie czytelnik przewija w tym samym czasie, w którym element dojeżdża
+— więc tekst rusza się pod wzrokiem. Na dotyku (`@media (pointer:coarse)`) zostaje samo
+przenikanie: efekt jest, nic się nie przesuwa. Opóźnienia kaskady zostawione — same
+z siebie nic nie ruszają.
+
+🔴 Obie poprawki poszły do **źródła rdzenia (wersja 17)**, więc pozostałe strony dostaną
+je przy najbliższym `rdzen.py wgraj`. Potwierdzone na żywym adresie: przeglądarka przyjęła
+oba bloki (`pointer:fine` 1 reguła, `pointer:coarse` 1 + 3 reguły, w tym `@keyframes`
+wewnątrz `@media` — to była realna niepewność, bo odrzucone reguły znikają bez słowa).
