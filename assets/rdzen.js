@@ -18,7 +18,7 @@
 (function () {
   'use strict';
   document.documentElement.classList.add('js');
-  var RDZEN_WERSJA = 17;  // 17: telefon - plynne przewijanie tylko pod mysza i wjazd sekcji bez przesuwania na dotyku; 16: przed/po - plynne przejscie (koniec 'oddechu' ze scale+blur i postoju 0,3 s; ruch wylacznie na transition); 15: przed/po - pierwsze dotkniecie na telefonie dziala (koniec sztucznego mouseenter); 14: przed/po przez przenikanie calego kadru (koniec suwaka z linia); 13: suwak nie wraca na srodek po zjechaniu kursora; 12: karuzela opinii; 11: suwak przed/po; 10: kaskada na animation (koniec opoznionego hovera); 9: rozwijane menu; 8: plakietka Google
+  var RDZEN_WERSJA = 18;  // 18: koniec bialego ekranu przy wejsciu na podstrone (fade wejscia usuniety, zostaje zanik wyjscia); 17: telefon - plynne przewijanie tylko pod mysza i wjazd sekcji bez przesuwania na dotyku; 16: przed/po - plynne przejscie (koniec 'oddechu' ze scale+blur i postoju 0,3 s; ruch wylacznie na transition); 15: przed/po - pierwsze dotkniecie na telefonie dziala (koniec sztucznego mouseenter); 14: przed/po przez przenikanie calego kadru (koniec suwaka z linia); 13: suwak nie wraca na srodek po zjechaniu kursora; 12: karuzela opinii; 11: suwak przed/po; 10: kaskada na animation (koniec opoznionego hovera); 9: rozwijane menu; 8: plakietka Google
   document.documentElement.setAttribute('data-rdzen', RDZEN_WERSJA);
 
   var q = function (s, k) { return (k || document).querySelector(s); };
@@ -475,23 +475,22 @@
   window.addEventListener('resize', stan, { passive: true });
   stan();
 
-  /* 10e. PRZEJŚCIE MIĘDZY PODSTRONAMI — zanik zamiast białego mrugnięcia.
-     Wchodzące `.przejscie-wejscie` zdejmujemy od razu (CSS robi fade-in),
-     a przy kliknięciu w link wewnętrzny dokładamy `.przejscie-wyjscie`.
-     ⚠️ Twardy bezpiecznik 700 ms: gdyby nawigacja nie doszła do skutku (błąd
-     sieci, cofnięcie), klasa schodzi sama i strona NIE zostaje wyblakła. */
+  /* 10e. PRZEJŚCIE MIĘDZY PODSTRONAMI — TYLKO WYJŚCIE.
+     🔴 FADE WEJŚCIA USUNIĘTY 11.09.2026 (K. z telefonu: „klikam link z menu, widać
+     na chwilę podstronę, potem BIAŁY EKRAN, potem dopiero się wczytuje").
+     Mechanizm miał chronić przed białym mrugnięciem, a sam je produkował, bo
+     kolejność była odwrotna do zamierzonej:
+       1. przeglądarka renderuje stronę  → treść JEST widoczna (`body{opacity:1}`),
+       2. na końcu <body> wykonuje się TEN skrypt → dokłada `.przejscie-wejscie`
+          → `body{opacity:0}` → strona GAŚNIE, choć była już gotowa,
+       3. po 700 ms klasa schodzi → strona wraca przez fade.
+     Czyli dokładnie: mignięcie treści → biały ekran → treść. Na telefonie, gdzie
+     parsowanie trwa dłużej, przerwa jest wyraźna.
+     ⛔ Nie przywracaj tego przez „ustawię klasę wcześniej, w <head>". Wtedy widoczność
+     strony zależy od tego, czy JS w ogóle dojdzie do skutku — a gdy padnie, klient
+     dostaje pustą stronę. Wejście ma być natychmiastowe; przerwę między podstronami
+     maskuje zanik WYJŚCIA, który został. */
   if (!spokojnie) {
-    /* ⚠️ NIE przenikamy strony, gdy gra ekran powitalny (K. 12.08.2026: „dziwnie
-       inaczej działa to wejście"). Zasłona leży W ŚRODKU <body>, więc fade całego
-       body rozmywał samą kurtynę — dwa efekty jechały jeden przez drugi.
-       Klasę `intro-on` dokłada skrypt wejścia z <head>, czyli PRZED tym blokiem. */
-    if (!document.documentElement.classList.contains('intro-on')) {
-      document.documentElement.classList.add('przejscie-wejscie');
-      setTimeout(function () {
-        document.documentElement.classList.remove('przejscie-wejscie');
-      }, 700);
-    }
-
     document.addEventListener('click', function (e) {
       var a = e.target.closest ? e.target.closest('a') : null;
       if (!a || e.defaultPrevented) return;

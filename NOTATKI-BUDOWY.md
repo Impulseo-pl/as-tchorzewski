@@ -1069,3 +1069,59 @@ z siebie nic nie ruszają.
 je przy najbliższym `rdzen.py wgraj`. Potwierdzone na żywym adresie: przeglądarka przyjęła
 oba bloki (`pointer:fine` 1 reguła, `pointer:coarse` 1 + 3 reguły, w tym `@keyframes`
 wewnątrz `@media` — to była realna niepewność, bo odrzucone reguły znikają bez słowa).
+
+## 11.09.2026 — menu na telefonie było niewidoczne (i dlaczego bramki tego nie złapały)
+
+K.: „menu się nie pokazuje — ty nie sprawdzasz takich oczywistych błędów przed
+spushowaniem?". Zarzut słuszny. Pozycje BYŁY w kodzie i BYŁY klikalne, tylko
+renderowały się ciemnym tekstem na ciemnym zdjęciu hero — widać było same strzałki.
+
+**Przyczyna.** Rozwinięte menu wchodzi w DRUGI wiersz flexa paska
+(`.nawigacja{order:3;width:100%}`), a `.top .wrap` miała sztywne `height:var(--gora)`
+= 76 px. Tło i rozmycie siedzą na `.top`, więc drugi wiersz (271 px) wychodził poza tło.
+
+⚠️ **Samo `min-height` w media query NIE naprawia tego** — reguła bazowa dalej narzuca
+`height`, a media query jej nie zdejmuje. Pierwsza poprawka nic nie dała i pokazał to
+dopiero pomiar (kontener stał na 76 px przy dziecku 271 px). Potrzebne jawne `height:auto`.
+
+**Dlaczego żadna bramka tego nie widziała.** Wszystkie mierzą stronę w stanie SPOCZYNKU,
+a menu na telefonie jest domyślnie zwinięte (`display:none`) — więc dla bramki nie istniało.
+Dodana kontrola `menu_niewidoczne` w `wyglad.js` jako jedyna KLIKA: otwiera menu przy
+szerokości ≤500 px i sprawdza, czy każda pozycja ma pod sobą nieprzezroczyste tło.
+
+**Jak sprawdzam takie rzeczy od teraz — bez ruszania okna K.:** wstrzykuję na stronę
+`<iframe>` 390×844 z tą samą stroną. Media query działają wg szerokości ramki, więc to
+prawdziwy widok telefonu, a okno Krzysztofa zostaje nietknięte. Tym samym sposobem
+potwierdziłem naprawę PRZED wypchnięciem: pasek rośnie z 77 do 334 px, wszystkie cztery
+pozycje leżą na jego tle.
+
+## 11.09.2026 — biały ekran po kliknięciu w link z menu
+
+K. z telefonu: „widać na chwilę podstronę, później biały ekran, później dopiero się
+wczytuje — wygląda nieprofesjonalnie". Przyczyną był NASZ WŁASNY mechanizm, który miał
+chronić przed białym mrugnięciem (rdzeń, blok 10e „PRZEJŚCIE MIĘDZY PODSTRONAMI").
+Kolejność wychodziła odwrotna do zamierzonej:
+
+1. przeglądarka renderuje stronę → treść **jest widoczna** (`body{opacity:1}`),
+2. na końcu `<body>` wykonuje się `rdzen.js` → dokłada `.przejscie-wejscie`
+   → `body{opacity:0}` → strona **gaśnie, choć była już gotowa**,
+3. po 700 ms klasa schodzi → strona wraca przez fade 0,4 s.
+
+Czyli dokładnie to, co K. opisał: mignięcie treści → biały ekran → treść. Na telefonie,
+gdzie parsowanie trwa dłużej, przerwa jest wyraźna.
+
+**Naprawa: fade WEJŚCIA usunięty w całości** (rdzeń 18). Zostaje zanik przy WYJŚCIU —
+on maskuje przerwę między podstronami i działa poprawnie, bo odpala się na kliknięcie,
+czyli wtedy, kiedy ma.
+
+⛔ Nie przywracać tego przez „ustawię klasę wcześniej, w `<head>`". Wtedy widoczność
+strony zależy od tego, czy JS dojdzie do skutku — a gdy padnie, klient dostaje pustą
+stronę. Wejście ma być natychmiastowe.
+
+Sprawdzone PRZED wypchnięciem (ramka 390×844): najniższa zmierzona widoczność `body`
+przy wejściu = 1 (strona nie gaśnie ani na klatkę), reguła `.przejscie-wejscie` nie
+istnieje już w arkuszach, a klasa zaniku przy kliknięciu dalej się dokłada.
+
+### ⏳ Otwarte: `pas-elewacja.jpg` za ciężki na telefonie
+Bramka wyglądu (390×844) zgłasza: 2400 px / 330 kB w miejscu szerokim na 390 px,
+3,1× nadmiaru przy Retinie, i leci tak na KAŻDEJ podstronie. Do przeskalowania.

@@ -147,12 +147,13 @@ html:not(.js) .rv,html:not(.js) .kaskada>*,html:not(.js) .proces-line > li{opaci
    przerysowuje przy każdym przewinięciu i strona zaczyna się szarpać */
 [data-paralaksa]{will-change:transform}
 
-/* PRZEJŚCIE MIĘDZY PODSTRONAMI — zamiast białego mrugnięcia.
-   Wychodzimy szybciej (.22s) niż wchodzimy (.4s): czekanie na wyjście czuć
-   jak zacięcie, a spokojne wejście czyta się jak dopracowanie. */
-.przejscie-wejscie body{opacity:0}
-body{opacity:1;transition:opacity .4s var(--ease)}
-.przejscie-wyjscie body{opacity:0;transition-duration:.22s}
+/* PRZEJŚCIE MIĘDZY PODSTRONAMI — TYLKO ZANIK PRZY WYJŚCIU.
+   ⛔ Nie dokładaj tu reguły chowającej stronę przy WEJŚCIU (stała tu
+   `.przejscie-wejscie body{opacity:0}`, usunięta 11.09.2026). Strona jest gotowa
+   w chwili renderu; chowanie jej po fakcie dawało na telefonie: mignięcie treści
+   → biały ekran → treść. Powód i pełny przebieg w `rdzen.js`, blok 10e. */
+body{opacity:1;transition:opacity .22s var(--ease)}
+.przejscie-wyjscie body{opacity:0}
 
 /* Kto prosi system o mniej animacji, ma je dostać wyłączone — inaczej strona
    potrafi wywołać mdłości. Treść zostaje widoczna. */
