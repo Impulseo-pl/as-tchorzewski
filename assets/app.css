@@ -478,6 +478,23 @@ html:not(.js) .przedpo-rama:hover .przedpo-hint{opacity:0}
   animation:kaskada-wjazd .55s var(--ease) backwards;animation-delay:calc(var(--i,0) * 90ms)}
 .lata--ruch.rv.is-in>li p{animation-delay:calc(var(--i,0) * 90ms + 80ms)}
 
+/* 🔴 NA DOTYKU ŻADEN WJAZD NIE PRZESUWA — zostaje samo przenikanie (K. 11.09.2026:
+   „treść podskakuje, gdy sekcja się pojawia"). To ta sama poprawka co `.rv` w rdzeniu,
+   tylko dla sekwencji tej strony: na telefonie czytelnik przewija w tym samym czasie,
+   w którym element dojeżdża, więc kadr rusza się pod wzrokiem i gubi się miejsce
+   w tekście. Opóźnienia kaskady zostają — one same z siebie nic nie przesuwają. */
+@media (pointer:coarse){
+  .zygzak.rv>.zygzak-obraz,
+  .lata--ruch>li b,.lata--ruch>li p{transform:none}
+  .zygzak.rv.is-in>.zygzak-obraz,
+  .zygzak--odwrocony.rv.is-in>.zygzak-obraz,
+  .grupa.rv.is-in .galeria.kaskada>figure,
+  .para.kaskada.is-in>.klatka,
+  .lata--ruch.rv.is-in>li b,.lata--ruch.rv.is-in>li p{
+    animation-name:wjazd-bez-ruchu}
+  @keyframes wjazd-bez-ruchu{from{opacity:0}}
+}
+
 /* Bez rdzenia treść i kadry zostają widoczne w swoim docelowym miejscu. */
 html:not(.js) .scena-tlo[data-paralaksa],html:not(.js) .otwarcie-tlo[data-paralaksa],
 html:not(.js) .pas img[data-paralaksa],html:not(.js) .para.kaskada>.klatka,

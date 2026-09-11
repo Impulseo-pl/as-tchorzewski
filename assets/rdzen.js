@@ -18,7 +18,7 @@
 (function () {
   'use strict';
   document.documentElement.classList.add('js');
-  var RDZEN_WERSJA = 16;  // 16: przed/po - plynne przejscie (koniec 'oddechu' ze scale+blur i postoju 0,3 s; ruch wylacznie na transition); 15: przed/po - pierwsze dotkniecie na telefonie dziala (koniec sztucznego mouseenter); 14: przed/po przez przenikanie calego kadru (koniec suwaka z linia); 13: suwak nie wraca na srodek po zjechaniu kursora; 12: karuzela opinii; 11: suwak przed/po; 10: kaskada na animation (koniec opoznionego hovera); 9: rozwijane menu; 8: plakietka Google
+  var RDZEN_WERSJA = 17;  // 17: telefon - plynne przewijanie tylko pod mysza i wjazd sekcji bez przesuwania na dotyku; 16: przed/po - plynne przejscie (koniec 'oddechu' ze scale+blur i postoju 0,3 s; ruch wylacznie na transition); 15: przed/po - pierwsze dotkniecie na telefonie dziala (koniec sztucznego mouseenter); 14: przed/po przez przenikanie calego kadru (koniec suwaka z linia); 13: suwak nie wraca na srodek po zjechaniu kursora; 12: karuzela opinii; 11: suwak przed/po; 10: kaskada na animation (koniec opoznionego hovera); 9: rozwijane menu; 8: plakietka Google
   document.documentElement.setAttribute('data-rdzen', RDZEN_WERSJA);
 
   var q = function (s, k) { return (k || document).querySelector(s); };

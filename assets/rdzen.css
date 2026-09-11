@@ -29,7 +29,14 @@
 }
 
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+html{-webkit-text-size-adjust:100%}
+/* 🔴 PŁYNNE PRZEWIJANIE TYLKO POD MYSZĄ (K. 11.09.2026: „przy scrollowaniu na telefonie
+   czasami tak się przesuwa niekontrolowanie"). Na ekranie dotykowym `scroll-behavior:smooth`
+   bije się z bezwładnością palca: przeglądarka animuje swoje przewinięcie, a palec w tym
+   czasie prowadzi własne — strona dojeżdża sama albo szarpie po puszczeniu. Na myszy
+   efekt jest potrzebny (kotwice w menu), bo tam nie ma czego zakłócać.
+   ⛔ Nie przenoś `scroll-behavior` z powrotem na goły `html`. */
+@media (pointer:fine){html{scroll-behavior:smooth}}
 img{max-width:100%;height:auto;display:block}
 a{color:inherit}
 
@@ -59,6 +66,14 @@ p,li{text-wrap:pretty}
 /* pojawianie się sekcji; klasa is-in dokładana przez rdzen.js z bezpiecznikami */
 .rv{opacity:0;transform:translateY(14px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
 .rv.is-in{opacity:1;transform:none}
+/* 🔴 NA DOTYKU SEKCJA SIĘ TYLKO POJAWIA, NIE DOJEŻDŻA (K. 11.09.2026: „treść podskakuje,
+   gdy sekcja się pojawia"). Te 14 px w pionie na laptopie czyta się jak głębia, bo kadr
+   stoi. Na telefonie czytelnik przewija w tym samym czasie, w którym element dojeżdża —
+   więc tekst rusza się pod wzrokiem i gubi się miejsce, w którym się czytało.
+   Zostaje samo przenikanie: efekt jest, a nic się nie przesuwa. */
+@media (pointer:coarse){
+  .rv{transform:none;transition:opacity .5s var(--ease)}
+}
 /* BEZ JAVASCRIPTU treść musi po prostu BYĆ — klasę `js` dokłada rdzeń w pierwszej
    linijce, więc gdy skrypt nie wystartuje (blokada, błąd sieci, stara przeglądarka),
    nic nie zostaje ukryte. Bez tego strona bywa PUSTA i nikt tego nie widzi. */
