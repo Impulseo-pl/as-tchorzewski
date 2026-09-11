@@ -384,10 +384,50 @@ def filmy():
               f"(było {os.path.getsize(zr)//1024} KB)   + img/{plakat}")
 
 
+# ══════════════════════════════════════════════════════════════════════════════
+#  WARIANTY PASÓW — jeden plik na każdą klasę ekranu
+# ══════════════════════════════════════════════════════════════════════════════
+# Pasy 21:9 idą przez CAŁĄ szerokość okna, więc ich rozmiar zależy od szerokości
+# ekranu, a nie od stałego miejsca w układzie. Stąd `srcset` w jednostkach `w`
+# + `sizes="100vw"`, a NIE konwencja `@2x` używana w reszcie tego pliku: `@2x`
+# rozstrzyga o gęstości pikseli, ale nie wie nic o szerokości okna, więc telefon
+# przy DPR 2-3 i tak brałby plik 2400 px.
+#
+# 🔴 Powód wprowadzenia (bramka wyglądu, telefon 390×844, 11.09.2026):
+#    „pas-elewacja.jpg 2400 px / 330 kB w miejscu 390 px (3,1× nadmiaru przy
+#    Retinie) — leci tak na każdej podstronie". Klient na telefonie płacił
+#    transferem za piksele, których jego ekran nie umie pokazać.
+#
+# ⛔ Nie twórz tych plików ręcznie. Powstają TUTAJ, z gotowego pasa 2400 px,
+#    więc kadr jest ten sam co w pliku bazowym i nie rozjedzie się przy
+#    następnym `przygotuj-media.py`.
+SZEROKOSCI_PASOW = (900, 1600)
+
+
+def warianty_pasow():
+    for nazwa in sorted(os.listdir(IMG)):
+        if not nazwa.startswith("pas-") or not nazwa.endswith(".jpg"):
+            continue
+        if any(f"-{w}." in nazwa for w in SZEROKOSCI_PASOW):
+            continue                      # to już jest wariant, nie rób wariantu z wariantu
+        zr = os.path.join(IMG, nazwa)
+        im = Image.open(zr)
+        for szer in SZEROKOSCI_PASOW:
+            if im.width <= szer:
+                continue                  # nie powiększamy - to by dodało wagi bez treści
+            cel = os.path.join(IMG, nazwa.replace(".jpg", f"-{szer}.jpg"))
+            wys = int(round(szer * im.height / im.width))
+            im.resize((szer, wys), Image.LANCZOS).save(
+                cel, "JPEG", quality=80, optimize=True, progressive=True)
+            print(f"  ✓ img/{os.path.basename(cel):24s} {szer}×{wys}  "
+                  f"{os.path.getsize(cel)//1024} KB  ← {nazwa}")
+
+
 if __name__ == "__main__":
     co = sys.argv[1] if len(sys.argv) > 1 else "wszystko"
     zdjecia()
     suwak_przed_po()
+    warianty_pasow()
     logo()
     if co != "zdjecia":
         filmy()

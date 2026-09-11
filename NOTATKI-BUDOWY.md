@@ -1122,6 +1122,23 @@ Sprawdzone PRZED wypchnięciem (ramka 390×844): najniższa zmierzona widocznoś
 przy wejściu = 1 (strona nie gaśnie ani na klatkę), reguła `.przejscie-wejscie` nie
 istnieje już w arkuszach, a klasa zaniku przy kliknięciu dalej się dokłada.
 
-### ⏳ Otwarte: `pas-elewacja.jpg` za ciężki na telefonie
-Bramka wyglądu (390×844) zgłasza: 2400 px / 330 kB w miejscu szerokim na 390 px,
-3,1× nadmiaru przy Retinie, i leci tak na KAŻDEJ podstronie. Do przeskalowania.
+### ✅ Pasy 21:9 dobierają plik do ekranu (11.09.2026)
+Bramka wyglądu (390×844) zgłaszała: `pas-elewacja.jpg` 2400 px / 330 kB w miejscu
+szerokim na 390 px, 3,1× nadmiaru przy Retinie, „leci tak na każdej podstronie".
+
+⛔ Rozwiązaniem NIE było zmniejszenie pliku — na dużym ekranie pas idzie przez całą
+szerokość okna i 2400 px jest tam potrzebne. Weszły trzy rozmiary i `srcset` w
+jednostkach `w` + `sizes="100vw"`.
+
+⚠️ Świadomie NIE użyliśmy konwencji `@2x` z reszty tego repo: `@2x` rozstrzyga
+o gęstości pikseli, ale nie wie nic o szerokości okna, więc telefon przy DPR 2–3
+i tak pobrałby plik 2400 px. Przy pasie o szerokości viewportu poprawne są `w` + `sizes`.
+
+Zmierzone po zmianie: telefon 390 px / DPR 2 → `pas-elewacja-900.jpg` (**57 kB zamiast
+330 kB**), okno 1710 px / DPR 2 → `pas-elewacja.jpg` (pełne 2400 px). To samo dla
+`pas-lazienka` (38 kB zamiast 236 kB).
+
+🔴 Warianty `-900` i `-1600` robi SAM `przygotuj-media.py` (krok `warianty_pasow()`,
+odpalany po `zdjecia()`), z gotowego pasa 2400 px — więc kadr jest ten sam i nie
+rozjedzie się przy następnym przygotowaniu mediów. ⛔ Nie twórz ich ręcznie i nie
+wycinaj `srcset` z `pages.py`.

@@ -228,8 +228,14 @@
   </div>
 </section>
 
+<!-- ⛔ NIE USUWAJ `srcset`/`sizes` z pasów. Pas idzie przez całą szerokość okna,
+     więc bez nich telefon pobiera plik 2400 px na ekran 390 px (bramka wyglądu,
+     11.09.2026: „3,1× nadmiaru przy Retinie, leci tak na każdej podstronie").
+     Warianty -900 i -1600 robi SAM `przygotuj-media.py` (krok `warianty_pasow`). -->
 <figure class="pas pas--duzy">
-  <img data-paralaksa="220" src="img/pas-elewacja.jpg" width="2400" height="1029" loading="lazy" decoding="async"
+  <img data-paralaksa="220" src="img/pas-elewacja.jpg"
+    srcset="img/pas-elewacja-900.jpg 900w, img/pas-elewacja-1600.jpg 1600w, img/pas-elewacja.jpg 2400w"
+    sizes="100vw" width="2400" height="1029" loading="lazy" decoding="async"
     alt="Skończona elewacja domu z wejściem od strony tarasu, biały tynk i ciemne obróbki">
   <figcaption>Elewacja z podbitką - po naszej robocie.</figcaption>
 </figure>
@@ -269,7 +275,9 @@
 </section>
 
 <figure class="pas pas--duzy">
-  <img data-paralaksa="220" src="img/pas-lazienka.jpg" width="2400" height="1350" loading="lazy" decoding="async"
+  <img data-paralaksa="220" src="img/pas-lazienka.jpg"
+    srcset="img/pas-lazienka-900.jpg 900w, img/pas-lazienka-1600.jpg 1600w, img/pas-lazienka.jpg 2400w"
+    sizes="100vw" width="2400" height="1350" loading="lazy" decoding="async"
     alt="Wanna obudowana płytami w ciepłym beżu, we wnęce pod skosem poddasza, obok okno dachowe">
   <figcaption>Łazienka na poddaszu - wanna we wnęce pod skosem, z naszych realizacji.</figcaption>
 </figure>
