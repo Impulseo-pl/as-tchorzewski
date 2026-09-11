@@ -301,7 +301,14 @@ a{text-decoration:none}
    sadzała oko dokładnie na styku i pokazywała każdą resztkową różnicę.
    Przenikanie całego kadru styku nie ma — a rozmycie w połowie przejścia
    zjada resztę. ⛔ Nie wracać do suwaka bez nowego zdjęcia od klienta
-   (pytanie 11 w PYTANIA-DO-KLIENTA.md). */
+   (pytanie 11 w PYTANIA-DO-KLIENTA.md).
+
+   🔴 K. 11.09.2026: „można oddalić to zdjęcie po". Można — ale NIE przez
+   powiększenie wspólnego okna: „przed" nie ma tam pikseli (pokrycie 61 %,
+   zmierzone). Dlatego „po" dostało WŁASNY, szerszy kadr (OKNO_PO), a zestraja
+   je RUCH: warstwa „po" startuje przeskalowana tak, że pokrywa się z „przed"
+   co do piksela (dowód „ten sam narożnik"), a potem odjeżdża do skali 1
+   i odsłania całą rozbudowę — dach, narożnik, opaskę, trawnik. */
 .przedpo{margin:0}
 /* ⛔ Ramka MUSI być osobnym elementem: `overflow:hidden` na <figure> ucinało podpis. */
 /* 🔴 K. 10.09.2026: „żeby to zdjęcie mieściło się w CAŁOŚCI na ekranie bez względu
@@ -319,6 +326,22 @@ a{text-decoration:none}
    przed pierwszym najazdem) pokazuje stan surowy, czyli początek historii. */
 .przedpo-przed{opacity:1;transition:opacity .75s var(--ease)}
 .przedpo-rama.jest-po .przedpo-przed{opacity:0}
+
+/* ODJAZD KADRU „PO". Liczby idą parami z `przygotuj-media.py`:
+     skala   = szerokość OKNO_PO / OKNO_SUWAKA = 1128,6 / 990 = 1,140
+     przesun = środek OKNO_SUWAKA wyrażony w OKNO_PO, odjęty od środka kadru
+   W tej pozycji wycinek „po" pokrywa się z „przed" co do piksela; `scale(1)`
+   odsłania cały szerszy kadr. ⛔ Ruszasz którekolwiek okno → przelicz OBIE liczby,
+   inaczej w momencie przenikania warstwy skoczą względem siebie.
+   ⏱️ Odjazd MUSI mieć opóźnienie i własną krzywą. Przy wspólnym `--ease`
+   (cubic-bezier(.2,.7,.3,1), mocne wyhamowanie) po 200 ms kadr był już prawie
+   cofnięty — zmierzone 11.09.2026 — i cały dowód „ten sam narożnik" przepadał,
+   bo warstwy rozjeżdżały się dokładnie w chwili przenikania. Teraz: 0,3 s postoju
+   w dopasowaniu (przenikanie zdąża się zrobić), potem 0,95 s miękkiego odjazdu. */
+.przedpo-po{transform:translate(6.597%,-6.509%) scale(1.14);
+  transition:transform .95s cubic-bezier(.55,0,.3,1) .3s}
+.przedpo-rama.jest-po .przedpo-po{transform:translate(0,0) scale(1)}
+html:not(.js) .przedpo-rama:hover .przedpo-po{transform:translate(0,0) scale(1)}
 /* ⛔ `:hover` STERUJE STANEM TYLKO BEZ JS. Z włączonym skryptem reguła hoverowa
    wygrywała z powrotem do „przed": po kliknięciu klasa `jest-po` schodziła, ale
    kursor dalej wisiał nad kadrem, więc zdjęcie się nie zmieniało (zmierzone
@@ -375,6 +398,8 @@ html:not(.js) .przedpo-rama:hover .przedpo-hint{opacity:0}
   .przedpo figcaption{font-size:14px}
 }
 @media (prefers-reduced-motion:reduce){
+  /* bez ruchu skok skali byłby gorszy niż jego brak — „po" stoi od razu szeroko */
+  .przedpo-po{transform:none;transition:none}
   /* bez ruchu: sam przełącznik, żadnego przenikania ani oddechu */
   .przedpo-przed,.przedpo-etyk,.przedpo-hint{transition:none}
   .przedpo-rama.przedpo--zmiana .przedpo-warstwy{animation:none}
@@ -454,6 +479,8 @@ html:not(.js) .lata--ruch>li b,html:not(.js) .lata--ruch>li p{
   opacity:1!important;transform:none!important;animation:none!important}
 
 @media (prefers-reduced-motion:reduce){
+  /* bez ruchu skok skali byłby gorszy niż jego brak — „po" stoi od razu szeroko */
+  .przedpo-po{transform:none;transition:none}
   .scena-tlo[data-paralaksa],.otwarcie-tlo[data-paralaksa],.pas img[data-paralaksa],
   .para.kaskada>.klatka,.zygzak.rv>.zygzak-obraz,.galeria.kaskada>figure,
   .lata--ruch>li b,.lata--ruch>li p{opacity:1!important;transform:none!important;animation:none!important}
@@ -956,6 +983,8 @@ footer{background:var(--papier-3);border-top:1px solid var(--linia-slaba);paddin
 .bez-wejscia-tla .scena .rv{opacity:1;transform:none;transition:none}
 
 @media (prefers-reduced-motion:reduce){
+  /* bez ruchu skok skali byłby gorszy niż jego brak — „po" stoi od razu szeroko */
+  .przedpo-po{transform:none;transition:none}
   .wejscie,.intro-on .wejscie{display:none}
   .intro-on .znak img{visibility:visible}
 }

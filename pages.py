@@ -445,7 +445,7 @@ def index(naglowek):
         </button>
       </div>
       <figcaption>Stan surowy: mury z bloczków i stemple. Po naszej robocie: elewacja,
-        stolarka okienna i opaska. To ten sam narożnik, z tego samego miejsca.</figcaption>
+        stolarka okienna i opaska. Ten sam narożnik tego samego domu.</figcaption>
     </figure>
   </div>
 </section>

@@ -929,4 +929,30 @@ Trzy pułapki wyłapane pomiarem w przeglądarce, nie z kodu:
    wyglądało to jak zniknięty efekt, a było chybionym kadrem zrzutu.
 
 ⛔ Nie wracać do suwaka bez nowego zdjęcia „po" od klienta (pytanie 11
-w `PYTANIA-DO-KLIENTA.md`). Pliki `przed.jpg`/`po.jpg` zostają bez zmian.
+w `PYTANIA-DO-KLIENTA.md`).
+
+## 11.09.2026 — „po" odjeżdża i pokazuje całą rozbudowę
+
+K.: „można oddalić to zdjęcie po". Można, ale nie tak, jak się wydaje. Wspólnego
+okna nie da się powiększyć — „przed" pokrywa tylko 61 % kadru „po" (policzone maską,
+nie na oko), więc każdy piksel poza tym to miejsce, gdzie zdjęcia „przed" po prostu
+NIE MA. Dlatego dotąd „po" wychodziło ciasnym zbliżeniem na sam mur z oknem: nie było
+widać ani dachu, ani narożnika, ani trawnika — czyli tego, co klient sprzedaje.
+
+Rozwiązanie: **„po" dostało własny, szerszy kadr (`OKNO_PO`), a zestraja je RUCH.**
+Warstwa „po" startuje przeskalowana (1,14 + przesunięcie) tak, że jej wycinek pokrywa
+się z „przed" co do piksela — to jest dowód „ten sam narożnik" — a po przenikaniu
+odjeżdża do skali 1 i odsłania dach, opaskę, kostkę i trawnik.
+
+Liczby stoją w DWÓCH plikach i muszą się zgadzać:
+`przygotuj-media.py` (`OKNO_SUWAKA`, `OKNO_PO`) ↔ `app.css` (`.przedpo-po`:
+`scale(1.14)`, `translate(6.597%, -6.509%)`). Skala = szerokość `OKNO_PO` / `OKNO_SUWAKA`;
+przesunięcie = środek `OKNO_SUWAKA` wyrażony w `OKNO_PO`. Ruszasz okno → przelicz oba.
+
+Dwie rzeczy, których nie dało się zobaczyć z kodu:
+1. **Górna krawędź `OKNO_PO` zatrzymana na −106,5.** Wyżej najpierw kończą się piksele
+   (−112), a jeszcze wyżej siedzi **znak wodny klienta** wgrany w zdjęcie „po" (−164…−390).
+2. **Odjazd musi mieć opóźnienie i własną krzywą.** Przy wspólnym `--ease` po 200 ms kadr
+   był już prawie cofnięty i warstwy rozjeżdżały się dokładnie w chwili przenikania —
+   cały dowód „ten sam narożnik" przepadał. Teraz 0,3 s postoju w dopasowaniu, potem
+   0,95 s miękkiego odjazdu (`cubic-bezier(.55,0,.3,1)`).

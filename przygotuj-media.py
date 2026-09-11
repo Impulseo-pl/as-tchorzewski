@@ -294,8 +294,28 @@ WAGI_SUWAKA = [3.0, 3.0, 1.0, 1.0, 1.0, 1.0]
 # Proporcja 998/826 = 1,208 MUSI stać w `aspect-ratio` ramki w `app.css`
 # i w atrybutach width/height w `pages.py`.
 OKNO_SUWAKA = (4, 4, 994, 822)
-SUWAK = [("przed.jpg", 1500, 82), ("przed@2x.jpg", 2400, 76),
-         ("po.jpg", 1500, 82), ("po@2x.jpg", 2400, 76)]
+
+# ── OKNO SZERSZE DLA „PO" (K. 11.09.2026: „można oddalić to zdjęcie po") ──────────
+# Wspólne okno wyżej jest przecięciem dwóch kadrów i dlatego „po" wychodziło z niego
+# przyciętym zbliżeniem na sam mur z oknem - nie było widać ANI dachu, ANI narożnika,
+# ANI trawnika, czyli tego, co klient sprzedaje. Powiększyć wspólnego okna się nie da:
+# „przed" po prostu nie ma tam pikseli (zmierzone - pokrycie 61 %).
+#
+# Rozwiązanie: „po" dostaje WŁASNE, szersze okno, a stronę zestraja ruch, nie kadr.
+# Warstwa „po" startuje przeskalowana tak, że jej wycinek pokrywa się z „przed" co do
+# piksela (to jest dowód „ten sam narożnik"), a po przenikaniu odjeżdża do skali 1
+# i odsłania całą rozbudowę. Liczby idą parami z `app.css`:
+#     skala startowa 1,140  ·  translate(6.597%, -6.509%)
+# ⛔ Ruszasz OKNO_PO albo OKNO_SUWAKA → przelicz oba te parametry od nowa, inaczej
+#    warstwy rozjadą się w momencie przenikania (skala = szerokość OKNO_PO / OKNO_SUWAKA;
+#    przesunięcie = środek OKNO_SUWAKA wyrażony w OKNO_PO).
+# 🔴 Górna krawędź zatrzymana na -106,5: wyżej (od -164 w górę) leży ZNAK WODNY klienta
+#    wgrany w zdjęcie „po", a od -112 kończą się piksele. Prawa i dolna krawędź mają
+#    zapas ~100 i ~157 - granicą jest lewy górny róg.
+OKNO_PO = (0, -106.5, 1128.6, 826)
+
+SUWAK = [("przed.jpg", 1500, 82, OKNO_SUWAKA), ("przed@2x.jpg", 2400, 76, OKNO_SUWAKA),
+         ("po.jpg", 1500, 82, OKNO_PO), ("po@2x.jpg", 2400, 76, OKNO_PO)]
 
 
 def _homografia(pary, wagi, skala):
@@ -316,26 +336,38 @@ def _homografia(pary, wagi, skala):
 
 
 def suwak_przed_po():
+    import numpy as np
     N = 2500                                   # przestrzeń robocza dopasowania
+    # Okno „po" wychodzi poza kwadrat (ujemne y), więc obie warstwy renderujemy na
+    # płótnie z zapasem - inaczej `crop` dokleiłby czarny pas zamiast pikseli zdjęcia.
+    M = 1400
 
     przed = ImageOps.exif_transpose(Image.open(zrodlo("PRZED-rozbudowa.jpg")))
     przed = przed.convert("RGB").resize((N, N), Image.LANCZOS)
     po = ImageOps.exif_transpose(Image.open(zrodlo("PO-rozbudowa.jpg")))
     po = po.convert("RGB").resize((N, N), Image.LANCZOS)
-    po = po.transform((N, N), Image.PERSPECTIVE,
-                      _homografia(PARY_SUWAKA, WAGI_SUWAKA, N / 1000), Image.BICUBIC)
 
-    box = tuple(int(round(v * N / 1000)) for v in OKNO_SUWAKA)
-    prop = (OKNO_SUWAKA[2] - OKNO_SUWAKA[0]) / (OKNO_SUWAKA[3] - OKNO_SUWAKA[1])
-    for cel, szer, jakosc in SUWAK:
+    H = _homografia(PARY_SUWAKA, WAGI_SUWAKA, N / 1000)          # PIL: wyjście → wejście
+    Hm = np.array(list(H) + [1.0]).reshape(3, 3)
+    przes = np.array([[1, 0, -M], [0, 1, -M], [0, 0, 1]], float)  # płótno → kwadrat PRZED
+    Hp = (Hm @ przes).ravel(); Hp = (Hp / Hp[8])[:8]
+    po = po.transform((N + 2 * M, N + 2 * M), Image.PERSPECTIVE, tuple(Hp), Image.BICUBIC)
+
+    plotno = Image.new("RGB", (N + 2 * M, N + 2 * M), (12, 12, 14))
+    plotno.paste(przed, (M, M))
+    przed = plotno
+
+    for cel, szer, jakosc, okno in SUWAK:
         zr = przed if cel.startswith("przed") else po
+        box = tuple(int(round(v * N / 1000)) + M for v in okno)
+        prop = (okno[2] - okno[0]) / (okno[3] - okno[1])
         wys = int(round(szer / prop))
         out = zr.crop(box).resize((szer, wys), Image.LANCZOS)
         out = out.filter(ImageFilter.UnsharpMask(radius=1.2, percent=90, threshold=3))
         sciezka = os.path.join(IMG, cel)
         out.save(sciezka, "JPEG", quality=jakosc, optimize=True, progressive=True)
         print(f"  ✓ img/{cel:24s} {szer}×{wys}  {os.path.getsize(sciezka)//1024} KB  "
-              f"← dopasowane homografią")
+              f"← {'kadr wspólny' if cel.startswith('przed') else 'kadr szeroki'}, homografia")
 
 
 def filmy():
