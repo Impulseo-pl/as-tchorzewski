@@ -908,7 +908,8 @@ Do rdzenia stron docelowych (wersja 12) weszły dwa nowe klocki, oba wyjęte st�
 
 Suwak z linią wyleciał, wszedł **efekt przenikania całego kadru** (`.przedpo-*`,
 blok 12 rdzenia). Powód jest merytoryczny, nie estetyczny: zdjęcie „po" zrobiono
-z ok. 20 % bliżej niż „przed", więc pole widzenia to CZĘŚĆ WSPÓLNA obu kadrów
+z ok. 20 % DALEJ niż „przed" (narożnik-narożnik 934 vs 777 punktów),
+więc pole widzenia to CZĘŚĆ WSPÓLNA obu kadrów
 i żadna homografia tego nie powiększy. Przesuwana linia sadzała oko dokładnie na
 styku i pokazywała każdą resztkową różnicę — przenikanie styku nie ma, a rozmycie
 3 px w połowie przejścia zjada resztę.

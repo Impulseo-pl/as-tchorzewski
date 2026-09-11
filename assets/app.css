@@ -296,7 +296,8 @@ a{text-decoration:none}
 /* ── PRZED/PO — PRZENIKANIE CAŁEGO KADRU ──────────────────────────────────── */
 /* 🔴 Zastąpiło suwak z przesuwaną linią (K. 10.09.2026: „po hoverze całe zdjęcie
    może się zmieniać"). Powód jest merytoryczny, nie estetyczny: zdjęcie „po"
-   zrobiono z ok. 20 % bliżej niż „przed", więc pole widzenia obu kadrów to ich
+   zrobiono z ok. 20 % DALEJ niż „przed" (zmierzone: narożnik-narożnik 934 vs 777
+   punktów), więc pole widzenia obu kadrów to ich
    CZĘŚĆ WSPÓLNA i żadne przekształcenie tego nie naprawi. Przesuwana linia
    sadzała oko dokładnie na styku i pokazywała każdą resztkową różnicę.
    Przenikanie całego kadru styku nie ma — a rozmycie w połowie przejścia
