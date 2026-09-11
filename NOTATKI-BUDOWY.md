@@ -1007,3 +1007,38 @@ pozostałych stron.
 To PODGLĄD, nie oddanie: `robots.txt` z `Disallow: /` i `noindex` na każdej podstronie
 zostają — dzięki temu adres roboczy nie wejdzie do Google i nie zacznie konkurować
 z docelową domeną. ⛔ Przed oddaniem zdjąć oba (bramka, sekcja 6, dopilnuje).
+
+## 11.09.2026 — „białe pole na logo" na iPhonie, DRUGI RAZ ta sama przyczyna
+
+K. z telefonu: „znowu ten sam błąd z wejściem, że jest białe logo przez chwilę".
+Rozwiązanie było już znalezione 08.09 przy STOLMARZE (lekcja `2026-09-08-005`,
+reguła 7 skilla `wejscie-na-strone`) — a mimo to w TYM repo stała poświata:
+
+```
+.intro-on.intro-out .wejscie-znak{ filter:blur(0) drop-shadow(0 0 16px rgba(243,241,237,.9)) }
+```
+
+z komentarzem tłumaczącym ją jako „UBEZPIECZENIE na wypadek, gdyby krawędź ściany
+dogoniła znak". iOS (Safari i Chrome na iPhonie = ten sam silnik) rysuje `drop-shadow`
+na obrazie jadącym pod `clip-path`/`transform` jako **jasny prostokąt całego znaku**,
+nie jako łunę wokół liter. Na Chrome/Macu i w emulacji WebKita tego NIE WIDAĆ.
+
+Naprawione: filtr znaku to wszędzie samo `blur`, plus drugi bezpiecznik ze STOLMARA
+(`.intro-on .top{backdrop-filter:none}` na czas wejścia).
+
+**Żeby nie wróciło po raz trzeci** (reguła okazała się za słaba — dała się obejść
+dobrym uzasadnieniem):
+1. `poswiata_na_znaku_wejscia` w `~/.claude/skills/bramki/sprawdz.py` — kontrola
+   statyczna, blokuje płatną stronę. Szuka `drop-shadow` tylko w regułach znaku
+   wejścia, więc cienie na ikonach zostają. Sprawdzona: łapie stary kod (także wariant
+   z alfą 0), przepuszcza naprawiony, zero trafień na pozostałych stronach.
+2. Dopisek w `SKILL.md` skilla `wejscie-na-strone`, że pilnuje tego bramka.
+
+## 11.09.2026 — `?v=` liczy się sam z treści pliku
+
+Przy okazji: `V_CSS`/`V_RDZEN` w `build.py` były RĘCZNE (`V_CSS = 29`). Zmiana wyglądu
+bez podbicia numeru nie daje u nas ŻADNEGO objawu — budujemy lokalnie, widzimy świeży
+plik. Objaw dostaje klient: wraca na stronę, przeglądarka podaje mu stary arkusz z cache
+i zgłasza jako błąd rzecz właśnie naprawioną. Teraz `?v=` to skrót MD5 z zawartości
+(`_odcisk()`), więc zmienia się wtedy i tylko wtedy, gdy plik naprawdę się zmienił.
+⛔ Nie wracać do ręcznej liczby.
