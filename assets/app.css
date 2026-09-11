@@ -952,22 +952,31 @@ footer{background:var(--papier-3);border-top:1px solid var(--linia-slaba);paddin
    ⚠️ Skala idzie 1,045 → 1, a NIE „mały → duży": docelowy rozmiar znaku robi
    `width`/`height` z pomiaru (reguła 8 skilla), bo powiększanie `transform`em
    rasteryzuje warstwę w rozmiarze bazowym i na telefonie daje rozmyty znak. */
-/* ⚠️ Lista filtrów MUSI mieć te same funkcje we wszystkich trzech stanach (z alfą 0
-   na starcie), inaczej przeglądarka nie animuje przejścia, tylko przeskakuje.
-   Poświata w kolorze papieru to UBEZPIECZENIE na wypadek, gdyby przy nietypowej
-   wysokości okna krawędź ściany jednak dogoniła znak: na papierze jest niewidoczna,
-   na ciemnym tle odkleja od niego znak zamiast pozwolić mu zniknąć. */
+/* 🔴 ⛔ ŻADNEGO `drop-shadow` NA ZNAKU — w ŻADNYM stanie, nawet z alfą 0.
+   iOS (Safari i Chrome na iPhonie to ten sam silnik) rysuje go jako jasny PROSTOKĄT
+   całego znaku, a nie jako łunę wokół liter. To jest dokładnie „białe pole na logo",
+   które K. zgłosił z telefonu przy STOLMARZE (08.09.2026, lekcja 2026-09-08-005)
+   i drugi raz TUTAJ (11.09.2026) — bo tu stała poświata z alfą .9 w stanie `intro-out`,
+   wpisana jako „ubezpieczenie" wbrew regule 7 skilla `wejscie-na-strone`.
+   ⚠️ Na Chrome/Macu tego NIE WIDAĆ, także w emulacji WebKita. Widać tylko na iPhonie.
+   ⚠️ Lista filtrów MUSI mieć te same funkcje we wszystkich stanach, inaczej przeglądarka
+   nie animuje przejścia, tylko przeskakuje — dlatego wszędzie jest samo `blur`. */
 .wejscie-znak{display:block;width:var(--i-w);height:var(--i-h);max-width:none;
   clip-path:inset(0 100% 0 0);transform:scale(1.045);
-  filter:blur(14px) drop-shadow(0 0 0 rgba(243,241,237,0))}
+  filter:blur(14px)}
 .intro-on.intro-gra .wejscie-znak{clip-path:inset(0 0 0 0);transform:scale(1);
-  filter:blur(0) drop-shadow(0 0 0 rgba(243,241,237,0));
+  filter:blur(0);
   transition:clip-path .52s cubic-bezier(.16,1,.3,1),
              filter .52s cubic-bezier(.16,1,.3,1),
              transform .52s cubic-bezier(.16,1,.3,1)}
-.intro-on.intro-out .wejscie-znak{
-  filter:blur(0) drop-shadow(0 0 16px rgba(243,241,237,.9));
-  transition:filter .3s ease}
+/* ⛔ Nie dokładaj tu reguły `.intro-on.intro-out .wejscie-znak` z filtrem. Stała tu
+   i robiła wyłącznie tę poświatę; lot znaku do paska prowadzi `.wejscie-znak-box`. */
+
+/* Drugi bezpiecznik z tej samej lekcji: na czas wejścia pasek BEZ `backdrop-filter`.
+   WebKit potrafi narysować warstwę rozmycia rodzica NAD dzieckiem z własnym
+   `filter`/`transform`, czyli nad lecącym znakiem. Po zejściu kurtyny klasa
+   `intro-on` znika i rozmycie paska wraca samo. */
+.intro-on .top{-webkit-backdrop-filter:none;backdrop-filter:none}
 
 /* TAKT 2 — ślad po pociągnięciu. Rusza 0,14 s PO znaku; bez tego opóźnienia
    wszystko startuje naraz i czyta się jak jeden płaski fade (reguła 4 skilla). */

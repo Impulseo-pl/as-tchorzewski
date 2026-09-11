@@ -9,6 +9,7 @@ o wyglądzie (kierunek B „Scena", `border-radius: 0` wszędzie).
 Mechanika i dostępność: `assets/rdzen.*` - wspólne dla wszystkich stron docelowych,
 wgrywane przez `~/.claude/skills/strona-docelowa/rdzen.py`.
 """
+import hashlib
 import os
 import sys
 
@@ -37,9 +38,27 @@ MIASTO = "Jabłonna"
 NIP = "995 004 44 65"
 REGON = "363138510"
 
-# 🔄 Podbij przy KAŻDEJ zmianie pliku, inaczej klient zostanie na starej wersji.
-V_CSS = 29
-V_RDZEN = 18
+# 🔄 Numerek przy arkuszu i skrypcie (`?v=`) liczy się SAM z zawartości plików.
+# ⛔ Nie wracaj do ręcznej liczby. Stała tu (V_CSS = 29, V_RDZEN = 18) i wymagała
+# pamiętania o podbiciu przy każdej zmianie wyglądu — a zapomnienie nie daje żadnego
+# objawu u nas: my widzimy świeży plik, bo budujemy lokalnie. Objaw dostaje KLIENT,
+# i to najgorszy z możliwych: wraca na stronę, przeglądarka podaje mu STARY arkusz
+# z pamięci podręcznej i zgłasza jako błąd rzecz, którą właśnie naprawiliśmy.
+# Skrót z treści zmienia się wtedy i tylko wtedy, gdy plik naprawdę się zmienił.
+def _odcisk(*sciezki):
+    h = hashlib.md5()
+    for s in sciezki:
+        try:
+            h.update(open(s, "rb").read())
+        except FileNotFoundError:
+            pass
+    return h.hexdigest()[:8]
+
+
+TU = os.path.dirname(os.path.abspath(__file__))
+V_CSS = _odcisk(os.path.join(TU, "assets", "app.css"))
+V_RDZEN = _odcisk(os.path.join(TU, "assets", "rdzen.css"),
+                  os.path.join(TU, "assets", "rdzen.js"))
 
 # 🔴 PODGLĄD ROBOCZY. Strona stoi na zdjęciach klienta, na które NIE MAMY jeszcze
 # jego pisemnej zgody (pytanie 3 w `PYTANIA-DO-KLIENTA.md`), a domena nie jest
