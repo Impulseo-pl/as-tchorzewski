@@ -772,7 +772,17 @@ footer{background:var(--papier-3);border-top:1px solid var(--linia-slaba);paddin
 @media (max-width:980px){
   :root{--bok:20px;--gora:76px}
   body{padding-bottom:0}
-  .top .wrap{height:var(--gora);flex-wrap:wrap;gap:16px}
+  /* 🔴 `min-height`, NIE `height` (K. 11.09.2026: „menu się nie pokazuje").
+     Rozwinięte menu wchodzi w DRUGI wiersz tego flexa (`.nawigacja{order:3;width:100%}`).
+     Przy sztywnej wysokości 76 px drugi wiersz wylewał się poza pasek — a tło i rozmycie
+     siedzą na `.top`, więc pozycje menu lądowały ciemnym tekstem na ciemnym zdjęciu hero
+     i były PRAKTYCZNIE NIEWIDOCZNE. Widać było tylko pomarańczowe strzałki.
+     ⚠️ Samo `min-height` tu NIE WYSTARCZA i to jest pułapka: regułа bazowa
+     `.top .wrap` (wyżej) ma `height:var(--gora)`, a media query jej nie zdejmuje.
+     Kontener zostawał na 76 px, a menu (271 px) po prostu z niego wychodziło.
+     Dlatego jest tu JAWNE `height:auto` przed `min-height`. Zmierzone 11.09.2026.
+     ⛔ Nie wracaj do `height` — pasek MUSI móc urosnąć pod otwarte menu. */
+  .top .wrap{height:auto;min-height:var(--gora);flex-wrap:wrap;gap:16px}
   /* 46 px zamiast 60: pasek na telefonie jest niższy, a znak nadal czytelny
      (62 px szerokości, napis ~6 px - na gęstym ekranie telefonu wystarcza). */
   .znak img{height:46px}
