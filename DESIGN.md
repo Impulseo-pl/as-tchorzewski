@@ -525,16 +525,26 @@ efekt, żeby strona była consistent".
 ⛔ Dwa odrzucone podejścia, nie wracać: suwak z przesuwaną linią (odrzucony 10.09 i 14.09)
 oraz przenikanie całego kadru z odjazdem skali („goofy efekty", 14.09).
 
-### Czego suwak przed/po NIE potrafi — pole widzenia
+### Pole widzenia obu kadrów — co ogranicza, a co nie
 
-To, ile widać w kadrze, jest **częścią wspólną obu zdjęć** i nie da się tego powiększyć
-żadnym przekształceniem. U A.S Tchórzewski „po" zrobiono z ok. **20 % bliżej** niż „przed",
-więc żeby budynek się zgadzał, musi zostać powiększone — i pokazuje o tyle mniej otoczenia.
-Oddalenie go rozjechałoby dopasowanie, a poza krawędź tego pliku nie ma czego dołożyć.
+Dopóki klocek miał PRZESUWANĄ LINIĘ albo przenikanie, oba zdjęcia musiały siedzieć w jednym
+oknie kadru, czyli w **części wspólnej** obu ujęć — i tego nie da się powiększyć żadnym
+przekształceniem („przed" po prostu nie ma tam pikseli, pokrycie 61 %).
+
+🔴 Od 14.09.2026 klocek przełącza CAŁE kadry strzałką, więc każde zdjęcie ma własne pole
+widzenia. „Po" dostało z powrotem szerszy kadr (`OKNO_PO`, o 18 % szerszy od wspólnego) —
+widać dach, narożnik, opaskę i trawnik, czyli to, co klient sprzedaje. Granicę policzył
+`maks-okno.py`: największy prostokąt o proporcji pary, który w całości leży na prawdziwych
+pikselach zdjęcia po homografii. Dalej są już czarne rogi po prostowaniu.
+⛔ Wracasz do suwaka z linią → „po" MUSI wrócić do `OKNO_SUWAKA`.
+
+„Przed" zostaje w swoim oknie, bo ono i tak bierze prawie cały oryginał (odpada dolny pas
+trawnika ze znakiem wodnym). Zdjęcie zrobiono z ok. 20 % bliżej niż „po", więc po przełączeniu
+budynek widać w innej skali — to jest różnica dwóch ujęć, nie błąd kadrowania.
 
 ⛔ Nie dorysowywać brakującego otoczenia generatorem. Zdjęcie „przed i po" jest dowodem
 na robotę klienta; domalowany trawnik przestaje nim być.
 
-✅ Jedyne prawdziwe rozwiązanie: **poprosić klienta o drugie zdjęcie „po" z tego samego
+✅ Najlepsze rozwiązanie zostaje to samo: **poprosić klienta o drugie zdjęcie „po" z tego samego
 miejsca, z którego zrobił „przed"**. Warto dopisać to do listy pytań przy okazji prośby
 o oryginały z telefonu.

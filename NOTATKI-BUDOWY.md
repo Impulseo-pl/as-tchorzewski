@@ -1284,3 +1284,12 @@ stan `disabled` strzałek zgadza się ze stanem kadru.
 ⛔ Nie wracać do dwóch odrzuconych wersji: suwaka z przesuwaną linią (odrzucony 10.09 i 14.09)
 ani przenikania całego kadru z odjazdem skali („goofy efekty"). Zapis jednego i drugiego
 został w historii gita, w CSS-ie i JS-ie już ich nie ma.
+
+**15:50 — kadr „po" oddalony.** K.: „możemy oddalić kadr tego zdjęcia efektu po?". Można,
+bo z klocka zniknęła przesuwana linia: strzałka przeskakuje całe kadry, więc każde zdjęcie
+może mieć własne pole widzenia (przy linii oba musiały siedzieć w jednym oknie). „Po" wróciło
+na własne, szersze okno - tym razem policzone, nie przepisane: `maks-okno.py` przeszukał maskę
+pikseli sumami prefiksowymi i znalazł największy prostokąt o proporcji pary leżący w całości
+na zdjęciu po homografii. Wyszło 1165 jednostek szerokości wobec 990 wspólnego okna, lewy górny
+róg (70, -130), czyli o 18 % więcej kadru: widać dach, narożnik, opaskę i trawnik.
+⛔ Wraca suwak z linią → „po" wraca do `OKNO_SUWAKA`.

@@ -332,34 +332,28 @@ WAGI_SUWAKA = [3.0, 3.0, 1.0, 1.0, 1.0, 1.0]
 # i w atrybutach width/height w `pages.py`.
 OKNO_SUWAKA = (4, 4, 994, 822)
 
-# ── OKNO SZERSZE DLA „PO" (K. 11.09.2026: „można oddalić to zdjęcie po") ──────────
-# Wspólne okno wyżej jest przecięciem dwóch kadrów i dlatego „po" wychodziło z niego
-# przyciętym zbliżeniem na sam mur z oknem - nie było widać ANI dachu, ANI narożnika,
-# ANI trawnika, czyli tego, co klient sprzedaje. Powiększyć wspólnego okna się nie da:
-# „przed" po prostu nie ma tam pikseli (zmierzone - pokrycie 61 %).
+# -- OKNO SZERSZE DLA "PO" (K. 11.09.2026 i znow 14.09: "mozemy oddalic kadr tego
+#    zdjecia efektu po?") ---------------------------------------------------------
+# Wspolne okno wyzej jest przecieciem dwoch kadrow i dlatego "po" wychodzilo z niego
+# przycietym zblizeniem na sam mur z oknem - nie bylo widac ANI dachu, ANI narozzika,
+# ANI trawnika, czyli tego, co klient sprzedaje. Powiekszyc wspolnego okna sie nie da:
+# "przed" po prostu nie ma tam pikseli (zmierzone - pokrycie 61 %).
 #
-# Rozwiązanie: „po" dostaje WŁASNE, szersze okno, a stronę zestraja ruch, nie kadr.
-# Warstwa „po" startuje przeskalowana tak, że jej wycinek pokrywa się z „przed" co do
-# piksela (to jest dowód „ten sam narożnik"), a po przenikaniu odjeżdża do skali 1
-# i odsłania całą rozbudowę. Liczby idą parami z `app.css`:
-#     skala startowa 1,140  ·  translate(6.597%, -6.509%)
-# ⛔ Ruszasz OKNO_PO albo OKNO_SUWAKA → przelicz oba te parametry od nowa, inaczej
-#    warstwy rozjadą się w momencie przenikania (skala = szerokość OKNO_PO / OKNO_SUWAKA;
-#    przesunięcie = środek OKNO_SUWAKA wyrażony w OKNO_PO).
-# 🔴 Górna krawędź zatrzymana na -106,5: wyżej (od -164 w górę) leży ZNAK WODNY klienta
-#    wgrany w zdjęcie „po", a od -112 kończą się piksele. Prawa i dolna krawędź mają
-#    zapas ~100 i ~157 - granicą jest lewy górny róg.
-OKNO_PO = (0, -106.5, 1128.6, 826)
+# 🔴 14.09.2026: to okno wolno bylo przywrocic dopiero wtedy, kiedy z klocka zniknela
+#    PRZESUWANA LINIA. Przy linii oba zdjecia musialy siedziec w jednym oknie, bo po jej
+#    obu stronach ten sam mur stalby w innym miejscu. Strzalka przeskakuje cale kadry,
+#    wiec kazdy moze miec swoje pole widzenia.
+# ⛔ Wracasz do suwaka z linia -> "po" MUSI wrocic do OKNO_SUWAKA.
+#
+# Liczby nie sa dobrane na oko: `maks-okno.py` (sumy prefiksowe na masce pikseli) szukal
+# NAJWIEKSZEGO prostokata o proporcji pary, ktory w calosci lezy na prawdziwych pikselach
+# zdjecia po homografii. Wyszlo 1165 jednostek szerokosci (OKNO_SUWAKA ma 990, czyli
+# o 18 % wiecej kadru), lewy gorny rog (70, -130). Poza te granice wychodza juz czarne rogi
+# po prostowaniu. Proporcja MUSI zostac 1500/1239 - obie pary stoja obok siebie w rzedzie.
+OKNO_PO = (70, -130, 1235, 832.3)
 
-# 🔴 K. 14.09.2026: suwak WRACA do przesuwanej linii („zeby te przed i po byly obok
-#    siebie jedno po lewej drugie po prawej ... strzalka jakos przewija na efekt po").
-#    Przy linii styku OBIE warstwy MUSZA siedziec w TYM SAMYM oknie - inaczej po lewej
-#    i po prawej stronie linii ten sam mur jest w innym miejscu i cala sztuczka pada.
-#    Dlatego „po" wrocilo do OKNO_SUWAKA. Szersze OKNO_PO zostaje nizej wylacznie jako
-#    zapis, czym byl odjazd kadru z przenikania (11.09-14.09.2026) - NIE uzywaj go,
-#    dopoki suwak ma linie.
 SUWAK = [("przed.jpg", 1500, 82, OKNO_SUWAKA), ("przed@2x.jpg", 2400, 76, OKNO_SUWAKA),
-         ("po.jpg", 1500, 82, OKNO_SUWAKA), ("po@2x.jpg", 2400, 76, OKNO_SUWAKA)]
+         ("po.jpg", 1500, 82, OKNO_PO), ("po@2x.jpg", 2400, 76, OKNO_PO)]
 
 
 def _homografia(pary, wagi, skala):
