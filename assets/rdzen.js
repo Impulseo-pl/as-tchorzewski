@@ -587,88 +587,60 @@
        błąd pomiaru), po 3,5 s wszystkie kroki i tak są widoczne */
     setTimeout(function () { kroki.forEach(function (li) { li.classList.add('os-seen'); }); }, 3500);
   });
-  /* ── 12. PRZED/PO — SUWAK Z LINIĄ ─────────────────────────────────────────
-     Znacznik:  <div class="przedpo-rama" data-suwak>
-                  <img class="przedpo-po" …>       <!-- spód: stan PO, cały kadr -->
-                  <img class="przedpo-przed" …>    <!-- wierzch: PRZED, przycięte do --suwak -->
-                  <span class="znacznik przedpo-etyk przedpo-etyk--przed">Przed</span>
-                  <span class="znacznik po przedpo-etyk przedpo-etyk--po">Po</span>
-                  <input class="przedpo-zakres" type="range" data-suwak-zakres>
-                  <span class="przedpo-linia"><span class="przedpo-uchwyt">…</span></span>
+  /* ── 12. PRZED/PO — PRZEŁĄCZNIK STRZAŁKAMI ────────────────────────────────
+     Znacznik:  <div class="duet-rama" data-duet [data-duet-zwloka="260"]>
+                  <div class="duet-tasma"><img PRZED><img PO></div>
+                  <span class="znacznik duet-etyk duet-etyk--przed">Przed</span>
+                  <span class="znacznik po duet-etyk duet-etyk--po">Po</span>
+                  <button class="duet-strzalka duet-strzalka--lewo"  data-duet-krok="-1" disabled>
+                  <button class="duet-strzalka duet-strzalka--prawo" data-duet-krok="1">
                 </div>
 
-     🔴 K. 14.09.2026: „zeby te przed i po byly obok siebie jedno po lewej drugie po
-     prawej ... strzalka jakos przewija na efekt po ale po wejściu po chwili samo nawet
-     sie przesuwa bez tych goofy efektow". Zastąpiło przenikanie całego kadru z odjazdem
-     skali (10–14.09.2026) — tamto miało trzy ruchy naraz i plakietkę „najedź lub kliknij".
+     🔴 K. 14.09.2026: „proste przejście za pomocą strzałki po lewej i prawej ...
+     oba bloki mają mieć ten sam efekt, żeby strona była consistent". Trzecie podejście
+     do tego klocka i jedyne zaakceptowane:
+       ⛔ suwak z przesuwaną linią — odrzucony 10.09 i ponownie 14.09,
+       ⛔ przenikanie kadru z odjazdem skali — „goofy efekty" (14.09),
+       ✅ taśma dwóch kadrów, strzałka przesuwa ją o jeden.
 
-     · SKRYPT PRZEPISUJE JEDNĄ LICZBĘ. Pozycję trzyma `--suwak` na ramce, przycięcie
-       robi `clip-path` w `app.css`. Przeciąganie, skok po kliknięciu, palec i strzałki
-       na klawiaturze daje natywny <input type="range"> rozciągnięty na cały kadr.
-     · POKAZ PO WEJŚCIU W KADR — raz na wizytę: 50 % → 84 → 16 → z powrotem 50 %, żeby
-       było widać, że linia się przesuwa. Pierwsze dotknięcie suwaka go PRZERYWA
-       (inaczej strona wyrywałaby rękę użytkownikowi). Nigdy przy `reduced-motion`.
-     ⛔ Nie animuj tego `transition` na `--suwak`: własność niezarejestrowana przez
-        `@property` nie interpoluje, a rejestracja tylko po to jest droższa niż ta pętla. */
-  qa('[data-suwak]').forEach(function (rama) {
-    var zakres = q('[data-suwak-zakres]', rama);
-    if (!zakres) return;
+     · SKRYPT PILNUJE STANU, nie animuje — jazdę robi `transition` na `.duet-tasma`
+       w `app.css`. Klasa `jest-po` na ramce jest JEDYNYM źródłem prawdy o stanie.
+     · STRZAŁKA SKRAJNA GAŚNIE (`disabled`) — przy dwóch kadrach zapętlanie myli.
+     · POKAZ PO WEJŚCIU W KADR — raz na wizytę, jeden przejazd do „po" i tam zostaje
+       (kończymy na tym, co klient sprzedaje). `data-duet-zwloka` rozsuwa pokazy obu
+       par w czasie, żeby rząd nie „mrugnął" naraz. Kliknięcie przerywa pokaz.
+       Nigdy przy `prefers-reduced-motion`. */
+  qa('[data-duet]').forEach(function (rama) {
+    var tam = q('[data-duet-krok="1"]', rama);
+    var wroc = q('[data-duet-krok="-1"]', rama);
     var ruchOk = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var samoGralo = false, klatka = 0, tknieto = false;
+    var po = false, samoGralo = false, tkniete = false, zegar = 0;
 
-    var ustaw = function (v) {
-      v = Math.max(0, Math.min(100, v));
-      rama.style.setProperty('--suwak', v + '%');
-      /* etykieta gaśnie dopiero, gdy jej połowa kadru zniknęła */
-      rama.classList.toggle('bez-etyk-przed', v < 16);
-      rama.classList.toggle('bez-etyk-po', v > 84);
+    var ustaw = function (nowy) {
+      if (nowy === po) return;
+      po = nowy;
+      rama.classList.toggle('jest-po', po);
+      if (tam) tam.disabled = po;
+      if (wroc) wroc.disabled = !po;
     };
-    var stop = function () {
-      tknieto = true;
-      if (klatka) { cancelAnimationFrame(klatka); klatka = 0; }
+    var reka = function (nowy) {
+      tkniete = true;
+      if (zegar) { clearTimeout(zegar); zegar = 0; }
+      ustaw(nowy);
     };
+    if (tam) tam.addEventListener('click', function () { reka(true); });
+    if (wroc) wroc.addEventListener('click', function () { reka(false); });
 
-    zakres.addEventListener('input', function () { stop(); ustaw(parseFloat(zakres.value)); });
-    zakres.addEventListener('pointerdown', stop);
-    /* Klawiatura: natywny krok to `step` (0,1 %), czyli tysiąc naciśnięć na kadr.
-       Strzałki przejmujemy na 4 % za wciśnięcie; Home/End (0 i 100 %) zostają natywne. */
-    zakres.addEventListener('keydown', function (ev) {
-      stop();
-      var kier = ev.key === 'ArrowLeft' ? -1 : ev.key === 'ArrowRight' ? 1 : 0;
-      if (!kier) return;
-      ev.preventDefault();
-      var v = Math.max(0, Math.min(100, parseFloat(zakres.value) + kier * 4));
-      zakres.value = v.toFixed(1);
-      ustaw(v);
-    });
-    ustaw(parseFloat(zakres.value));
-
-    /* [dokąd, ile ms] — odcinki są dłuższe niż 0,6 s, bo krótsze czyta się jak drgnięcie */
-    var KROKI = [[84, 850], [16, 1450], [50, 950]];
     var pokaz = function () {
-      if (samoGralo || !ruchOk || tknieto) return;
+      if (samoGralo || !ruchOk || tkniete) return;
       samoGralo = true;
-      var i = 0, od = parseFloat(zakres.value), start = 0;
-      var krok = function (t) {
-        if (tknieto) return;
-        if (!start) start = t;
-        var cel = KROKI[i][0], czas = KROKI[i][1];
-        var p = Math.min(1, (t - start) / czas);
-        var e = p < .5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;   // ease-in-out
-        var v = od + (cel - od) * e;
-        zakres.value = v.toFixed(1);
-        ustaw(v);
-        if (p < 1) { klatka = requestAnimationFrame(krok); return; }
-        i += 1;
-        if (i < KROKI.length) { od = cel; start = 0; klatka = requestAnimationFrame(krok); }
-        else { klatka = 0; }
-      };
-      setTimeout(function () { if (!tknieto) klatka = requestAnimationFrame(krok); }, 550);
+      var zwloka = parseInt(rama.getAttribute('data-duet-zwloka') || '0', 10);
+      zegar = setTimeout(function () { if (!tkniete) ustaw(true); }, 1400 + zwloka);
     };
     if ('IntersectionObserver' in window) {
       var obs = new IntersectionObserver(function (wpisy) {
         wpisy.forEach(function (w) { if (w.isIntersecting) { pokaz(); obs.disconnect(); } });
-      }, { threshold: 0.45 });
+      }, { threshold: 0.4 });
       obs.observe(rama);
     } else { pokaz(); }
   });

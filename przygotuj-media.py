@@ -151,8 +151,14 @@ PLAN = [
     #    krawędzi 0,17), więc przy przenikaniu okno balkonowe przeskakiwałoby w bok.
     #    Stoją obok siebie, każde ze swoją etykietą. Źródło ma 900 px, więc bez @2x:
     #    kafel stoi na ~570 px, czyli gęstość i tak wychodzi powyżej 1,5.
-    ("przedpo-pokoj-przed.jpg", "pokoj-przed-36.jpg",             900, 900/798, 0.5, 84),
-    ("przedpo-pokoj-po.jpg",    "pokoj-po-35.jpg",                900, 900/798, 0.5, 84),
+    # 🔴 Proporcja MUSI być ta sama co u pary elewacji (OKNO_SUWAKA, 1500/1239) - od 14.09.2026
+    #    obie pary stoją obok siebie w jednym rzędzie i rozjazd proporcji od razu widać.
+    #    Materiał: składanka klienta miała 900 px na kadr, czyli za mało na pół szerokości
+    #    rzędu - dlatego oba zdjęcia przeszły przez `upscale.sh` (1800 px, obejrzane 1:1).
+    ("przedpo-pokoj-przed.jpg",    "pokoj-przed-36.jpg",         1300, 1500/1239, 0.45, 82),
+    ("przedpo-pokoj-przed@2x.jpg", "pokoj-przed-36.jpg",         1800, 1500/1239, 0.45, 78),
+    ("przedpo-pokoj-po.jpg",       "pokoj-po-35.jpg",            1300, 1500/1239, 0.45, 82),
+    ("przedpo-pokoj-po@2x.jpg",    "pokoj-po-35.jpg",            1800, 1500/1239, 0.45, 78),
 
     ("z-elewacja-01.jpg",     "elewacja-po-taras-04.jpg",        1200, None, 0.5, 72),
     ("z-elewacja-02.jpg",     "elewacja-po-01.jpg",              1200, None, 0.5, 72),

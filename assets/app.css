@@ -299,114 +299,72 @@ a{text-decoration:none}
   border-radius:0}
 .znacznik.po{background:var(--akcent-btn)}
 
-/* ── PRZED/PO — PRZENIKANIE CAŁEGO KADRU ──────────────────────────────────── */
-/* 🔴 Zastąpiło suwak z przesuwaną linią (K. 10.09.2026: „po hoverze całe zdjęcie
-   może się zmieniać"). Powód jest merytoryczny, nie estetyczny: zdjęcie „po"
-   zrobiono z ok. 20 % DALEJ niż „przed" (zmierzone: narożnik-narożnik 934 vs 777
-   punktów), więc pole widzenia obu kadrów to ich
-   CZĘŚĆ WSPÓLNA i żadne przekształcenie tego nie naprawi. Przesuwana linia
-   sadzała oko dokładnie na styku i pokazywała każdą resztkową różnicę.
-   Przenikanie całego kadru styku nie ma — a rozmycie w połowie przejścia
-   zjada resztę. ⛔ Nie wracać do suwaka bez nowego zdjęcia od klienta
-   (pytanie 11 w PYTANIA-DO-KLIENTA.md).
+/* ── PRZED I PO: DWA BLOKI OBOK SIEBIE ────────────────────────────────────────
+   🔴 K. 14.09.2026: „obydwa bloki mają być obok siebie, po lewej ta przybudówka
+   i po prawej sypialnia ... proste przejście za pomocą strzałki po lewej i prawej
+   ... oba bloki mają mieć ten sam efekt, żeby strona była consistent".
 
-   🔴 K. 11.09.2026: „można oddalić to zdjęcie po". Można — ale NIE przez
-   powiększenie wspólnego okna: „przed" nie ma tam pikseli (pokrycie 61 %,
-   zmierzone). Dlatego „po" dostało WŁASNY, szerszy kadr (OKNO_PO), a zestraja
-   je RUCH: warstwa „po" startuje przeskalowana tak, że pokrywa się z „przed"
-   co do piksela (dowód „ten sam narożnik"), a potem odjeżdża do skali 1
-   i odsłania całą rozbudowę — dach, narożnik, opaskę, trawnik. */
-.przedpo{margin:0}
-/* ── DRUGA para „przed i po": wnętrze. Dwa osobne kadry obok siebie, bez przenikania.
-   Powód w `przygotuj-media.py` przy slocie `przedpo-pokoj-*`: zdjęcia z innego punktu
-   i innej ogniskowej, więc warstwy nie leżą na sobie i suwak by je „przeskakiwał".
-   Na telefonie kolumna - obok siebie dwa kadry po ~180 px nie pokazują niczego. */
-.duet{margin:48px 0 0}
-.duet-kadry{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.duet-kadr{position:relative;line-height:0;overflow:hidden}
-.duet-kadr img{width:100%;height:100%;object-fit:cover;display:block}
-@media (max-width:780px){.duet-kadry{grid-template-columns:1fr;gap:10px}.duet{margin-top:32px}}
-/* ⛔ Ramka MUSI być osobnym elementem: `overflow:hidden` na <figure> ucinało podpis. */
-/* 🔴 K. 10.09.2026: „żeby to zdjęcie mieściło się w CAŁOŚCI na ekranie bez względu
-   na rozmiar ekranu". Dlatego ograniczamy SZEROKOŚĆ ramki wysokością okna
-   (1,21:1 → 78vh × 1,2107), a nie wysokość — przy `max-height` obrazek by się przycinał.
-   ⛔ `aspect-ratio` MUSI zgadzać się z realnymi plikami (1500×1239 = OKNO_SUWAKA
-   w `przygotuj-media.py`). Rozjazd uruchamia `object-fit: cover`, czyli dokładnie
-   to przycięcie, którego tu nie chcemy.
-   🔴 `touch-action:pan-y` — palec w poziomie ciągnie suwak, w pionie dalej przewija
-   stronę. Bez tego przeciąganie po kadrze na telefonie tylko scrollowało. */
-.przedpo-rama{--suwak:50%;position:relative;overflow:hidden;line-height:0;
-  aspect-ratio:1500/1239;width:min(100%,calc(78vh * 1.2107));margin-inline:auto;
-  background:var(--noc);touch-action:pan-y}
-.przedpo-rama img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-  display:block;border-radius:0}
+   Historia tego klocka (żeby nie zawrócić w któryś ślepy zaułek):
+   ⛔ suwak z przesuwaną linią (10.09 i znów 14.09) — odrzucony dwa razy,
+   ⛔ przenikanie całego kadru z odjazdem skali (10–14.09) — „goofy efekty",
+   ✅ przełącznik: dwa kadry na taśmie, strzałka przesuwa taśmę o jeden kadr.
+   Jeden mechanizm dla OBU par — elewacji i wnętrza — bo tylko wtedy sekcja czyta
+   się jako jedna rzecz, a nie dwa różne widżety.
 
-/* ── SUWAK Z LINIĄ (K. 14.09.2026) ────────────────────────────────────────────
-   „zeby te przed i po byly obok siebie jedno po lewej drugie po prawej ... strzalka
-   jakos przewija na efekt po ale po wejściu po chwili samo nawet sie przesuwa".
-   Stan spoczynku = 50/50: po lewej surówka, po prawej gotowe.
+   ⛔ Nie dokładaj trzeciej pary do rzędu. Przy trzech kolumnach kadr schodzi poniżej
+      420 px i „przed" przestaje być czytelne. Trzecia para = nowy rząd. */
+.duety{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:start}
+.duet{margin:0}
+/* ⛔ `aspect-ratio` MUSI zgadzać się z plikami OBU par (1500×1239 = OKNO_SUWAKA
+   w `przygotuj-media.py`; kadry wnętrza są cięte do tej samej proporcji).
+   Rozjazd uruchamia `object-fit:cover`, czyli przycięcie, którego tu nie chcemy. */
+.duet-rama{position:relative;overflow:hidden;line-height:0;aspect-ratio:1500/1239;
+  background:var(--noc)}
+/* Taśma dwóch kadrów obok siebie. Przesuwa się o połowę własnej szerokości, więc
+   przejście jest jednym ruchem w tę stronę, w którą pokazuje strzałka. */
+.duet-tasma{display:flex;width:200%;height:100%;
+  transition:transform .42s cubic-bezier(.4,0,.2,1);will-change:transform}
+.duet-tasma img{width:50%;height:100%;object-fit:cover;display:block;border-radius:0}
+.duet-rama.jest-po .duet-tasma{transform:translateX(-50%)}
 
-   ⛔ Działa TYLKO dlatego, że oba pliki siedzą w JEDNYM oknie kadru (OKNO_SUWAKA)
-      i „po" jest wyprostowane homografią w układ „przed" — mur, ościeże i opaska
-      przechodzą przez linię bez skoku (sprawdzone na złożeniach przy 35/50/65 %).
-      Ruszasz kadry w `przygotuj-media.py` → obejrzyj styk, ZANIM wypchniesz.
-   ⛔ Nie wracaj do przenikania z odjazdem kadru (10–14.09.2026). Tamto miało własny,
-      szerszy kadr „po" i trzy ruchy naraz; K. nazwał to „goofy efektami". */
-.przedpo-przed{clip-path:inset(0 calc(100% - var(--suwak)) 0 0)}
+/* Strzałki: koła przy krawędziach kadru, pionowo na środku. Skrajna gaśnie i przestaje
+   być klikalna — przy dwóch kadrach zapętlanie tylko myli (nie ma trzeciego zdjęcia). */
+.duet-strzalka{position:absolute;top:50%;transform:translateY(-50%);z-index:3;
+  width:46px;height:46px;border:0;border-radius:50%;background:rgba(15,15,18,.86);
+  box-shadow:0 0 0 1px rgba(255,255,255,.28);color:#fff;cursor:pointer;padding:0;
+  display:flex;align-items:center;justify-content:center;
+  transition:opacity .25s cubic-bezier(.4,0,.2,1),background .25s cubic-bezier(.4,0,.2,1)}
+.duet-strzalka svg{display:block}
+.duet-strzalka--lewo{left:14px}
+.duet-strzalka--prawo{right:14px}
+.duet-strzalka:hover{background:rgba(15,15,18,.96)}
+.duet-strzalka:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.duet-strzalka[disabled]{opacity:.28;cursor:default;box-shadow:none}
 
-/* Linia podziału z uchwytem. Biała z cienkim ciemnym obrysem, żeby było ją widać
-   i na surowym murze, i na białej elewacji. `pointer-events:none` — zdarzenia łapie
-   przezroczysty <input type="range"> leżący nad wszystkim. */
-.przedpo-linia{position:absolute;top:0;bottom:0;left:var(--suwak);z-index:3;
-  width:2px;margin-left:-1px;background:rgba(255,255,255,.92);
-  box-shadow:0 0 0 1px rgba(10,10,12,.25);pointer-events:none}
-.przedpo-uchwyt{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-  width:54px;height:54px;border-radius:50%;background:rgba(15,15,18,.96);
-  box-shadow:0 0 0 1px rgba(255,255,255,.32);
-  display:flex;align-items:center;justify-content:center;color:#fff}
-.przedpo-uchwyt svg{display:block}
+/* Etykiety stoją jedna na drugiej i przenikają — widoczna jest ta, która opisuje
+   kadr aktualnie na wierzchu. Kadry NIE przenikają, przenika sam napis. */
+.duet-etyk{z-index:4;top:16px;left:16px;transition:opacity .3s cubic-bezier(.4,0,.2,1)}
+.duet-etyk--po{opacity:0}
+.duet-rama.jest-po .duet-etyk--przed{opacity:0}
+.duet-rama.jest-po .duet-etyk--po{opacity:1}
 
-/* Sterowanie: natywny suwak rozciągnięty na cały kadr. Daje ZA DARMO przeciąganie
-   myszą i palcem, skok po kliknięciu, strzałki na klawiaturze i czytnik ekranu.
-   ⛔ Kciuk MUSI być wąski (2 px). Szeroki nie dojeżdża do krawędzi toru, więc kursor
-      rozjeżdża się z linią tym bardziej, im bliżej brzegu kadru. Widoczny uchwyt
-      rysuje `.przedpo-linia`, nie kciuk. */
-.przedpo-zakres{position:absolute;inset:0;z-index:4;width:100%;height:100%;
-  margin:0;padding:0;border:0;background:transparent;cursor:ew-resize;
-  -webkit-appearance:none;appearance:none}
-.przedpo-zakres::-webkit-slider-runnable-track{height:100%;background:transparent}
-.przedpo-zakres::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
-  width:2px;height:100%;background:transparent;cursor:ew-resize}
-.przedpo-zakres::-moz-range-track{height:100%;background:transparent;border:0}
-.przedpo-zakres::-moz-range-thumb{width:2px;height:100%;border:0;border-radius:0;
-  background:transparent;cursor:ew-resize}
-.przedpo-zakres:focus{outline:none}
-.przedpo-zakres:focus-visible+.przedpo-linia .przedpo-uchwyt{outline:2px solid #fff;
-  outline-offset:3px}
+.duet figcaption{margin-top:14px;font-size:15px;line-height:1.55;color:var(--przyg-jasny)}
 
-/* Obie etykiety wiszą cały czas — każda przy swojej krawędzi. Gasną dopiero wtedy,
-   gdy suwak dojedzie do brzegu i ich połowa kadru przestaje istnieć. */
-.przedpo-etyk{z-index:5;top:18px;transition:opacity .3s cubic-bezier(.4,0,.2,1)}
-.przedpo-etyk--przed{left:18px;right:auto}
-.przedpo-etyk--po{left:auto;right:18px}
-.przedpo-rama.bez-etyk-przed .przedpo-etyk--przed{opacity:0}
-.przedpo-rama.bez-etyk-po .przedpo-etyk--po{opacity:0}
-
-.przedpo figcaption{margin-top:16px;max-width:min(100%,calc(78vh * 1.2107));
-  margin-inline:auto;font-size:15px;line-height:1.55;color:var(--przyg-jasny)}
-@media (max-width:700px){
-  /* etykiety na telefonie mniejsze — przy kadrze 390 px pełnowymiarowe zjadały pół zdjęcia */
-  .przedpo-etyk{top:10px;font-size:10px;padding:6px 9px;letter-spacing:.12em}
-  .przedpo-etyk--przed{left:10px}
-  .przedpo-etyk--po{right:10px}
-  .przedpo-uchwyt{width:44px;height:44px}
-  .przedpo figcaption{font-size:14px}
+@media (max-width:900px){
+  /* K.: „na telefonie może być jeden pod drugim" — a przy dwóch kolumnach poniżej
+     900 px kadr schodzi do ~400 px i surówka przestaje być czytelna. */
+  .duety{grid-template-columns:1fr;gap:34px}
+  .duet-strzalka{width:42px;height:42px}
+  .duet-strzalka--lewo{left:10px}
+  .duet-strzalka--prawo{right:10px}
+  .duet-etyk{top:10px;left:10px;font-size:10px;padding:6px 9px;letter-spacing:.12em}
+  .duet figcaption{font-size:14px}
 }
-/* Bez rdzenia suwak stoi na 50 % — obie połowy widać, tylko nic się nie przesuwa. */
-html:not(.js) .przedpo-zakres{display:none}
+/* Bez rdzenia widać pierwszy kadr („przed") i podpis — strzałki nic by nie robiły. */
+html:not(.js) .duet-strzalka{display:none}
 @media (prefers-reduced-motion:reduce){
-  /* przesuwanie ręką zostaje, znika tylko sam pokaz po wejściu (pilnuje `rdzen.js`) */
-  .przedpo-etyk{transition:none}
+  /* kadr przeskakuje bez jazdy, sam pokaz po wejściu w widok nie rusza (`rdzen.js`) */
+  .duet-tasma,.duet-etyk{transition:none}
 }
 
 /* ── OPINIE Z GOOGLE ───────────────────────────────────────────────────────── */

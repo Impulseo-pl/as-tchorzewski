@@ -56,13 +56,13 @@ Powód nie jest estetyczny, tylko rozpoznawczy: **ten klocek ma wyglądać dokł
 w naszych demach** — człowiek, który widział go u konkurencji, ma go poznać w ułamku sekundy.
 Zaokrąglenie kończy się na tej sekcji.
 
-Poza nią zaokrąglony jest jeszcze **uchwyt suwaka przed/po** (`.przedpo-uchwyt`, koło 50%).
-To nie jest płytka ani karta, tylko gałka do chwycenia — okrągła, bo tak wygląda każdy suwak,
-którego człowiek dotykał wcześniej. Ta sama logika, co przy ikonach social: kształt niesie
-znaczenie, nie ozdobę.
+Poza nią zaokrąglone są jeszcze **strzałki przełącznika przed/po** (`.duet-strzalka`, koła 50%).
+To nie są płytki ani karty, tylko przyciski do kliknięcia — okrągłe, bo tak wygląda każda
+strzałka nawigacji, którą człowiek widział wcześniej. Ta sama logika, co przy ikonach social:
+kształt niesie znaczenie, nie ozdobę.
 
 🔴 Kontrola grepem daje więc **dokładnie trzy** trafienia: `.sekcja--opinie .g-badge`,
-`.opinia`, `.przedpo-uchwyt`. Czwarte = błąd.
+`.opinia`, `.duet-strzalka`. Czwarte = błąd.
 
 ---
 
@@ -487,7 +487,8 @@ Największy prostokąt mieszczący się w OBU (policzony maską pokrycia w
 stąd **1,21:1**. Odpada tylko dolny pas trawnika, w którym i tak siedzi znak wodny.
 
 🔴 Trzy miejsca muszą mówić to samo: `OKNO_SUWAKA` w `przygotuj-media.py`,
-`aspect-ratio` w `.przedpo-rama` i atrybuty `width`/`height` w `pages.py`. Rozjazd
+`aspect-ratio` w `.duet-rama` i atrybuty `width`/`height` w `pages.py`. Kadry wnętrza
+są cięte do TEJ SAMEJ proporcji, bo obie pary stoją obok siebie w jednym rzędzie. Rozjazd
 uruchamia `object-fit: cover`, czyli dokładnie to przycięcie, którego tu nie chcemy.
 
 Cały kadr mieści się na ekranie, bo ramka ma ograniczoną **szerokość**
@@ -510,17 +511,19 @@ linia opaski i górna krawędź muru rozjeżdżają się o **1–5 jednostek na 
 ⛔ Nie kotwiczyć na elementach, które zmieniło wykończenie: ościeża, parapety, obróbki.
 
 
-### Jak działa suwak (stan od 14.09.2026)
+### Jak działa przed/po (stan od 14.09.2026, wersja trzecia)
 
-Linia z okrągłym uchwytem, po lewej „przed", po prawej „po", spoczynek na 50 %.
-Pozycję trzyma zmienna `--suwak` na `.przedpo-rama`, przycięcie robi `clip-path` na
-`.przedpo-przed`, a całe sterowanie (mysz, palec, strzałki klawiatury, czytnik ekranu)
-bierze na siebie przezroczysty `<input type="range">` na całym kadrze. Po wejściu w widok
-suwak raz przejeżdża sam (50 → 84 → 16 → 50 %) i przestaje, gdy ktoś go dotknie.
+**Dwa bloki obok siebie w jednym rzędzie** (`.duety`): po lewej rozbudowa z zewnątrz,
+po prawej pokój na poddaszu. Oba mają IDENTYCZNY mechanizm — dwa kadry na taśmie
+(`.duet-tasma`), strzałka przy krawędzi przesuwa taśmę o jeden kadr, etykieta Przed/Po
+przenika razem z nim. Strzałka skrajna gaśnie (`disabled`). Po wejściu w widok każdy blok
+raz przejeżdża sam do „po" (drugi z opóźnieniem 260 ms) i tam zostaje; kliknięcie przerywa.
+Poniżej 900 px bloki idą jeden pod drugim.
 
-⛔ Warunek konieczny: OBA pliki w tym samym oknie kadru (`OKNO_SUWAKA`). Osobne, szersze
-okno dla „po" istniało tylko na czas przenikania z odjazdem skali (10–14.09.2026) —
-przy linii podziału rozjeżdżałoby mur po obu jej stronach.
+⛔ Nie różnicować mechaniki między parami. K. 14.09.2026: „oba bloki mają mieć ten sam
+efekt, żeby strona była consistent".
+⛔ Dwa odrzucone podejścia, nie wracać: suwak z przesuwaną linią (odrzucony 10.09 i 14.09)
+oraz przenikanie całego kadru z odjazdem skali („goofy efekty", 14.09).
 
 ### Czego suwak przed/po NIE potrafi — pole widzenia
 

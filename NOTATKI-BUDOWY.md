@@ -1217,7 +1217,7 @@ ale gdyby któryś kadr miał iść na pas pełnoekranowy, najpierw `upscale.sh`
 
 ---
 
-## 14.09.2026 — przed/po elewacji wraca na suwak z linią
+## 14.09.2026 (odrzucone) — przed/po elewacji na suwaku z linią
 
 K.: „zrób to tak zeby te przed i po były obok siebie jedno po lewej drugie po prawej
 i najlepiej uprość to tak ze sie strzałką jakoś przewija na efekt po ale po wejściu po
@@ -1254,3 +1254,33 @@ przesuwanie zostaje.
 
 Druga para (wnętrze, `.duet`) bez zmian — tam suwak nie wchodzi w grę, bo zdjęcia są z innego
 punktu i innej ogniskowej (korelacja krawędzi 0,17), więc stoją po prostu obok siebie.
+
+---
+
+## 14.09.2026, 15:40 — przed/po: dwa bloki obok siebie, przełączane strzałką
+
+Trzecie podejście i to, które zostało. K.: „nie podobają mi się te efekty przejścia ...
+ani suwak z linią, ani animacja przenikania; chodziło mi o to, żeby obydwa bloki były obok
+siebie ... proste przejście za pomocą strzałki po lewej i prawej ... oba bloki mają mieć
+ten sam efekt, żeby strona była consistent".
+
+**Co stoi na stronie.** Rząd dwóch bloków (`.duety`): po lewej rozbudowa z zewnątrz, po prawej
+pokój na poddaszu. Każdy blok to dwa kadry na taśmie i dwie strzałki przy krawędziach — klik
+przesuwa taśmę o jeden kadr (0,42 s, jeden ruch, bez przenikania i bez skalowania). Strzałka
+skrajna gaśnie, bo przy dwóch kadrach zapętlanie tylko myli. Po wejściu w widok każdy blok raz
+przejeżdża sam do „po" (drugi z opóźnieniem 260 ms, żeby rząd nie mrugnął naraz) i tam zostaje;
+pierwsze kliknięcie pokaz przerywa. Poniżej 900 px bloki idą jeden pod drugim (zgoda K.).
+
+**Zmiany w materiale.** Obie pary muszą mieć tę samą proporcję, bo stoją obok siebie —
+kadry wnętrza przeszły z 900/798 na 1500/1239 (proporcja pary elewacji). Składanka klienta
+dawała 900 px na kadr, czyli za mało na pół szerokości rzędu (kadr ma 673 px przy oknie 1440),
+więc oba zdjęcia pokoju przeszły przez `upscale.sh` → 1800 px; wycinek 1:1 obejrzany, bez
+artefaktów. Doszły warianty `@2x`.
+
+**Zmierzone w przeglądarce po zmianie:** start oba na „przed" (lewa strzałka wyłączona),
+pierwszy blok przeskakuje w 1,4 s, drugi w 1,66 s, kliknięcia przełączają w obie strony,
+stan `disabled` strzałek zgadza się ze stanem kadru.
+
+⛔ Nie wracać do dwóch odrzuconych wersji: suwaka z przesuwaną linią (odrzucony 10.09 i 14.09)
+ani przenikania całego kadru z odjazdem skali („goofy efekty"). Zapis jednego i drugiego
+został w historii gita, w CSS-ie i JS-ie już ich nie ma.
