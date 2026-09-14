@@ -1182,9 +1182,17 @@ dwa razy wyższy niż widok i pokazywała środkowe ~49 % przy powiększeniu 1,3
 do ±150 px, `data-paralaksa` z 280 na 110 (ruch musi mieścić się w zapasie, inaczej tło
 wyjeżdża). Efekt: kadr niemal pełny, paralaksa nadal działa, tylko delikatniej.
 
-📱 Na telefonie `object-position:32% 42%` — ekran jest węższy niż kadr, więc `cover` obcinał
-boki i zostawał sam materac. Przesunięte w stronę przeszklenia (K.: „okno ma być bardziej
-widoczne").
+📱 Na telefonie `object-position:80% 38%` **plus zdjęty zapas paralaksy** (`inset:0`,
+`height:100%`, `transform:none`). Dwie rzeczy naraz:
+- ekran jest węższy niż kadr, więc `cover` zostawiał sam materac — przesunięcie w prawo
+  wprowadza do kadru okno dachowe nad łóżkiem (K.: „okno po prawej ma być widać").
+  ⚠️ 92 % odpada: nagłówek wchodzi wtedy na jasną szybę i kontrast leci.
+- zapas ±150 px na telefonie robił kontener o 300 px wyższy od ekranu (+40 %), więc `cover`
+  pokazywało ~33 % szerokości zdjęcia. Bez zapasu ~47 % — to jest to „oddalenie", o które
+  prosił K. Cena: paralaksa hero na telefonie nie działa. Świadoma wymiana.
+
+⚠️ Pierwsza wersja szła w DRUGĄ stronę (`32 %`, w stronę firany) — złe odczytanie „przesuń
+zdjęcie w prawo". Zapis na przyszłość: pytać o OBIEKT, który ma wejść w kadr, nie o kierunek.
 
 🔴 **Bramka wyglądu złapała to, co zawsze łapie przy jaśniejszym hero:** kontrast napisów
 spadł do 2,17–4,48 przy wymaganych 4,5 (lead, etykieta, godziny). Naprawione dwoma ruchami:
