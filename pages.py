@@ -266,9 +266,6 @@ KADRY = {
     "pokoj-03": ("z-pokoj-03.jpg", 1100, 1467,
                 "Drewniane belki stropowe nad podłogą ułożoną w jodełkę",
                 "Belki na widoku, podłoga w jodełkę"),
-    "pokoj-05": ("z-pokoj-05.jpg", 900, 1600,
-                "Zestawienie: ten sam pokój na poddaszu w stanie surowym i po wykończeniu",
-                "Ten sam pokój: przed i po"),
     "poddasze-06": ("z-poddasze-06.jpg", 1100, 1467,
                    "Pokój na poddaszu z drewnianą kratownicą i podłogą z płytek wielkoformatowych",
                    "Kratownica zostawiona na widoku"),
@@ -290,9 +287,6 @@ KADRY = {
     "poddasze2-04": ("z-poddasze2-04.jpg", 1100, 1467,
                     "Wnęka prysznicowa z murowanym siedziskiem obok ściany w ciemnej zieleni",
                     "Wnęka prysznicowa z siedziskiem"),
-    "robota-01": ("z-robota-01.jpg", 1200, 1112,
-                 "Sufit na stelażu z profili stalowych w pomieszczeniu przed zabudową płytą",
-                 "W trakcie: stelaż pod sufit podwieszany"),
     "robota-02": ("z-robota-02.jpg", 1200, 900,
                  "Ściana z płytek wielkoformatowych z klinami poziomującymi w trakcie układania",
                  "W trakcie: płytki na klinach poziomujących"),
@@ -477,8 +471,8 @@ def index(naglowek):
   <div class="wrap wrap--szeroki">
     <div class="naglowek-sekcji rv">
       <span class="etykieta">Przed i po</span>
-      <h2>Ten sam dom. Dwa zdjęcia.</h2>
-      <p class="pod">Na gotowym zdjęciu nie widać już, od czego się zaczynało.</p>
+      <h2>Przed i po. Dwie roboty.</h2>
+      <p class="pod">Na gotowym zdjęciu nie widać już, od czego się zaczynało. Raz z zewnątrz, raz w środku.</p>
     </div>
     <figure class="przedpo rv">
       <div class="przedpo-rama" data-przedpo>
@@ -502,6 +496,23 @@ def index(naglowek):
       </div>
       <figcaption>Stan surowy: mury z bloczków i stemple. Po naszej robocie: elewacja,
         stolarka okienna i opaska. Ten sam narożnik tego samego domu.</figcaption>
+    </figure>
+
+    <figure class="duet rv">
+      <div class="duet-kadry">
+        <div class="duet-kadr">
+          <img src="img/przedpo-pokoj-przed.jpg" width="900" height="798" decoding="async"
+            alt="Pokój na poddaszu przed wykończeniem: płyty gipsowe, surowa wylewka, kable wystające ze ścian">
+          <span class="znacznik">Przed</span>
+        </div>
+        <div class="duet-kadr">
+          <img src="img/przedpo-pokoj-po.jpg" width="900" height="798" decoding="async"
+            alt="Ten sam pokój po wykończeniu: sypialnia z podłogą, oświetleniem, zasłonami i meblami">
+          <span class="znacznik po">Po</span>
+        </div>
+      </div>
+      <figcaption>To samo poddasze, tylko w środku. Po lewej płyta, surowa wylewka i kable
+        wystające ze ścian. Po prawej ten sam pokój, kiedy schodziliśmy z budowy.</figcaption>
     </figure>
   </div>
 </section>
@@ -753,10 +764,10 @@ def realizacje(naglowek):
 
 <section class="sekcja">
   <div class="wrap">
-{grupa("Pokoje po wykończeniu", "01", ["pokoj-05", "pokoj-01",
-                                           "pokoj-03", "pokoj-02"], lazy=False)}
+{grupa("Pokoje po wykończeniu", "01", ["pokoj-01", "pokoj-03",
+                                           "pokoj-02"], lazy=False)}
 
-{grupa("Wejście, hol i schody", "02", ["wejscie-01", "hol-01", "hol-02", "schody-02"])}
+{grupa("Wejście, hol i schody", "02", ["wejscie-01", "hol-01", "hol-02", "schody-02"], lazy=False)}
 
 {grupa("Poddasze pod klucz", "03", ["poddasze-01", "poddasze-02", "poddasze-06",
                                     "poddasze-07", "poddasze-03", "poddasze-04",
@@ -772,7 +783,7 @@ def realizacje(naglowek):
 
 {grupa("Beton architektoniczny i schody", "07", ["beton-02", "beton-ciemny", "schody-01"])}
 
-{grupa("Tak to powstaje", "08", ["robota-01", "robota-02", "robota-03"])}
+{grupa("Tak to powstaje", "08", ["robota-02", "robota-03"])}
 
 {grupa("Elewacja i podbitka", "09", ["elewacja-01", "elewacja-02", "elewacja-03",
                                      "elewacja-04"])}

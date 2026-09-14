@@ -135,7 +135,6 @@ PLAN = [
     ("z-pokoj-01.jpg",        "pokoj-okna-rolety-15.jpg",            1200, None, 0.5, 78),
     ("z-pokoj-02.jpg",        "kacik-polki-podswietlenie-17.jpg",    1100, None, 0.5, 78),
     ("z-pokoj-03.jpg",        "belki-jodelka-19.jpg",                1100, None, 0.5, 78),
-    ("z-pokoj-05.jpg",        "sypialnia-przed-po-22.jpg",           900, None, 0.5, 78),
     ("z-poddasze-06.jpg",     "poddasze-belki-a-28.jpg",             1100, None, 0.5, 78),
     ("z-poddasze-07.jpg",     "pokoj-panele-belki-32.jpg",           1100, None, 0.5, 78),
     ("z-lazienka-05.jpg",     "lazienka-mala-gotowa-33.jpg",         1100, None, 0.5, 78),
@@ -143,9 +142,17 @@ PLAN = [
     ("z-lazienka-07.jpg",     "lazienka-czarna-wanna-24.jpg",        1100, None, 0.5, 78),
     ("z-lazienka-08.jpg",     "lazienka-czarna-wc-26.jpg",           1100, None, 0.5, 78),
     ("z-poddasze2-04.jpg",    "poddasze2-wneka-siedzisko-23.jpg",    1100, None, 0.5, 78),
-    ("z-robota-01.jpg",       "sufit-stelaz-wtrakcie-18.jpg",        1200, None, 0.5, 78),
     ("z-robota-02.jpg",       "sciana-plytki-wtrakcie-30.jpg",       1200, None, 0.5, 78),
     ("z-robota-03.jpg",       "podloga-plytki-wtrakcie-29.jpg",      1100, None, 0.5, 78),
+
+
+    # ── druga para „przed i po" na głównej: wnętrze. ⛔ NIE idzie w suwak przenikający
+    #    jak rozbudowa - zdjęcia robione z innego miejsca i innej ogniskowej (korelacja
+    #    krawędzi 0,17), więc przy przenikaniu okno balkonowe przeskakiwałoby w bok.
+    #    Stoją obok siebie, każde ze swoją etykietą. Źródło ma 900 px, więc bez @2x:
+    #    kafel stoi na ~570 px, czyli gęstość i tak wychodzi powyżej 1,5.
+    ("przedpo-pokoj-przed.jpg", "pokoj-przed-36.jpg",             900, 900/798, 0.5, 84),
+    ("przedpo-pokoj-po.jpg",    "pokoj-po-35.jpg",                900, 900/798, 0.5, 84),
 
     ("z-elewacja-01.jpg",     "elewacja-po-taras-04.jpg",        1200, None, 0.5, 72),
     ("z-elewacja-02.jpg",     "elewacja-po-01.jpg",              1200, None, 0.5, 72),
