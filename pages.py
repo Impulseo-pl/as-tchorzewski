@@ -243,6 +243,63 @@ KADRY = {
                     "Drewniana podbitka pod okapem dachu widziana od dołu",
                     "Podbitka pod okapem"),
 
+
+    # ── kadry z telefonu klienta (WhatsApp, 14.09.2026) ─────────────────────────
+    "wejscie-01": ("z-wejscie-01.jpg", 1051, 1497,
+                  "Czarne drzwi wejściowe w ścianie z ciemnej cegły, po bokach podłużne lampy",
+                  "Wejście: drzwi w ceglanej ścianie"),
+    "hol-01": ("z-hol-01.jpg", 1200, 1200,
+              "Hol z drewnianą ścianą lamelową, lustrem w czarnej ramie i wideodomofonem",
+              "Hol: ściana lamelowa i lustro"),
+    "hol-02": ("z-hol-02.jpg", 1200, 1200,
+              "Korytarz z panelami na podłodze i lamelami przy wejściu",
+              "Korytarz po wykończeniu"),
+    "schody-02": ("z-schody-02.jpg", 1200, 1200,
+                 "Schody wyłożone ciemnym kamieniem, obraz na ścianie klatki schodowej",
+                 "Schody z ciemnego kamienia"),
+    "pokoj-01": ("z-pokoj-01.jpg", 1200, 1200,
+                "Pokój z dwoma wysokimi oknami w czarnych ramach i opuszczonymi roletami",
+                "Stolarka okienna i rolety w gotowym pokoju"),
+    "pokoj-02": ("z-pokoj-02.jpg", 1100, 1588,
+                "Kącik z podświetlanymi wnękami półkowymi, obrazem i ławką",
+                "Wnęki z podświetleniem i miejsce do siedzenia"),
+    "pokoj-03": ("z-pokoj-03.jpg", 1100, 1467,
+                "Drewniane belki stropowe nad podłogą ułożoną w jodełkę",
+                "Belki na widoku, podłoga w jodełkę"),
+    "pokoj-05": ("z-pokoj-05.jpg", 900, 1600,
+                "Zestawienie: ten sam pokój na poddaszu w stanie surowym i po wykończeniu",
+                "Ten sam pokój: przed i po"),
+    "poddasze-06": ("z-poddasze-06.jpg", 1100, 1467,
+                   "Pokój na poddaszu z drewnianą kratownicą i podłogą z płytek wielkoformatowych",
+                   "Kratownica zostawiona na widoku"),
+    "poddasze-07": ("z-poddasze-07.jpg", 1100, 1467,
+                   "Pomieszczenie na poddaszu z podłogą z paneli i ciemnymi belkami po bokach",
+                   "Panele i belki w przejściu"),
+    "lazienka-05": ("z-lazienka-05.jpg", 1100, 1467,
+                   "Mała łazienka pod skosem: umywalka z szafką, WC podwieszane, okno dachowe",
+                   "Łazienka pod skosem: umywalka i WC"),
+    "lazienka-06": ("z-lazienka-06.jpg", 1100, 1467,
+                   "Kabina prysznicowa ze szklaną ścianką obok umywalki w małej łazience",
+                   "Kabina ze szklaną ścianką"),
+    "lazienka-07": ("z-lazienka-07.jpg", 1100, 1467,
+                   "Wanna z parawanem w czarnej ramie na tle białych płytek, ciemna podłoga",
+                   "Wanna z parawanem w czarnej ramie"),
+    "lazienka-08": ("z-lazienka-08.jpg", 1100, 1467,
+                   "WC podwieszane i czarna szafka z umywalką w łazience z ciemną podłogą",
+                   "Czarna szafka i WC podwieszane"),
+    "poddasze2-04": ("z-poddasze2-04.jpg", 1100, 1467,
+                    "Wnęka prysznicowa z murowanym siedziskiem obok ściany w ciemnej zieleni",
+                    "Wnęka prysznicowa z siedziskiem"),
+    "robota-01": ("z-robota-01.jpg", 1200, 1112,
+                 "Sufit na stelażu z profili stalowych w pomieszczeniu przed zabudową płytą",
+                 "W trakcie: stelaż pod sufit podwieszany"),
+    "robota-02": ("z-robota-02.jpg", 1200, 900,
+                 "Ściana z płytek wielkoformatowych z klinami poziomującymi w trakcie układania",
+                 "W trakcie: płytki na klinach poziomujących"),
+    "robota-03": ("z-robota-03.jpg", 1100, 1467,
+                 "Podłoga z płytek drewnopodobnych z krzyżykami dystansowymi w trakcie układania",
+                 "W trakcie: płytki drewnopodobne na podłodze"),
+
     # ten sam plik co w sekcji „przed i po" na stronie głównej - jeden kadr, jeden plik
     "przed": ("przed.jpg", 1100, 1100,
               "Rozbudowa w stanie surowym: mury z bloczków, stemple i otwarty otwór okienny",
@@ -402,7 +459,7 @@ def index(naglowek):
     return f"""{naglowek("index.html")}
 
 <header class="scena">
-  <img class="scena-tlo" data-paralaksa="280" src="img/hero.jpg"
+  <img class="scena-tlo" data-paralaksa="110" src="img/hero.jpg"
     srcset="img/hero.jpg 1x, img/hero@2x.jpg 2x" width="1440" height="1300" fetchpriority="high"
     alt="Ściana z betonu architektonicznego z czarnymi liniami - z naszych realizacji">
   <div class="wrap" id="tresc">
@@ -696,16 +753,28 @@ def realizacje(naglowek):
 
 <section class="sekcja">
   <div class="wrap">
-{grupa("Poddasze pod klucz", "01", ["poddasze-01", "poddasze-02", "poddasze-03",
-                                    "poddasze-04", "poddasze-05"], lazy=False)}
+{grupa("Pokoje po wykończeniu", "01", ["pokoj-05", "pokoj-01",
+                                           "pokoj-03", "pokoj-02"], lazy=False)}
 
-{grupa("Łazienki", "02", ["lazienka-01", "lazienka-02", "lazienka-03", "lazienka-04"])}
+{grupa("Wejście, hol i schody", "02", ["wejscie-01", "hol-01", "hol-02", "schody-02"])}
 
-{grupa("Poddasze z wnęką na wannę", "03", ["poddasze2-01", "poddasze2-02", "poddasze2-03"])}
+{grupa("Poddasze pod klucz", "03", ["poddasze-01", "poddasze-02", "poddasze-06",
+                                    "poddasze-07", "poddasze-03", "poddasze-04",
+                                    "poddasze-05"])}
 
-{grupa("Beton architektoniczny i schody", "04", ["beton-02", "beton-ciemny", "schody-01"])}
+{grupa("Łazienki", "04", ["lazienka-05", "lazienka-06", "lazienka-01", "lazienka-02",
+                          "lazienka-03", "lazienka-04"])}
 
-{grupa("Elewacja i podbitka", "05", ["elewacja-01", "elewacja-02", "elewacja-03",
+{grupa("Łazienka w czerni i bieli", "05", ["lazienka-07", "lazienka-08"])}
+
+{grupa("Poddasze z wnęką na wannę", "06", ["poddasze2-01", "poddasze2-02",
+                                           "poddasze2-04", "poddasze2-03"])}
+
+{grupa("Beton architektoniczny i schody", "07", ["beton-02", "beton-ciemny", "schody-01"])}
+
+{grupa("Tak to powstaje", "08", ["robota-01", "robota-02", "robota-03"])}
+
+{grupa("Elewacja i podbitka", "09", ["elewacja-01", "elewacja-02", "elewacja-03",
                                      "elewacja-04"])}
   </div>
 </section>

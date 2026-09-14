@@ -216,14 +216,20 @@ a{text-decoration:none}
       spełniona z definicji - scena MA wysokość ekranu, nic z niej nie wystaje. */
 .scena{position:relative;overflow:hidden;min-height:calc(100dvh - var(--gora,96px));
   display:grid;align-items:center;padding:72px 0;background:var(--noc);color:var(--biel)}
-.scena-tlo{position:absolute;inset:-420px 0;width:100%;height:calc(100% + 840px);object-fit:cover;
-  object-position:center 34%}
+.scena-tlo{position:absolute;inset:-150px 0;width:100%;height:calc(100% + 300px);object-fit:cover;
+  object-position:center 42%}
 /* ⚠️ Świadome złamanie zakazu gradientów (`DESIGN.md`, odstępstwo 6): bez przyciemnienia
    biały nagłówek nie utrzyma kontrastu na zdjęciu. Ciemniej po LEWEJ, gdzie stoi tekst,
    jaśniej po prawej, żeby zdjęcia nie zabić. Bramka mierzy kontrast z pikseli. */
 .scena::after{content:"";position:absolute;inset:0;pointer-events:none;
-  background:linear-gradient(100deg,rgba(10,10,12,.90) 0%,rgba(10,10,12,.76) 34%,
-    rgba(10,10,12,.34) 64%,rgba(10,10,12,.14) 100%)}
+  background:linear-gradient(100deg,rgba(10,10,12,.92) 0%,rgba(10,10,12,.84) 34%,
+    rgba(10,10,12,.50) 64%,rgba(10,10,12,.20) 100%)}
+/* 🔴 14.09.2026: hero dostał JASNE zdjęcie (sypialnia po wykończeniu) i bramka wyglądu
+   zmierzyła kontrast 2,17-4,48 na leadzie, etykiecie i godzinach - przy wymaganych 4,5.
+   Samo przyciemnienie gradientem zabiłoby zdjęcie, więc drugą połowę roboty robi cień:
+   niewidoczny na oko, a oddaje literom tło niezależnie od tego, co pod nimi leży. */
+.scena .etykieta,.scena .lead,.scena .godziny{text-shadow:0 1px 4px rgba(8,8,10,.72)}
+.scena h1{text-shadow:0 2px 10px rgba(8,8,10,.45)}
 .scena>.wrap{position:relative;z-index:2}
 .scena h1{font-size:clamp(2.9rem,5.4vw,4.6rem);margin-bottom:26px;max-width:16ch;
   color:var(--biel)}
@@ -804,6 +810,10 @@ footer{background:var(--papier-3);border-top:1px solid var(--linia-slaba);paddin
   .nawigacja a[aria-current="page"]{color:var(--akcent-na-jasnym)}
 
   .scena{padding:56px 0;min-height:calc(100dvh - var(--gora,96px))}
+  /* 🔴 Telefon jest WĘŻSZY niż kadr, więc `cover` obcina boki. Przesuwamy widoczny
+     wycinek w stronę przeszklenia (K. 14.09.2026: „okno ma być bardziej widoczne"),
+     zamiast zostawiać środek zdjęcia, gdzie stoi sam materac. */
+  .scena-tlo{object-position:32% 42%}
   .scena h1{font-size:clamp(2.2rem,8vw,2.9rem);max-width:none}
   /* 🔴 Na telefonie kadr idzie PRZED tekstem: decyzja z etapu 2 - pierwszy ekran ma
      rozstrzygnąć jednym zdjęciem prawdziwej roboty, a nie samym nagłówkiem.

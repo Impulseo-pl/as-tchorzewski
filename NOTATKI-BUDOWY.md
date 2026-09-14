@@ -1154,3 +1154,55 @@ Bramki: język czysto na 7 podstronach, statyczne bez nowych uwag.
 
 ⚠️ H1 żyje TYLKO w `pages.py` (funkcja `index`). Kopia w `design/_kierunki/kierunek-B-scena.html`
 to zamrożony makiet kierunku B z etapu wyboru — celowo zostaje ze starym brzmieniem.
+
+---
+
+### ✅ 22 zdjęcia od klienta z WhatsAppa — galeria z 19 na 37 kafli, nowe hero (14.09.2026)
+
+Klient przysłał 33 pliki i film. Po odsianiu: **10 duplikatów** kadrów, które już wisiały
+na stronie (ta sama rozdzielczość — nic do zyskania), **1 zrzut rozmowy**, **1 film**
+(malowanie agregatem, 464×832 — mamy go w `materialy/wideo/` w 720×1280, czyli lepszy),
+**22 nowe zdjęcia**. Duplikaty wykryte hashem percepcyjnym (dHash 16×16, próg Hamminga 24),
+nie na oko.
+
+⚠️ Trzy z nich (sypialnia, kącik z półkami, składanka przed/po) wyglądały na wizualizacje AI.
+Sprawdzone dwoma testami, zanim weszły: **ziarno sensora** w gładkich obszarach (2,4–3,9 —
+mieści się w rozrzucie jego pewnych zdjęć 1,8–5,2; render byłby wyraźnie niżej) oraz
+**zgodność geometrii** w składance przed/po (te same trzy żebra stropu, ta sama oś drzwi
+balkonowych i okna dachowego, to samo oczko w suficie, gdzie w „przed" zwisa przewód).
+To zdjęcia, nie rendery.
+
+**Hero: ciemny beton → sypialnia po wykończeniu** (decyzja K. 14.09, zastępuje wybór z 08.09).
+Powód: beton przy tej masce przyciemnienia był praktycznie czarnym tłem, a hasło „Wnętrze
+gotowe do wprowadzenia" domaga się gotowego wnętrza. `.hero-ok.json` przestemplowany.
+
+🔴 **Kadr hero przestał być przybliżany.** `.scena-tlo` miało zapas `inset:-420px` /
+`height:calc(100% + 840px)` na paralaksę — przeglądarka musiała rozciągnąć zdjęcie na obszar
+dwa razy wyższy niż widok i pokazywała środkowe ~49 % przy powiększeniu 1,34×. Zapas ścięty
+do ±150 px, `data-paralaksa` z 280 na 110 (ruch musi mieścić się w zapasie, inaczej tło
+wyjeżdża). Efekt: kadr niemal pełny, paralaksa nadal działa, tylko delikatniej.
+
+📱 Na telefonie `object-position:32% 42%` — ekran jest węższy niż kadr, więc `cover` obcinał
+boki i zostawał sam materac. Przesunięte w stronę przeszklenia (K.: „okno ma być bardziej
+widoczne").
+
+🔴 **Bramka wyglądu złapała to, co zawsze łapie przy jaśniejszym hero:** kontrast napisów
+spadł do 2,17–4,48 przy wymaganych 4,5 (lead, etykieta, godziny). Naprawione dwoma ruchami:
+gradient sceny mocniejszy (.90/.84/.50/.20 zamiast .90/.76/.34/.14) **plus** `text-shadow`
+pod etykietą, leadem, godzinami i H1 — samo przyciemnianie zabiłoby zdjęcie, po które
+zmieniliśmy hero.
+
+**Galeria: 5 grup / 19 kafli → 9 grup / 37 kafli.** Nowe grupy: „Pokoje po wykończeniu",
+„Wejście, hol i schody", „Łazienka w czerni i bieli", „Tak to powstaje" (trzy kadry z robót:
+stelaż sufitu, płytki na klinach, podłoga na krzyżykach). Sypialnia świadomie NIE ma kafla —
+stoi na hero, a w galerii jest tylko jako składanka przed/po.
+
+**Kafel usługi „drzwi i okna"** pokazywał stare drzwi z okresu robót; teraz stolarka okienna
+z roletami w gotowym pokoju (`pokoj-okna-rolety-15.jpg`).
+
+Pominięte świadomie: drugie ujęcie łazienki w czerni (powtórka kadru), `poddasze-belka-swiatlo-27`
+(mamy ten motyw w otwarciu podstrony), `lazienka-trawertyn-wtrakcie-31` (folia i bałagan w kadrze).
+
+⚠️ Nowych zdjęć nie ma w `materialy/upscale/`, więc `-duze.jpg` do powiększalnika powstaje
+z oryginału 1200–2048 px. Wystarcza, bo powiększalnik pokazuje jeden kadr na pół ekranu —
+ale gdyby któryś kadr miał iść na pas pełnoekranowy, najpierw `upscale.sh`.

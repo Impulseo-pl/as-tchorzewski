@@ -39,12 +39,12 @@ PLAN = [
     #    ekranu: oddajemy 1440×1300, a wycinek dobiera `object-fit:cover` - inaczej
     #    na telefonie (kadr pionowy) zostałby pasek. Bierzemy GÓRĘ, bo u dołu stoją
     #    wiadra i deska.
-    ("hero.jpg",              "beton-arch-ciemny-01.jpg",        1440, 1440/1300, 0.10, 82),
+    ("hero.jpg",              "sypialnia-poddasze-gotowa-14.jpg", 1440, 1440/1300, 0.45, 82),
     # ── wersje @2x dla kadrów pełnoekranowych. Wchodzą do `srcset`, więc plik 1× zostaje
     #    lekki dla zwykłych ekranów, a Retina dostaje realny materiał zamiast rozciągania.
     #    ⚠️ Mają sens dopiero od kiedy `materialy/upscale/` daje źródła 2400-2880 px —
     #       wcześniej „2×" byłoby tym samym plikiem, tylko cięższym.
-    ("hero@2x.jpg",           "beton-arch-ciemny-01.jpg",        2880, 1440/1300, 0.10, 78),
+    ("hero@2x.jpg",           "sypialnia-poddasze-gotowa-14.jpg", 2880, 1440/1300, 0.45, 78),
 
     # ── otwarcia podstron: każde ma SWÓJ kadr, żeby podstrona nie zaczynała się
     #    płaskim czarnym paskiem. Pas jest niski, więc źródło tnie się do 16:7. ────
@@ -66,7 +66,7 @@ PLAN = [
     ("u-malowanie.jpg",       "_klatka-agregat.jpg",              720, 3/4,  0.5, 78),
     ("u-lazienki.jpg",        "lazienka-wanna-01.jpg",            739, 3/4,  0.5, 80),
     ("u-sucha-zabudowa.jpg",  "poddasze-skos-09.jpg",            1000, 3/4,  0.5, 78),
-    ("u-drzwi-okna.jpg",      "hol-drzwi-12.jpg",                1000, 3/4,  0.5, 78),
+    ("u-drzwi-okna.jpg",      "pokoj-okna-rolety-15.jpg",        1000, 3/4,  0.5, 78),
 
     # ── pas na stronie głównej: ŁAZIENKA NA PODDASZU (wanna we wnęce).
     #
@@ -123,6 +123,30 @@ PLAN = [
     ("z-beton-02.jpg",        "beton-arch-jasny-02.jpg",         1200, None, 0.5, 78),
     ("z-beton-ciemny.jpg",    "beton-arch-ciemny-01.jpg",        1200, 4/3, 0.34, 78),
     # elewacja: jedyne pełne oryginały z telefonu (3072×4096) — stąd większa szerokość
+
+    # ── zdjęcia z telefonu klienta (WhatsApp, 14.09.2026). Bez kadrowania: kadr
+    #    pionowy zostaje pionowy, poziomy poziomy - `DESIGN.md`, sekcja „Zdjęcia".
+    #    ⚠️ Nie ma ich w `materialy/upscale/`, więc `-duze.jpg` powstaje z oryginału
+    #       (1200-2048 px) - to wystarcza powiększalnikowi, ale nie pasowi na całą szerokość.
+    ("z-wejscie-01.jpg",      "wejscie-drzwi-cegla-13.jpg",          1100, None, 0.5, 78),
+    ("z-hol-01.jpg",          "hol-lamele-lustro-21.jpg",            1200, None, 0.5, 78),
+    ("z-hol-02.jpg",          "korytarz-lamele-20.jpg",              1200, None, 0.5, 78),
+    ("z-schody-02.jpg",       "schody-kamien-gotowe-16.jpg",         1200, None, 0.5, 78),
+    ("z-pokoj-01.jpg",        "pokoj-okna-rolety-15.jpg",            1200, None, 0.5, 78),
+    ("z-pokoj-02.jpg",        "kacik-polki-podswietlenie-17.jpg",    1100, None, 0.5, 78),
+    ("z-pokoj-03.jpg",        "belki-jodelka-19.jpg",                1100, None, 0.5, 78),
+    ("z-pokoj-05.jpg",        "sypialnia-przed-po-22.jpg",           900, None, 0.5, 78),
+    ("z-poddasze-06.jpg",     "poddasze-belki-a-28.jpg",             1100, None, 0.5, 78),
+    ("z-poddasze-07.jpg",     "pokoj-panele-belki-32.jpg",           1100, None, 0.5, 78),
+    ("z-lazienka-05.jpg",     "lazienka-mala-gotowa-33.jpg",         1100, None, 0.5, 78),
+    ("z-lazienka-06.jpg",     "lazienka-mala-kabina-34.jpg",         1100, None, 0.5, 78),
+    ("z-lazienka-07.jpg",     "lazienka-czarna-wanna-24.jpg",        1100, None, 0.5, 78),
+    ("z-lazienka-08.jpg",     "lazienka-czarna-wc-26.jpg",           1100, None, 0.5, 78),
+    ("z-poddasze2-04.jpg",    "poddasze2-wneka-siedzisko-23.jpg",    1100, None, 0.5, 78),
+    ("z-robota-01.jpg",       "sufit-stelaz-wtrakcie-18.jpg",        1200, None, 0.5, 78),
+    ("z-robota-02.jpg",       "sciana-plytki-wtrakcie-30.jpg",       1200, None, 0.5, 78),
+    ("z-robota-03.jpg",       "podloga-plytki-wtrakcie-29.jpg",      1100, None, 0.5, 78),
+
     ("z-elewacja-01.jpg",     "elewacja-po-taras-04.jpg",        1200, None, 0.5, 72),
     ("z-elewacja-02.jpg",     "elewacja-po-01.jpg",              1200, None, 0.5, 72),
     ("z-elewacja-03.jpg",     "elewacja-po-03.jpg",              1200, None, 0.5, 72),
