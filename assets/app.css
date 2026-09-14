@@ -810,10 +810,16 @@ footer{background:var(--papier-3);border-top:1px solid var(--linia-slaba);paddin
   .nawigacja a[aria-current="page"]{color:var(--akcent-na-jasnym)}
 
   .scena{padding:56px 0;min-height:calc(100dvh - var(--gora,96px))}
-  /* 🔴 Telefon jest WĘŻSZY niż kadr, więc `cover` obcina boki. Przesuwamy widoczny
-     wycinek w stronę przeszklenia (K. 14.09.2026: „okno ma być bardziej widoczne"),
-     zamiast zostawiać środek zdjęcia, gdzie stoi sam materac. */
-  .scena-tlo{object-position:32% 42%}
+  /* 🔴 Telefon jest WĘŻSZY niż kadr, więc `cover` obcina boki i zostaje sam materac.
+     Dwie rzeczy naraz (K. 14.09.2026: „przesuń w lewo, żeby okno po prawej było widać;
+     jeżeli da się oddalić - też"):
+     1. `object-position` w prawo - widoczny wycinek idzie na okno dachowe nad łóżkiem.
+     2. ZERO zapasu na paralaksę. Na komputerze zapas ±150 px kosztuje trochę kadru, ale
+        na telefonie kontener robił się o 300 px wyższy niż ekran (tj. +40 %), więc `cover`
+        skalowało zdjęcie i pokazywało ~33 % jego szerokości. Bez zapasu widać ~47 % -
+        to jest to „oddalenie". Cena: paralaksa hero na telefonie nie działa (bez zapasu
+        tło odsłoniłoby krawędź), dlatego `transform:none`. */
+  .scena-tlo{inset:0;height:100%;transform:none !important;object-position:80% 38%}
   .scena h1{font-size:clamp(2.2rem,8vw,2.9rem);max-width:none}
   /* 🔴 Na telefonie kadr idzie PRZED tekstem: decyzja z etapu 2 - pierwszy ekran ma
      rozstrzygnąć jednym zdjęciem prawdziwej roboty, a nie samym nagłówkiem.
