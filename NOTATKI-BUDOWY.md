@@ -1293,3 +1293,18 @@ pikseli sumami prefiksowymi i znalazł największy prostokąt o proporcji pary l
 na zdjęciu po homografii. Wyszło 1165 jednostek szerokości wobec 990 wspólnego okna, lewy górny
 róg (70, -130), czyli o 18 % więcej kadru: widać dach, narożnik, opaskę i trawnik.
 ⛔ Wraca suwak z linią → „po" wraca do `OKNO_SUWAKA`.
+
+**16:05 — koniec prostowania, pary idą prosto z oryginałów.** K. zobaczył na żywo, że „po"
+ma uciętą lewą krawędź i wygiętą ścianę: „nie możesz po prostu wstawić tam oryginalnego
+zdjęcia albo nie przerabiać aż tak formatu?". Miał rację - to był ślad po homografii,
+która prostowała „po" w układ „przed". Prostowanie było potrzebne WYŁĄCZNIE pod suwak z linią
+i pod przenikanie (kadry leżały na sobie); przy przełączaniu strzałką nie daje nic, a zabiera
+krawędzie. Cały aparat homografii (punkty odniesienia, wagi, wspólne okno, `suwak_przed_po()`)
+wyleciał z `przygotuj-media.py` - jest w historii gita, commit `033e481`.
+
+Teraz wszystkie cztery kadry idą prosto z oryginału, a jedyną granicą jest **znak wodny klienta**:
+w „przed" w prawym dolnym rogu (od y=1120 przy 1254 px), w „po" w prawym górnym (do y=117).
+Stąd kadr „przed" od GÓRY, „po" od DOŁU i wspólna proporcja `PARA = 1500/1322 = 1,135` -
+najwyższy kadr, z którego oba logo jeszcze wypadają. Kadry wnętrza (~1,125 u źródła) mieszczą się
+w niej prawie bez strat. Trzy miejsca muszą się zgadzać: `PARA`, `aspect-ratio` w `.duet-rama`,
+`width`/`height` w `pages.py`.

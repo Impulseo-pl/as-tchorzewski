@@ -479,10 +479,10 @@ def index(naglowek):
         <div class="duet-rama" data-duet>
           <div class="duet-tasma">
             <img src="img/przed.jpg" srcset="img/przed.jpg 1x, img/przed@2x.jpg 2x"
-              width="1500" height="1239" decoding="async"
+              width="1500" height="1322" decoding="async"
               alt="Rozbudowa w stanie surowym: mury z bloczków, stemple i otwarty otwór okienny">
             <img src="img/po.jpg" srcset="img/po.jpg 1x, img/po@2x.jpg 2x"
-              width="1500" height="1239" decoding="async"
+              width="1500" height="1322" decoding="async"
               alt="Ta sama rozbudowa po wykończeniu: biała elewacja, duże okno tarasowe, trawnik">
           </div>
           <span class="znacznik duet-etyk duet-etyk--przed">Przed</span>
@@ -509,11 +509,11 @@ def index(naglowek):
           <div class="duet-tasma">
             <img src="img/przedpo-pokoj-przed.jpg"
               srcset="img/przedpo-pokoj-przed.jpg 1x, img/przedpo-pokoj-przed@2x.jpg 2x"
-              width="1300" height="1074" decoding="async"
+              width="1300" height="1146" decoding="async"
               alt="Pokój na poddaszu przed wykończeniem: płyty gipsowe, surowa wylewka, kable wystające ze ścian">
             <img src="img/przedpo-pokoj-po.jpg"
               srcset="img/przedpo-pokoj-po.jpg 1x, img/przedpo-pokoj-po@2x.jpg 2x"
-              width="1300" height="1074" decoding="async"
+              width="1300" height="1146" decoding="async"
               alt="Ten sam pokój po wykończeniu: sypialnia z podłogą, oświetleniem, zasłonami i meblami">
           </div>
           <span class="znacznik duet-etyk duet-etyk--przed">Przed</span>

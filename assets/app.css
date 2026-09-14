@@ -315,10 +315,10 @@ a{text-decoration:none}
       420 px i „przed" przestaje być czytelne. Trzecia para = nowy rząd. */
 .duety{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:start}
 .duet{margin:0}
-/* ⛔ `aspect-ratio` MUSI zgadzać się z plikami OBU par (1500×1239 = OKNO_SUWAKA
-   w `przygotuj-media.py`; kadry wnętrza są cięte do tej samej proporcji).
+/* ⛔ `aspect-ratio` MUSI zgadzać się z plikami OBU par (stała `PARA` = 1500/1322
+   w `przygotuj-media.py`; wszystkie cztery kadry są cięte do tej samej proporcji).
    Rozjazd uruchamia `object-fit:cover`, czyli przycięcie, którego tu nie chcemy. */
-.duet-rama{position:relative;overflow:hidden;line-height:0;aspect-ratio:1500/1239;
+.duet-rama{position:relative;overflow:hidden;line-height:0;aspect-ratio:1500/1322;
   background:var(--noc)}
 /* Taśma dwóch kadrów obok siebie. Przesuwa się o połowę własnej szerokości, więc
    przejście jest jednym ruchem w tę stronę, w którą pokazuje strzałka. */

@@ -475,72 +475,41 @@ grep -rn "border-radius" ~/Developer/impulseo-klienci/as-tchorzewski/*.css | gre
 przesuwa obrazek; przy za małym zapasie odsłania pustą krawędź (lekcja `2026-09-09-002`).
 
 
-## Suwak przed/po — dlaczego kadr ma proporcję 1,17:1, a nie 3:2
+## Przed i po — dlaczego kadr ma proporcję 1,135:1
 
 K. 10.09.2026: **„nie ucinaj tak zdjęcia — ma być całe widoczne, tylko dopasowane
-najlepiej, jak się da"**. Kolejność jest więc odwrotna niż zwykle: najpierw liczymy,
-ile da się pokazać, dopiero potem wychodzi z tego proporcja.
+najlepiej, jak się da"**, i K. 14.09.2026: **„nie możesz po prostu wstawić tam oryginalnego
+zdjęcia albo nie przerabiać aż tak formatu?"**. Kolejność jest więc odwrotna niż zwykle:
+najpierw liczymy, ile da się pokazać, dopiero potem wychodzi z tego proporcja.
 
-Po dopasowaniu homografią zdjęcie „po" pokrywa **ok. 90 %** kwadratu zdjęcia „przed”.
-Największy prostokąt mieszczący się w OBU (policzony maską pokrycia w
-`przygotuj-media.py`, nie na oko) to praktycznie pełna szerokość i 85 % wysokości —
-stąd **1,21:1**. Odpada tylko dolny pas trawnika, w którym i tak siedzi znak wodny.
+Wszystkie cztery zdjęcia idą **prosto z oryginału**, bez prostowania i bez przeskalowań.
+Granicę wyznacza jedna rzecz: **znak wodny klienta** wgrany w zdjęcia rozbudowy —
+w „przed" siedzi w prawym dolnym rogu (od y = 1120 przy oryginale 1254 px), w „po"
+w prawym górnym (do y = 117). Dlatego „przed" kadrujemy od GÓRY, „po" od DOŁU, a proporcja
+**1500/1322 = 1,135** to najwyższy kadr, z którego oba logo jeszcze wypadają. Kadry wnętrza
+mają u źródła ~1,125, więc mieszczą się w tej samej proporcji prawie bez strat.
 
-🔴 Trzy miejsca muszą mówić to samo: `OKNO_SUWAKA` w `przygotuj-media.py`,
-`aspect-ratio` w `.duet-rama` i atrybuty `width`/`height` w `pages.py`. Kadry wnętrza
-są cięte do TEJ SAMEJ proporcji, bo obie pary stoją obok siebie w jednym rzędzie. Rozjazd
-uruchamia `object-fit: cover`, czyli dokładnie to przycięcie, którego tu nie chcemy.
+🔴 Trzy miejsca muszą mówić to samo: stała `PARA` w `przygotuj-media.py`, `aspect-ratio`
+w `.duet-rama` i atrybuty `width`/`height` w `pages.py`. Rozjazd uruchamia `object-fit: cover`,
+czyli dokładnie to przycięcie, którego tu nie chcemy.
+⛔ Zmieniasz proporcję na niższą liczbę (kadr wyższy) → znak wodny wraca do kadru. Zmierz od nowa.
 
-Cały kadr mieści się na ekranie, bo ramka ma ograniczoną **szerokość**
-(`min(100%, 78vh × 1,17)`), a nie wysokość — `max-height` przyciąłby obrazek.
+### Prostowanie zdjęcia „po" (homografia) — było i wyleciało
 
+Do 14.09.2026 zdjęcie „po" było prostowane homografią z sześciu punktów, żeby nakładało się
+na „przed" co do piksela. Miało to sens **wyłącznie** przy suwaku z przesuwaną linią i przy
+przenikaniu: tam oba kadry leżały na sobie i każda różnica perspektywy była widoczna.
+Cena była wysoka — prostowanie wyginało ścianę i zjadało lewą krawędź budynku (K.: „za bardzo
+przesunięte w lewo, ucina lewą krawędź"). Klocek przełącza dziś CAŁE kadry strzałką, więc
+dopasowanie nie jest do niczego potrzebne i zdjęcia wróciły do oryginalnej geometrii.
+⛔ Wraca suwak z linią → wraca homografia; kod jest w historii gita (commit `033e481`),
+razem z pomiarem punktów odniesienia i wyliczeniem wspólnego okna.
 
-### Na czym kotwiczymy dopasowanie (poprawka z 10.09.2026 wieczorem)
+### Czego nie da się naprawić kadrowaniem
 
-Pierwsza wersja brała **wyłącznie cztery rogi otworu drzwiowego** i to był błąd:
-po wykończeniu ościeże jest o kilka centymetrów mniejsze niż surowy otwór w murze,
-więc przyklejenie ich do siebie co do piksela rozciągało zdjęcie „po" o ~2 % i wypychało
-resztę elewacji w pionie. K. zobaczył to od razu: *„mam wrażenie, że przed jest niżej niż po"*.
-
-🔴 **Kotwicą są NAROŻNIKI ELEWACJI PRZY GRUNCIE** — ich wykończenie nie rusza. Rogi otworu
-wchodzą jako wskazówka o mniejszej wadze (3 : 1), a całość liczy się **najmniejszymi
-kwadratami**, więc resztkowy błąd rozkłada się po kadrze zamiast siedzieć w jednym miejscu.
-Kontrola po zmianie (profile krawędzi poziomych, pasma po lewej i prawej stronie):
-linia opaski i górna krawędź muru rozjeżdżają się o **1–5 jednostek na 1000** zamiast 18+.
-
-⛔ Nie kotwiczyć na elementach, które zmieniło wykończenie: ościeża, parapety, obróbki.
-
-
-### Jak działa przed/po (stan od 14.09.2026, wersja trzecia)
-
-**Dwa bloki obok siebie w jednym rzędzie** (`.duety`): po lewej rozbudowa z zewnątrz,
-po prawej pokój na poddaszu. Oba mają IDENTYCZNY mechanizm — dwa kadry na taśmie
-(`.duet-tasma`), strzałka przy krawędzi przesuwa taśmę o jeden kadr, etykieta Przed/Po
-przenika razem z nim. Strzałka skrajna gaśnie (`disabled`). Po wejściu w widok każdy blok
-raz przejeżdża sam do „po" (drugi z opóźnieniem 260 ms) i tam zostaje; kliknięcie przerywa.
-Poniżej 900 px bloki idą jeden pod drugim.
-
-⛔ Nie różnicować mechaniki między parami. K. 14.09.2026: „oba bloki mają mieć ten sam
-efekt, żeby strona była consistent".
-⛔ Dwa odrzucone podejścia, nie wracać: suwak z przesuwaną linią (odrzucony 10.09 i 14.09)
-oraz przenikanie całego kadru z odjazdem skali („goofy efekty", 14.09).
-
-### Pole widzenia obu kadrów — co ogranicza, a co nie
-
-Dopóki klocek miał PRZESUWANĄ LINIĘ albo przenikanie, oba zdjęcia musiały siedzieć w jednym
-oknie kadru, czyli w **części wspólnej** obu ujęć — i tego nie da się powiększyć żadnym
-przekształceniem („przed" po prostu nie ma tam pikseli, pokrycie 61 %).
-
-🔴 Od 14.09.2026 klocek przełącza CAŁE kadry strzałką, więc każde zdjęcie ma własne pole
-widzenia. „Po" dostało z powrotem szerszy kadr (`OKNO_PO`, o 18 % szerszy od wspólnego) —
-widać dach, narożnik, opaskę i trawnik, czyli to, co klient sprzedaje. Granicę policzył
-`maks-okno.py`: największy prostokąt o proporcji pary, który w całości leży na prawdziwych
-pikselach zdjęcia po homografii. Dalej są już czarne rogi po prostowaniu.
-⛔ Wracasz do suwaka z linią → „po" MUSI wrócić do `OKNO_SUWAKA`.
-
-„Przed" zostaje w swoim oknie, bo ono i tak bierze prawie cały oryginał (odpada dolny pas
-trawnika ze znakiem wodnym). Zdjęcie zrobiono z ok. 20 % bliżej niż „po", więc po przełączeniu
-budynek widać w innej skali — to jest różnica dwóch ujęć, nie błąd kadrowania.
+„Po" zrobiono z ok. **20 % dalej** niż „przed", więc po przełączeniu budynek widać w innej
+skali. To różnica dwóch ujęć klienta, nie błąd kadru — i właśnie dlatego suwak z linią
+tu nie działał.
 
 ⛔ Nie dorysowywać brakującego otoczenia generatorem. Zdjęcie „przed i po" jest dowodem
 na robotę klienta; domalowany trawnik przestaje nim być.
@@ -548,3 +517,4 @@ na robotę klienta; domalowany trawnik przestaje nim być.
 ✅ Najlepsze rozwiązanie zostaje to samo: **poprosić klienta o drugie zdjęcie „po" z tego samego
 miejsca, z którego zrobił „przed"**. Warto dopisać to do listy pytań przy okazji prośby
 o oryginały z telefonu.
+
