@@ -332,99 +332,81 @@ a{text-decoration:none}
    (1,21:1 → 78vh × 1,2107), a nie wysokość — przy `max-height` obrazek by się przycinał.
    ⛔ `aspect-ratio` MUSI zgadzać się z realnymi plikami (1500×1239 = OKNO_SUWAKA
    w `przygotuj-media.py`). Rozjazd uruchamia `object-fit: cover`, czyli dokładnie
-   to przycięcie, którego tu nie chcemy. */
-.przedpo-rama{position:relative;overflow:hidden;line-height:0;aspect-ratio:1500/1239;
-  width:min(100%,calc(78vh * 1.2107));margin-inline:auto;background:var(--noc)}
-.przedpo-warstwy{position:absolute;inset:0}
-.przedpo-warstwy img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+   to przycięcie, którego tu nie chcemy.
+   🔴 `touch-action:pan-y` — palec w poziomie ciągnie suwak, w pionie dalej przewija
+   stronę. Bez tego przeciąganie po kadrze na telefonie tylko scrollowało. */
+.przedpo-rama{--suwak:50%;position:relative;overflow:hidden;line-height:0;
+  aspect-ratio:1500/1239;width:min(100%,calc(78vh * 1.2107));margin-inline:auto;
+  background:var(--noc);touch-action:pan-y}
+.przedpo-rama img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
   display:block;border-radius:0}
-/* „przed" leży NA WIERZCHU i to ono znika — dzięki temu stan spoczynku (bez JS,
-   przed pierwszym najazdem) pokazuje stan surowy, czyli początek historii. */
-.przedpo-przed{opacity:1;transition:opacity .55s cubic-bezier(.4,0,.2,1);
-  will-change:opacity}
-.przedpo-rama.jest-po .przedpo-przed{opacity:0}
 
-/* ODJAZD KADRU „PO". Liczby idą parami z `przygotuj-media.py`:
-     skala   = szerokość OKNO_PO / OKNO_SUWAKA = 1128,6 / 990 = 1,140
-     przesun = środek OKNO_SUWAKA wyrażony w OKNO_PO, odjęty od środka kadru
-   W tej pozycji wycinek „po" pokrywa się z „przed" co do piksela; `scale(1)`
-   odsłania cały szerszy kadr. ⛔ Ruszasz którekolwiek okno → przelicz OBIE liczby,
-   inaczej w momencie przenikania warstwy skoczą względem siebie.
-   ⏱️ JEDEN ruch, jedna krzywa, ZERO opóźnienia. Wcześniejsze `.3s` postoju
-   (11.09.2026) czytało się jak zacięcie: kadr stał w miejscu, a potem nagle
-   ruszał. To samo załatwia sama krzywa — `cubic-bezier(.65,0,.35,1)` rusza tak
-   leniwie, że po 350 ms przejechane jest 12% drogi (policzone), czyli przez całe
-   przenikanie warstwy wciąż leżą na sobie i dowód „ten sam narożnik" zostaje,
-   a mimo to nic nie „staje". */
-.przedpo-po{transform:translate(6.597%,-6.509%) scale(1.14);
-  transition:transform 1.15s cubic-bezier(.65,0,.35,1);will-change:transform}
-.przedpo-rama.jest-po .przedpo-po{transform:translate(0,0) scale(1)}
-html:not(.js) .przedpo-rama:hover .przedpo-po{transform:translate(0,0) scale(1)}
-/* ⛔ `:hover` STERUJE STANEM TYLKO BEZ JS. Z włączonym skryptem reguła hoverowa
-   wygrywała z powrotem do „przed": po kliknięciu klasa `jest-po` schodziła, ale
-   kursor dalej wisiał nad kadrem, więc zdjęcie się nie zmieniało (zmierzone
-   10.09.2026: opacity 0 mimo stanu „przed"). Stanem rządzi wyłącznie `jest-po`. */
-html:not(.js) .przedpo-rama:hover .przedpo-przed{opacity:0}
+/* ── SUWAK Z LINIĄ (K. 14.09.2026) ────────────────────────────────────────────
+   „zeby te przed i po byly obok siebie jedno po lewej drugie po prawej ... strzalka
+   jakos przewija na efekt po ale po wejściu po chwili samo nawet sie przesuwa".
+   Stan spoczynku = 50/50: po lewej surówka, po prawej gotowe.
 
-/* ⛔ NIE DOKŁADAJ tu trzeciego ruchu. Do 11.09.2026 stał tu „oddech": cała
-   warstwa szła `scale(1.04)` + `blur(3px)`. Dwa powody, dla których zniknął:
-   (1) rozmycie pełnowymiarowego zdjęcia (1500 px) co klatkę gubi klatki i to
-   właśnie wyglądało jak zawieszenie przejścia; (2) skala na RODZICU biła się
-   ze skalą warstwy „po" — dwa transformy na zagnieżdżonych elementach naraz
-   dawały szarpnięcie w połowie drogi. Przejście robią teraz dokładnie dwie
-   rzeczy: przenikanie i odjazd kadru. */
+   ⛔ Działa TYLKO dlatego, że oba pliki siedzą w JEDNYM oknie kadru (OKNO_SUWAKA)
+      i „po" jest wyprostowane homografią w układ „przed" — mur, ościeże i opaska
+      przechodzą przez linię bez skoku (sprawdzone na złożeniach przy 35/50/65 %).
+      Ruszasz kadry w `przygotuj-media.py` → obejrzyj styk, ZANIM wypchniesz.
+   ⛔ Nie wracaj do przenikania z odjazdem kadru (10–14.09.2026). Tamto miało własny,
+      szerszy kadr „po" i trzy ruchy naraz; K. nazwał to „goofy efektami". */
+.przedpo-przed{clip-path:inset(0 calc(100% - var(--suwak)) 0 0)}
 
-/* Etykiety stoją JEDNA NA DRUGIEJ i przenikają razem z kadrem — widoczna jest
-   zawsze ta, która opisuje aktualny stan. */
-.przedpo-etyk{z-index:2;top:18px;left:18px;right:auto;
-  transition:opacity .45s cubic-bezier(.4,0,.2,1)}
-.przedpo-etyk--po{opacity:0}
-.przedpo-rama.jest-po .przedpo-etyk--przed{opacity:0}
-.przedpo-rama.jest-po .przedpo-etyk--po{opacity:1}
-html:not(.js) .przedpo-rama:hover .przedpo-etyk--przed{opacity:0}
-html:not(.js) .przedpo-rama:hover .przedpo-etyk--po{opacity:1}
+/* Linia podziału z uchwytem. Biała z cienkim ciemnym obrysem, żeby było ją widać
+   i na surowym murze, i na białej elewacji. `pointer-events:none` — zdarzenia łapie
+   przezroczysty <input type="range"> leżący nad wszystkim. */
+.przedpo-linia{position:absolute;top:0;bottom:0;left:var(--suwak);z-index:3;
+  width:2px;margin-left:-1px;background:rgba(255,255,255,.92);
+  box-shadow:0 0 0 1px rgba(10,10,12,.25);pointer-events:none}
+.przedpo-uchwyt{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:54px;height:54px;border-radius:50%;background:rgba(15,15,18,.96);
+  box-shadow:0 0 0 1px rgba(255,255,255,.32);
+  display:flex;align-items:center;justify-content:center;color:#fff}
+.przedpo-uchwyt svg{display:block}
 
-/* Przełącznik przykrywa cały kadr: łapie najazd myszy, dotknięcie palcem
-   i tabulację. Widoczna jest z niego tylko podpowiedź na dole. */
-.przedpo-przelacznik{position:absolute;inset:0;width:100%;height:100%;
-  padding:0 0 22px;border:0;background:transparent;cursor:pointer;z-index:3;
-  display:flex;align-items:flex-end;justify-content:center;border-radius:0}
-/* ⛔ Bez `backdrop-filter`. Rozmycie tła nad RUCHOMYM zdjęciem przeglądarka
-   przelicza co klatkę przez całe przejście — to był drugi hamulec obok
-   „oddechu" (11.09.2026). Nieprzezroczystsze tło (.82) wygląda tak samo,
-   a nie kosztuje nic. */
-.przedpo-hint{display:inline-flex;align-items:center;gap:10px;
-  background:rgba(15,15,18,.82);
-  color:#fff;font:500 14px/1 Inter;letter-spacing:.02em;padding:12px 18px;
-  transition:opacity .35s cubic-bezier(.4,0,.2,1),visibility 0s}
-/* ⛔ Opóźnienie `visibility` TYLKO w stanie „po" — gdyby stało w regule bazowej,
-   przy powrocie do „przed" plakietka czekałaby 0,35 s i wskakiwała gotowa. */
-.przedpo-rama.jest-po .przedpo-hint{opacity:0;visibility:hidden;
-  transition:opacity .35s cubic-bezier(.4,0,.2,1),visibility 0s linear .35s}
-html:not(.js) .przedpo-rama:hover .przedpo-hint{opacity:0}
-.przedpo-przelacznik:focus-visible .przedpo-hint{opacity:1;
-  outline:2px solid var(--biel);outline-offset:3px}
-.hint-dotyk{display:none}
-/* dotyk: „najedź" nie istnieje, więc mówimy palcem */
-@media (hover:none){
-  .hint-mysz{display:none}
-  .hint-dotyk{display:inline}
-}
+/* Sterowanie: natywny suwak rozciągnięty na cały kadr. Daje ZA DARMO przeciąganie
+   myszą i palcem, skok po kliknięciu, strzałki na klawiaturze i czytnik ekranu.
+   ⛔ Kciuk MUSI być wąski (2 px). Szeroki nie dojeżdża do krawędzi toru, więc kursor
+      rozjeżdża się z linią tym bardziej, im bliżej brzegu kadru. Widoczny uchwyt
+      rysuje `.przedpo-linia`, nie kciuk. */
+.przedpo-zakres{position:absolute;inset:0;z-index:4;width:100%;height:100%;
+  margin:0;padding:0;border:0;background:transparent;cursor:ew-resize;
+  -webkit-appearance:none;appearance:none}
+.przedpo-zakres::-webkit-slider-runnable-track{height:100%;background:transparent}
+.przedpo-zakres::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
+  width:2px;height:100%;background:transparent;cursor:ew-resize}
+.przedpo-zakres::-moz-range-track{height:100%;background:transparent;border:0}
+.przedpo-zakres::-moz-range-thumb{width:2px;height:100%;border:0;border-radius:0;
+  background:transparent;cursor:ew-resize}
+.przedpo-zakres:focus{outline:none}
+.przedpo-zakres:focus-visible+.przedpo-linia .przedpo-uchwyt{outline:2px solid #fff;
+  outline-offset:3px}
+
+/* Obie etykiety wiszą cały czas — każda przy swojej krawędzi. Gasną dopiero wtedy,
+   gdy suwak dojedzie do brzegu i ich połowa kadru przestaje istnieć. */
+.przedpo-etyk{z-index:5;top:18px;transition:opacity .3s cubic-bezier(.4,0,.2,1)}
+.przedpo-etyk--przed{left:18px;right:auto}
+.przedpo-etyk--po{left:auto;right:18px}
+.przedpo-rama.bez-etyk-przed .przedpo-etyk--przed{opacity:0}
+.przedpo-rama.bez-etyk-po .przedpo-etyk--po{opacity:0}
 
 .przedpo figcaption{margin-top:16px;max-width:min(100%,calc(78vh * 1.2107));
   margin-inline:auto;font-size:15px;line-height:1.55;color:var(--przyg-jasny)}
 @media (max-width:700px){
   /* etykiety na telefonie mniejsze — przy kadrze 390 px pełnowymiarowe zjadały pół zdjęcia */
-  .przedpo-etyk{top:10px;left:10px;font-size:10px;padding:6px 9px;letter-spacing:.12em}
-  .przedpo-przelacznik{padding-bottom:14px}
-  .przedpo-hint{font-size:12.5px;padding:10px 14px}
+  .przedpo-etyk{top:10px;font-size:10px;padding:6px 9px;letter-spacing:.12em}
+  .przedpo-etyk--przed{left:10px}
+  .przedpo-etyk--po{right:10px}
+  .przedpo-uchwyt{width:44px;height:44px}
   .przedpo figcaption{font-size:14px}
 }
+/* Bez rdzenia suwak stoi na 50 % — obie połowy widać, tylko nic się nie przesuwa. */
+html:not(.js) .przedpo-zakres{display:none}
 @media (prefers-reduced-motion:reduce){
-  /* bez ruchu skok skali byłby gorszy niż jego brak — „po" stoi od razu szeroko */
-  .przedpo-po{transform:none;transition:none}
-  /* bez ruchu: sam przełącznik, żadnego przenikania ani oddechu */
-  .przedpo-przed,.przedpo-etyk,.przedpo-hint{transition:none}
+  /* przesuwanie ręką zostaje, znika tylko sam pokaz po wejściu (pilnuje `rdzen.js`) */
+  .przedpo-etyk{transition:none}
 }
 
 /* ── OPINIE Z GOOGLE ───────────────────────────────────────────────────────── */
@@ -518,8 +500,6 @@ html:not(.js) .lata--ruch>li b,html:not(.js) .lata--ruch>li p{
   opacity:1!important;transform:none!important;animation:none!important}
 
 @media (prefers-reduced-motion:reduce){
-  /* bez ruchu skok skali byłby gorszy niż jego brak — „po" stoi od razu szeroko */
-  .przedpo-po{transform:none;transition:none}
   .scena-tlo[data-paralaksa],.otwarcie-tlo[data-paralaksa],.pas img[data-paralaksa],
   .para.kaskada>.klatka,.zygzak.rv>.zygzak-obraz,.galeria.kaskada>figure,
   .lata--ruch>li b,.lata--ruch>li p{opacity:1!important;transform:none!important;animation:none!important}
@@ -1051,8 +1031,6 @@ footer{background:var(--papier-3);border-top:1px solid var(--linia-slaba);paddin
 .bez-wejscia-tla .scena .rv{opacity:1;transform:none;transition:none}
 
 @media (prefers-reduced-motion:reduce){
-  /* bez ruchu skok skali byłby gorszy niż jego brak — „po" stoi od razu szeroko */
-  .przedpo-po{transform:none;transition:none}
   .wejscie,.intro-on .wejscie{display:none}
   .intro-on .znak img{visibility:visible}
 }

@@ -587,75 +587,83 @@
        błąd pomiaru), po 3,5 s wszystkie kroki i tak są widoczne */
     setTimeout(function () { kroki.forEach(function (li) { li.classList.add('os-seen'); }); }, 3500);
   });
-  /* ── 12. PRZED/PO — PRZENIKANIE CAŁEGO KADRU ──────────────────────────────
-     Znacznik:  <div class="przedpo-rama" data-przedpo>
-                  <div class="przedpo-warstwy">
-                    <img class="przedpo-po" …>       <!-- spód: stan PO -->
-                    <img class="przedpo-przed" …>    <!-- wierzch: stan PRZED -->
-                  </div>
+  /* ── 12. PRZED/PO — SUWAK Z LINIĄ ─────────────────────────────────────────
+     Znacznik:  <div class="przedpo-rama" data-suwak>
+                  <img class="przedpo-po" …>       <!-- spód: stan PO, cały kadr -->
+                  <img class="przedpo-przed" …>    <!-- wierzch: PRZED, przycięte do --suwak -->
                   <span class="znacznik przedpo-etyk przedpo-etyk--przed">Przed</span>
                   <span class="znacznik po przedpo-etyk przedpo-etyk--po">Po</span>
-                  <button class="przedpo-przelacznik" data-przedpo-btn aria-pressed="false">…</button>
+                  <input class="przedpo-zakres" type="range" data-suwak-zakres>
+                  <span class="przedpo-linia"><span class="przedpo-uchwyt">…</span></span>
                 </div>
 
-     🔴 Zastąpiło suwak z przesuwaną linią (K. 10.09.2026: „nie musi być z tą
-     przesuwaną linią, tylko po hoverze całe zdjęcie może się zmieniać").
-     To NIE jest zmiana ozdoby, tylko rozwiązanie problemu: zdjęcia „przed" i „po"
-     zrobiono z różnej odległości, więc na styku przesuwanej linii oko widzi każdą
-     resztkową różnicę kadru. Przenikanie CAŁEGO kadru tego styku nie ma.
+     🔴 K. 14.09.2026: „zeby te przed i po byly obok siebie jedno po lewej drugie po
+     prawej ... strzalka jakos przewija na efekt po ale po wejściu po chwili samo nawet
+     sie przesuwa bez tych goofy efektow". Zastąpiło przenikanie całego kadru z odjazdem
+     skali (10–14.09.2026) — tamto miało trzy ruchy naraz i plakietkę „najedź lub kliknij".
 
-     · MYSZ — najazd przenika do „po". Zjazd kursora ZOSTAWIA stan „po"
-       (K. 10.09.2026: „niech nie wraca, jak przejadę myszką gdzieś indziej").
-     · KLIK / PALEC / SPACJA — przełącza w obie strony, więc da się wrócić do „przed".
-     · PIERWSZE WEJŚCIE W KADR — jeden pokaz tam i z powrotem, żeby ktoś, kto nie
-       najedzie, i tak zobaczył oba stany. Raz na wizytę, nigdy przy `reduced-motion`.
-
-     ⛔ Skrypt PILNUJE STANU, nie animuje. Cały ruch (przenikanie + odjazd kadru)
-        siedzi na `transition` w `app.css`, więc szybkie klikanie tam i z powrotem
-        przeglądarka rozwiązuje sama, w połowie drogi, bez skoku. Stała tu wcześniej
-        klasa `przedpo--zmiana` restartująca `@keyframes` — wypadła 11.09.2026
-        razem z „oddechem", bo to ona zacinała przejście. Nie wracaj do niej. */
-  qa('[data-przedpo]').forEach(function (rama) {
-    var btn = q('[data-przedpo-btn]', rama);
+     · SKRYPT PRZEPISUJE JEDNĄ LICZBĘ. Pozycję trzyma `--suwak` na ramce, przycięcie
+       robi `clip-path` w `app.css`. Przeciąganie, skok po kliknięciu, palec i strzałki
+       na klawiaturze daje natywny <input type="range"> rozciągnięty na cały kadr.
+     · POKAZ PO WEJŚCIU W KADR — raz na wizytę: 50 % → 84 → 16 → z powrotem 50 %, żeby
+       było widać, że linia się przesuwa. Pierwsze dotknięcie suwaka go PRZERYWA
+       (inaczej strona wyrywałaby rękę użytkownikowi). Nigdy przy `reduced-motion`.
+     ⛔ Nie animuj tego `transition` na `--suwak`: własność niezarejestrowana przez
+        `@property` nie interpoluje, a rejestracja tylko po to jest droższa niż ta pętla. */
+  qa('[data-suwak]').forEach(function (rama) {
+    var zakres = q('[data-suwak-zakres]', rama);
+    if (!zakres) return;
     var ruchOk = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var po = false, samoGralo = false;
+    var samoGralo = false, klatka = 0, tknieto = false;
 
-    var ustaw = function (nowy) {
-      if (nowy === po) return;
-      po = nowy;
-      rama.classList.toggle('jest-po', po);
-      if (btn) {
-        btn.setAttribute('aria-pressed', po ? 'true' : 'false');
-        btn.setAttribute('aria-label', po ? 'Pokaż stan przed remontem'
-                                          : 'Pokaż stan po remoncie');
-      }
+    var ustaw = function (v) {
+      v = Math.max(0, Math.min(100, v));
+      rama.style.setProperty('--suwak', v + '%');
+      /* etykieta gaśnie dopiero, gdy jej połowa kadru zniknęła */
+      rama.classList.toggle('bez-etyk-przed', v < 16);
+      rama.classList.toggle('bez-etyk-po', v > 84);
+    };
+    var stop = function () {
+      tknieto = true;
+      if (klatka) { cancelAnimationFrame(klatka); klatka = 0; }
     };
 
-    /* Mysz: sam najazd przenika do „po" i tam zostaje.
-       ⛔ NIE `mouseenter` — na telefonie przeglądarka dosyła sztuczny najazd myszy
-       PRZED kliknięciem, więc pierwsze dotknięcie włączało „po" i zaraz gasiło je
-       przełącznikiem (zmierzone 10.09.2026: aria-pressed wracało na false, palec
-       nie robił NIC). Bierzemy więc wyłącznie wskaźnik typu „mouse". */
-    rama.addEventListener('pointerenter', function (ev) {
-      if (ev.pointerType && ev.pointerType !== 'mouse') return;
-      ustaw(true);
+    zakres.addEventListener('input', function () { stop(); ustaw(parseFloat(zakres.value)); });
+    zakres.addEventListener('pointerdown', stop);
+    /* Klawiatura: natywny krok to `step` (0,1 %), czyli tysiąc naciśnięć na kadr.
+       Strzałki przejmujemy na 4 % za wciśnięcie; Home/End (0 i 100 %) zostają natywne. */
+    zakres.addEventListener('keydown', function (ev) {
+      stop();
+      var kier = ev.key === 'ArrowLeft' ? -1 : ev.key === 'ArrowRight' ? 1 : 0;
+      if (!kier) return;
+      ev.preventDefault();
+      var v = Math.max(0, Math.min(100, parseFloat(zakres.value) + kier * 4));
+      zakres.value = v.toFixed(1);
+      ustaw(v);
     });
-    /* klik i palec: przełącznik w obie strony */
-    if (btn) btn.addEventListener('click', function () { ustaw(!po); });
-    /* klawiatura: tabulacja na przycisk pokazuje „po", spacja/enter przełącza */
-    if (btn) btn.addEventListener('focus', function () {
-      if (btn.matches(':focus-visible')) ustaw(true);
-    });
+    ustaw(parseFloat(zakres.value));
 
-    /* pierwsze wejście w kadr — jeden pokaz */
-    /* ⏱️ Odstępy MUSZĄ być dłuższe niż odjazd kadru (1,15 s w `app.css`).
-       Przy starych 420/2000 ms powrót startował, zanim kadr dojechał — wyglądało
-       to jak szarpnięcie w pół drogi. */
+    /* [dokąd, ile ms] — odcinki są dłuższe niż 0,6 s, bo krótsze czyta się jak drgnięcie */
+    var KROKI = [[84, 850], [16, 1450], [50, 950]];
     var pokaz = function () {
-      if (samoGralo || !ruchOk) return;
+      if (samoGralo || !ruchOk || tknieto) return;
       samoGralo = true;
-      setTimeout(function () { ustaw(true); }, 500);
-      setTimeout(function () { ustaw(false); }, 2900);
+      var i = 0, od = parseFloat(zakres.value), start = 0;
+      var krok = function (t) {
+        if (tknieto) return;
+        if (!start) start = t;
+        var cel = KROKI[i][0], czas = KROKI[i][1];
+        var p = Math.min(1, (t - start) / czas);
+        var e = p < .5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;   // ease-in-out
+        var v = od + (cel - od) * e;
+        zakres.value = v.toFixed(1);
+        ustaw(v);
+        if (p < 1) { klatka = requestAnimationFrame(krok); return; }
+        i += 1;
+        if (i < KROKI.length) { od = cel; start = 0; klatka = requestAnimationFrame(krok); }
+        else { klatka = 0; }
+      };
+      setTimeout(function () { if (!tknieto) klatka = requestAnimationFrame(krok); }, 550);
     };
     if ('IntersectionObserver' in window) {
       var obs = new IntersectionObserver(function (wpisy) {

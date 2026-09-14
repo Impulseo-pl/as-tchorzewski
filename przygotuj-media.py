@@ -345,8 +345,15 @@ OKNO_SUWAKA = (4, 4, 994, 822)
 #    zapas ~100 i ~157 - granicą jest lewy górny róg.
 OKNO_PO = (0, -106.5, 1128.6, 826)
 
+# 🔴 K. 14.09.2026: suwak WRACA do przesuwanej linii („zeby te przed i po byly obok
+#    siebie jedno po lewej drugie po prawej ... strzalka jakos przewija na efekt po").
+#    Przy linii styku OBIE warstwy MUSZA siedziec w TYM SAMYM oknie - inaczej po lewej
+#    i po prawej stronie linii ten sam mur jest w innym miejscu i cala sztuczka pada.
+#    Dlatego „po" wrocilo do OKNO_SUWAKA. Szersze OKNO_PO zostaje nizej wylacznie jako
+#    zapis, czym byl odjazd kadru z przenikania (11.09-14.09.2026) - NIE uzywaj go,
+#    dopoki suwak ma linie.
 SUWAK = [("przed.jpg", 1500, 82, OKNO_SUWAKA), ("przed@2x.jpg", 2400, 76, OKNO_SUWAKA),
-         ("po.jpg", 1500, 82, OKNO_PO), ("po@2x.jpg", 2400, 76, OKNO_PO)]
+         ("po.jpg", 1500, 82, OKNO_SUWAKA), ("po@2x.jpg", 2400, 76, OKNO_SUWAKA)]
 
 
 def _homografia(pary, wagi, skala):

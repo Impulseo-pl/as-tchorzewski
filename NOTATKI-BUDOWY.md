@@ -1214,3 +1214,43 @@ Pominięte świadomie: drugie ujęcie łazienki w czerni (powtórka kadru), `pod
 ⚠️ Nowych zdjęć nie ma w `materialy/upscale/`, więc `-duze.jpg` do powiększalnika powstaje
 z oryginału 1200–2048 px. Wystarcza, bo powiększalnik pokazuje jeden kadr na pół ekranu —
 ale gdyby któryś kadr miał iść na pas pełnoekranowy, najpierw `upscale.sh`.
+
+---
+
+## 14.09.2026 — przed/po elewacji wraca na suwak z linią
+
+K.: „zrób to tak zeby te przed i po były obok siebie jedno po lewej drugie po prawej
+i najlepiej uprość to tak ze sie strzałką jakoś przewija na efekt po ale po wejściu po
+chwili samo nawet sie przesuwa **bez tych goofy efektow** co sa teraz".
+
+Wypadło przenikanie całego kadru z odjazdem skali (10–14.09.2026) razem z plakietką
+„Najedź lub kliknij, żeby zobaczyć efekt". Zamiast tego klasyczny suwak: po lewej surówka,
+po prawej gotowa elewacja, biała linia z okrągłym uchwytem (dwie strzałki) pośrodku.
+
+**Dlaczego to teraz działa, a w wersji z 10.09 nie działało.** Wtedy suwak wyleciał, bo
+„zdjęcia są z innej odległości i na styku linii widać każdą resztkową różnicę kadru".
+Między jednym a drugim powstała **homografia** (`przygotuj-media.py`, `PARY_SUWAKA`):
+zdjęcie „po" jest prostowane w układ „przed" z sześciu punktów, więc płaszczyzna elewacji
+pokrywa się co do piksela. Brakowało już tylko jednego: warstwa „po" miała WŁASNE, szersze
+okno kadru (`OKNO_PO`) pod odjazd skali. Wróciła do `OKNO_SUWAKA` — oba pliki w jednym
+oknie to warunek konieczny suwaka z linią.
+✅ Sprawdzone złożeniami przy 35/50/65 %: mur, ościeże, opaska i poziom gruntu przechodzą
+przez linię bez skoku. **Ruszasz kadry → obejrzyj styk, zanim wypchniesz.**
+⚠️ Cena: „po" pokazuje ten sam wycinek co „przed", więc znikł szerszy plan z dachem
+i trawnikiem (K. 11.09: „można oddalić to zdjęcie po"). Przy suwaku z linią inaczej się nie da.
+
+**Jak to jest zrobione.** Pozycję trzyma jedna zmienna `--suwak` na ramce, przycięcie robi
+`clip-path` — skrypt przepisuje tylko liczbę. Przeciąganie myszą i palcem, skok po kliknięciu,
+strzałki na klawiaturze i obsługa czytnika ekranu to natywny `<input type="range">` rozciągnięty
+na cały kadr, przezroczysty.
+⛔ Kciuk suwaka MUSI być wąski (2 px). Szeroki nie dojeżdża do krawędzi toru i kursor rozjeżdża
+się z linią tym bardziej, im bliżej brzegu kadru. Widoczny uchwyt rysuje osobny element.
+
+**Pokaz po wejściu w kadr** (K.: „po chwili samo nawet sie przesuwa"): 50 % → 84 → 16 → 50 %,
+raz na wizytę, start po 0,55 s. Zmierzone w przeglądarce: rusza w 0,8 s, siada na 50 % po 4,0 s;
+klik w 20 % szerokości daje dokładnie 20 %. Pierwsze dotknięcie suwaka pokaz przerywa —
+inaczej strona wyrywałaby rękę użytkownikowi. Przy `prefers-reduced-motion` pokazu nie ma,
+przesuwanie zostaje.
+
+Druga para (wnętrze, `.duet`) bez zmian — tam suwak nie wchodzi w grę, bo zdjęcia są z innego
+punktu i innej ogniskowej (korelacja krawędzi 0,17), więc stoją po prostu obok siebie.

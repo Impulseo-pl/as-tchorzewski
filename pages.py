@@ -475,27 +475,27 @@ def index(naglowek):
       <p class="pod">Na gotowym zdjęciu nie widać już, od czego się zaczynało. Raz z zewnątrz, raz w środku.</p>
     </div>
     <figure class="przedpo rv">
-      <div class="przedpo-rama" data-przedpo>
-        <div class="przedpo-warstwy">
-          <img class="przedpo-po" src="img/po.jpg" srcset="img/po.jpg 1x, img/po@2x.jpg 2x"
-            width="1500" height="1239" decoding="async"
-            alt="Ta sama rozbudowa po wykończeniu: biała elewacja, duże okno tarasowe, trawnik">
-          <img class="przedpo-przed" src="img/przed.jpg" srcset="img/przed.jpg 1x, img/przed@2x.jpg 2x"
-            width="1500" height="1239" decoding="async"
-            alt="Ta sama rozbudowa w stanie surowym: mury z bloczków, stemple i otwarty otwór okienny">
-        </div>
+      <div class="przedpo-rama" data-suwak>
+        <img class="przedpo-po" src="img/po.jpg" srcset="img/po.jpg 1x, img/po@2x.jpg 2x"
+          width="1500" height="1239" decoding="async"
+          alt="Ta sama rozbudowa po wykończeniu: biała elewacja, duże okno tarasowe, trawnik">
+        <img class="przedpo-przed" src="img/przed.jpg" srcset="img/przed.jpg 1x, img/przed@2x.jpg 2x"
+          width="1500" height="1239" decoding="async"
+          alt="Ta sama rozbudowa w stanie surowym: mury z bloczków, stemple i otwarty otwór okienny">
         <span class="znacznik przedpo-etyk przedpo-etyk--przed">Przed</span>
         <span class="znacznik po przedpo-etyk przedpo-etyk--po">Po</span>
-        <button class="przedpo-przelacznik" type="button" data-przedpo-btn
-          aria-pressed="false" aria-label="Pokaż stan po remoncie">
-          <span class="przedpo-hint" aria-hidden="true">
-            <span class="hint-mysz">Najedź lub kliknij, żeby zobaczyć efekt</span>
-            <span class="hint-dotyk">Dotknij, żeby zobaczyć efekt</span>
+        <input class="przedpo-zakres" type="range" min="0" max="100" step="0.1" value="50"
+          data-suwak-zakres aria-label="Przesuń, żeby porównać stan przed remontem ze stanem po remoncie">
+        <span class="przedpo-linia" aria-hidden="true">
+          <span class="przedpo-uchwyt">
+            <svg viewBox="0 0 34 12" width="34" height="12" fill="currentColor" aria-hidden="true">
+              <path d="M7 0 0 6l7 6z"/><path d="M27 0l7 6-7 6z"/>
+            </svg>
           </span>
-        </button>
+        </span>
       </div>
       <figcaption>Stan surowy: mury z bloczków i stemple. Po naszej robocie: elewacja,
-        stolarka okienna i opaska. Ten sam narożnik tego samego domu.</figcaption>
+        stolarka okienna i opaska. Ten sam narożnik tego samego domu. Przeciągnij linię.</figcaption>
     </figure>
 
     <figure class="duet rv">

@@ -56,13 +56,13 @@ Powód nie jest estetyczny, tylko rozpoznawczy: **ten klocek ma wyglądać dokł
 w naszych demach** — człowiek, który widział go u konkurencji, ma go poznać w ułamku sekundy.
 Zaokrąglenie kończy się na tej sekcji.
 
-Poza nią zaokrąglony jest jeszcze **uchwyt suwaka przed/po** (`.suwak-uchwyt>span`, koło 50%).
+Poza nią zaokrąglony jest jeszcze **uchwyt suwaka przed/po** (`.przedpo-uchwyt`, koło 50%).
 To nie jest płytka ani karta, tylko gałka do chwycenia — okrągła, bo tak wygląda każdy suwak,
 którego człowiek dotykał wcześniej. Ta sama logika, co przy ikonach social: kształt niesie
 znaczenie, nie ozdobę.
 
 🔴 Kontrola grepem daje więc **dokładnie trzy** trafienia: `.sekcja--opinie .g-badge`,
-`.opinia`, `.suwak-uchwyt>span`. Czwarte = błąd.
+`.opinia`, `.przedpo-uchwyt`. Czwarte = błąd.
 
 ---
 
@@ -487,7 +487,7 @@ Największy prostokąt mieszczący się w OBU (policzony maską pokrycia w
 stąd **1,21:1**. Odpada tylko dolny pas trawnika, w którym i tak siedzi znak wodny.
 
 🔴 Trzy miejsca muszą mówić to samo: `OKNO_SUWAKA` w `przygotuj-media.py`,
-`aspect-ratio` w `.suwak-rama` i atrybuty `width`/`height` w `pages.py`. Rozjazd
+`aspect-ratio` w `.przedpo-rama` i atrybuty `width`/`height` w `pages.py`. Rozjazd
 uruchamia `object-fit: cover`, czyli dokładnie to przycięcie, którego tu nie chcemy.
 
 Cały kadr mieści się na ekranie, bo ramka ma ograniczoną **szerokość**
@@ -509,6 +509,18 @@ linia opaski i górna krawędź muru rozjeżdżają się o **1–5 jednostek na 
 
 ⛔ Nie kotwiczyć na elementach, które zmieniło wykończenie: ościeża, parapety, obróbki.
 
+
+### Jak działa suwak (stan od 14.09.2026)
+
+Linia z okrągłym uchwytem, po lewej „przed", po prawej „po", spoczynek na 50 %.
+Pozycję trzyma zmienna `--suwak` na `.przedpo-rama`, przycięcie robi `clip-path` na
+`.przedpo-przed`, a całe sterowanie (mysz, palec, strzałki klawiatury, czytnik ekranu)
+bierze na siebie przezroczysty `<input type="range">` na całym kadrze. Po wejściu w widok
+suwak raz przejeżdża sam (50 → 84 → 16 → 50 %) i przestaje, gdy ktoś go dotknie.
+
+⛔ Warunek konieczny: OBA pliki w tym samym oknie kadru (`OKNO_SUWAKA`). Osobne, szersze
+okno dla „po" istniało tylko na czas przenikania z odjazdem skali (10–14.09.2026) —
+przy linii podziału rozjeżdżałoby mur po obu jej stronach.
 
 ### Czego suwak przed/po NIE potrafi — pole widzenia
 
