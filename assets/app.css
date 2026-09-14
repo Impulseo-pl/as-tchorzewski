@@ -299,22 +299,28 @@ a{text-decoration:none}
   border-radius:0}
 .znacznik.po{background:var(--akcent-btn)}
 
-/* ── PRZED I PO: DWA BLOKI OBOK SIEBIE ────────────────────────────────────────
-   🔴 K. 14.09.2026: „obydwa bloki mają być obok siebie, po lewej ta przybudówka
-   i po prawej sypialnia ... proste przejście za pomocą strzałki po lewej i prawej
-   ... oba bloki mają mieć ten sam efekt, żeby strona była consistent".
+/* ── PRZED I PO W ZYGZAKU (pomysł Marcelego, K. 14.09.2026) ───────────────────
+   „najpierw po lewej zostaje tylko ten przed i po i po prawej krótki tekst ala case
+   study ... i wtedy pod spodem odwrócona kolejność". Bierzemy GOTOWY klocek `.zygzak`
+   z podstrony „Co robimy" (ta sama siatka, odstępy, wjazd kadru z boku i zwijanie
+   do jednej kolumny), a w miejsce statycznego zdjęcia wchodzi przełącznik przed/po.
+   ⛔ Nie budować drugiej siatki obok `.zygzak` - jedna sekcja ma czytać się jak reszta
+      strony, a nie jak osobny widżet. */
+.zygzak--przedpo .zygzak-obraz{margin:0}
+/* ⛔ Ta reguła MUSI mieć wyższą specyficzność niż `.zygzak-obraz img{width:100%}`,
+   inaczej oba kadry taśmy rozciągają się na całą ramkę i przełącznik pokazuje pustkę. */
+.zygzak--przedpo .duet-tasma img{width:50%}
+.zygzak--przedpo h3{font-size:clamp(1.5rem,2.6vw,2rem);line-height:1.18;margin-bottom:16px;
+  letter-spacing:-.01em}
+.zygzak--przedpo .zygzak-tresc p{max-width:46ch}
+@media (max-width:780px){
+  /* W jednej kolumnie kadr idzie ZAWSZE nad tekstem - w tej sekcji zdjęcie JEST treścią.
+     ⛔ Selektor musi mieć trzy klasy: `.zygzak--odwrocony .zygzak-obraz{order:0}` z bloku
+     telefonu silnika ma tyle samo wagi co dwuklasowy i stoi PÓŹNIEJ w pliku, więc wygrywał. */
+  .zygzak--przedpo.zygzak .zygzak-obraz{order:-1}
+  .zygzak--przedpo .zygzak-tresc p{max-width:none}
+}
 
-   Historia tego klocka (żeby nie zawrócić w któryś ślepy zaułek):
-   ⛔ suwak z przesuwaną linią (10.09 i znów 14.09) — odrzucony dwa razy,
-   ⛔ przenikanie całego kadru z odjazdem skali (10–14.09) — „goofy efekty",
-   ✅ przełącznik: dwa kadry na taśmie, strzałka przesuwa taśmę o jeden kadr.
-   Jeden mechanizm dla OBU par — elewacji i wnętrza — bo tylko wtedy sekcja czyta
-   się jako jedna rzecz, a nie dwa różne widżety.
-
-   ⛔ Nie dokładaj trzeciej pary do rzędu. Przy trzech kolumnach kadr schodzi poniżej
-      420 px i „przed" przestaje być czytelne. Trzecia para = nowy rząd. */
-.duety{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:start}
-.duet{margin:0}
 /* ⛔ `aspect-ratio` MUSI zgadzać się z plikami OBU par (stała `PARA` = 1500/1322
    w `przygotuj-media.py`; wszystkie cztery kadry są cięte do tej samej proporcji).
    Rozjazd uruchamia `object-fit:cover`, czyli przycięcie, którego tu nie chcemy. */
@@ -351,9 +357,6 @@ a{text-decoration:none}
 .duet figcaption{margin-top:14px;font-size:15px;line-height:1.55;color:var(--przyg-jasny)}
 
 @media (max-width:900px){
-  /* K.: „na telefonie może być jeden pod drugim" — a przy dwóch kolumnach poniżej
-     900 px kadr schodzi do ~400 px i surówka przestaje być czytelna. */
-  .duety{grid-template-columns:1fr;gap:34px}
   .duet-strzalka{width:42px;height:42px}
   .duet-strzalka--lewo{left:10px}
   .duet-strzalka--prawo{right:10px}

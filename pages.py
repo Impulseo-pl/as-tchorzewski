@@ -474,8 +474,17 @@ def index(naglowek):
       <h2>Przed i po. Dwie roboty.</h2>
       <p class="pod">Na gotowym zdjęciu nie widać już, od czego się zaczynało. Raz z zewnątrz, raz w środku.</p>
     </div>
-    <div class="duety rv">
-      <figure class="duet">
+    <div class="zygzak zygzak--przedpo zygzak--odwrocony rv">
+      <div class="zygzak-tresc">
+        <span class="kod">Realizacja 01 &middot; Rozbudowa</span>
+        <h3>Z bloczków i stempli w gotową bryłę</h3>
+        <p>Zaczynaliśmy przy surowych murach z bloczków i otworze pod przeszklenie,
+          spiętym stemplami. Dach istniejącego domu stał wtedy tuż nad nami.</p>
+        <p>Zeszliśmy, kiedy narożnik wyglądał jak część domu od zawsze: biała elewacja,
+          osadzona stolarka, opaska z kostki i lampy na ścianie.</p>
+        <p class="spec-linia">elewacja &middot; stolarka okienna &middot; opaska wokół budynku</p>
+      </div>
+      <figure class="zygzak-obraz duet">
         <div class="duet-rama" data-duet>
           <div class="duet-tasma">
             <img src="img/przed.jpg" srcset="img/przed.jpg 1x, img/przed@2x.jpg 2x"
@@ -500,11 +509,20 @@ def index(naglowek):
               <path d="m2 1 6 7-6 7"/></svg>
           </button>
         </div>
-        <figcaption>Rozbudowa od zewnątrz. Mury z bloczków i stemple, a po naszej robocie
-          elewacja, stolarka okienna i opaska. Ten sam narożnik tego samego domu.</figcaption>
       </figure>
+    </div>
 
-      <figure class="duet">
+    <div class="zygzak zygzak--przedpo rv">
+      <div class="zygzak-tresc">
+        <span class="kod">Realizacja 02 &middot; Poddasze</span>
+        <h3>Poddasze oddane pod klucz</h3>
+        <p>Na starcie płyta na skosach, surowa wylewka i kable wystające ze ścian.
+          Pokój był zamknięty, ale do mieszkania jeszcze daleko.</p>
+        <p>Potem zabudowa skosów, gładzie na ścianach i suficie, malowanie i wnęki pod
+          oświetlenie. Drugie zdjęcie zrobiliśmy w dniu, w którym schodziliśmy z budowy.</p>
+        <p class="spec-linia">sucha zabudowa skosów &middot; gładzie &middot; malowanie</p>
+      </div>
+      <figure class="zygzak-obraz duet">
         <div class="duet-rama" data-duet data-duet-zwloka="260">
           <div class="duet-tasma">
             <img src="img/przedpo-pokoj-przed.jpg"
@@ -531,8 +549,6 @@ def index(naglowek):
               <path d="m2 1 6 7-6 7"/></svg>
           </button>
         </div>
-        <figcaption>To samo poddasze, tylko w środku. Płyta, surowa wylewka i kable wystające
-          ze ścian, a potem ten sam pokój w dniu, w którym schodziliśmy z budowy.</figcaption>
       </figure>
     </div>
   </div>

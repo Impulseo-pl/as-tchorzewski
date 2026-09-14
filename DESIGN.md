@@ -475,6 +475,29 @@ grep -rn "border-radius" ~/Developer/impulseo-klienci/as-tchorzewski/*.css | gre
 przesuwa obrazek; przy za małym zapasie odsłania pustą krawędź (lekcja `2026-09-09-002`).
 
 
+## Przed i po — jak działa klocek (stan od 14.09.2026)
+
+**Dwa rzędy zygzaka** (pomysł Marcelego): rząd pierwszy — kadr po LEWEJ, krótkie case study
+po prawej; rząd drugi — odwrotnie. Siatkę, odstępy, linię działową, wjazd kadru z boku
+i zwijanie do jednej kolumny bierzemy z gotowego klocka `.zygzak` (tego samego, co na
+„Co robimy"), a w miejsce statycznego zdjęcia wchodzi przełącznik `.duet-rama`.
+
+Mechanizm w obu rzędach jest IDENTYCZNY — dwa kadry na taśmie (`.duet-tasma`), strzałka przy
+krawędzi przesuwa taśmę o jeden kadr, etykieta Przed/Po przenika razem z nim. Strzałka skrajna
+gaśnie (`disabled`), bo przy dwóch kadrach zapętlanie myli. Po wejściu w widok każdy rząd raz
+przejeżdża sam do „po" (drugi z opóźnieniem 260 ms) i tam zostaje; pierwsze kliknięcie przerywa
+pokaz. Na telefonie kadr idzie NAD tekstem.
+
+Tekst obok kadru to **krótkie case study**, nie podpis: etykieta („Realizacja 01 · Rozbudowa"),
+tytuł, dwa akapity i wiersz zakresu robót. K. 14.09.2026: „żeby nie było ściany tekstu".
+
+⛔ Nie budować drugiej siatki obok `.zygzak` — sekcja ma czytać się jak reszta strony.
+⛔ Reguła kolejności na telefonie potrzebuje TRZECH klas (`.zygzak--przedpo.zygzak .zygzak-obraz`):
+   `.zygzak--odwrocony .zygzak-obraz{order:0}` z bloku telefonu silnika ma tyle samo wagi
+   i stoi później w pliku, więc dwuklasowa reguła przegrywa.
+⛔ Dwa odrzucone podejścia, nie wracać: suwak z przesuwaną linią (10.09 i 14.09) oraz przenikanie
+   całego kadru z odjazdem skali („goofy efekty", 14.09).
+
 ## Przed i po — dlaczego kadr ma proporcję 1,135:1
 
 K. 10.09.2026: **„nie ucinaj tak zdjęcia — ma być całe widoczne, tylko dopasowane

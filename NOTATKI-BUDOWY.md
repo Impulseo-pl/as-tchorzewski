@@ -1308,3 +1308,16 @@ Stąd kadr „przed" od GÓRY, „po" od DOŁU i wspólna proporcja `PARA = 1500
 najwyższy kadr, z którego oba logo jeszcze wypadają. Kadry wnętrza (~1,125 u źródła) mieszczą się
 w niej prawie bez strat. Trzy miejsca muszą się zgadzać: `PARA`, `aspect-ratio` w `.duet-rama`,
 `width`/`height` w `pages.py`.
+
+**16:35 — przed/po w zygzaku (pomysł Marcelego).** Zamiast dwóch kadrów obok siebie: dwa rzędy
+naprzemienne. Rząd 1 - kadr rozbudowy po lewej, krótkie case study po prawej; rząd 2 - sypialnia
+po prawej, tekst po lewej. Sam przełącznik został bez zmian, zmienił się tylko układ wokół niego.
+
+Użyty jest GOTOWY klocek `.zygzak` z podstrony „Co robimy" (ta sama siatka 1:1, odstępy, linia
+działowa, wjazd kadru z boku, zwijanie do jednej kolumny), więc sekcja czyta się jak reszta strony.
+Teksty: etykieta „Realizacja 01/02", tytuł, dwa krótkie akapity i wiersz zakresu robót -
+świadomie bez ściany tekstu (K.: „żeby nie było ściany tekstu").
+
+⚠️ Pułapka specyficzności: na telefonie kadr ma iść NAD tekstem, ale `.zygzak--odwrocony
+.zygzak-obraz{order:0}` z bloku telefonu silnika ma tę samą wagę co reguła dwuklasowa i stoi
+później w pliku - trzeba było trzech klas (`.zygzak--przedpo.zygzak .zygzak-obraz`).
