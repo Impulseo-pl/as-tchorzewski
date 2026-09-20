@@ -1321,3 +1321,24 @@ Teksty: etykieta „Realizacja 01/02", tytuł, dwa krótkie akapity i wiersz zak
 ⚠️ Pułapka specyficzności: na telefonie kadr ma iść NAD tekstem, ale `.zygzak--odwrocony
 .zygzak-obraz{order:0}` z bloku telefonu silnika ma tę samą wagę co reguła dwuklasowa i stoi
 później w pliku - trzeba było trzech klas (`.zygzak--przedpo.zygzak .zygzak-obraz`).
+
+## 20.09.2026 12:55 — DOMENA PODPIĘTA (blok F, krok techniczny)
+
+Strona od 07.09 stała wyłącznie pod `impulseo-pl.github.io/as-tchorzewski/`, a kupiona 07.09
+domena `as-tchorzewski.pl` przez 13 dni pokazywała parking OVH („Site en construction").
+Na polecenie Krzysztofa 20.09 podpięta pod GitHub Pages.
+
+Co zrobione:
+- `python3 ~/Developer/tools/ovh_dns.py github-pages as-tchorzewski.pl impulseo-pl`
+  → 4× A na apex (185.199.108–111.153), `www` jako CNAME `impulseo-pl.github.io.`,
+  skasowany parking 213.186.33.5 (apex + www) i kolidujący TXT `"3|welcome"`.
+  MX / SPF / NS / `ftp` nietknięte — poczta na domenie działa dalej.
+- Plik `CNAME` w korzeniu repo (treść: `as-tchorzewski.pl`), commit + push.
+- `gh api -X PUT repos/Impulseo-pl/as-tchorzewski/pages -F https_enforced=true`.
+
+Stan sprawdzony: certyfikat `approved` na `as-tchorzewski.pl` i `www.as-tchorzewski.pl`,
+HTTP → HTTPS 301, wszystkie podstrony i `img/hero.jpg` = 200.
+
+🔴 `noindex` + `Disallow: /` ZOSTAJĄ. Podpięcie domeny to krok techniczny, NIE oddanie —
+Google strony nie zobaczy, dopóki Krzysztof nie każe zdjąć blokady. Blok F dalej stoi na
+kliencie (10 pytań bez odpowiedzi, brak zgody na zdjęcia).
