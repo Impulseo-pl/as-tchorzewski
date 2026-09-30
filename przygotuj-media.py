@@ -129,6 +129,17 @@ PLAN = [
     #    u dołu kostka brukowa.
     ("pas-elewacja.jpg",      "elewacja-po-taras-04.jpg",        2400, 21/9, 0.46, 80),
 
+    # ── PASY NA TELEFON (K. 30.09.2026 z iPhone'a: „paralaksa jest w złym formacie
+    #    zdjęcia"). Pas 21:9 w ramie 390×320 pokazywał 17 % szerokości pliku (elewacja =
+    #    sama lampa na tynku) i 22 % (łazienka = szara ściana), przy gęstości 0,23.
+    #    Na ekranie ≤600 px `<picture>` podaje KWADRAT z tego samego źródła, a `app.css`
+    #    robi ramę 1:1. Symulacja 5:4 / 1:1 / 4:5 obejrzana przed wstawieniem:
+    #    5:4 ucina podbitkę i świetlik, 4:5 zajmuje ~60 % ekranu, 1:1 pokazuje dom
+    #    z podbitką i drzwiami oraz wannę ze świetlikiem.
+    #    Wariant -900 (telefon z gęstością 2) robi sam `warianty_pasow`.
+    ("pas-elewacja-tel.jpg",  "elewacja-po-taras-04.jpg",        1200, 1,    0.52, 80),
+    ("pas-lazienka-tel.jpg",  "poddasze2-wanna-wneka-05.jpg",    1200, 1,    0.42, 82),
+
     # ── kadr na „O nas": rusztowanie ekipy, SZEROKI. Wchodzi 08.09.2026 w miejsce
     #    kadru pionowego - to on rozpychał lewą kolumnę i zostawiał 400 px pustki
     #    pod krótszą prawą (uwaga K.). Szeroki kadr idzie przez obie kolumny.

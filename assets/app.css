@@ -214,7 +214,15 @@ a{text-decoration:none}
       dobiera `object-fit:cover`, więc ten sam plik działa i na laptopie, i na telefonie.
    🔴 Reguła K. z 07.09 („hero zawsze mieści się na każdym urządzeniu") jest tu
       spełniona z definicji - scena MA wysokość ekranu, nic z niej nie wystaje. */
-.scena{position:relative;overflow:hidden;min-height:calc(100dvh - var(--gora,96px));
+/* 🔴 `svh`, NIE `dvh` (K. 30.09.2026, iPhone: „scroll dziwnie działa"). `dvh` idzie za
+   paskiem przeglądarki: przy przewijaniu Chrome/Safari na iPhonie chowa pasek, okno
+   rośnie o ~100 px, scena rośnie razem z nim i CAŁA treść pod nią zjeżdża pod palcem;
+   przy ruchu w górę pasek wraca i treść podskakuje. Zmierzone 30.09: okno −110 px →
+   scena −110 px. `svh` = ekran z widocznym paskiem, czyli dokładnie to, co widać
+   po wejściu na stronę, i nie zmienia się w trakcie przewijania. `vh` = zapas dla
+   przeglądarek bez `svh`. */
+.scena{position:relative;overflow:hidden;min-height:calc(100vh - var(--gora,96px));
+  min-height:calc(100svh - var(--gora,96px));
   display:grid;align-items:center;padding:72px 0;background:var(--noc);color:var(--biel)}
 .scena-tlo{position:absolute;inset:-150px 0;width:100%;height:calc(100% + 300px);object-fit:cover;
   object-position:center 42%}
@@ -502,17 +510,30 @@ html:not(.js) .lata--ruch>li b,html:not(.js) .lata--ruch>li p{
 .reel-btn{position:absolute;inset:0;width:100%;display:flex;align-items:flex-end;
   justify-content:flex-start;gap:12px;padding:22px;background:transparent;border:0;
   color:#fff;font:500 15px/1 Inter;cursor:pointer;border-radius:0}
-.reel-btn span{display:inline-flex;align-items:center;gap:10px;background:rgba(15,15,18,.72);
+/* ⚠️ `.reel-napis`, NIE `.reel-btn span`: w środku siedzą jeszcze `.reel-tekst`
+   i `.reel-czas`, a selektor potomka łapałby też je (podwójne tło, przezroczystość
+   mnożona przez siebie). */
+.reel-napis{display:inline-flex;align-items:center;gap:10px;background:rgba(15,15,18,.72);
   padding:12px 18px;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
   transition:opacity .18s ease}
+.reel-napis .ikona-play{flex:none}
+.reel-czas::before{content:"("}
+.reel-czas::after{content:")"}
 /* gra = kadr ma mówić sam za siebie, napis schodzi z drogi */
-.reel.gra .reel-btn span{opacity:0}
-.reel.gra:hover .reel-btn span{opacity:.45}
-.reel-btn:focus-visible span{outline:2px solid var(--biel);outline-offset:3px;opacity:1}
-/* dotyk: „najedź" nie istnieje, więc mówimy palcem */
+.reel.gra .reel-napis{opacity:0}
+.reel.gra:hover .reel-napis{opacity:.45}
+.reel-btn:focus-visible .reel-napis{outline:2px solid var(--biel);outline-offset:3px;opacity:1}
+/* dotyk: „najedź" nie istnieje, więc mówimy palcem.
+   🔴 K. 30.09.2026 (iPhone): „teksty na filmikach się rozjeżdżają". Tytuł, „(39 s)"
+   i dopisek „· przytrzymaj" były osobnymi elementami jednego flexa — w przycisku
+   ~300 px każdy łamał się sam i kropka wisiała w innym wierszu niż słowo.
+   Teraz dwie linie: tytuł (nie łamie się), pod nim mniejsze „39 s · przytrzymaj". */
 @media (hover:none){
-  .reel-btn span::after{content:" · przytrzymaj";opacity:.7}
-  .reel.gra .reel-btn span{opacity:0}
+  .reel-tekst{text-align:left;line-height:1.25}
+  .reel-tekst .reel-czas{display:block;margin-top:4px;font-size:12.5px;font-weight:400;opacity:.75}
+  .reel-czas::before{content:none}
+  .reel-czas::after{content:" · przytrzymaj"}
+  .reel.gra .reel-napis{opacity:0}
 }
 .reel figcaption{flex:1;padding:16px 18px;font-size:14px;color:var(--przyg-jasny);
   border-top:1px solid var(--linia-slaba)}
@@ -586,6 +607,24 @@ html:not(.js) .lata--ruch>li b,html:not(.js) .lata--ruch>li p{
 .pas--duzy{--pas-wys:clamp(320px,46vw,620px);--zapas:330px}
 .pas img[data-paralaksa]{position:absolute;inset:calc(-1 * var(--zapas)) 0;width:100%;
   height:calc(100% + 2 * var(--zapas))}
+/* 🔴 ZAPAS PARALAKSY TYLKO TAM, GDZIE PARALAKSA DZIAŁA (K. 30.09.2026, iPhone: „paralaksa
+   jest w złym formacie zdjęcia"). `rdzen.js` (10c) rusza zdjęcia wyłącznie przy
+   `innerWidth > 900`, a CSS dawał zapas ±330 px zawsze — na telefonie rama zdjęcia miała
+   320 + 660 = 980 px wysokości przy 390 px szerokości, `cover` powiększał plik 21:9
+   ~6× i pokazywał 17 % jego szerokości (sama lampa na tynku), przy gęstości 0,23
+   (stąd miękkość). Ten sam błąd co w hero 14.09 — tam naprawiony osobno, tu dla
+   wszystkich ram z paralaksą naraz. Próg 900 px MUSI zgadzać się z warunkiem w `rdzen.js`:
+   poniżej niego nic się nie przesuwa, więc zapas jest samym kosztem.
+   `will-change:auto` — bez ruchu warstwa graficzna tylko zjada pamięć telefonu. */
+@media (max-width:900px){
+  .pas img[data-paralaksa],.otwarcie-tlo[data-paralaksa]{inset:0;height:100%;transform:none!important}
+  [data-paralaksa]{will-change:auto}
+}
+/* Telefon: rama 1:1, a `<picture>` w `pages.py` podaje do niej kwadratowy kadr
+   (`pas-*-tel.jpg`, z tego samego źródła). ⛔ Próg 600 px = `media` przy `<source>`. */
+@media (max-width:600px){
+  .pas--duzy{--pas-wys:100vw}
+}
 /* 🔴 Gradient policzony pod CIEMNE zdjęcia nie wystarcza pod jasne. Pas z elewacji
    (biały tynk + niebo) dał kontrast 3,76:1 przy progu 4,5 - złapane przez bramkę
    na telefonie 07.09.2026. Mocniejszy gradient z przystankiem w połowie + cień
@@ -752,7 +791,7 @@ footer{background:var(--papier-3);border-top:1px solid var(--linia-slaba);paddin
   .nawigacja .strzalka-poz{display:inline;color:var(--akcent-na-jasnym);font-size:18px}
   .nawigacja a[aria-current="page"]{color:var(--akcent-na-jasnym)}
 
-  .scena{padding:56px 0;min-height:calc(100dvh - var(--gora,96px))}
+  .scena{padding:56px 0;min-height:calc(100vh - var(--gora,96px));min-height:calc(100svh - var(--gora,96px))}
   /* 🔴 Telefon jest WĘŻSZY niż kadr, więc `cover` obcina boki i zostaje sam materac.
      Dwie rzeczy naraz (K. 14.09.2026: „przesuń w lewo, żeby okno po prawej było widać;
      jeżeli da się oddalić - też"):

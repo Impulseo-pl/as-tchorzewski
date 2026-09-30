@@ -25,8 +25,8 @@
       href="assets/fonty/inter-latin-400-normal.woff2">
 <link rel="preload" as="image" href="img/hero.jpg" fetchpriority="high">
 <link rel="preload" as="image" href="img/logo-duze.png" fetchpriority="high">
-<link rel="stylesheet" href="assets/rdzen.css?v=ef68c0ae">
-<link rel="stylesheet" href="assets/app.css?v=624255c1">
+<link rel="stylesheet" href="assets/rdzen.css?v=c8853073">
+<link rel="stylesheet" href="assets/app.css?v=0bc49692">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"HomeAndConstructionBusiness",
 "name":"Firma Ogólnobudowlana Artur Tchórzewski","alternateName":"A.S Tchórzewski","url":"https://as-tchorzewski.pl/",
@@ -263,12 +263,19 @@
 <!-- ⛔ NIE USUWAJ `srcset`/`sizes` z pasów. Pas idzie przez całą szerokość okna,
      więc bez nich telefon pobiera plik 2400 px na ekran 390 px (bramka wyglądu,
      11.09.2026: „3,1× nadmiaru przy Retinie, leci tak na każdej podstronie").
-     Warianty -900 i -1600 robi SAM `przygotuj-media.py` (krok `warianty_pasow`). -->
+     Warianty -900 i -1600 robi SAM `przygotuj-media.py` (krok `warianty_pasow`).
+     🔴 `<source>` ≤600 px = KWADRAT pod telefon (K. 30.09.2026: pas 21:9 pokazywał na
+     iPhonie 17 % zdjęcia). `media` MUSI być tym samym progiem co rama 1:1 w `app.css`
+     (`@media (max-width:600px)`), inaczej kwadrat trafi w ramę 21:9 albo odwrotnie. -->
 <figure class="pas pas--duzy">
+  <picture>
+  <source media="(max-width:600px)" sizes="100vw" width="1200" height="1200"
+    srcset="img/pas-elewacja-tel-900.jpg 900w, img/pas-elewacja-tel.jpg 1200w">
   <img data-paralaksa="220" src="img/pas-elewacja.jpg"
     srcset="img/pas-elewacja-900.jpg 900w, img/pas-elewacja-1600.jpg 1600w, img/pas-elewacja.jpg 2400w"
     sizes="100vw" width="2400" height="1029" loading="lazy" decoding="async"
     alt="Skończona elewacja domu z wejściem od strony tarasu, biały tynk i ciemne obróbki">
+  </picture>
   <figcaption>Elewacja z podbitką - po naszej pracy.</figcaption>
 </figure>
 
@@ -287,7 +294,7 @@
           <video preload="none" playsinline muted loop poster="img/plakat-agregat.jpg">
             <source src="video/agregat.mp4" type="video/mp4">
           </video>
-          <button class="reel-btn" type="button"><span><svg class="ikona-play" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 1.6 14 8 3 14.4Z"/></svg>Malowanie agregatem (37 s)</span></button>
+          <button class="reel-btn" type="button"><span class="reel-napis"><svg class="ikona-play" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 1.6 14 8 3 14.4Z"/></svg><span class="reel-tekst">Malowanie agregatem <span class="reel-czas">37 s</span></span></span></button>
         </div>
         <figcaption>Malowanie agregatem natryskowym - duża powierzchnia, powłoka bez śladów po wałku.</figcaption>
       </figure>
@@ -297,7 +304,7 @@
           <video preload="none" playsinline muted loop poster="img/plakat-ekipa.jpg">
             <source src="video/ekipa.mp4" type="video/mp4">
           </video>
-          <button class="reel-btn" type="button"><span><svg class="ikona-play" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 1.6 14 8 3 14.4Z"/></svg>Praca przy elewacji (39 s)</span></button>
+          <button class="reel-btn" type="button"><span class="reel-napis"><svg class="ikona-play" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M3 1.6 14 8 3 14.4Z"/></svg><span class="reel-tekst">Praca przy elewacji <span class="reel-czas">39 s</span></span></span></button>
         </div>
         <figcaption>Dzień na rusztowaniu przy elewacji - tynk, obróbki i podbitka.</figcaption>
       </figure>
@@ -307,10 +314,14 @@
 </section>
 
 <figure class="pas pas--duzy">
+  <picture>
+  <source media="(max-width:600px)" sizes="100vw" width="1200" height="1200"
+    srcset="img/pas-lazienka-tel-900.jpg 900w, img/pas-lazienka-tel.jpg 1200w">
   <img data-paralaksa="220" src="img/pas-lazienka.jpg"
     srcset="img/pas-lazienka-900.jpg 900w, img/pas-lazienka-1600.jpg 1600w, img/pas-lazienka.jpg 2400w"
     sizes="100vw" width="2400" height="1350" loading="lazy" decoding="async"
     alt="Wanna obudowana płytami w ciepłym beżu, we wnęce pod skosem poddasza, obok okno dachowe">
+  </picture>
   <figcaption>Łazienka na poddaszu - wanna we wnęce pod skosem, z naszych realizacji.</figcaption>
 </figure>
 
@@ -467,6 +478,6 @@
   <img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="">
   <p class="lb-cap"></p>
 </div>
-<script src="assets/rdzen.js?v=ef68c0ae"></script>
+<script src="assets/rdzen.js?v=c8853073"></script>
 </body>
 </html>

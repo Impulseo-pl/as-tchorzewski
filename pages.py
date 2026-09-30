@@ -309,19 +309,24 @@ IKONA_PLAY = ('<svg class="ikona-play" width="16" height="16" viewBox="0 0 16 16
               'aria-hidden="true"><path fill="currentColor" d="M3 1.6 14 8 3 14.4Z"/></svg>')
 
 
-def film(plik, plakat, tytul, podpis, alt, lazy=True):
+def film(plik, plakat, tytul, czas, podpis, alt, lazy=True):
     """Kadr ożywa POD KURSOREM i pod przytrzymanym palcem (rdzeń, blok 7) - tak robią to
     strony premium. Klik zostaje dla klawiatury i dla tego, kto chce obejrzeć do końca.
     `preload="none"` nadal nie zjada transferu na telefonie.
     ⛔ Nigdzie nie piszemy „film bez dźwięku" (K. 08.09.2026): filmy z budowy dźwięku
-       nie mają, ale informowanie o braku brzmi jak tłumaczenie się z wady."""
+       nie mają, ale informowanie o braku brzmi jak tłumaczenie się z wady.
+    🔴 `czas` OSOBNO od tytułu (K. 30.09.2026, iPhone: „teksty na filmikach się
+       rozjeżdżają"). Tytuł, „(39 s)" i dopisek „· przytrzymaj" były trzema elementami
+       jednego flexa i w przycisku ~300 px każdy łamał się osobno. Teraz na komputerze
+       dalej jedna linia „Tytuł (39 s)" (nawiasy dokłada `app.css`), a na dotyku
+       dwie: tytuł, pod nim mniejsze „39 s · przytrzymaj"."""
     return f"""<figure class="reel">
         <div class="reel-media">
           <img class="plakat" src="img/{plakat}" alt="{alt}"{" loading=\"lazy\"" if lazy else ""} decoding="async">
           <video preload="none" playsinline muted loop poster="img/{plakat}">
             <source src="video/{plik}" type="video/mp4">
           </video>
-          <button class="reel-btn" type="button"><span>{IKONA_PLAY}{tytul}</span></button>
+          <button class="reel-btn" type="button"><span class="reel-napis">{IKONA_PLAY}<span class="reel-tekst">{tytul} <span class="reel-czas">{czas}</span></span></span></button>
         </div>
         <figcaption>{podpis}</figcaption>
       </figure>"""
@@ -554,12 +559,19 @@ def index(naglowek):
 <!-- ⛔ NIE USUWAJ `srcset`/`sizes` z pasów. Pas idzie przez całą szerokość okna,
      więc bez nich telefon pobiera plik 2400 px na ekran 390 px (bramka wyglądu,
      11.09.2026: „3,1× nadmiaru przy Retinie, leci tak na każdej podstronie").
-     Warianty -900 i -1600 robi SAM `przygotuj-media.py` (krok `warianty_pasow`). -->
+     Warianty -900 i -1600 robi SAM `przygotuj-media.py` (krok `warianty_pasow`).
+     🔴 `<source>` ≤600 px = KWADRAT pod telefon (K. 30.09.2026: pas 21:9 pokazywał na
+     iPhonie 17 % zdjęcia). `media` MUSI być tym samym progiem co rama 1:1 w `app.css`
+     (`@media (max-width:600px)`), inaczej kwadrat trafi w ramę 21:9 albo odwrotnie. -->
 <figure class="pas pas--duzy">
+  <picture>
+  <source media="(max-width:600px)" sizes="100vw" width="1200" height="1200"
+    srcset="img/pas-elewacja-tel-900.jpg 900w, img/pas-elewacja-tel.jpg 1200w">
   <img data-paralaksa="220" src="img/pas-elewacja.jpg"
     srcset="img/pas-elewacja-900.jpg 900w, img/pas-elewacja-1600.jpg 1600w, img/pas-elewacja.jpg 2400w"
     sizes="100vw" width="2400" height="1029" loading="lazy" decoding="async"
     alt="Skończona elewacja domu z wejściem od strony tarasu, biały tynk i ciemne obróbki">
+  </picture>
   <figcaption>Elewacja z podbitką - po naszej pracy.</figcaption>
 </figure>
 
@@ -572,10 +584,10 @@ def index(naglowek):
         Najedź na kadr albo przytrzymaj go palcem.</p>
     </div>
     <div class="para para--filmy rv">
-      {film("agregat.mp4", "plakat-agregat.jpg", "Malowanie agregatem (37 s)",
+      {film("agregat.mp4", "plakat-agregat.jpg", "Malowanie agregatem", "37 s",
             "Malowanie agregatem natryskowym - duża powierzchnia, powłoka bez śladów po wałku.",
             "Pracownik w kombinezonie i masce maluje ścianę agregatem natryskowym")}
-      {film("ekipa.mp4", "plakat-ekipa.jpg", "Praca przy elewacji (39 s)",
+      {film("ekipa.mp4", "plakat-ekipa.jpg", "Praca przy elewacji", "39 s",
             "Dzień na rusztowaniu przy elewacji - tynk, obróbki i podbitka.",
             "Ekipa przy elewacji budynku, rusztowanie ustawione wzdłuż ściany")}
     </div>
@@ -584,10 +596,14 @@ def index(naglowek):
 </section>
 
 <figure class="pas pas--duzy">
+  <picture>
+  <source media="(max-width:600px)" sizes="100vw" width="1200" height="1200"
+    srcset="img/pas-lazienka-tel-900.jpg 900w, img/pas-lazienka-tel.jpg 1200w">
   <img data-paralaksa="220" src="img/pas-lazienka.jpg"
     srcset="img/pas-lazienka-900.jpg 900w, img/pas-lazienka-1600.jpg 1600w, img/pas-lazienka.jpg 2400w"
     sizes="100vw" width="2400" height="1350" loading="lazy" decoding="async"
     alt="Wanna obudowana płytami w ciepłym beżu, we wnęce pod skosem poddasza, obok okno dachowe">
+  </picture>
   <figcaption>Łazienka na poddaszu - wanna we wnęce pod skosem, z naszych realizacji.</figcaption>
 </figure>
 

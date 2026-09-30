@@ -18,7 +18,7 @@
 (function () {
   'use strict';
   document.documentElement.classList.add('js');
-  var RDZEN_WERSJA = 18;  // 18: koniec bialego ekranu przy wejsciu na podstrone (fade wejscia usuniety, zostaje zanik wyjscia); 17: telefon - plynne przewijanie tylko pod mysza i wjazd sekcji bez przesuwania na dotyku; 16: przed/po - plynne przejscie (koniec 'oddechu' ze scale+blur i postoju 0,3 s; ruch wylacznie na transition); 15: przed/po - pierwsze dotkniecie na telefonie dziala (koniec sztucznego mouseenter); 14: przed/po przez przenikanie calego kadru (koniec suwaka z linia); 13: suwak nie wraca na srodek po zjechaniu kursora; 12: karuzela opinii; 11: suwak przed/po; 10: kaskada na animation (koniec opoznionego hovera); 9: rozwijane menu; 8: plakietka Google
+  var RDZEN_WERSJA = 19;  // 19: film pod palcem - ruch > 8 px kasuje przytrzymanie (wolne przewijanie po kafelku nie odpala filmu), zegar 200 ms; 18: koniec bialego ekranu przy wejsciu na podstrone (fade wejscia usuniety, zostaje zanik wyjscia); 17: telefon - plynne przewijanie tylko pod mysza i wjazd sekcji bez przesuwania na dotyku; 16: przed/po - plynne przejscie (koniec 'oddechu' ze scale+blur i postoju 0,3 s; ruch wylacznie na transition); 15: przed/po - pierwsze dotkniecie na telefonie dziala (koniec sztucznego mouseenter); 14: przed/po przez przenikanie calego kadru (koniec suwaka z linia); 13: suwak nie wraca na srodek po zjechaniu kursora; 12: karuzela opinii; 11: suwak przed/po; 10: kaskada na animation (koniec opoznionego hovera); 9: rozwijane menu; 8: plakietka Google
   document.documentElement.setAttribute('data-rdzen', RDZEN_WERSJA);
 
   var q = function (s, k) { return (k || document).querySelector(s); };
@@ -286,12 +286,26 @@
     });
 
     /* ── palec: przytrzymanie ─────────────────────────────────────────────
-       Odpalamy po 120 ms, żeby zwykłe przewijanie strony palcem po kadrze
-       nie budziło filmu przy każdym machnięciu. */
+       Odpalamy po 200 ms, żeby zwykłe przewijanie strony palcem po kadrze
+       nie budziło filmu przy każdym machnięciu.
+       🔴 Palec, który się PRZESUWA, przewija stronę — nie trzyma filmu (K. 30.09.2026,
+       iPhone: „scroll dziwnie działa"). Sam zegar 120 ms nie wystarczał: wolne
+       przeciągnięcie po kafelku (60–120 px/s, zmierzone na A.S Tchórzewski) odpalało
+       film i jego pobieranie, zanim przeglądarka uznała ruch za przewijanie.
+       Dlatego ruch palca o > 8 px kasuje zegar. */
+    var start = null;
     fig.addEventListener('pointerdown', function (e) {
       if (e.pointerType === 'mouse') return;
       clearTimeout(licznik);
-      licznik = setTimeout(function () { trzymane = true; graj(); }, 120);
+      start = { x: e.clientX, y: e.clientY };
+      licznik = setTimeout(function () { trzymane = true; graj(); }, 200);
+    });
+    fig.addEventListener('pointermove', function (e) {
+      if (e.pointerType === 'mouse' || !start || trzymane) return;
+      if (Math.abs(e.clientX - start.x) > 8 || Math.abs(e.clientY - start.y) > 8) {
+        clearTimeout(licznik);
+        start = null;
+      }
     });
     ['pointerup', 'pointercancel', 'pointerleave'].forEach(function (nazwa) {
       fig.addEventListener(nazwa, function (e) {
