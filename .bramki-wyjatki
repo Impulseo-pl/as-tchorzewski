@@ -1,0 +1,3 @@
+# Wyjątki bramki dla TEJ strony (mechanizm: ~/.claude/skills/bramki/sprawdz.py, `wyjatki_strony`).
+# Jedna linijka = klucz: powód. Wyjątek zamienia błąd w ostrzeżenie z tym powodem.
+o-nas-krotka: klient 29.09.2026 kazał usunąć sekcję „Po wyschnięciu widać wszystko" („I ten tekst też usuwamy") - chce MNIEJ tekstu, dosypywanie waty łamałoby jego polecenie; strona ma konkrety (2005, 2015, ponad 20 lat)

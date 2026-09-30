@@ -175,7 +175,7 @@ DANE_FIRMY = f"""<script type="application/ld+json">
 {{"@context":"https://schema.org","@type":"HomeAndConstructionBusiness",
 "name":"{FIRMA}","alternateName":"{MARKA}","url":"{SITE}/",
 "telephone":"{TEL_E164}","email":"{MAIL}",
-"description":"Wykończenia wnętrz: szpachlowanie i gładzie, malowanie, łazienki, sucha zabudowa oraz montaż drzwi i okien. Rodzinna firma, ponad 20 lat doświadczenia.",
+"description":"Wykończenia wnętrz: szpachlowanie i gładzie, malowanie, łazienki, sucha zabudowa, montaż drzwi i okien oraz podłogi. Poza wnętrzami elewacje i podbitki. Rodzinna firma, ponad 20 lat doświadczenia.",
 "address":{{"@type":"PostalAddress","streetAddress":"{ULICA}","postalCode":"{KOD}","addressLocality":"{MIASTO}","addressCountry":"PL"}},
 "areaServed":["województwo wielkopolskie","województwo lubuskie"],
 "vatID":"PL9950044465","foundingDate":"2015"}}

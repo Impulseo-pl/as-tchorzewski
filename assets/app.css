@@ -113,11 +113,11 @@ a{text-decoration:none}
 .ciemna .pod,.ciemna .lead,.ciemna .przyciemniony,.ciemna .godziny{color:var(--przyg)}
 .ciemna .etykieta,.ciemna .kod,.ciemna .licznik,.ciemna .dalej{color:var(--akcent-jasny)}
 .ciemna .lata b{color:var(--akcent-jasny)}
-.ciemna .lata p,.ciemna .galeria figcaption,.ciemna .klatka p,.ciemna .klatka figcaption,
-.ciemna .dane th,.ciemna .spec-linia,.ciemna .spec{color:var(--przyg)}
+.ciemna .lata p,.ciemna .klatka p,.ciemna .klatka figcaption,
+.ciemna .dane th,.ciemna .spec{color:var(--przyg)}
 .ciemna .karta,.ciemna [data-po-kliknieciu]{background:var(--noc-2);
   border-color:var(--linia-na-ciemnym)}
-.ciemna .zygzak,.ciemna .grupa-tyt,.ciemna .lata li,.ciemna .spec-linia,
+.ciemna .zygzak,.ciemna .grupa-tyt,.ciemna .lata li,
 .ciemna .dane th,.ciemna .dane td,.ciemna .reel,.ciemna .reel figcaption,
 .ciemna .wiersz-usluga,.ciemna .kafel{
   border-color:var(--linia-slaba-na-ciemnym)}
@@ -228,16 +228,14 @@ a{text-decoration:none}
    zmierzyła kontrast 2,17-4,48 na leadzie, etykiecie i godzinach - przy wymaganych 4,5.
    Samo przyciemnienie gradientem zabiłoby zdjęcie, więc drugą połowę roboty robi cień:
    niewidoczny na oko, a oddaje literom tło niezależnie od tego, co pod nimi leży. */
-.scena .etykieta,.scena .lead,.scena .godziny{text-shadow:0 1px 4px rgba(8,8,10,.72)}
+.scena .godziny{text-shadow:0 1px 4px rgba(8,8,10,.72)}
 .scena h1{text-shadow:0 2px 10px rgba(8,8,10,.45)}
 .scena>.wrap{position:relative;z-index:2}
-.scena h1{font-size:clamp(2.9rem,5.4vw,4.6rem);margin-bottom:26px;max-width:16ch;
+/* 🔴 29.09.2026 hero to JEDNO zdanie klienta (63 znaki) zamiast krótkiego hasła z leadem
+   pod spodem. Przy starych 16ch i 4,6 rem szło w pięć wierszy - teraz trzy na laptopie. */
+.scena h1{font-size:clamp(2.6rem,4.8vw,4.1rem);margin-bottom:30px;max-width:20ch;
   color:var(--biel)}
-.scena .etykieta{color:var(--akcent-jasny)}
 .lead{color:var(--przyg-jasny);font-size:19px;max-width:46ch;margin-bottom:34px}
-/* Hero ma krótszy wiersz niż otwarcia podstron - dwa wiersze zamiast trzech. */
-.scena .lead{max-width:34ch;margin-bottom:30px}
-.scena .lead{color:var(--przyg)}
 .scena .duch{border-color:rgba(255,255,255,.22);color:var(--biel)}
 .scena .duch:hover{border-color:var(--biel);background:rgba(255,255,255,.09)}
 .kontakt-linia{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
@@ -299,27 +297,14 @@ a{text-decoration:none}
   border-radius:0}
 .znacznik.po{background:var(--akcent-btn)}
 
-/* ── PRZED I PO W ZYGZAKU (pomysł Marcelego, K. 14.09.2026) ───────────────────
-   „najpierw po lewej zostaje tylko ten przed i po i po prawej krótki tekst ala case
-   study ... i wtedy pod spodem odwrócona kolejność". Bierzemy GOTOWY klocek `.zygzak`
-   z podstrony „Co robimy" (ta sama siatka, odstępy, wjazd kadru z boku i zwijanie
-   do jednej kolumny), a w miejsce statycznego zdjęcia wchodzi przełącznik przed/po.
-   ⛔ Nie budować drugiej siatki obok `.zygzak` - jedna sekcja ma czytać się jak reszta
-      strony, a nie jak osobny widżet. */
-.zygzak--przedpo .zygzak-obraz{margin:0}
-/* ⛔ Ta reguła MUSI mieć wyższą specyficzność niż `.zygzak-obraz img{width:100%}`,
-   inaczej oba kadry taśmy rozciągają się na całą ramkę i przełącznik pokazuje pustkę. */
-.zygzak--przedpo .duet-tasma img{width:50%}
-.zygzak--przedpo h3{font-size:clamp(1.5rem,2.6vw,2rem);line-height:1.18;margin-bottom:16px;
-  letter-spacing:-.01em}
-.zygzak--przedpo .zygzak-tresc p{max-width:46ch}
-@media (max-width:780px){
-  /* W jednej kolumnie kadr idzie ZAWSZE nad tekstem - w tej sekcji zdjęcie JEST treścią.
-     ⛔ Selektor musi mieć trzy klasy: `.zygzak--odwrocony .zygzak-obraz{order:0}` z bloku
-     telefonu silnika ma tyle samo wagi co dwuklasowy i stoi PÓŹNIEJ w pliku, więc wygrywał. */
-  .zygzak--przedpo.zygzak .zygzak-obraz{order:-1}
-  .zygzak--przedpo .zygzak-tresc p{max-width:none}
-}
+/* ── PRZED I PO: DWA BLOKI OBOK SIEBIE ────────────────────────────────────────
+   🔴 29.09.2026 klient: „po prostu dwa zdjęcia przed i po, bez opisów". Zygzak z case
+   study (14.09, pomysł Marcelego) bez tekstu zostawiał pustą połowę rzędu, więc wrócił
+   układ `.duety` z 14.09 (K.: „obydwa bloki obok siebie"). Poniżej 900 px jeden pod drugim.
+   ⛔ Nie dokładaj trzeciej pary do rzędu - przy trzech kolumnach „przed" przestaje być
+      czytelne. Trzecia para = nowy rząd. */
+.duety{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:start}
+.duet{margin:0}
 
 /* ⛔ `aspect-ratio` MUSI zgadzać się z plikami OBU par (stała `PARA` = 1500/1322
    w `przygotuj-media.py`; wszystkie cztery kadry są cięte do tej samej proporcji).
@@ -354,16 +339,14 @@ a{text-decoration:none}
 .duet-rama.jest-po .duet-etyk--przed{opacity:0}
 .duet-rama.jest-po .duet-etyk--po{opacity:1}
 
-.duet figcaption{margin-top:14px;font-size:15px;line-height:1.55;color:var(--przyg-jasny)}
-
 @media (max-width:900px){
+  .duety{grid-template-columns:1fr;gap:34px}
   .duet-strzalka{width:42px;height:42px}
   .duet-strzalka--lewo{left:10px}
   .duet-strzalka--prawo{right:10px}
   .duet-etyk{top:10px;left:10px;font-size:10px;padding:6px 9px;letter-spacing:.12em}
-  .duet figcaption{font-size:14px}
 }
-/* Bez rdzenia widać pierwszy kadr („przed") i podpis — strzałki nic by nie robiły. */
+/* Bez rdzenia widać pierwszy kadr („przed") — strzałki nic by nie robiły. */
 html:not(.js) .duet-strzalka{display:none}
 @media (prefers-reduced-motion:reduce){
   /* kadr przeskakuje bez jazdy, sam pokaz po wejściu w widok nie rusza (`rdzen.js`) */
@@ -494,9 +477,10 @@ html:not(.js) .lata--ruch>li b,html:not(.js) .lata--ruch>li p{
 .kafel:hover .spec,.kafel:focus-visible .spec{color:rgba(245,245,247,.74)}
 .kafel:hover .dalej,.kafel:focus-visible .dalej{color:var(--akcent-jasny)}
 
-/* wiersz „mniejsza robota" pod kaflami */
+/* wiersze usług pod kaflami (montaż drzwi i okien, podłogi) */
 .wiersz-usluga{display:flex;align-items:center;gap:22px;flex-wrap:wrap;
   border:1px solid var(--linia-slaba);border-radius:0;padding:22px 24px;margin-top:22px}
+.wiersz-usluga+.wiersz-usluga{margin-top:12px}
 .wiersz-usluga h3{font-size:1.2rem}
 .wiersz-usluga .spec{color:var(--przyg-jasny);font-size:14.5px}
 .wiersz-usluga .dalej{margin-left:auto;color:var(--akcent-na-jasnym);font:500 13px/1 Inter;
@@ -544,8 +528,18 @@ html:not(.js) .lata--ruch>li b,html:not(.js) .lata--ruch>li p{
   display:block;margin-bottom:16px}
 .zygzak h2{font-size:clamp(1.7rem,3vw,2.3rem);margin-bottom:16px}
 .zygzak p+p{margin-top:14px}
-.zygzak .spec-linia{margin-top:20px;padding-top:16px;border-top:1px solid var(--linia-slaba);
-  font-size:14px;color:var(--przyg-jasny);letter-spacing:.02em}
+/* 🔴 29.09.2026 klient podyktował do każdej usługi punkty („- maszynowe / - ręczne").
+   To jest TREŚĆ, nie podpis: pełny kolor tekstu i kreska jak u niego w wiadomości.
+   ⛔ Nie wracać do szarej `.spec-linia` - to ją klient kazał usunąć („małe szare podpisy"). */
+.zygzak .punkty{list-style:none;margin-top:22px;display:grid;gap:10px}
+.zygzak .punkty li{position:relative;padding-left:28px;font-size:18px;line-height:1.45}
+.zygzak .punkty li::before{content:"";position:absolute;left:0;top:.72em;width:16px;height:1px;
+  background:var(--akcent-na-jasnym)}
+/* Blok z DWOMA zdjęciami: kolumna zdjęć dwa razy szersza od tekstu, oba kadry 3:4 obok
+   siebie. Przy 1fr 1fr każdy kadr miałby ~270 px i robił za znaczek. */
+.zygzak--dwa{grid-template-columns:1fr 2fr}
+.zygzak--dwa.zygzak--odwrocony{grid-template-columns:2fr 1fr}
+.zygzak--dwa .zygzak-obraz{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 
 /* ── GALERIA (naturalne proporcje, bez kadrowania) ──────────────────────────── */
 .galeria{columns:3;column-gap:22px}
@@ -555,7 +549,6 @@ html:not(.js) .lata--ruch>li b,html:not(.js) .lata--ruch>li p{
 .galeria--2{columns:2}
 .galeria figure{break-inside:avoid;margin:0 0 22px;cursor:zoom-in;position:relative}
 .galeria img{width:100%;border-radius:0;display:block}
-.galeria figcaption{margin-top:10px;font-size:13.5px;color:var(--przyg-jasny);line-height:1.45}
 .grupa+.grupa{margin-top:var(--rytm)}
 .grupa-tyt{display:flex;align-items:baseline;gap:18px;flex-wrap:wrap;margin-bottom:28px;
   padding-bottom:14px;border-bottom:1px solid var(--linia-slaba)}
@@ -793,6 +786,7 @@ footer{background:var(--papier-3);border-top:1px solid var(--linia-slaba);paddin
   .uklad-o-nas>.o-nas-lata,.uklad-o-nas>.kadr-o-nas,
   .uklad-o-nas>.tekst-dlugi{grid-column:1;grid-row:auto}
   .zygzak{padding:38px 0}
+  .zygzak--dwa,.zygzak--dwa.zygzak--odwrocony{grid-template-columns:1fr}
   .zygzak--odwrocony .zygzak-obraz{order:0}
   /* Jedna kolumna nie czyta się już jak zygzak — zostaje wspólny fade `.rv`. */
   .zygzak.rv>.zygzak-obraz,.zygzak.rv.is-in>.zygzak-obraz{
@@ -808,6 +802,8 @@ footer{background:var(--papier-3);border-top:1px solid var(--linia-slaba);paddin
 
 @media (max-width:600px){
   .para{grid-template-columns:1fr;gap:22px}
+  /* Dwa kadry obok siebie w 326 px to po ~155 px - za mało, żeby coś na nich zobaczyć. */
+  .zygzak--dwa .zygzak-obraz{grid-template-columns:1fr;gap:14px}
   .kafle{grid-template-columns:1fr}
   .galeria{columns:1}
   .lata li{grid-template-columns:1fr;gap:6px;padding:18px 0}

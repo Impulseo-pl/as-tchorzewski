@@ -1,0 +1,12 @@
+# GitHub Pages buduje tę stronę Jekyllem (brak .nojekyll). Wszystko poniżej zostaje
+# w repo (wersjonowanie), ale NIE jest serwowane na as-tchorzewski.pl.
+# 🔴 Powód: do 30.09.2026 domena klienta serwowała notatki robocze (dossier, brief
+# z kwotami zamówienia, pytania z numerem syna) i kod źródłowy - wyciek z 28.09.
+# Pliki zaczynające się od "_" lub "." Jekyll pomija sam.
+exclude:
+  - "*.md"
+  - "*.py"
+  - "*.pyc"
+  - materialy
+  - design
+  - __pycache__

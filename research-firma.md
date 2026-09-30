@@ -1,1 +1,0 @@
-Firma Ogólnobudowlana Artur Tchórzewski (A.S TCHÓRZEWSKI)

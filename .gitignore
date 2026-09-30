@@ -1,2 +1,5 @@
 __pycache__/
 .DS_Store
+# Notatki robocze (lista poprawek, pytania) NIE idą na publiczne repo - patrz memory/klienci-md/README.md
+*.md
+_poprawki-*/

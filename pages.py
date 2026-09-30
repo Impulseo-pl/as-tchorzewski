@@ -12,6 +12,8 @@
    „ponad 20 lat" - nie zaokrąglać w górę.
 4. ⛔ ZERO frazesów: kompleksowo · solidnie · terminowo · indywidualne podejście · pasja ·
    profesjonalizm · najwyższa jakość · zadowolenie klienta.
+   ⚠️ WYJĄTEK: nagłówek strony głównej „…profesjonalnym wykończeniem wnętrz" to zdanie
+   KLIENTA podyktowane słowo w słowo (runda poprawek 29.09.2026) - zostaje, nie „naprawiać".
 5. ⛔ ZERO pustych sekcji i tekstów zastępczych. Nie ma opinii → nie ma sekcji opinii.
    Nie znamy długości gwarancji → nie piszemy o gwarancji ani słowa.
 6. Kolejność usług podyktowana przez klienta: szpachlowanie, malowanie, łazienki,
@@ -19,8 +21,14 @@
 7. 🔴 KAŻDA PODSTRONA MA WŁASNY UKŁAD, nie tylko własne otwarcie:
    `co-robimy` = KATALOG (zygzak) · `realizacje` = INDEKS (galeria w grupach) ·
    `o-nas` = LIST (oś lat + narracja) · `kontakt` = DOKUMENT (karta danych).
-8. Podpis pod zdjęciem mówi, CO WIDAĆ w kadrze - nie dopowiada faktów o firmie.
-   Kadry „w trakcie" są podpisane jako w trakcie; to atut, nie wstyd.
+8. 🔴 POD ZDJĘCIAMI W „CO ROBIMY" I „REALIZACJACH" NIE MA PODPISÓW (klient 29.09.2026:
+   „usuwasz te małe szare podpisy z każdego zdjęcia"). Opis żyje TYLKO w `alt` -
+   niewidoczny, dla czytników ekranu i Google - i mówi, CO WIDAĆ w kadrze, bez dopowiadania
+   faktów o firmie. ⛔ Nie wracać do `<figcaption>` ani `data-cap` w tych dwóch miejscach.
+9. 🔴 „robota" → „praca" w KAŻDYM widocznym tekście (klient 29.09.2026). Nazwy plików
+   (`z-robota-02`) to nie treść - zostają. Kontrola: `grep -n -i "robot" *.html`.
+10. ⛔ ZERO ZDJĘĆ SCHODÓW na stronie (klient 29.09.2026: „nie chcą, żeby one były na
+   stronie"). Dotyczy też tła otwarć podstron.
 
 ⚠️ Rzeczy oznaczone `DO-POTWIERDZENIA.md` czekają na odpowiedzi klienta (10 pytań).
 """
@@ -174,148 +182,106 @@ def otwarcie(etykieta, tytul, lead, kadr=None, opis=""):
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-#  ZDJĘCIA - jedno miejsce na podpisy, żeby ten sam kadr nie opowiadał na dwóch
-#  podstronach dwóch różnych historii.
-#  ⛔ Podpis mówi, CO WIDAĆ. Nie dopowiada faktów o firmie (reguła 8).
+#  ZDJĘCIA GALERII - jedno miejsce na opisy (`alt`), żeby ten sam kadr nie opowiadał
+#  na dwóch podstronach dwóch różnych historii.
+#  🔴 Od 29.09.2026 BEZ PODPISÓW pod zdjęciami (reguła 8) - `alt` mówi, CO WIDAĆ.
+#  ⛔ Wyleciały na polecenie klienta (paczka „Te zdjęcia proszę usunąć", 29.09.2026):
+#     `elewacja-02/03/04`, `schody-01/02`, `lazienka-06`, `poddasze-05`, `hol-01`.
+#     Nie przywracać - pliki skasowane także z `img/`.
 # ══════════════════════════════════════════════════════════════════════════════
 KADRY = {
-    # klucz: (plik, szerokość, wysokość, alt, podpis)
+    # klucz: (plik, szerokość, wysokość, alt)
     "poddasze-01": ("z-poddasze-01.jpg", 1100, 1467,
-                    "Otwarta przestrzeń poddasza z drewnianymi belkami i oknem",
-                    "Otwarta przestrzeń, belki zostawione na widoku"),
+                    "Otwarta przestrzeń poddasza z drewnianymi belkami i oknem"),
     "poddasze-02": ("z-poddasze-02.jpg", 1100, 1467,
-                    "Belka konstrukcyjna i okno dachowe w wykończonym pokoju na poddaszu",
-                    "Belka i okno dachowe w gotowym pokoju"),
+                    "Belka konstrukcyjna i okno dachowe w wykończonym pokoju na poddaszu"),
     "poddasze-03": ("z-poddasze-03.jpg", 1100, 1467,
-                    "Pokój na poddaszu po gładziach, z otwartą rozdzielnicą elektryczną na ścianie",
-                    "W trakcie: pokój po gładziach, przed montażem osprzętu"),
+                    "Pokój na poddaszu po gładziach, z otwartą rozdzielnicą elektryczną na ścianie"),
     "poddasze-04": ("z-poddasze-04.jpg", 1100, 1467,
-                    "Skos poddasza zabudowany płytą, okno dachowe, podłoga z płytek",
-                    "Skos zabudowany płytą, okno dachowe"),
-    "poddasze-05": ("z-poddasze-05.jpg", 1100, 1467,
-                    "Łazienka na poddaszu z umywalką, muszlą i oknem dachowym",
-                    "Łazienka pod skosem: umywalka, WC, okno dachowe"),
+                    "Skos poddasza zabudowany płytą, okno dachowe, podłoga z płytek"),
 
     "lazienka-01": ("z-lazienka-01.jpg", 900, 1199,
-                    "Wolnostojąca wanna na podłodze z płytek drewnopodobnych, okno nad wanną",
-                    "Wanna wolnostojąca, podłoga z płytek drewnopodobnych"),
+                    "Wolnostojąca wanna na podłodze z płytek drewnopodobnych, okno nad wanną"),
     "lazienka-02": ("z-lazienka-02.jpg", 900, 1199,
-                    "Wanna wolnostojąca obok wykończonej wnęki prysznicowej",
-                    "Wanna i wnęka prysznicowa po wykończeniu"),
+                    "Wanna wolnostojąca obok wykończonej wnęki prysznicowej"),
     "lazienka-03": ("z-lazienka-03.jpg", 900, 1199,
-                    "Ściana wyłożona płytkami wielkoformatowymi w łazience",
-                    "Płytki wielkoformatowe na całej ścianie"),
+                    "Ściana wyłożona płytkami wielkoformatowymi w łazience"),
     "lazienka-04": ("z-lazienka-04.jpg", 1100, 1467,
-                    "Ściana z płytek z wyprowadzonymi podejściami wodnymi w trakcie robót",
-                    "W trakcie: podejścia wodne wyprowadzone w płytkach"),
+                    "Ściana z płytek z wyprowadzonymi podejściami wodnymi, w trakcie prac"),
 
     "poddasze2-01": ("z-poddasze2-01.jpg", 1100, 1467,
-                     "Poddasze w trakcie robót: dwa okna dachowe i murowana obudowa wanny",
-                     "W trakcie: obudowa wanny między oknami dachowymi"),
+                     "Poddasze w trakcie prac: dwa okna dachowe i murowana obudowa wanny"),
     "poddasze2-02": ("z-poddasze2-02.jpg", 1100, 1467,
-                     "Wanna we wnęce pod skosem poddasza, okno dachowe nad wanną",
-                     "Wanna wpuszczona we wnękę pod skosem"),
+                     "Wanna we wnęce pod skosem poddasza, okno dachowe nad wanną"),
     "poddasze2-03": ("z-poddasze2-03.jpg", 1100, 1467,
-                     "Ściana w ciemnym wykończeniu dekoracyjnym obok wnęki prysznicowej",
-                     "Ciemna ściana dekoracyjna przy wnęce prysznicowej"),
-
-    "schody-01": ("z-schody-01.jpg", 1100, 1467,
-                  "Wykończone schody betonowe z barierką w jasnym holu",
-                  "Schody po wykończeniu"),
+                     "Ściana w ciemnym wykończeniu dekoracyjnym obok wnęki prysznicowej"),
 
     "beton-02": ("z-beton-02.jpg", 1200, 900,
-                 "Jasna ściana z betonu architektonicznego w pokoju w trakcie robót",
-                 "W trakcie: jasny beton architektoniczny na ścianie"),
+                 "Jasna ściana z betonu architektonicznego w pokoju, w trakcie prac"),
     "beton-ciemny": ("z-beton-ciemny.jpg", 1200, 900,
-                     "Ciemna ściana z betonu architektonicznego z czarnymi listwami w geometrycznym układzie",
-                     "Ciemny beton architektoniczny z czarnymi listwami"),
+                     "Ciemna ściana z betonu architektonicznego z czarnymi listwami w geometrycznym układzie"),
 
     "elewacja-01": ("z-elewacja-01.jpg", 1200, 1600,
-                    "Dom po wykonaniu elewacji, taras z kostki i wejście z zadaszeniem",
-                    "Elewacja skończona, wejście od strony tarasu"),
-    "elewacja-02": ("z-elewacja-02.jpg", 1200, 1600,
-                    "Biała elewacja domu z rynną i oknem, zieleń wokół budynku",
-                    "Elewacja i obróbki po robocie"),
-    "elewacja-03": ("z-elewacja-03.jpg", 1200, 1600,
-                    "Elewacja domu z oknem i skrzynką kwiatową, wąskie przejście wzdłuż ściany",
-                    "Ściana szczytowa po wykończeniu"),
-    "elewacja-04": ("z-elewacja-04.jpg", 1200, 1600,
-                    "Drewniana podbitka pod okapem dachu widziana od dołu",
-                    "Podbitka pod okapem"),
-
+                    "Dom po wykonaniu elewacji, taras z kostki i wejście z zadaszeniem"),
 
     # ── kadry z telefonu klienta (WhatsApp, 14.09.2026) ─────────────────────────
     "wejscie-01": ("z-wejscie-01.jpg", 1051, 1497,
-                  "Czarne drzwi wejściowe w ścianie z ciemnej cegły, po bokach podłużne lampy",
-                  "Wejście: drzwi w ceglanej ścianie"),
-    "hol-01": ("z-hol-01.jpg", 1200, 1200,
-              "Hol z drewnianą ścianą lamelową, lustrem w czarnej ramie i wideodomofonem",
-              "Hol: ściana lamelowa i lustro"),
+                  "Czarne drzwi wejściowe w ścianie z ciemnej cegły, po bokach podłużne lampy"),
     "hol-02": ("z-hol-02.jpg", 1200, 1200,
-              "Korytarz z panelami na podłodze i lamelami przy wejściu",
-              "Korytarz po wykończeniu"),
-    "schody-02": ("z-schody-02.jpg", 1200, 1200,
-                 "Schody wyłożone ciemnym kamieniem, obraz na ścianie klatki schodowej",
-                 "Schody z ciemnego kamienia"),
+              "Korytarz z panelami na podłodze i lamelami przy wejściu"),
     "pokoj-01": ("z-pokoj-01.jpg", 1200, 1200,
-                "Pokój z dwoma wysokimi oknami w czarnych ramach i opuszczonymi roletami",
-                "Stolarka okienna i rolety w gotowym pokoju"),
+                "Pokój z dwoma wysokimi oknami w czarnych ramach i opuszczonymi roletami"),
     "pokoj-02": ("z-pokoj-02.jpg", 1100, 1588,
-                "Kącik z podświetlanymi wnękami półkowymi, obrazem i ławką",
-                "Wnęki z podświetleniem i miejsce do siedzenia"),
-    "pokoj-03": ("z-pokoj-03.jpg", 1100, 1467,
-                "Drewniane belki stropowe nad podłogą ułożoną w jodełkę",
-                "Belki na widoku, podłoga w jodełkę"),
+                "Kącik z podświetlanymi wnękami półkowymi, obrazem i ławką"),
+    # 🐞 B1 (30.09.2026): do 30.09 ten slot pokazywał STELAŻ sufitu (pliki w `materialy/`
+    #    miały zamienione nazwy). Teraz naprawdę belki z jodełką - kadr poziomy.
+    "pokoj-03": ("z-pokoj-03.jpg", 1100, 1019,
+                "Poddasze z drewnianymi belkami na widoku i podłogą ułożoną w jodełkę"),
     "poddasze-06": ("z-poddasze-06.jpg", 1100, 1467,
-                   "Pokój na poddaszu z drewnianą kratownicą i podłogą z płytek wielkoformatowych",
-                   "Kratownica zostawiona na widoku"),
+                   "Pokój na poddaszu z drewnianą kratownicą i podłogą z płytek wielkoformatowych"),
     "poddasze-07": ("z-poddasze-07.jpg", 1100, 1467,
-                   "Pomieszczenie na poddaszu z podłogą z paneli i ciemnymi belkami po bokach",
-                   "Panele i belki w przejściu"),
+                   "Pomieszczenie na poddaszu z podłogą z paneli i ciemnymi belkami po bokach"),
     "lazienka-05": ("z-lazienka-05.jpg", 1100, 1467,
-                   "Mała łazienka pod skosem: umywalka z szafką, WC podwieszane, okno dachowe",
-                   "Łazienka pod skosem: umywalka i WC"),
-    "lazienka-06": ("z-lazienka-06.jpg", 1100, 1467,
-                   "Kabina prysznicowa ze szklaną ścianką obok umywalki w małej łazience",
-                   "Kabina ze szklaną ścianką"),
+                   "Mała łazienka pod skosem: umywalka z szafką, WC podwieszane, okno dachowe"),
     "lazienka-07": ("z-lazienka-07.jpg", 1100, 1467,
-                   "Wanna z parawanem w czarnej ramie na tle białych płytek, ciemna podłoga",
-                   "Wanna z parawanem w czarnej ramie"),
+                   "WC podwieszane i wanna z parawanem w czarnej ramie, białe płytki, ciemna podłoga"),
     "lazienka-08": ("z-lazienka-08.jpg", 1100, 1467,
-                   "WC podwieszane i czarna szafka z umywalką w łazience z ciemną podłogą",
-                   "Czarna szafka i WC podwieszane"),
+                   "WC podwieszane i czarna szafka z umywalką w łazience z ciemną podłogą"),
     "poddasze2-04": ("z-poddasze2-04.jpg", 1100, 1467,
-                    "Wnęka prysznicowa z murowanym siedziskiem obok ściany w ciemnej zieleni",
-                    "Wnęka prysznicowa z siedziskiem"),
+                    "Wnęka prysznicowa z murowanym siedziskiem obok ściany w ciemnej zieleni"),
     "robota-02": ("z-robota-02.jpg", 1200, 900,
-                 "Ściana z płytek wielkoformatowych z klinami poziomującymi w trakcie układania",
-                 "W trakcie: płytki na klinach poziomujących"),
+                 "Ściana z płytek wielkoformatowych z klinami poziomującymi, w trakcie układania"),
     "robota-03": ("z-robota-03.jpg", 1100, 1467,
-                 "Podłoga z płytek drewnopodobnych z krzyżykami dystansowymi w trakcie układania",
-                 "W trakcie: płytki drewnopodobne na podłodze"),
+                 "Podłoga z płytek drewnopodobnych z krzyżykami dystansowymi, w trakcie układania"),
 
-    # ten sam plik co w sekcji „przed i po" na stronie głównej - jeden kadr, jeden plik
-    "przed": ("przed.jpg", 1100, 1100,
-              "Rozbudowa w stanie surowym: mury z bloczków, stemple i otwarty otwór okienny",
-              "Przed: stan surowy rozbudowy"),
-    "po": ("po.jpg", 1100, 1100,
-           "Ta sama rozbudowa po wykończeniu: biała elewacja, duże okno tarasowe, trawnik",
-           "Po: elewacja, stolarka, uporządkowane otoczenie"),
+    # ── runda poprawek 29.09.2026: paczka „Sandro" z 14.09 + zdjęcia w żywszych kolorach
+    "hol-03": ("z-hol-03.jpg", 1100, 1430,
+              "Ciemna ściana z pionowymi lamelami, biała listwa przypodłogowa i panele w odcieniu dębu"),
+    "lazienka-09": ("z-lazienka-09.jpg", 1100, 1467,
+                   "Wanna pod skosem z czarną baterią i szklanym parawanem w czarnej ramie"),
+    "lazienka-10": ("z-lazienka-10.jpg", 1100, 1467,
+                   "Długa łazienka pod skosem: WC podwieszane, wanna z parawanem, ciemna podłoga z płytek"),
+    "wtrakcie-04": ("z-wtrakcie-04.jpg", 1100, 1469,
+                   "Dwa wysokie okna z roletami osadzone w ceglanej ścianie, w trakcie montażu"),
+    "wtrakcie-05": ("z-wtrakcie-05.jpg", 1100, 1467,
+                   "Poddasze z belkami na widoku i dużym oknem, w trakcie prac: narzędzia na podłodze"),
+    "wtrakcie-06": ("z-wtrakcie-06.jpg", 1100, 1467,
+                   "Łazienka pod skosem z oknem dachowym, ściany z płytek w odcieniu trawertynu, w trakcie prac"),
 }
 
 
 def kadr_galerii(klucz, lazy=True, i=0):
-    plik, w, h, alt, podpis = KADRY[klucz]
+    plik, w, h, alt = KADRY[klucz]
     l = ' loading="lazy" decoding="async"' if lazy else ""
     # 🔴 Powiększalnik dostaje OSOBNY, większy plik (`-duze.jpg`, 2000 px). W siatce kafel
     #    stoi na ~577 px, ale po kliknięciu idzie na pół ekranu — ten sam plik co w siatce
     #    miałby tam gęstość ~0,46. Plik `-duze` ładuje się dopiero po kliknięciu, więc
     #    siatka nie tyje. Generuje go `przygotuj-media.py` dla każdego slotu `z-*`.
+    # ⛔ Bez `data-cap` i bez `<figcaption>` (reguła 8) - powiększalnik pokazuje wtedy sam kadr.
     duzy = plik.replace(".jpg", "-duze.jpg")
-    return (f'<figure data-zoom="img/{duzy}" data-alt="{alt}" data-cap="{podpis}" tabindex="0" '
+    return (f'<figure data-zoom="img/{duzy}" data-alt="{alt}" tabindex="0" '
             f'style="--i:{min(i, 4)}">'
-            f'<img src="img/{plik}" alt="{alt}" width="{w}" height="{h}"{l}>'
-            f'<figcaption>{podpis}</figcaption></figure>')
+            f'<img src="img/{plik}" alt="{alt}" width="{w}" height="{h}"{l}></figure>')
 
 
 def grupa(tytul, licznik, klucze, lazy=True):
@@ -450,18 +416,27 @@ def sekcja_opinie():
 
 
 def index(naglowek):
+    """Strona główna.
+
+    🔴 RUNDA POPRAWEK KLIENTA 29.09.2026 (lista: `POPRAWKI.md`, punkty 1-4):
+    · HERO: „ma być: »Od ponad 20 lat zajmujemy się profesjonalnym wykończeniem wnętrz«
+      i tylko tyle, pod spodem tak jak jest numer telefonu, WhatsApp, godziny otwarcia".
+      ⛔ Nie dokładać etykiety ani leadu - „i tylko tyle".
+    · PRZED I PO: „Tu ma być: »Przed i po. Dwie prace«" + „po prostu dwa zdjęcia przed
+      i po, bez opisów". Wyleciały: etykieta (dublowała nagłówek słowo w słowo), lead,
+      case study przy parach i linie zakresu. Układ wrócił do dwóch bloków obok siebie
+      (`.duety`, jak 14.09 przed zygzakiem) - zygzak bez tekstu zostawiał pustą połowę
+      rzędu. Plakietki „Przed"/„Po" to nie opis, zostają. ⛔ Nie dokładać tu tekstu.
+    """
     return f"""{naglowek("index.html")}
 
 <header class="scena">
   <img class="scena-tlo" data-paralaksa="110" src="img/hero.jpg"
     srcset="img/hero.jpg 1x, img/hero@2x.jpg 2x" width="1440" height="1300" fetchpriority="high"
-    alt="Ściana z betonu architektonicznego z czarnymi liniami - z naszych realizacji">
+    alt="Sypialnia na poddaszu po wykończeniu: okno dachowe, łóżko z drewnianym zagłówkiem i podświetlenie wnęki">
   <div class="wrap" id="tresc">
     <div class="rv">
-      <span class="etykieta">Wykończenia wnętrz · wielkopolskie i lubuskie</span>
-      <h1>Wnętrze gotowe do wprowadzenia.</h1>
-      <p class="lead">Szpachlowanie, malowanie, łazienki i sucha zabudowa.
-        Na budowach od ponad 20 lat.</p>
+      <h1>Od ponad 20 lat zajmujemy się profesjonalnym wykończeniem wnętrz</h1>
       {przyciski_kontakt(trzeci=False)}
     </div>
   </div>
@@ -470,21 +445,10 @@ def index(naglowek):
 <section class="sekcja">
   <div class="wrap wrap--szeroki">
     <div class="naglowek-sekcji rv">
-      <span class="etykieta">Przed i po</span>
-      <h2>Przed i po. Dwie roboty.</h2>
-      <p class="pod">Na gotowym zdjęciu nie widać już, od czego się zaczynało. Raz z zewnątrz, raz w środku.</p>
+      <h2>Przed i po. Dwie prace</h2>
     </div>
-    <div class="zygzak zygzak--przedpo zygzak--odwrocony rv">
-      <div class="zygzak-tresc">
-        <span class="kod">Realizacja 01 &middot; Rozbudowa</span>
-        <h3>Z bloczków i stempli w gotową bryłę</h3>
-        <p>Zaczynaliśmy przy surowych murach z bloczków i otworze pod przeszklenie,
-          spiętym stemplami. Dach istniejącego domu stał wtedy tuż nad nami.</p>
-        <p>Zeszliśmy, kiedy narożnik wyglądał jak część domu od zawsze: biała elewacja,
-          osadzona stolarka, opaska z kostki i lampy na ścianie.</p>
-        <p class="spec-linia">elewacja &middot; stolarka okienna &middot; opaska wokół budynku</p>
-      </div>
-      <figure class="zygzak-obraz duet">
+    <div class="duety rv">
+      <figure class="duet">
         <div class="duet-rama" data-duet>
           <div class="duet-tasma">
             <img src="img/przed.jpg" srcset="img/przed.jpg 1x, img/przed@2x.jpg 2x"
@@ -510,27 +474,14 @@ def index(naglowek):
           </button>
         </div>
       </figure>
-    </div>
 
-    <div class="zygzak zygzak--przedpo rv">
-      <div class="zygzak-tresc">
-        <span class="kod">Realizacja 02 &middot; Poddasze</span>
-        <h3>Poddasze oddane pod klucz</h3>
-        <p>Na starcie płyta na skosach, surowa wylewka i kable wystające ze ścian.
-          Pokój był zamknięty, ale do mieszkania jeszcze daleko.</p>
-        <p>Potem zabudowa skosów, gładzie na ścianach i suficie, malowanie i wnęki pod
-          oświetlenie. Drugie zdjęcie zrobiliśmy w dniu, w którym schodziliśmy z budowy.</p>
-        <p class="spec-linia">sucha zabudowa skosów &middot; gładzie &middot; malowanie</p>
-      </div>
-      <figure class="zygzak-obraz duet">
+      <figure class="duet">
         <div class="duet-rama" data-duet data-duet-zwloka="260">
           <div class="duet-tasma">
-            <img src="img/przedpo-pokoj-przed.jpg"
-              srcset="img/przedpo-pokoj-przed.jpg 1x, img/przedpo-pokoj-przed@2x.jpg 2x"
+            <img src="img/przedpo-pokoj-przed.jpg" srcset="img/przedpo-pokoj-przed.jpg 1x, img/przedpo-pokoj-przed@2x.jpg 2x"
               width="1300" height="1146" decoding="async"
               alt="Pokój na poddaszu przed wykończeniem: płyty gipsowe, surowa wylewka, kable wystające ze ścian">
-            <img src="img/przedpo-pokoj-po.jpg"
-              srcset="img/przedpo-pokoj-po.jpg 1x, img/przedpo-pokoj-po@2x.jpg 2x"
+            <img src="img/przedpo-pokoj-po.jpg" srcset="img/przedpo-pokoj-po.jpg 1x, img/przedpo-pokoj-po@2x.jpg 2x"
               width="1300" height="1146" decoding="async"
               alt="Ten sam pokój po wykończeniu: sypialnia z podłogą, oświetleniem, zasłonami i meblami">
           </div>
@@ -559,7 +510,7 @@ def index(naglowek):
     <div class="naglowek-sekcji rv">
       <span class="etykieta">Zakres</span>
       <h2>Co robimy najczęściej</h2>
-      <p class="pod">Cztery roboty, na których stoi większość naszych budów.</p>
+      <p class="pod">Cztery rodzaje prac, na których stoi większość naszych budów.</p>
     </div>
     <div class="kafle kaskada rv">
       <a class="kafel" href="co-robimy.html#u-01">
@@ -592,6 +543,11 @@ def index(naglowek):
       <span class="spec">Wstawiamy, gdy ściany są gotowe - z obróbką ościeży.</span>
       <a class="dalej" href="co-robimy.html#u-05">Zobacz →</a>
     </div>
+    <div class="wiersz-usluga rv">
+      <h3>Podłogi</h3>
+      <span class="spec">Płytki podłogowe, panele winylowe i laminowane, parkiety.</span>
+      <a class="dalej" href="co-robimy.html#u-06">Zobacz →</a>
+    </div>
   </div>
 </section>
 
@@ -604,7 +560,7 @@ def index(naglowek):
     srcset="img/pas-elewacja-900.jpg 900w, img/pas-elewacja-1600.jpg 1600w, img/pas-elewacja.jpg 2400w"
     sizes="100vw" width="2400" height="1029" loading="lazy" decoding="async"
     alt="Skończona elewacja domu z wejściem od strony tarasu, biały tynk i ciemne obróbki">
-  <figcaption>Elewacja z podbitką - po naszej robocie.</figcaption>
+  <figcaption>Elewacja z podbitką - po naszej pracy.</figcaption>
 </figure>
 
 <section class="sekcja">
@@ -612,14 +568,14 @@ def index(naglowek):
     <div class="naglowek-sekcji rv">
       <span class="etykieta">Z budowy</span>
       <h2>Tak to wygląda od naszej strony</h2>
-      <p class="pod">Dwa kadry prosto z roboty.
+      <p class="pod">Dwa kadry z pracy na budowie.
         Najedź na kadr albo przytrzymaj go palcem.</p>
     </div>
     <div class="para para--filmy rv">
       {film("agregat.mp4", "plakat-agregat.jpg", "Malowanie agregatem (37 s)",
             "Malowanie agregatem natryskowym - duża powierzchnia, powłoka bez śladów po wałku.",
             "Pracownik w kombinezonie i masce maluje ścianę agregatem natryskowym")}
-      {film("ekipa.mp4", "plakat-ekipa.jpg", "Robota przy elewacji (39 s)",
+      {film("ekipa.mp4", "plakat-ekipa.jpg", "Praca przy elewacji (39 s)",
             "Dzień na rusztowaniu przy elewacji - tynk, obróbki i podbitka.",
             "Ekipa przy elewacji budynku, rusztowanie ustawione wzdłuż ściany")}
     </div>
@@ -661,110 +617,98 @@ def index(naglowek):
 # ══════════════════════════════════════════════════════════════════════════════
 #  CO ROBIMY - układ KATALOG: zygzak tekst/kadr, kolejność podyktowana przez klienta.
 # ══════════════════════════════════════════════════════════════════════════════
-def blok_uslugi(kod, numer, tytul, akapity, spec, obraz, alt, odwrocony=False, lazy=True):
-    tresc = "\n        ".join(f"<p>{a}</p>" for a in akapity)
-    klasa = "zygzak zygzak--odwrocony" if odwrocony else "zygzak"
-    plik, w, h = obraz
+def blok_uslugi(kod, numer, tytul, punkty, obrazy, odwrocony=False, lazy=True):
+    """Jeden blok katalogu: numer, nagłówek, punkty i 1-2 zdjęcia.
+
+    🔴 RUNDA POPRAWEK KLIENTA 29.09.2026: w każdym bloku zostaje DOKŁADNIE to, co klient
+    podyktował („01 Szpachlowanie i gładzie / - maszynowe / - ręczne / do tego zdjęcie
+    i to wszystko, resztę tekstu wyrzuć"). ⛔ Żadnych akapitów ani szarej linii zakresu
+    (`spec-linia`) - to są właśnie „małe szare podpisy", które kazał usunąć.
+    Punkty to prawdziwa lista `<ul class="punkty">` w kolorze tekstu, nie w szarości.
+
+    `obrazy` = lista (plik, szer, wys, alt). Dwa zdjęcia → blok `.zygzak--dwa`: kolumna
+    zdjęć jest dwa razy szersza od tekstu, żeby dwa pionowe kadry nie zmalały do znaczków.
+    """
+    klasa = "zygzak" + (" zygzak--dwa" if len(obrazy) > 1 else "") + \
+        (" zygzak--odwrocony" if odwrocony else "")
+    numer_html = f'<span class="kod">{numer}</span>\n          ' if numer else ""
+    lista = ("\n          <ul class=\"punkty\">" +
+             "".join(f"<li>{p}</li>" for p in punkty) + "</ul>") if punkty else ""
+    zaladuj = ' loading="lazy"' if lazy else ' fetchpriority="high"'
+    kadry = "\n          ".join(
+        f'<img src="img/{plik}" width="{w}" height="{h}" alt="{alt}"{zaladuj} decoding="async">'
+        for plik, w, h, alt in obrazy)
     return f"""      <div class="{klasa} rv" id="{kod}">
         <div>
-          <span class="kod">{numer}</span>
-          <h2>{tytul}</h2>
-          {tresc}
-          <p class="spec-linia">{spec}</p>
+          {numer_html}<h2>{tytul}</h2>{lista}
         </div>
         <figure class="zygzak-obraz">
-          <img src="img/{plik}" width="{w}" height="{h}" alt="{alt}"{" loading=\"lazy\"" if lazy else " fetchpriority=\"high\""} decoding="async">
+          {kadry}
         </figure>
       </div>"""
 
 
 def co_robimy(naglowek):
+    """Podstrona „Co robimy" - układ KATALOG (zygzak).
+
+    🔴 RUNDA POPRAWEK KLIENTA 29.09.2026 (`POPRAWKI.md`, punkty 5-12): każdy blok to numer,
+    nagłówek i punkty podyktowane przez klienta + zdjęcia, które wskazał podpisami „Do 1"…
+    „Do 5". Doszła pozycja 06 Podłogi. „Poza wnętrzami robimy też: elewacje i podbitki"
+    zamyka katalog tym samym klockiem, bez numeru. Wyleciało całe uzasadnianie („gładź
+    decyduje o tym…"), linie zakresu i zdjęcie schodów.
+    Kotwice `u-01`…`u-06` - linkują do nich kafle i wiersze na stronie głównej.
+    ⚠️ Kadry 01, 03, 06 i „Poza wnętrzami" wiszą też w realizacjach (klient wskazał je sam) -
+       świadomy wyjątek od „jeden kadr w jednym miejscu", wola klienta.
+    """
     return f"""{naglowek("co-robimy.html")}
 
-{otwarcie("Zakres robót", "Wykończenia wnętrz od gładzi po drzwi",
+{otwarcie("Zakres prac", "Wykończenia wnętrz od gładzi po podłogi",
           kadr="otw-co-robimy.jpg",
           opis="Światło z okna dachowego na gotowej gładzi, przy odsłoniętej belce",
           lead=
-          "Pięć robót, które bierzemy najczęściej - i to, co przy każdej z nich decyduje o efekcie. Ceny nie podajemy z góry - zależy od zakresu i od tego, co zastaniemy na ścianie.")}
+          "Sześć rodzajów prac, które wykonujemy we wnętrzach. Ceny nie podajemy z góry - zależy od zakresu i od tego, co zastaniemy na miejscu.")}
 
 <section class="sekcja">
   <div class="wrap">
-{blok_uslugi("u-01", "01", "Szpachlowanie i gładzie", [
-    "Gładź decyduje o tym, jak ściana wygląda po pomalowaniu. Każde zafalowanie widać "
-    "dopiero wtedy, gdy padnie na nie światło z okna - dlatego to jest robota, przy której "
-    "nie ma dróg na skróty.",
-    "Robimy gładzie ręcznie i maszynowo: ściany, sufity i skosy poddaszy."],
-    "gładzie ręczne i maszynowe · ściany, sufity, skosy · przygotowanie pod malowanie",
-    ("u-szpachlowanie.jpg", 1000, 1333),
-    "Światło z okna dachowego na gotowej gładzi, przy drewnianej belce", lazy=False)}
+{blok_uslugi("u-01", "01", "Szpachlowanie i gładzie", ["maszynowe", "ręczne"],
+    [("cr-szpachlowanie.jpg", 1000, 1333,
+      "Poddasze po gładziach: białe ściany i skosy, drewniana kratownica na widoku, podłoga z jasnych płytek")],
+    lazy=False)}
 
-{blok_uslugi("u-02", "02", "Malowanie", [
-    "Malujemy wałkiem i agregatem natryskowym. Agregat bierzemy tam, gdzie powierzchnia "
-    "jest duża, a powłoka ma być równa - bez śladów po wałku i bez łączeń.",
-    "Podłogi, stolarkę i grzejniki zaklejamy przed robotą, a nie po niej."],
-    "malowanie wnętrz · agregat natryskowy · zabezpieczenie podłóg i stolarki",
-    ("u-malowanie.jpg", 720, 960),
-    "Pracownik w kombinezonie maluje ścianę agregatem natryskowym", odwrocony=True, lazy=False)}
+{blok_uslugi("u-02", "02", "Malowanie", ["agregatem malarskim", "ręcznie"],
+    [("cr-malowanie.jpg", 1000, 1333,
+      "Pomalowane poddasze z drewnianymi belkami na widoku i podłogą w jodełkę, w głębi okno balkonowe")],
+    odwrocony=True, lazy=False)}
 
-{blok_uslugi("u-03", "03", "Łazienki", [
-    "Łazienka to najwięcej rzemiosła na najmniejszym metrażu: podejścia wodne, płytki "
-    "wielkoformatowe, zabudowa wanny albo wnęki prysznicowej, na końcu silikony.",
-    "Płytka wielkoformatowa nie wybacza krzywej ściany, więc równanie podłoża jest tu "
-    "połową roboty."],
-    "płytki wielkoformatowe · wanny wolnostojące · zabudowa i wnęki · podejścia wodne",
-    ("u-lazienki.jpg", 900, 1200),
-    "Łazienka z wolnostojącą wanną i płytkami drewnopodobnymi")}
+{blok_uslugi("u-03", "03", "Łazienki", [],
+    [("cr-lazienki.jpg", 1000, 1333,
+      "Wnęka prysznicowa z murowanym siedziskiem i półką, ściana z płyt w ciemnej zieleni"),
+     ("u-lazienki.jpg", 739, 985,
+      "Łazienka z wolnostojącą wanną i płytkami drewnopodobnymi")])}
 
-{blok_uslugi("u-04", "04", "Sucha zabudowa", [
-    "Płyta gipsowo-kartonowa zamienia poddasze w pokoje: skosy, sufity, ścianki działowe, "
-    "wnęki i obudowy.",
-    "Zabudowę prowadzimy tak, żeby od razu szła pod gładź: równe płaszczyzny, wyprowadzone narożniki, taśmowanie na łączeniach."],
-    "skosy i sufity · ścianki działowe · wnęki i obudowy",
-    ("u-sucha-zabudowa.jpg", 1000, 1333),
-    "Skos poddasza zabudowany płytą gipsowo-kartonową z oknem dachowym", odwrocony=True)}
+{blok_uslugi("u-04", "04", "Sucha zabudowa, płyty <span class=\"nw\">gipsowo-kartonowe</span>",
+    ["poddasze", "skosy", "ścianki działowe", "sufity"],
+    [("cr-sucha-zabudowa.jpg", 1000, 1333,
+      "Poddasze z zabudowanymi skosami i sufitem, drewniane belki i okno dachowe"),
+     ("u-sucha-zabudowa.jpg", 1000, 1333,
+      "Skos poddasza zabudowany płytą gipsowo-kartonową z oknem dachowym")],
+    odwrocony=True)}
 
-{blok_uslugi("u-05", "05", "Montaż drzwi i okien", [
-    "Drzwi i okna montujemy zwykle na końcu wykończenia - wtedy, gdy ściany "
-    "są już gotowe i wiadomo, w co się wstawia.",
-    "Po montażu sami obrabiamy ościeża i wykańczamy ścianę wokół futryny."],
-    "drzwi wewnętrzne i zewnętrzne · okna · obróbka i wykończenie po montażu",
-    ("u-drzwi-okna.jpg", 1000, 1333),
-    "Hol z zamontowanymi drzwiami wejściowymi z matowym szkłem")}
-  </div>
-</section>
+{blok_uslugi("u-05", "05", "Montaż drzwi i okien", [],
+    [("u-drzwi-okna.jpg", 1000, 1333,
+      "Dwa wysokie okna w czarnych ramach z opuszczonymi roletami, w wykończonym pokoju"),
+     ("cr-drzwi-okna-montaz.jpg", 1000, 1333,
+      "Te same okna w trakcie montażu, osadzone w ceglanej ścianie")])}
 
-<section class="sekcja">
-  <div class="wrap dwie-kolumny rv">
-    <div>
-      <span class="etykieta">Poza wnętrzami</span>
-      <h2>Robimy też elewacje, podbitki i ściany dekoracyjne</h2>
-    </div>
-    <div class="tekst-dlugi">
-      <p>Wnętrza są naszą główną robotą, ale na koncie mamy też elewacje z podbitką,
-        ściany w betonie architektonicznym i wykończenia schodów. Zdjęcia z tych budów
-        stoją w <a href="realizacje.html">realizacjach</a>.</p>
-    </div>
-  </div>
-  <!-- Dwa kadry na dowód dwóch z trzech robót wymienionych obok. Trzeciej (beton
-       architektoniczny) tu NIE MA: oba kadry betonu są poziome, więc w parze z tymi
-       dwoma pionowymi rozbiłyby rytm, a ciemna ściana z bliska ciągnie wzrok mocniej
-       niż cała reszta sekcji. Beton pokazuje tło pierwszego ekranu strony głównej
-       i grupa 04 w `realizacjach` - tam jest na niego miejsce. -->
-  <div class="wrap">
-    <div class="para para--dowod kaskada rv">
-      <figure class="klatka">
-        <img src="img/z-elewacja-01.jpg" srcset="img/z-elewacja-01.jpg 1x, img/z-elewacja-01-duze.jpg 2x"
-          width="1200" height="1600" loading="lazy" decoding="async"
-          alt="Dom po wykonaniu elewacji: biały tynk, ciemna podbitka pod okapem i wejście od strony tarasu">
-        <figcaption>Elewacja z podbitką - wejście od strony tarasu.</figcaption>
-      </figure>
-      <figure class="klatka">
-        <img src="img/z-schody-01.jpg" srcset="img/z-schody-01.jpg 1x, img/z-schody-01-duze.jpg 2x"
-          width="1100" height="1467" loading="lazy" decoding="async"
-          alt="Wykończone schody betonowe z listwami ze stali i oprawami światła w ścianie">
-        <figcaption>Schody po wykończeniu, z podświetleniem w ścianie.</figcaption>
-      </figure>
-    </div>
+{blok_uslugi("u-06", "06", "Podłogi",
+    ["płytki podłogowe", "panele winylowe", "panele laminowane", "parkiety"],
+    [("cr-podlogi.jpg", 1000, 1333,
+      "Korytarz z panelami w odcieniu dębu i białymi listwami przypodłogowymi")],
+    odwrocony=True)}
+
+{blok_uslugi("poza-wnetrzami", "", "Poza wnętrzami robimy też:", ["elewacje i podbitki"],
+    [("z-elewacja-01.jpg", 1200, 1600,
+      "Dom po wykonaniu elewacji: biały tynk, ciemna podbitka pod okapem i wejście od strony tarasu")])}
   </div>
 </section>
 
@@ -787,43 +731,48 @@ def co_robimy(naglowek):
 #        dwa) stoją na głównej od decyzji K. z 08.09 („oba na głównej"). Tutaj zostały
 #        przeoczone przy tamtej przeprowadzce - to była pozostałość, nie decyzja.
 #     ⛔ Grupa „Schody" miała JEDNO zdjęcie i zostawiała 2/3 rzędu pustki. Scalona
-#        z „Betonem architektonicznym" (ten sam rodzaj wykończenia, ten sam materiał)
-#        w trzykadrową grupę, która wypełnia rząd co do słupka.
+#        z „Betonem architektonicznym" w trzykadrową grupę. Od 29.09.2026 schodów nie ma
+#        wcale (polecenie klienta), a trzecim kadrem grupy jest elewacja - po paczce
+#        „Te zdjęcia proszę usunąć" została z jednym zdjęciem.
 # ══════════════════════════════════════════════════════════════════════════════
 def realizacje(naglowek):
+    """🔴 RUNDA POPRAWEK KLIENTA 29.09.2026 (`POPRAWKI.md`, punkty 12-17):
+    · bez podpisów pod zdjęciami (reguła 8),
+    · wyleciały schody i cała paczka „Te zdjęcia proszę usunąć" (patrz nota nad `KADRY`),
+    · doszły zdjęcia „od Sandro" z 14.09 i nowe „w żywszych kolorach" z 29.09;
+      `lazienka-07/08` mają podmienione źródła na żywsze wersje od klienta.
+    · „Elewacja i podbitka" została z JEDNYM kadrem → scalona z betonem (reguła `grupa()`).
+    """
     return f"""{naglowek("realizacje.html")}
 
 {otwarcie("Realizacje", "Skończone wnętrza i kadry z budowy",
           kadr="otw-realizacje.jpg",
           opis="Poddasze z dwoma oknami dachowymi i zabudowaną wanną",
           lead=
-          "Na gotowej łazience nie widać już, jak wyprowadzono podejścia wodne ani co siedzi pod płytką. Dlatego obok skończonych wnętrz pokazujemy kadry z samej roboty, podpisane „w trakcie”.")}
+          "Na gotowej łazience nie widać już, jak wyprowadzono podejścia wodne ani co siedzi pod płytką. Dlatego obok skończonych wnętrz pokazujemy też zdjęcia zrobione w trakcie prac.")}
 
 <section class="sekcja">
   <div class="wrap">
-{grupa("Pokoje po wykończeniu", "01", ["pokoj-01", "pokoj-03",
-                                           "pokoj-02"], lazy=False)}
+{grupa("Pokoje po wykończeniu", "01", ["pokoj-01", "pokoj-03", "pokoj-02"], lazy=False)}
 
-{grupa("Wejście, hol i schody", "02", ["wejscie-01", "hol-01", "hol-02", "schody-02"], lazy=False)}
+{grupa("Wejście i hol", "02", ["wejscie-01", "hol-02", "hol-03"], lazy=False)}
 
 {grupa("Poddasze pod klucz", "03", ["poddasze-01", "poddasze-02", "poddasze-06",
-                                    "poddasze-07", "poddasze-03", "poddasze-04",
-                                    "poddasze-05"])}
+                                    "poddasze-07", "poddasze-04", "poddasze-03"])}
 
-{grupa("Łazienki", "04", ["lazienka-05", "lazienka-06", "lazienka-01", "lazienka-02",
-                          "lazienka-03", "lazienka-04"])}
+{grupa("Łazienki", "04", ["lazienka-05", "lazienka-01", "lazienka-02", "lazienka-03",
+                          "lazienka-04"])}
 
-{grupa("Łazienka w czerni i bieli", "05", ["lazienka-07", "lazienka-08"])}
+{grupa("Łazienka w czerni i bieli", "05", ["lazienka-10", "lazienka-07", "lazienka-09",
+                                           "lazienka-08"])}
 
 {grupa("Poddasze z wnęką na wannę", "06", ["poddasze2-01", "poddasze2-02",
                                            "poddasze2-04", "poddasze2-03"])}
 
-{grupa("Beton architektoniczny i schody", "07", ["beton-02", "beton-ciemny", "schody-01"])}
+{grupa("Beton architektoniczny i elewacja", "07", ["beton-ciemny", "elewacja-01", "beton-02"])}
 
-{grupa("Tak to powstaje", "08", ["robota-02", "robota-03"])}
-
-{grupa("Elewacja i podbitka", "09", ["elewacja-01", "elewacja-02", "elewacja-03",
-                                     "elewacja-04"])}
+{grupa("Tak to powstaje", "08", ["wtrakcie-04", "robota-02", "wtrakcie-05", "robota-03",
+                                 "wtrakcie-06"])}
   </div>
 </section>
 
@@ -856,18 +805,25 @@ def kadr_o_nas():
             # ⛔ BEZ `loading="lazy"`: kadr stoi tuż nad drugim ekranem i przy
             # przewijaniu zostawiał pustą dziurę (bramka 07.09.2026).
             '<img src="img/kadr-o-nas.jpg" width="2000" height="909" '
-            'alt="Rusztowanie ustawione wzdłuż ściany domu w trakcie robót elewacyjnych" '
+            'alt="Rusztowanie ustawione wzdłuż ściany domu w trakcie prac elewacyjnych" '
             'decoding="async">'
             '<figcaption>Rusztowanie przy elewacji - tak wygląda nasz dzień na budowie.</figcaption>'
             '</figure>')
 
 
 def o_nas(naglowek):
+    """🔴 RUNDA POPRAWEK KLIENTA 29.09.2026: sekcja „Po wyschnięciu widać wszystko" usunięta
+    na polecenie klienta („I ten tekst też usuwamy"). ⛔ Nie dosypywać tekstu w jej miejsce -
+    klient chce MNIEJ tekstu; próg długości „O nas" w bramce ma na tę stronę wyjątek.
+    „Co robimy najczęściej" wylicza usługi tak, jak klient je podał (bez schodów - to był
+    nasz domysł ze zdjęć, nigdy nie potwierdzony, a zdjęcia schodów klient kazał zdjąć).
+    🐞 B5 (30.09.2026): opis tła w otwarciu mówił o rusztowaniu, a kadr to poddasze z belkami.
+    """
     return f"""{naglowek("o-nas.html")}
 
 {otwarcie("O nas", "Firma rodzinna z Błońska",
           kadr="otw-o-nas.jpg",
-          opis="Rusztowanie ustawione wzdłuż ściany domu w trakcie robót elewacyjnych",
+          opis="Poddasze z drewnianymi słupami i trzema oknami w lukarnie",
           lead=
           "Na budowach jesteśmy od ponad 20 lat - najpierw w Niemczech, od 2015 roku "
           "pod własnym szyldem w Polsce. Pracujemy w wielkopolskiem i lubuskiem.")}
@@ -889,10 +845,8 @@ def o_nas(naglowek):
         od 2015 roku, a wcześniej przez dziesięć lat robiliśmy to samo na budowach w Niemczech.</p>
       <h3>Co robimy najczęściej</h3>
       <p>Szpachlowanie, malowanie, łazienki i sucha zabudowa - te cztery rzeczy wchodzą
-        na niemal każdą budowę. Do tego poddasza pod klucz i montaż drzwi, a poza wnętrzami
-        elewacje z podbitką, beton architektoniczny i wykończenia schodów.</p>
-      <h3>Po wyschnięciu widać wszystko</h3>
-      <p>Gładź, płytka wielkoformatowa i skos poddasza mają jedną wspólną cechę: efekt widać dopiero wtedy, gdy jest za późno na poprawki. Dlatego zabudowa, gładzie i malowanie idą u nas jedną ręką - nie ma komu zrzucić winy za nierówną ścianę.</p>
+        na niemal każdą budowę. Do tego poddasza pod klucz, montaż drzwi i okien oraz podłogi,
+        a poza wnętrzami elewacje i podbitki.</p>
     </div>
   </div>
 </section>
@@ -926,7 +880,7 @@ def kontakt(naglowek):
 
 {otwarcie("Kontakt", "Zadzwoń albo napisz",
           kadr="otw-kontakt.jpg",
-          opis="Bieg betonowych schodów przy gotowej, gładkiej ścianie",
+          opis="Okno dachowe w pokoju na poddaszu, za szybą niebo i dachy",
           lead=
           "Telefon odbieramy od 8:00 do 20:00. Na WhatsAppie możesz od razu wrzucić "
           "zdjęcia wnętrza - to najszybszy sposób, żebyśmy wiedzieli, o czym mowa.")}
@@ -998,7 +952,7 @@ def polityka(naglowek):
     <p><strong>Kontakt:</strong> telefon {TEL}, WhatsApp {WA}, e-mail a.s-tchorzewski@wp.pl.</p>
     <p><strong>Formularze:</strong> na tej stronie nie ma formularza kontaktowego. Kontakt
       odbywa się telefonicznie, przez WhatsAppa albo mailem, a dane podane w rozmowie służą
-      wyłącznie do przygotowania wyceny i wykonania robót.</p>
+      wyłącznie do przygotowania wyceny i wykonania prac.</p>
     <p><strong>Ciasteczka i statystyki:</strong> strona nie zapisuje ciasteczek, nie mierzy
       ruchu i nie ma skryptów śledzących ani reklam.</p>
     <p><strong>Mapa Google:</strong> na stronie „Kontakt” osadzona jest mapa Google.
@@ -1008,7 +962,7 @@ def polityka(naglowek):
       ograniczenie przetwarzania i sprzeciw. Wystarczy telefon albo mail. Przysługuje też
       skarga do Prezesa Urzędu Ochrony Danych Osobowych.</p>
     <p><strong>Jak długo trzymamy dane:</strong> przez czas potrzebny na wycenę i wykonanie
-      robót, a dokumenty księgowe przez okres wymagany przepisami podatkowymi.</p>
+      prac, a dokumenty księgowe przez okres wymagany przepisami podatkowymi.</p>
   </div>
 </section>"""
 
@@ -1038,15 +992,15 @@ def strony(naglowek):
          "tresc": index(naglowek)},
         {"plik": "co-robimy.html",
          "tytul": "Co robimy - gładzie, malowanie, łazienki, sucha zabudowa | A.S Tchórzewski",
-         "opis": "Szpachlowanie i gładzie ręczne oraz maszynowe, malowanie agregatem, "
-                 "łazienki z płytką wielkoformatową, sucha zabudowa poddaszy, montaż drzwi "
-                 "i okien. Wielkopolskie i lubuskie.",
+         "opis": "Szpachlowanie i gładzie maszynowe i ręczne, malowanie agregatem i ręcznie, "
+                 "łazienki, sucha zabudowa z płyt gipsowo-kartonowych, montaż drzwi i okien, "
+                 "podłogi. Poza wnętrzami elewacje i podbitki. Wielkopolskie i lubuskie.",
          "tresc": co_robimy(naglowek)},
         {"plik": "realizacje.html",
          "tytul": "Realizacje - poddasza, łazienki, elewacje | A.S Tchórzewski",
-         "opis": "Zdjęcia z naszych budów: poddasza pod klucz, łazienki z wanną "
-                 "wolnostojącą, beton architektoniczny, schody, elewacje z podbitką "
-                 "oraz rozbudowa przed i po.",
+         "opis": "Zdjęcia z naszych budów: poddasza pod klucz, łazienki, pokoje, "
+                 "beton architektoniczny i elewacja - skończone wnętrza i kadry "
+                 "z czasu prac.",
          "tresc": realizacje(naglowek)},
         {"plik": "o-nas.html",
          "tytul": "O nas - firma rodzinna, ponad 20 lat na budowach | A.S Tchórzewski",
