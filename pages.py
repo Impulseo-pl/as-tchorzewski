@@ -742,6 +742,8 @@ def realizacje(naglowek):
     · doszły zdjęcia „od Sandro" z 14.09 i nowe „w żywszych kolorach" z 29.09;
       `lazienka-07/08` mają podmienione źródła na żywsze wersje od klienta.
     · „Elewacja i podbitka" została z JEDNYM kadrem → scalona z betonem (reguła `grupa()`).
+    · „Łazienki" po usunięciu kabiny miały 5 kadrów (dziura w trzecim słupku) → kadr
+      „w trakcie" z podejściami wodnymi przeszedł do „Tak to powstaje" (4 + 6).
     """
     return f"""{naglowek("realizacje.html")}
 
@@ -760,8 +762,7 @@ def realizacje(naglowek):
 {grupa("Poddasze pod klucz", "03", ["poddasze-01", "poddasze-02", "poddasze-06",
                                     "poddasze-07", "poddasze-04", "poddasze-03"])}
 
-{grupa("Łazienki", "04", ["lazienka-05", "lazienka-01", "lazienka-02", "lazienka-03",
-                          "lazienka-04"])}
+{grupa("Łazienki", "04", ["lazienka-05", "lazienka-01", "lazienka-02", "lazienka-03"])}
 
 {grupa("Łazienka w czerni i bieli", "05", ["lazienka-10", "lazienka-07", "lazienka-09",
                                            "lazienka-08"])}
@@ -772,7 +773,7 @@ def realizacje(naglowek):
 {grupa("Beton architektoniczny i elewacja", "07", ["beton-ciemny", "elewacja-01", "beton-02"])}
 
 {grupa("Tak to powstaje", "08", ["wtrakcie-04", "robota-02", "wtrakcie-05", "robota-03",
-                                 "wtrakcie-06"])}
+                                 "wtrakcie-06", "lazienka-04"])}
   </div>
 </section>
 
