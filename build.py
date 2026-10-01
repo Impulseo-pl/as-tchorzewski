@@ -60,12 +60,11 @@ V_CSS = _odcisk(os.path.join(TU, "assets", "app.css"))
 V_RDZEN = _odcisk(os.path.join(TU, "assets", "rdzen.css"),
                   os.path.join(TU, "assets", "rdzen.js"))
 
-# 🔴 PODGLĄD ROBOCZY. Strona stoi na zdjęciach klienta, na które NIE MAMY jeszcze
-# jego pisemnej zgody (pytanie 3 w `PYTANIA-DO-KLIENTA.md`), a domena nie jest
-# jeszcze wpięta. Do tego czasu każda podstrona ma `noindex`, a `robots.txt`
-# zamyka całość. ⛔ Przestawić na False dopiero razem ze: zgodą na zdjęcia,
-# odpowiedziami na 10 pytań, domeną i CNAME.
-PODGLAD_ROBOCZY = True
+# PODGLĄD ROBOCZY: True = każda podstrona ma `noindex`, a `robots.txt` zamyka całość.
+# ✅ ODDANIE 01.10.2026: klient przejrzał stronę po rundzie poprawek, sam wybrał i odsiał
+# zdjęcia („Bardzo nam się wszystko podoba"), domena + CNAME wpięte od 20.09 → K.: „indeksujemy".
+# Powrót do podglądu: `git reset --hard przed-oddaniem-2026-10-01`.
+PODGLAD_ROBOCZY = False
 
 MENU = [
     ("co-robimy.html", "Co robimy"),
