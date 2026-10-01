@@ -669,7 +669,7 @@ def co_robimy(naglowek):
 
     🔴 RUNDA POPRAWEK KLIENTA 29.09.2026 (`POPRAWKI.md`, punkty 5-12): każdy blok to numer,
     nagłówek i punkty podyktowane przez klienta + zdjęcia, które wskazał podpisami „Do 1"…
-    „Do 5". Doszła pozycja 06 Podłogi. „Poza wnętrzami robimy też: elewacje i podbitki"
+    „Do 5". Doszła pozycja 06 Podłogi. „Poza wnętrzami odświeżamy też: elewacje i podbitki" (01.10: „robimy" → „odświeżamy", pkt 18)
     zamyka katalog tym samym klockiem, bez numeru. Wyleciało całe uzasadnianie („gładź
     decyduje o tym…"), linie zakresu i zdjęcie schodów.
     Kotwice `u-01`…`u-06` - linkują do nich kafle i wiersze na stronie głównej.
@@ -722,7 +722,7 @@ def co_robimy(naglowek):
       "Korytarz z panelami w odcieniu dębu i białymi listwami przypodłogowymi")],
     odwrocony=True)}
 
-{blok_uslugi("poza-wnetrzami", "", "Poza wnętrzami robimy też:", ["elewacje i podbitki"],
+{blok_uslugi("poza-wnetrzami", "", "Poza wnętrzami odświeżamy też:", ["elewacje i podbitki"],
     [("z-elewacja-01.jpg", 1200, 1600,
       "Dom po wykonaniu elewacji: biały tynk, ciemna podbitka pod okapem i wejście od strony tarasu")])}
   </div>
